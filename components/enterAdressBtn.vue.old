@@ -1,0 +1,110 @@
+<template>
+<div>
+    <v-btn class="set-you-adress" height="40" color="primary" dense rounded depressed @click="this.goToMap">
+        <i class="material-icons near_me_icon">near_me</i>
+		<span class="current-adress">
+			{{this.getUserLocation.locationAdress == null ? 'Укажите адрес' : this.getUserLocation.locationAdress}}
+		</span>
+    </v-btn>
+    <v-overlay :value="overlay" :opacity=".7">
+        <v-card dark class="mapContainer">
+            <!-- <Location @closeMap='this.goToMap'></Location> -->
+        </v-card>
+    </v-overlay>
+</div>
+</template>
+
+<script>
+import {
+	mapGetters
+} from 'vuex'
+import Location from '../components/map/Location.vue'
+
+export default {
+	name: 'enterAdressbtn',
+	components: {
+		Location
+	},
+	data () {
+		return {
+			overlay: false
+		}
+	},
+	computed: {
+		...mapGetters({
+			getUserLocation: 'user/getUserLocation'
+		})
+	},
+	methods: {
+		goToMap () {
+			this.overlay = !this.overlay
+		}
+	},
+	watch: {
+		overlay (newValue) {
+			// this.$emit('show', newValue)
+		}
+	}
+}
+</script>
+
+<style scoped>
+
+.current-adress{
+	max-width: 200px;
+	text-overflow: clip;
+	padding-right:10px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 200px;
+    left: 10px;
+    z-index: 200;
+}
+
+.mapContainer {
+    width: 600px !important;
+    height: 300px !important;
+    display: flex;
+	background: #fff !important;
+}
+
+.set-you-adress {
+    /* display: none; */
+}
+
+@media screen and (max-width: 450px) {
+	.mapContainer {
+		width: 100vw !important;
+		height: 100vh !important;
+		display: flex;
+		background: #fff !important;
+	}
+}
+
+    .near_me_icon {
+        padding-right: 10px;
+    }
+
+    .set-you-adress {
+		  width: 80%;
+        display: flex;
+        text-transform: none !important;
+        color: #fff !important;
+        margin: auto;
+        padding: 0px 50px !important;
+        font-size: 14px !important;
+		  text-overflow: clip;
+		  overflow: hidden;
+      box-shadow: 0 4px 12px 0 rgba(0, 166, 70, 0.3), 0 2px 4px 0 rgba(0, 166, 70, 0.3)!important;
+
+    }
+/* } */
+</style>
+
+<style >
+.v-overlay__content{
+	height: 100% !important;
+}
+</style>
