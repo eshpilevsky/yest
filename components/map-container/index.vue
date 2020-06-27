@@ -13,6 +13,7 @@
       @map-was-initialized="onInit"
       :controls="controls"
       :options="options"
+      @boundschange="onBoundsChange"
     />
     <map-suggest
       v-show="isInputAddressMode"
@@ -27,7 +28,7 @@
   import { mapActions, mapGetters, mapMutations } from 'vuex'
   import { getClose, getGeo, getIamHere, getPlace, getZoomIn, getZoomOut } from './factory'
   import MapSuggest from '@/components/map-suggest'
-  import { getAddresFromGeoobject, getAddressFromString } from '@/common/lib/map'
+  import { getAddresFromGeoobject, getAddressFromString, getAddresByCoords } from '@/common/lib/map'
   import { settings as yMapSettings } from '@/plugins/ymapPlugin' // так сделал потому что из плагина переменная ymaps с первого открытия карты не доступна
 
   export default {
@@ -83,9 +84,9 @@
         getZoomIn(ymaps, mapInstance)
         getZoomOut(ymaps, mapInstance)
         getPlace(ymaps, mapInstance)
-        getIamHere(ymaps, mapInstance, () => {
+        getIamHere(ymaps, mapInstance, async (e) => {
           const coords = mapInstance.getCenter()
-          this.getGeoObjects({coords, ymaps})
+          await this.getGeoObjects({coords, ymaps})
         })
         if (this.getCurrentCoords.length === 0) {
           await this.getLocation()
@@ -120,6 +121,10 @@
               component.address = getAddresFromGeoobject(res.geoObjects.get(0))
             })
         }
+      },
+      async onBoundsChange() {
+        const coords = this.mapInstance.getCenter()
+        this.address = await getAddresByCoords(this.ymaps, coords)
       }
     },
   };

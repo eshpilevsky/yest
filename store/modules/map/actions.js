@@ -1,4 +1,4 @@
-import { getAddresFromGeoobject } from '@/common/lib/map'
+import { getAddresFromGeoobject, getAddresByCoords } from '@/common/lib/map'
 
 const getLocation = async ({ commit }) => {
   return new Promise((resolve, reject) => {
@@ -17,16 +17,10 @@ const getLocation = async ({ commit }) => {
   })
 }
 const getGeoObjects = async ({ commit }, { ymaps, coords }) => {
-  const myReverseGeocoder = await ymaps.geocode(coords)
-  const { geoObjects } = myReverseGeocoder
-  const currentAddress = getAddresFromGeoobject(geoObjects)
+  const currentAddress = await getAddresByCoords(ymaps, coords)
   commit('SET_CURRENT_ADDRESS', currentAddress)
   commit('SET_CURRENT_COORDS', coords)
   commit('HIDE_MAP')
-  // console.log(geoObjects.get(0).properties.get('metaDataProperty'), currentAddress)
-  //  = myReverseGeocoder.then(function (res) {
-  //       console.log(coords, res.geoObjects.get(0).properties.get('text'))
-  //     })
 }
 export default {
   getLocation,
