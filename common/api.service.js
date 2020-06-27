@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const inst = axios.create({
-  baseURL: 'http://178.172.172.89:3210'
+  baseURL: 'https://yestapi.xyz'
 })
 
 inst.interceptors.response.use(

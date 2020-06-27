@@ -9,8 +9,8 @@ module.exports = {
     titleTemplate: '%s - ' + process.env.npm_package_name,
     title: process.env.npm_package_name || '',
     meta: [{
-        charset: 'utf-8'
-      },
+      charset: 'utf-8'
+    },
       {
         name: 'viewport',
         content: 'width=device-width, initial-scale=1'
@@ -22,10 +22,10 @@ module.exports = {
       }
     ],
     link: [{
-        rel: 'icon',
-        type: 'image/x-icon',
-        href: '/favicon.png'
-      },
+      rel: 'icon',
+      type: 'image/x-icon',
+      href: '/favicon.png'
+    },
       {
         rel: 'stylesheet',
         href: 'https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined'
@@ -48,13 +48,13 @@ module.exports = {
    ** Plugins to load before mounting the App
    */
   plugins: [{
-      src: '~plugins/vuex-persist',
-      ssr: false
-    },
-    {
-      src: '~/plugins/ymapPlugin.js',
-      mode: 'client'
-    },
+    src: '~plugins/vuex-persist',
+    ssr: false
+  },
+    // {
+    //   src: '~/plugins/ymapPlugin.js',
+    //   mode: 'client'
+    // },
     {
       src: '~/plugins/vClickOutside',
       ssr: false
