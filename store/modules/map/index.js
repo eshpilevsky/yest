@@ -6,9 +6,8 @@ const state = {
   data: {
     visible: false,
     currentCoords: [],
-    inputAddressMode: false,
-    address: '',
-    geolocationDenied: false
+    inputAddress: false,
+    address: ''
   },
   status: 0
 }

@@ -3,7 +3,7 @@
 	<layout-header v-if="isMapVisible === false"/>
     <v-content v-if="isMapVisible === false">
         <v-container class="main_cont">
-            <nuxt style="height: 100%"/>
+            <nuxt />
         </v-container>
     </v-content>
 	<layout-footer v-if="isMapVisible === false"/>
@@ -37,12 +37,7 @@ export default {
 }
 </script>
 
-<style>
-
-.main_cont{
-	height: 100%;
-}
-
+<style scoped>
 .container{
 	padding-top: 3rem !important;
 	padding-right: 0 !important;

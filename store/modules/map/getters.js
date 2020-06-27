@@ -10,18 +10,13 @@ const getCurrentAddress = (state) => {
   return state.data.address
 }
 
-const geolocationAvailable = (state) => {
-  return !state.data.geolocationDenied
-}
-
 const isInputAddressMode = (state) => {
-  return state.data.inputAddressMode
+  return state.data.inputAddress
 }
 
 export default {
   isMapVisible,
   getCurrentCoords,
   getCurrentAddress,
-  isInputAddressMode,
-  geolocationAvailable
+  isInputAddressMode
 }

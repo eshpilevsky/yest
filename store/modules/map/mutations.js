@@ -16,15 +16,11 @@ const SET_CURRENT_ADDRESS = (state, address) => {
 }
 
 const SET_INPUT_ADDRESS_MODE = (state) => {
-  state.data.inputAddressMode = true
+  state.data.inputAddress = true
 }
 
 const UNSET_INPUT_ADDRESS_MODE = (state) => {
-  state.data.inputAddressMode = false
-}
-
-const SET_GEOLOCATION_DENIED = (state) => {
-  state.data.geolocationDenied = true
+  state.data.inputAddress = false
 }
 
 export default {
@@ -33,6 +29,5 @@ export default {
   SET_CURRENT_COORDS,
   SET_CURRENT_ADDRESS,
   SET_INPUT_ADDRESS_MODE,
-  UNSET_INPUT_ADDRESS_MODE,
-  SET_GEOLOCATION_DENIED
+  UNSET_INPUT_ADDRESS_MODE
 }

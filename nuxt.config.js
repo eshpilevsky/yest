@@ -51,10 +51,10 @@ module.exports = {
       src: '~plugins/vuex-persist',
       ssr: false
     },
-    // {
-    //   src: '~/plugins/ymapPlugin.js',
-    //   mode: 'client'
-    // },
+    {
+      src: '~/plugins/ymapPlugin.js',
+      mode: 'client'
+    },
     {
       src: '~/plugins/vClickOutside',
       ssr: false

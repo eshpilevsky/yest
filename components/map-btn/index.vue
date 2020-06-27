@@ -22,7 +22,6 @@ export default {
       if (currentAddress === '') {
         return putAddress
       }
-      console.log('wwwwww', currentAddress)
       return `...${currentAddress.substr(-20, 21)}`
     }
   }
