@@ -299,16 +299,25 @@ export default {
         /* background-image: none !important; */
         /*background-size: auto;*/
         background-position: right;
-        height: 100%;
         background-repeat: no-repeat;
         margin-top: 0;
-        background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        -webkit-background-size: cover;
         height: 100%;
         width: 100%;
+        background-position-x: 230px;
+        background-position-y: -0px;
     }
+
+    .setAdressContaine:active {
+        /* background-image: none !important; */
+        /*background-size: auto;*/
+        background-position: right;
+        background-repeat: no-repeat;
+        margin-top: 0;
+        height: 100%;
+        width: 100%;
+        background-position-x: 230px;
+        background-position-y: -0px;
+  }
 
     .setAdressContaine-info {
         padding: 40px 16px;

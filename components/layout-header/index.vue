@@ -315,8 +315,8 @@ export default {
     justify-content: center;
     align-items: center;
     padding: 20px;
-    border-top: 15vh solid rgb(245, 245, 245);
-	width: 100%;
+    border-top: 30vh solid rgb(245, 245, 245);
+	  width: 100%;
 	/* padding-top: 18vh; */
 }
 
@@ -516,8 +516,9 @@ export default {
     .logo-img {
         height: 26px;
         margin-bottom: 15px;
-		position: relative;
-		top: 8px;
+		    position: relative;
+		    top: 8px;
+        right: 20px;
     }
 
     .header-container a {
