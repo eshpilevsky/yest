@@ -172,6 +172,7 @@ export default {
     max-width: 1420px;
     margin: auto;
     padding: 0 120px;
+    margin-right: 20px;
 }
 
 .social-links {

@@ -260,7 +260,7 @@ export default {
                     console.error(error)
                 })
             } else {
-				oldCategoryImg.setAttribute('style', `background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url(https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png);`)
+				oldCategoryImg.setAttribute('style', `background-image: url("https://yastatic.net/s3/eda-front/prod-www/assets/burger-30fa3e8e820651876c1e068d660810d0.jpg");`)
                 this.$store.dispatch('user/selectCategory', {
                     id: 0,
                     alias: item.alias,
@@ -443,6 +443,7 @@ export default {
     white-space: nowrap;
     font-size: 13px;
     text-align: center;
+    width: 95px;
 }
 
 .searchMobile {

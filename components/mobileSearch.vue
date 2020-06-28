@@ -33,7 +33,7 @@ export default {
         width: 100%;
 		padding: 10px;
 		margin: 0 0px !important;
-        height: 80px;
+        height: 70px;
 		z-index:1;
     }
     .mobileSearchInput{

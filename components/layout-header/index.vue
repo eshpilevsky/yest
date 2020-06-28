@@ -479,9 +479,9 @@ export default {
     .mobile-logo-block {
         position: absolute;
         top: 5px;
-        left: 125px;
+        left: 90px;
         min-height: 60px;
-		max-height: 140px;
+		    max-height: 140px;
     }
 
     .header-contain,

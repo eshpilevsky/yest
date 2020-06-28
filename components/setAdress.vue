@@ -221,6 +221,7 @@ export default {
 .setAdressContaine-info {
     padding: 50px 80px;
     min-width: 100%;
+    margin-bottom: -40px;
 }
 
 .setAdressContaine {
@@ -238,6 +239,8 @@ export default {
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
     max-width: 1420px;
+    background-position-x: -650px;
+    background-position-y: -70px;
 }
 
 .info-setPlace {
@@ -294,13 +297,17 @@ export default {
 
     .setAdressContaine {
         /* background-image: none !important; */
-        background-size: auto;
+        /*background-size: auto;*/
         background-position: right;
-        background-position-x: 240px;
-        background-position-y: -50px;
         height: 100%;
         background-repeat: no-repeat;
         margin-top: 0;
+        background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        -webkit-background-size: cover;
+        height: 100%;
+        width: 100%;
     }
 
     .setAdressContaine-info {
