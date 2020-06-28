@@ -391,7 +391,6 @@ export default {
 }
 
 .tags-list-item {
-    font-style: italic;
     font-weight: normal;
     font-size: 14px;
     text-align: left;

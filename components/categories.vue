@@ -434,7 +434,7 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 95px;
+    width: 83px;
 }
 
 .item-name {
@@ -443,7 +443,6 @@ export default {
     white-space: nowrap;
     font-size: 13px;
     text-align: center;
-    width: 95px;
 }
 
 .searchMobile {

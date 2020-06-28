@@ -289,7 +289,7 @@ export default {
     .info-setPlace {
         display: flex;
         color: #b0b0b0;
-        padding-bottom: 30px;
+        padding-bottom: 45px;
         font-size: 12px;
         line-height: 1.67;
         width: 60%;
