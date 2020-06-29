@@ -463,7 +463,7 @@ export default {
         height: 35px;
         position: absolute;
         left: 25px;
-        top: 22px;
+        top: 20px;
     }
 
     .burger-log-close {
@@ -514,11 +514,7 @@ export default {
     }
 
     .logo-img {
-        height: 26px;
-        margin-bottom: 15px;
-		    position: relative;
-		    top: 8px;
-        right: 20px;
+        margin-top: 1%;
     }
 
     .header-container a {

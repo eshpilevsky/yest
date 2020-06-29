@@ -1,5 +1,5 @@
 <template>
-  <v-btn class="black--text set-you-adress" height="40" color="primary" dense rounded depressed @click="showMap">
+  <v-btn class="black--text set-you-adress" height="40" width="245" color="primary" dense rounded depressed @click="showMap">
     <i class="material-icons near_me_icon">near_me</i>{{this.text}}
   </v-btn>
 </template>

@@ -303,8 +303,8 @@ export default {
         margin-top: 0;
         height: 100%;
         width: 100%;
-        background-position-x: 230px;
-        background-position-y: -0px;
+        background-position-x: 250px;
+        background-position-y: -10px;
     }
 
     .setAdressContaine:active {
@@ -321,6 +321,7 @@ export default {
 
     .setAdressContaine-info {
         padding: 40px 16px;
+        margin-top: -10px;
     }
 
     .search-me {

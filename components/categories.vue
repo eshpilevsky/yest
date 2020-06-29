@@ -260,7 +260,7 @@ export default {
                     console.error(error)
                 })
             } else {
-				oldCategoryImg.setAttribute('style', `background-image: url("https://menu-menu.by/images/category_icons/new/f97164f134dc572b74a5fab856724f16-200x200.jpg");`)
+				oldCategoryImg.setAttribute('style', `background-image: url("https://menu-menu.by/images/category_icons/new/4529d57df6bc970d11c1f3496296d99b-200x200.jpg");`)
                 this.$store.dispatch('user/selectCategory', {
                     id: 0,
                     alias: item.alias,
