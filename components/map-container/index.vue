@@ -6,7 +6,7 @@
     <div v-else>
         <div class="currentAddress" v-show="!isInputAddressMode">
             <h2 class="currentAddress-title">{{address}}</h2>
-            <div class="currentAddress-put" @click="switchToAddressMode">изменить адрес</div>
+            <div class="currentAddress-put" @click="switchToAddressMode">Изменить адрес доставки</div>
         </div>
         <yandex-map v-show="!isInputAddressMode" :coords="coords" :zoom="17" @click.stop="onClick" @map-was-initialized="onInit" :controls="controls" :options="options" @boundschange="onBoundsChange" />
         <map-suggest v-show="isInputAddressMode" @select="onSelect" />
@@ -73,10 +73,10 @@ export default {
     async mounted() {
         await loadYmap({
             ...yMapSettings
-		});
-		setTimeout(() => {
-			this.isMapLoading = false
-		}, 500);
+        });
+        setTimeout(() => {
+            this.isMapLoading = false
+        }, 500);
     },
     methods: {
         ...mapMutations('map', {
@@ -104,6 +104,7 @@ export default {
             getZoomIn(ymaps, mapInstance)
             getZoomOut(ymaps, mapInstance)
             getPlace(ymaps, mapInstance)
+            getGeo(ymaps, mapInstance)
             getIamHere(ymaps, mapInstance, async (e) => {
                 const coords = mapInstance.getCenter()
                 await this.getGeoObjects({
@@ -114,8 +115,8 @@ export default {
             if (this.getCurrentCoords.length === 0) {
                 await this.getLocation()
             }
-			this.coords = this.getCurrentCoords
-		},
+            this.coords = this.getCurrentCoords
+        },
         onClick(e) {
             this.coords = e.get('coords')
             this.setCurrentCoords(this.coords)
@@ -159,13 +160,30 @@ export default {
 $size: 7vw;
 $header: 65px;
 
-.map-loading{
+.customGeoBtn {
+    height: 40px;
+    width: 40px;
+    border: none;
+    display: inline-block;
+    box-shadow: 0 2px 4px 0 rgba(96, 96, 96, 0.15);
+    background-size: 24px;
+    background-color: rgba(255, 255, 255, 0.8);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.myGeo {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIHN0cm9rZT0iIzQ0M0MwRiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjYiIGQ9Ik01LjAwMiAxMC44OEwxOCA2bC00Ljg3MiAxMy0xLjYyOC02LjV6Ii8+PC9zdmc+);
+    border-radius: 100%;
+}
+
+.map-loading {
     height: 100%;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-	background-image: url('../../assets/mapBg.svg');
+    background-image: url('../../assets/mapBg.svg');
 }
 
 .ymap-container {
@@ -215,8 +233,11 @@ ymaps [title="Определить ваше местоположение"] {
 
 .iamhere {
     background-color: #00a646;
-    width: 80vw;
+    width: 85vw;
     border-radius: 5px;
+    font-size: 16px !important;
+    padding: 10px 0;
+    margin: auto;
 }
 
 .v-overlay__content {
@@ -226,17 +247,32 @@ ymaps [title="Определить ваше местоположение"] {
 
 .currentAddress {
     width: 100%;
-    top: 25vh;
+    top: 20vh;
     text-align: center;
     position: absolute;
     z-index: 4500;
 }
 
 h2.currentAddress-title {
-    color: rgba(50, 50, 50, 0.7)
+    color: #000;
+    width: 100%;
+    font-size: 30px;
+    margin-bottom: 20px;
+    text-align: center;
+    padding-left: 16px;
+    padding-right: 16px;
+    font-weight: normal;
 }
 
 .currentAddress-put {
-    color: #00a646;
+    color: #000;
+    height: 24px;
+    width: 55%;
+    margin: auto;
+    font-size: 14px;
+    box-shadow: 0 2px 4px 0 rgba(96, 96, 96, 0.15);
+    border-radius: 14px;
+    pointer-events: auto;
+    background-color: rgba(255, 255, 255, 0.8);
 }
 </style>
