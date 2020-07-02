@@ -12,11 +12,12 @@ import {
     mapGetters,
     mapMutations
 } from 'vuex'
-const putAddress = 'Укажите адрес'
 export default {
     name: 'map-btn',
     data() {
-        return {}
+        return {
+			putAddress: 'Укажите адрес'
+		}
     },
     methods: {
         ...mapMutations('map', {
@@ -24,14 +25,13 @@ export default {
         }),
     },
     computed: {
-        ...mapGetters('map', {
-            getCurrentAddress: 'getCurrentAddress'
+        ...mapGetters({
+            getCurrentAddress: 'map/getCurrentAddress'
         }),
         text() {
             const currentAddress = this.getCurrentAddress
-            console.error('text -> currentAddress', currentAddress)
             if (currentAddress === '') {
-                return putAddress
+                return this.putAddress
             }
             return `${currentAddress}`
         }

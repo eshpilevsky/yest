@@ -27,12 +27,12 @@
                                 <v-icon color="#FFFADF">star</v-icon>
                                 <div class="rating">{{ item.rating }}</div>
                             </v-chip>
-<!--                            <div class="bottom-cashe">-->
-<!--                                <img :src="rubel"/>-->
-<!--                                <img :src="rubel"/>-->
-<!--                                <img :src="rubel"/>-->
-<!--                                •&nbsp;-->
-<!--                            </div>-->
+                           <div class="bottom-cashe">
+                               <img :src="rubel"/>
+                               <img :src="rubel"/>
+                               <img :src="rubel"/>
+                               •&nbsp;
+                           </div>
                             <div class="bottom-tags-list" :class="{noLocationTag: getUserLocation.locationAdress == null}">
                                 <span class="tags-list-item">{{ compudtedTags(item.tags) }}</span>
                             </div>
@@ -174,17 +174,17 @@ export default {
         },
         showMore() {
             this.limit += 24;
-            this.getRestaurants(
-                this.getUserCoordinate.latitude,
-                this.getUserCoordinate.longitude
-            );
+        this.getRestaurants(
+            this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[0],
+            this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[1],
+        );
         }
     },
     computed: {
         ...mapGetters({
             getSelectedZone: "zone/getSelectedZone",
             getSelectedCategory: "user/getSelectedCategory",
-            getUserCoordinate: "user/getUserCoordinate",
+            getUserCoordinate: "map/getCurrentCoords",
             getUserLocation: "user/getUserLocation"
         }),
         swiper() {
@@ -256,9 +256,11 @@ export default {
         }
     },
     mounted() {
+		console.error('user coord',this.getUserCoordinate);
+
         this.getRestaurants(
-            this.getUserCoordinate.latitude,
-            this.getUserCoordinate.longitude
+            this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[0],
+            this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[1],
         );
     }
 };
