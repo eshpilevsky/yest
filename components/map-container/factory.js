@@ -137,8 +137,8 @@ export const getIamHere = (
     options: {
       float: 'none',
       position: {
-        bottom: '25px',
-        right: '10vw',
+        bottom: '4vh',
+        right: '8vw',
       },
       content: 'Я здесь'
     }

@@ -1,5 +1,27 @@
 const SHOW_MAP = (state) => {
+  console.log('SHOW_MAP -> state', state)
   state.data.visible = true
+  navigator.geolocation.getCurrentPosition(() => {
+    const crd = pos.coords
+    console.error('getCoordinate -> crd', crd)
+    const latitude = crd.latitude
+    const longitude = crd.longitude
+    const coords = {
+      latitude: latitude,
+      longitude: longitude
+	}
+	alert('cord')
+    state.data.currentCoords = coords
+
+  }, (error) => {
+    console.warn(`ERROR(${error.code}): ${error.message}`)
+
+  }, {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+  })
+
 }
 
 const HIDE_MAP = (state) => {

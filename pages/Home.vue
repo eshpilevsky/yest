@@ -33,11 +33,6 @@ export default {
       showSearch: false,
       showSetAdress: true,
       showSpecialOffer: false,
-      coordinateOption: {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0
-      },
       latitude: 0,
       longitude: 0
     }
@@ -64,7 +59,6 @@ export default {
   },
   mounted () {
     // this.redirectCategoryByUrl()
-    navigator.geolocation.getCurrentPosition(this.getCoordinate, this.getCoordinateError, this.coordinateOption)
     let lastScrollTop = 0
     if (window.innerWidth < 450) {
       window.addEventListener('scroll', () => {
@@ -88,24 +82,7 @@ export default {
     }
   },
   methods: {
-    getCoordinateError (err) {
-      console.warn(`ERROR(${err.code}): ${err.message}`)
-    },
-    getCoordinate (pos) {
-		const crd = pos.coords
-		console.error('getCoordinate -> crd', crd)
-      this.latitude = crd.latitude
-      this.longitude = crd.longitude
-    //   if (this.getUserCoordinate.latitude === 0 && this.getUserCoordinate.longitude === 0) {
-        this.$store.dispatch('user/setUserLocation', {
-			coords:{
-				latitude: this.latitude,
-				longitude: this.longitude
-			},
-			locationAdress: null
-        })
-    //   }
-    },
+
     redirectCategoryByUrl () {
       const findZone = this.getZoneList.find((zone) => {
       console.log("redirectCategoryByUrl -> findZone", findZone)

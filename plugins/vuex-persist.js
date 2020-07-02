@@ -2,9 +2,9 @@ import VuexPersistence from 'vuex-persist'
 
 export default ({ store }) => {
   new VuexPersistence({
-    key: 'key',
+    key: 'yest',
     modules: [
-     'user', 'zone'
+     'user', 'zone', 'map', 'device', 'basket'
     ]
   }).plugin(store)
 }
