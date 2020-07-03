@@ -27,12 +27,6 @@
                                 <v-icon color="#FFFADF">star</v-icon>
                                 <div class="rating">{{ item.rating }}</div>
                             </v-chip>
-                           <div class="bottom-cashe">
-                               <img :src="rubel"/>
-                               <img :src="rubel"/>
-                               <img :src="rubel"/>
-                               •&nbsp;
-                           </div>
                             <div class="bottom-tags-list" :class="{noLocationTag: getUserLocation.locationAdress == null}">
                                 <span class="tags-list-item">{{ compudtedTags(item.tags) }}</span>
                             </div>
@@ -285,11 +279,6 @@ export default {
 
 .delivery-time-mobile {
     display: none;
-}
-
-.bottom-cashe {
-    white-space: nowrap;
-	padding-top: 5px;
 }
 
 .time-min {

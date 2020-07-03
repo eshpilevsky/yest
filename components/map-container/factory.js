@@ -99,8 +99,8 @@ export const getClose = (
       float: 'left',
     },
     position: {
-      top: '2vh',
-      left: '2vh'
+      top: '3rem',
+      left: '10rem'
     }
   })
 }
@@ -137,7 +137,7 @@ export const getIamHere = (
     options: {
       float: 'none',
       position: {
-        bottom: '4vh',
+        bottom: '2rem',
         right: '8vw',
       },
       content: 'Я здесь'

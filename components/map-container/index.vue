@@ -1,6 +1,6 @@
 <template>
 <v-overlay :value="isMapVisible === true">
-    <div v-if="isMapLoading == true" class="map-loading">
+    <div v-if="isMapLoading" class="map-loading">
         <v-progress-circular indeterminate size="40" color="grey"></v-progress-circular>
     </div>
     <div v-else>
@@ -178,12 +178,13 @@ $header: 65px;
 }
 
 .map-loading {
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
     display: flex;
     align-items: center;
     justify-content: center;
     background-image: url('../../assets/mapBg.svg');
+	background-size: contain;
 }
 
 .ymap-container {

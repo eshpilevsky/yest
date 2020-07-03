@@ -27,7 +27,6 @@ export const mutations = {
         latitude: latitude,
         longitude: longitude
       }
-      alert('cord')
       state.data.currentCoords = coords
 
     }, (error) => {
