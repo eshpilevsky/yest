@@ -33,7 +33,7 @@
         getCurrentCoords: 'getCurrentCoords',
         getCurrentAddress: 'getCurrentAddress'
       }),
-      addSuggestView (ymaps) {
+      addSuggestView (ymaps) {c
         var suggestView = new ymaps.SuggestView(this.$el.querySelector('input'))
         suggestView.events.add('select', (e) => {
           this.$emit('select', e)
@@ -56,5 +56,10 @@
   }
   ymaps[class*=suggest-item_selected_yes] {
     background-color: #00A646;
+  }
+
+  .address-input{
+	  width: 90%;
+	  margin: auto;
   }
 </style>
