@@ -18,7 +18,7 @@ export const mutations = {
   SHOW_MAP(state) {
     console.log('SHOW_MAP -> state', state)
     state.data.visible = true
-    navigator.geolocation.getCurrentPosition(() => {
+    navigator.geolocation.getCurrentPosition((pos) => {
       const crd = pos.coords
       console.error('getCoordinate -> crd', crd)
       const latitude = crd.latitude
