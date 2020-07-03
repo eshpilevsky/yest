@@ -133,19 +133,19 @@ export default {
                     })
                     .then((res) => {
                         const geoObjects = res.geoObjects.get(0)
-                        component.coords = geoObjects.geometry.getCoordinates()
-                        if (!component.geolocationAvailable) {
-                            component.address = getAddressFromString(selectedValue)
-                            this.switchToMapMode()
+						component.coords = geoObjects.geometry.getCoordinates()
+                        if (component.geolocationAvailable) {
+							component.address = getAddressFromString(selectedValue)
                             mapInstance.setCenter(component.coords, 17)
-                            return
+							this.switchToMapMode()
+                            return 
                         }
                         const bounds = geoObjects.properties.get('boundenBy')
                         mapInstance.setBounds(bounds, {
                             checkZoomRange: true
                         })
                         mapInstance.setCenter()
-                        component.address = getAddresFromGeoobject(res.geoObjects.get(0))
+						component.address = getAddresFromGeoobject(res.geoObjects.get(0))
                     })
             }
         },
