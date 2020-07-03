@@ -1,10 +1,10 @@
 <template>
 <div class="header-contain" :class="{ overlaySet: showOverlay == true}">
     <div class="containe">
-        <div class="burger-log" @click="drawer = !drawer" v-show="drawer == false" />
-        <v-navigation-drawer v-model="drawer" absolute left temporary overlay-opacity="0.7" class="newHeader" v-if="drawer == true">
+        <div class="burger-log" @click="showHideSidebar()" v-show="showSidebar == false" />
+        <v-navigation-drawer v-model="showSidebar" absolute left temporary overlay-opacity="0.7" class="newHeader" v-if="showSidebar == true">
             <v-list>
-                <div class="burger-log-close" @click="drawer = !drawer" />
+                <div class="burger-log-close" @click="showHideSidebar()" />
                 <div class="mobile-logo-block">
                     <img src="../../assets/logo.png" class="logo-img" alt="logomobile">
                 </div>
@@ -87,7 +87,7 @@
                 </div>
             </v-list>
         </v-navigation-drawer>
-        <nuxt-link v-if="showSetAdressBtn == false" v-show="drawer == false" to="/" class="mobileLogo">
+        <nuxt-link v-if="showSetAdressBtn == false" v-show="showSidebar == false" to="/" class="mobileLogo">
             <img src="../../assets/logo.png" class="burger-logo-img" alt="logodesktop">
         </nuxt-link>
         <div v-else class="logo-img">
@@ -147,7 +147,7 @@ export default {
             sheet: false,
             showSetAdressBtn: false,
             showMap: false,
-            drawer: false,
+            showSidebar: false,
             items: [{
                     title: 'Home',
                     icon: 'dashboard'
@@ -160,6 +160,11 @@ export default {
         }
     },
     methods: {
+		showHideSidebar(){
+			if (this.isMapVisible) {
+				this.showSidebar = !this.showSidebar
+			}
+		},
         show(value) {
             this.showMap = value
         },
@@ -184,6 +189,7 @@ export default {
         ...mapGetters({
             getSelectedZone: 'zone/getSelectedZone',
             getUserLocation: 'user/getUserLocation',
+            isMapVisible: 'map/isMapVisible',
             canDisplayMap: 'device/isMobile'
         })
     },
