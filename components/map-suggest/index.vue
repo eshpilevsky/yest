@@ -33,7 +33,7 @@
         getCurrentCoords: 'getCurrentCoords',
         getCurrentAddress: 'getCurrentAddress'
       }),
-      addSuggestView (ymaps) {c
+      addSuggestView (ymaps) {
         var suggestView = new ymaps.SuggestView(this.$el.querySelector('input'))
         suggestView.events.add('select', (e) => {
           this.$emit('select', e)
@@ -43,9 +43,7 @@
         this.searchString = ''
       },
       onCancel () {
-        if (this.getCurrentCoords().length === 0) {
-          this.hideMap()
-        }
+        this.switchToMapMode()
       }
     }
   }

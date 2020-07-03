@@ -243,7 +243,7 @@ ymaps [title="Определить ваше местоположение"] {
 
 .v-overlay__content {
     width: 100vw;
-    height: 100vh;
+    height: 100%;
 }
 
 .currentAddress {
