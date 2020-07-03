@@ -106,12 +106,13 @@ export const getClose = (
 }
 
 export const getGeo = (
-  ymaps, mapInstance
+  ymaps, mapInstance, clickHandler
 ) => {
   const btn = new ymaps.control.GeolocationControl({
     options: {
       float: 'none',
-    //   noPlacemark: true,
+        noPlacemark: true,
+      clickHandler,
       layout: ymaps.templateLayoutFactory.createClass(
         "<div class='customGeoBtn myGeo'><div/>"
       ),
@@ -121,7 +122,16 @@ export const getGeo = (
       }
     }
   })
+  btn.events.add('locationchange', function (event) {
+    var position = event.get('position'),
+      locationPlacemark = new ymaps.Placemark(position);
+    mapInstance.panTo(position);
+  });
   mapInstance.controls.add(btn)
+  btn.events.add('locationchange', function (event) {
+    var position = event.get('position')
+    myMap.panTo(position)
+  });
   return btn
 }
 
