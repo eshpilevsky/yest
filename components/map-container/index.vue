@@ -110,7 +110,8 @@ export default {
                 await this.getGeoObjects({
                     coords,
                     ymaps
-                })
+				})
+				await this.hideMap()
             })
             if (this.getCurrentCoords.length === 0) {
                 await this.getLocation()
