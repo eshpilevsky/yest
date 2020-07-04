@@ -5,7 +5,7 @@
             Yest.by • {{this.getSelectedZone.name}} {{this.getSelectedCategoryName ? `• ${this.getSelectedCategoryName}` : ``}}
         </span>
         <h1 class="info-title">
-            {{computedTitle[0] }} <br/>в {{computedTitle[1] }}
+            {{computedTitle[0] }} <br />в {{computedTitle[1] }}
         </h1>
         <span class="info-setPlace">
             Укажите ваше местоположение, чтобы мы смогли предложить вам список доступных ресторанов
@@ -31,7 +31,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import {
+    mapGetters
+} from 'vuex'
 import MapBtn from '@/components/map-btn'
 import axios from 'axios'
 
@@ -58,9 +60,10 @@ export default {
             getSelectedCategoryTitle: 'user/getSelectedCategoryTitle',
             getUserLocation: 'user/getUserLocation',
             getSelectedCategoryName: 'user/getSelectedCategoryName',
-            canDisplayMap: 'device/isMobile'
+            canDisplayMap: 'device/isMobile',
+            getCurrentAddress: 'map/getCurrentAddress'
         }),
-        computedTitle(){
+        computedTitle() {
             let a = this.getSelectedCategoryTitle
             let b = a.split(' в ')
             return [b[0], b[1]]
@@ -87,12 +90,12 @@ export default {
     methods: {
         clearAdress() {
             // this.$store.dispatch('user/setUserLocation', {
-			// 	coords: {
+            // 	coords: {
             //         latitude: null,
             //         longitude: null
             //     },
             //     locationAdress: null
-			// })
+            // })
         },
         show(value) {
             var body = document.getElementsByTagName('body')[0]
@@ -155,19 +158,15 @@ export default {
         this.ww = window.innerWidth;
     },
     mounted() {
-        if (this.getUserLocation.locationAdress !== null) {
-            this.serachAdress = this.getUserLocation.locationAdress
-            this.showAdressList = false
-            console.log('mounted -> this.showAdressList', this.showAdressList)
-        };
+        this.serachAdress = this.getCurrentAddress
+        this.showAdressList = false
     }
 }
 </script>
 
 <style scoped>
-
-.setAdress{
-	display: none;
+.setAdress {
+    display: none;
 }
 
 .itemAdress {
@@ -260,9 +259,9 @@ export default {
 
 @media screen and (max-width: 450px) {
 
-	.setAdress{
-		display: flex;
-	}
+    .setAdress {
+        display: flex;
+    }
 
     .near_me_icon {
         padding-right: 10px;
@@ -317,7 +316,7 @@ export default {
         width: 100%;
         background-position-x: 230px;
         background-position-y: -0px;
-  }
+    }
 
     .setAdressContaine-info {
         padding: 40px 16px;

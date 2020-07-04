@@ -9,34 +9,34 @@
                     <img src="../../assets/logo.png" class="logo-img" alt="logomobile">
                 </div>
                 <div class="primary-links">
-					<div>
-						<nuxt-link to="/">
-							<v-icon>restaurant</v-icon>
-							Рестораны
-						</nuxt-link>
-					</div>
+                    <div>
+                        <nuxt-link to="/">
+                            <v-icon>restaurant</v-icon>
+                            Рестораны
+                        </nuxt-link>
+                    </div>
                 </div>
                 <div class="secondary-links">
-					<div>
-						<nuxt-link to="/">
-							О сервисе
-						</nuxt-link>
-						<nuxt-link to="/">
-							Стать курьером
-						</nuxt-link>
-						<nuxt-link to="/">
-							Стать партнёром
-						</nuxt-link>
-						<nuxt-link to="/">
-							Вопросы и ответы
-						</nuxt-link>
-						<nuxt-link to="/">
-							Еда для бизнеса
-						</nuxt-link>
-						<nuxt-link to="/">
-							Пользовательское соглашение
-						</nuxt-link>
-					</div>
+                    <div>
+                        <nuxt-link to="/">
+                            О сервисе
+                        </nuxt-link>
+                        <nuxt-link to="/">
+                            Стать курьером
+                        </nuxt-link>
+                        <nuxt-link to="/">
+                            Стать партнёром
+                        </nuxt-link>
+                        <nuxt-link to="/">
+                            Вопросы и ответы
+                        </nuxt-link>
+                        <nuxt-link to="/">
+                            Еда для бизнеса
+                        </nuxt-link>
+                        <nuxt-link to="/">
+                            Пользовательское соглашение
+                        </nuxt-link>
+                    </div>
 
                     <div class="contact-us">
                         <v-bottom-sheet v-model="sheet" persistent>
@@ -92,8 +92,6 @@
         </nuxt-link>
         <div v-else class="logo-img">
             <map-btn v-if="canDisplayMap === true" />
-            <!-- <map-container /> -->
-            <!-- <EnterAdressBtn class="enterAdressBtn" @show="show" /> -->
         </div>
         <div class="links-list">
             <nuxt-link to="/">
@@ -107,7 +105,41 @@
             </nuxt-link>
         </div>
         <div class="technical-Btns">
-            <!-- <EnterAdressBtn class="zone-btn" v-show="this.getUserLocation.locationAdress !== null" /> -->
+            <v-btn small rounded outlined class="zone-btn" color="primary" @click="showDesktopMap()">
+                <v-icon>
+                    near_me
+                </v-icon>
+				{{this.getCurrentAddress}}
+            </v-btn>
+            <v-overlay :value="overlay" :opacity=".5">
+                <div class="desktop-map">
+					<div class="desktop-map-top">
+						<div class="desktop-map-title">
+							Укажите адрес доставки
+						</div>
+						<div>
+							<v-icon @click="showDesktopMap()" color="black">close</v-icon>
+						</div>
+					</div>
+                    <div class="map-actions">
+                        <v-text-field placeholder="Укажите адрес доставки..." v-model="deliveryAddress" dark dense filled outlined clearable background-color="primary">
+                            <template v-slot:prepend>
+                                <v-btn outlined dense color='primary'>
+                                    <v-icon>near_me</v-icon>
+                                    Определить
+                                </v-btn>
+                            </template>
+                        </v-text-field>
+                        <v-btn color="primary" class="pl-2">
+                            Ok
+                        </v-btn>
+                    </div>
+                    <div class="map">
+						map
+                        <!-- <yandex-map :coords="coords" :zoom="17" @click.stop="onClick" @map-was-initialized="onInit" :controls="controls" :options="options" @boundschange="onBoundsChange" /> -->
+                    </div>
+                </div>
+            </v-overlay>
             <v-menu offset-y>
                 <template v-slot:activator="{ on }">
                     <v-btn small rounded outlined class="zone-btn" color="primary" v-on="on">
@@ -144,10 +176,12 @@ export default {
         return {
             calcWidth: 340,
             showOverlay: false,
+            overlay: false,
             sheet: false,
             showSetAdressBtn: false,
             showMap: false,
             showSidebar: false,
+            deliveryAddress: '',
             items: [{
                     title: 'Home',
                     icon: 'dashboard'
@@ -156,15 +190,26 @@ export default {
                     title: 'About',
                     icon: 'question_answer'
                 }
-            ]
+            ],
         }
     },
     methods: {
-		showHideSidebar(){
-			if (this.isMapVisible) {
-				this.showSidebar = !this.showSidebar
-			}
-		},
+        // ...mapMutations('map', {
+        //     setCurrentCoords: 'SET_CURRENT_COORDS',
+        // }),
+        onClick(e) {
+            this.coords = e.get('coords')
+            this.setCurrentCoords(this.coords)
+        },
+        showDesktopMap() {
+            this.overlay = !this.overlay
+            this.deliveryAddress = this.getCurrentAddress
+        },
+        showHideSidebar() {
+            if (this.isMapVisible) {
+                this.showSidebar = !this.showSidebar
+            }
+        },
         show(value) {
             this.showMap = value
         },
@@ -190,7 +235,9 @@ export default {
             getSelectedZone: 'zone/getSelectedZone',
             getUserLocation: 'user/getUserLocation',
             isMapVisible: 'map/isMapVisible',
-            canDisplayMap: 'device/isMobile'
+            canDisplayMap: 'device/isMobile',
+            getCurrentAddress: 'map/getCurrentAddress',
+            isInputAddressMode: 'map/isInputAddressMode',
         })
     },
     watch: {
@@ -231,19 +278,59 @@ export default {
 
 <style>
 .v-overlay__scrim {
-    height: 100vh !important;
+    /* height: 100vh !important; */
 }
 
-.burger-logo-img{
-	max-height: 50px;
+.burger-logo-img {
+    max-height: 50px;
 }
 
-.logo-img{
-	height: 40px !important;
+.logo-img {
+    height: 40px !important;
 }
 </style><style scoped>
 
+.map{
+	border: 1px solid red;
+	height: 100%;
+	width: 100%;
+	color: green;
+}
 
+.desktop-map-top{
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.map-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+	align-items: baseline;
+	width: 100%;
+}
+
+.desktop-map-title {
+    margin: 0;
+    font-size: 30px;
+    line-height: 1.2;
+    font-weight: 400;
+    color: black;
+}
+
+.desktop-map {
+    min-width: 800px;
+    font-size: 16px;
+    background: white;
+    min-height: 600px;
+    border-radius: 10px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+	align-items: flex-start;
+}
 
 .newHeader {
     position: absolute;
@@ -322,8 +409,8 @@ export default {
     align-items: center;
     padding: 20px;
     border-top: 30vh solid rgb(245, 245, 245);
-	  width: 100%;
-	/* padding-top: 18vh; */
+    width: 100%;
+    /* padding-top: 18vh; */
 }
 
 .overlaySet {
@@ -454,6 +541,7 @@ export default {
         max-width: 1180px;
     }
 }
+
 @media screen and (max-width: 1265px) {
     .containe {
         max-width: 900px;
@@ -487,7 +575,7 @@ export default {
         top: 5px;
         left: 90px;
         min-height: 60px;
-		    max-height: 140px;
+        max-height: 140px;
     }
 
     .header-contain,
@@ -530,7 +618,7 @@ export default {
     .burger-logo-img {
         position: absolute;
         z-index: 999;
-		max-height: 40px;
+        max-height: 40px;
     }
 }
 </style><style>
@@ -553,8 +641,8 @@ export default {
     text-decoration: none;
 }
 
-.secondary-links{
-	height: 100%;
+.secondary-links {
+    height: 100%;
     justify-content: space-between !important;
 
 }

@@ -1,5 +1,5 @@
 <template>
-<v-overlay :value="isMapVisible === true">
+<v-overlay :value="isMapVisible ">
     <div v-if="isMapLoading" class="map-loading">
         <v-progress-circular indeterminate size="40" color="grey"></v-progress-circular>
     </div>
@@ -74,9 +74,7 @@ export default {
         await loadYmap({
             ...yMapSettings
         });
-        setTimeout(() => {
-            this.isMapLoading = false
-        }, 500);
+        this.isMapLoading = false
     },
     methods: {
         ...mapMutations('map', {
@@ -242,12 +240,6 @@ ymaps [title="Определить ваше местоположение"] {
     margin: auto;
 }
 
-.v-overlay__content {
-    width: 100vw;
-    height: 100vh;
-	background: #fff;
-}
-
 .currentAddress {
     width: 100%;
     top: 20vh;
@@ -277,5 +269,13 @@ h2.currentAddress-title {
     border-radius: 14px;
     pointer-events: auto;
     background-color: rgba(255, 255, 255, 0.8);
+}
+</style>
+
+<style scoped>
+.v-overlay__content {
+    width: 100vw;
+    height: 100vh;
+	background: #fff;
 }
 </style>

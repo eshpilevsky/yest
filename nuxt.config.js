@@ -103,9 +103,6 @@ module.exports = {
           error: colors.deepOrange.accent4,
           black: '#000',
           success: colors.green.accent3
-        },
-        light: {
-			black: '#fff'
         }
       }
     },
