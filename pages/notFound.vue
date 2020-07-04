@@ -6,7 +6,7 @@
           Упс, 404
         </h1>
         <p>Страница не найдна</p>
-        <v-btn :to="`/${getSelectedZone.alias}`" color="primary" outlined>
+        <v-btn :to="`/${this.getSelectedZone.alias}`" color="primary" outlined>
           Вернуться на главную
         </v-btn>
       </v-col>

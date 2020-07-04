@@ -244,7 +244,8 @@ ymaps [title="Определить ваше местоположение"] {
 
 .v-overlay__content {
     width: 100vw;
-    height: 100%;
+    height: 100vh;
+	background: #fff;
 }
 
 .currentAddress {
