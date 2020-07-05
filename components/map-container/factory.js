@@ -80,7 +80,7 @@ export const getZoomOut = (
     options: {
       float: 'none',
       position: {
-        top: '40vh',
+        top: '50vh',
         right: '25px'
       }
     }
@@ -146,7 +146,7 @@ export const getIamHere = (
     options: {
       float: 'none',
       position: {
-        bottom: '4rem',
+        bottom: '8rem',
         right: '8vw',
       },
       content: 'Я здесь'

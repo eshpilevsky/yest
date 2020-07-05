@@ -164,6 +164,10 @@ export default {
 $size: 7vw;
 $header: 65px;
 
+ymaps {
+	color:black
+}
+
 .customGeoBtn {
     height: 40px;
     width: 40px;
