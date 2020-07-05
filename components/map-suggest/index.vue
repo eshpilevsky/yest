@@ -109,7 +109,7 @@ ymaps[class*=suggest-item_selected_yes] {
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
-    width: 95%;
+    width: 100%;
     margin: auto;
 	border-bottom: 1px solid rgba(0, 0, 0, .1);
 }
