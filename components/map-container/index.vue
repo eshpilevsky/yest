@@ -193,7 +193,7 @@ $header: 65px;
 
 .ymap-container {
     width: 100vw;
-    height: calc(var(--vh, 1vh) * 90);
+    height: calc(var(--vh, 1vh) * 100);
 }
 
 ymaps .customMapBtn {
