@@ -190,7 +190,7 @@ $header: 65px;
     align-items: center;
     justify-content: center;
     background-image: url('../../assets/mapBg.svg');
-	background-size: contain;
+	background-size: cover;
 }
 
 .ymap-container {
