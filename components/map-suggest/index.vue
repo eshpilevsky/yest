@@ -1,10 +1,12 @@
 <template>
-<div class="address-input">
-    <v-text-field v-model="searchString" solo label="Укажите адрес доставки..." clearable dense >
-        <template v-slot:append-outer>
-            <div class="black--text cancel" @click="onCancel">Отменить</div>
-        </template>
-	</v-text-field>
+<div class="manual-enter-address">
+	<div class="address-input">
+		<v-text-field v-model="searchString" solo label="Укажите адрес доставки..." clearable dense >
+			<template v-slot:append-outer>
+				<div class="black--text cancel" @click="onCancel">Отменить</div>
+			</template>
+		</v-text-field>
+	</div>
 </div>
 </template>
 
@@ -56,6 +58,13 @@ export default {
 
 
 <style lang="scss" >
+
+.manual-enter-address{
+	height: 100vh;
+    width: 100vw;
+    background-color: white;
+    padding: 5px;
+}
 
 .theme--dark.v-input{
 	display: flex;
