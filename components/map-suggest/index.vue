@@ -1,11 +1,8 @@
 <template>
 <div class="manual-enter-address">
-	<div class="address-input">
-		<v-text-field v-model="searchString" solo label="Укажите адрес доставки..." clearable dense >
-			<template v-slot:append-outer>
-				<div class="black--text cancel" @click="onCancel">Отменить</div>
-			</template>
-		</v-text-field>
+	<div class="search-address">
+		<input class="address-input" v-model="searchString" placeholder="Укажите адрес доставки..." />
+		<div class="black--text cancel" @click="onCancel">Отменить</div>
 	</div>
 </div>
 </template>
@@ -50,6 +47,7 @@ export default {
             this.searchString = ''
         },
         onCancel() {
+			this.searchString = ''
             this.switchToMapMode()
         }
     }
@@ -59,11 +57,21 @@ export default {
 
 <style lang="scss" >
 
+input:focus{
+    outline: none;
+}
+
+.address-input{
+	font-size: 14px;
+	padding: 10px;
+	width: 100%;
+	color: #000;
+}
 .manual-enter-address{
 	height: calc(var(--vh, 1vh) * 100);
     width: 100vw;
     background-color: white;
-    padding: 5px;
+    padding: 5px 0;
 }
 
 .theme--dark.v-input{
@@ -73,7 +81,10 @@ export default {
 }
 
 .cancel{
-	padding-right: 10px;
+	font-size: 14px;
+	margin: 5px;
+	padding: 5px;
+	border-left: 1px solid rgba(0, 0, 0, .1);
 }
 
 .theme--dark.v-input input, .theme--dark.v-input textarea,
@@ -93,8 +104,13 @@ ymaps[class*=suggest-item_selected_yes] {
     // color: black !important;
 }
 
-.address-input {
+.search-address {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
     width: 100%;
     margin: auto;
+	border-bottom: 1px solid rgba(0, 0, 0, .1);
 }
 </style>

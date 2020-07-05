@@ -77,7 +77,6 @@ export default {
         await loadYmap({
             ...yMapSettings
 		});
-		this.showBurgerMenu()
         this.isMapLoading = false
     },
     methods: {
@@ -86,7 +85,6 @@ export default {
             setCurrentCoords: 'map/SET_CURRENT_COORDS',
             switchToMapMode: 'map/UNSET_INPUT_ADDRESS_MODE',
 			switchToAddressMode: 'map/SET_INPUT_ADDRESS_MODE',
-			showBurgerMenu: 'device/SHOW_BURGER_MENU',
         }),
         ...mapActions('map', {
             getLocation: 'getLocation',
@@ -195,7 +193,7 @@ $header: 65px;
 
 .ymap-container {
     width: 100vw;
-    height: calc(var(--vh, 1vh) * 100);
+    height: calc(var(--vh, 1vh) * 90);
 }
 
 ymaps .customMapBtn {

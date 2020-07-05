@@ -80,7 +80,7 @@ export const getZoomOut = (
     options: {
       float: 'none',
       position: {
-        top: '50vh',
+        top: '40vh',
         right: '25px'
       }
     }
