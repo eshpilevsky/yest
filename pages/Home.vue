@@ -33,8 +33,6 @@ export default {
       showSearch: false,
       showSetAdress: true,
       showSpecialOffer: false,
-      latitude: 0,
-      longitude: 0
     }
   },
   watch: {

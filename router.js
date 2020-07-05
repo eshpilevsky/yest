@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Home from './pages/Home.vue'
-import map from './pages/map.vue'
 import restaurants from './pages/restaurants.vue'
 
 Vue.use(Router)
@@ -13,10 +12,6 @@ export function createRouter() {
     routes: [{
         path: '/',
         component: Home,
-      },
-      {
-        path: '/map',
-        component: map,
       },
       {
         path: '/:region',

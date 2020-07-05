@@ -23,15 +23,11 @@ export const mutations = {
       console.error('getCoordinate -> crd', crd)
       const latitude = crd.latitude
       const longitude = crd.longitude
-      const coords = {
-        latitude: latitude,
-        longitude: longitude
-      }
-      state.data.currentCoords = coords
-
+      state.data.currentCoords[0] = latitude
+      state.data.currentCoords[1] = longitude
+	  console.error( state.data.currentCoords);
     }, (error) => {
       console.warn(`ERROR(${error.code}): ${error.message}`)
-
     }, {
       enableHighAccuracy: true,
       timeout: 5000,
