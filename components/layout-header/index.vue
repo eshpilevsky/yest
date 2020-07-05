@@ -1,8 +1,8 @@
 <template>
-<div class="header-contain" :class="{ overlaySet: showOverlay == true}">
+<div class="header-contain" :class="{ burgerOverlaySet: showburgerOverlay == true}">
     <div class="containe">
         <div class="burger-log" @click="showHideSidebar()" v-show="showSidebar == false" />
-        <v-navigation-drawer v-model="showSidebar" absolute left temporary overlay-opacity="0.7" class="newHeader" v-if="showSidebar == true">
+        <v-navigation-drawer v-model="showSidebar" absolute left temporary burgerOverlay-opacity="0.7" class="newHeader" v-if="showSidebar == true">
             <v-list>
                 <div class="burger-log-close" @click="showHideSidebar()" />
                 <div class="mobile-logo-block">
@@ -109,18 +109,18 @@
                 <v-icon>
                     near_me
                 </v-icon>
-				{{this.getCurrentAddress}}
+                {{this.getCurrentAddress}}
             </v-btn>
-            <v-overlay :value="overlay" :opacity=".5">
+            <v-overlay :value="burgerOverlay" :opacity=".5">
                 <div class="desktop-map">
-					<div class="desktop-map-top">
-						<div class="desktop-map-title">
-							Укажите адрес доставки
-						</div>
-						<div>
-							<v-icon @click="showDesktopMap()" color="black">close</v-icon>
-						</div>
-					</div>
+                    <div class="desktop-map-top">
+                        <div class="desktop-map-title">
+                            Укажите адрес доставки
+                        </div>
+                        <div>
+                            <v-icon @click="showDesktopMap()" color="black">close</v-icon>
+                        </div>
+                    </div>
                     <div class="map-actions">
                         <v-text-field placeholder="Укажите адрес доставки..." v-model="deliveryAddress" dark dense filled outlined clearable background-color="primary">
                             <template v-slot:prepend>
@@ -135,7 +135,7 @@
                         </v-btn>
                     </div>
                     <div class="map">
-						map
+                        map
                         <!-- <yandex-map :coords="coords" :zoom="17" @click.stop="onClick" @map-was-initialized="onInit" :controls="controls" :options="options" @boundschange="onBoundsChange" /> -->
                     </div>
                 </div>
@@ -159,7 +159,8 @@
 
 <script>
 import {
-    mapGetters
+	mapGetters,
+	mapMutations
 } from 'vuex'
 import MapBtn from '@/components/map-btn'
 import MapContainer from '@/components/map-container'
@@ -175,8 +176,8 @@ export default {
     data() {
         return {
             calcWidth: 340,
-            showOverlay: false,
-            overlay: false,
+            showburgerOverlay: false,
+            burgerOverlay: false,
             sheet: false,
             showSetAdressBtn: false,
             showMap: false,
@@ -190,34 +191,32 @@ export default {
                     title: 'About',
                     icon: 'question_answer'
                 }
-            ],
+			],
         }
-    },
+	},
     methods: {
-        // ...mapMutations('map', {
-        //     setCurrentCoords: 'SET_CURRENT_COORDS',
-        // }),
         onClick(e) {
             this.coords = e.get('coords')
             this.setCurrentCoords(this.coords)
         },
         showDesktopMap() {
-            this.overlay = !this.overlay
+            this.burgerOverlay = !this.burgerOverlay
             this.deliveryAddress = this.getCurrentAddress
         },
         showHideSidebar() {
-            if (this.isMapVisible) {
-                this.showSidebar = !this.showSidebar
-            }
+            console.error('was click');
+            // if (!this.isMapVisible) {
+            this.showSidebar = !this.showSidebar
+            // }
         },
         show(value) {
             this.showMap = value
         },
         handleOpenMenu() {
-            this.showOverlay = true
+            this.showburgerOverlay = true
         },
         handleCloseMenu() {
-            this.showOverlay = false
+            this.showburgerOverlay = false
         },
         changeRegion(item) {
             this.$store.dispatch('user/dropUserLocation')
@@ -239,11 +238,6 @@ export default {
             getCurrentAddress: 'map/getCurrentAddress',
             isInputAddressMode: 'map/isInputAddressMode',
         })
-    },
-    watch: {
-        getUserLocation(newValue) {
-            return newValue
-        }
     },
     created() {
         this.$store.dispatch('zone/queryZones')
@@ -277,7 +271,7 @@ export default {
 </script>
 
 <style>
-.v-overlay__scrim {
+.v-burgerOverlay__scrim {
     /* height: 100vh !important; */
 }
 
@@ -289,27 +283,26 @@ export default {
     height: 40px !important;
 }
 </style><style scoped>
-
-.map{
-	border: 1px solid red;
-	height: 100%;
-	width: 100%;
-	color: green;
+.map {
+    border: 1px solid red;
+    height: 100%;
+    width: 100%;
+    color: green;
 }
 
-.desktop-map-top{
-	width: 100%;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+.desktop-map-top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .map-actions {
     display: flex;
     flex-direction: row;
     justify-content: center;
-	align-items: baseline;
-	width: 100%;
+    align-items: baseline;
+    width: 100%;
 }
 
 .desktop-map-title {
@@ -329,7 +322,7 @@ export default {
     padding: 40px;
     display: flex;
     flex-direction: column;
-	align-items: flex-start;
+    align-items: flex-start;
 }
 
 .newHeader {
@@ -413,7 +406,7 @@ export default {
     /* padding-top: 18vh; */
 }
 
-.overlaySet {
+.burgerOverlaySet {
     display: block !important;
     position: fixed !important;
     top: 0;
@@ -493,7 +486,7 @@ export default {
     width: 100%;
     border-bottom: 1px solid rgba(0, 0, 0, .1);
     position: fixed;
-    z-index: 999;
+    z-index: 300;
     background-color: white;
     width: 100%;
     max-width: 1480px;
@@ -602,7 +595,6 @@ export default {
     .containe {
         justify-content: center;
         border-bottom: 1px solid rgba(0, 0, 0, .1);
-        z-index: 99;
         background: #fff;
         height: 65px;
     }
@@ -622,6 +614,10 @@ export default {
     }
 }
 </style><style>
+.v-overlay {
+    height: 100vh;
+}
+
 .primary-links div i {
     margin-right: 10px;
 }
@@ -716,10 +712,10 @@ export default {
     transition: 0.5s;
 }
 
-.bm-overlay {
+.bm-burgerOverlay {
     background: rgba(0, 0, 0, 0.7);
     z-index: 999;
-    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
     width: 100vw;
     position: relative;
 }

@@ -47,7 +47,6 @@ export default {
         },
     },
     mounted() {
-        console.error(this.getUserLocation);
         this.current_coords[0] = this.getUserLocation.coords.latitude
         this.current_coords[1] = this.getUserLocation.coords.longitude
         this.pageReady = true;

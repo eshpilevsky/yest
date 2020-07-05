@@ -49,7 +49,6 @@ export const mutations = {
   },
   SET_USER_LOCATION(state, payload) {
     state.status = '200'
-    console.log(payload.coords);
     state.data.userLocation.coords.latitude = payload.coords.latitude
     state.data.userLocation.coords.longitude = payload.coords.longitude
     state.data.userLocation.locationAdress = payload.locationAdress

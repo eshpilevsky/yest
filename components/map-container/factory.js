@@ -100,7 +100,6 @@ export const getClose = (
     },
     position: {
       top: '3rem',
-      left: '10rem'
     }
   })
 }
@@ -111,7 +110,7 @@ export const getGeo = (
   const btn = new ymaps.control.GeolocationControl({
     options: {
       float: 'none',
-        noPlacemark: true,
+      noPlacemark: true,
       clickHandler,
       layout: ymaps.templateLayoutFactory.createClass(
         "<div class='customGeoBtn myGeo'><div/>"

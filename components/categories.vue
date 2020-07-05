@@ -146,7 +146,6 @@ export default {
             return newValue
         },
         getSelectedZone(newValue) {
-            console.error("ZONE WAS CHANGE");
             //   this.selectCategory(this.getSelectedCategory, false)
             this.getCategories()
         },
@@ -191,7 +190,6 @@ export default {
             })
         },
         selectCategoryAdaptive(selectCategory, boll) {
-            console.log(this.getSelectedCategory);
             if (selectCategory.id == this.getSelectedCategory.id) {
                 this.selectCategory({
                     name: 'Все',

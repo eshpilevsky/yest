@@ -16,16 +16,13 @@ export const state = () => ({
 
 export const mutations = {
   SHOW_MAP(state) {
-    console.log('SHOW_MAP -> state', state)
     state.data.visible = true
     navigator.geolocation.getCurrentPosition((pos) => {
       const crd = pos.coords
-      console.error('getCoordinate -> crd', crd)
       const latitude = crd.latitude
       const longitude = crd.longitude
       state.data.currentCoords[0] = latitude
       state.data.currentCoords[1] = longitude
-	  console.error( state.data.currentCoords);
     }, (error) => {
       console.warn(`ERROR(${error.code}): ${error.message}`)
     }, {
@@ -39,7 +36,6 @@ export const mutations = {
     state.data.visible = false
   },
   SET_CURRENT_COORDS(state, coords) {
-    console.log('SET_CURRENT_COORDS', coords)
     state.data.currentCoords = coords
   },
   SET_CURRENT_ADDRESS(state, address) {

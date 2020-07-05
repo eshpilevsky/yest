@@ -1,14 +1,13 @@
 
 export const state = () => ({
   data: {
-    isMobile: true
+    isMobile: true,
   },
   status: 0
 })
 
 export const mutations = {
   SET_IS_MOBILE(state) {
-    console.log("SET_IS_MOBILE")
     state.data.isMobile = true
   },
   UNSET_IS_MOBILE(state) {

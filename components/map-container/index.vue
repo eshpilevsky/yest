@@ -1,5 +1,5 @@
 <template>
-<v-overlay :value="isMapVisible ">
+<v-overlay :value="isMapVisible" >
     <div v-if="isMapLoading" class="map-loading">
         <v-progress-circular indeterminate size="40" color="grey"></v-progress-circular>
     </div>
@@ -11,7 +11,6 @@
         <yandex-map v-show="!isInputAddressMode" :coords="coords" :zoom="17" @click.stop="onClick" @map-was-initialized="onInit" :controls="controls" :options="options" @boundschange="onBoundsChange" />
         <map-suggest v-show="isInputAddressMode" @select="onSelect" />
     </div>
-
 </v-overlay>
 </template>
 
@@ -56,8 +55,8 @@ export default {
         coords: [],
         mapInstance: null,
         isMapLoading: true,
-        ymaps: null
-    }),
+		ymaps: null,
+	}),
     computed: {
         ...mapGetters('map', {
             isMapVisible: 'isMapVisible',
@@ -71,17 +70,23 @@ export default {
         }
     },
     async mounted() {
+		if (performance.navigation.type == 1) {
+			this.hideMap()
+		}
+		this.isMapLoading = true
         await loadYmap({
             ...yMapSettings
-        });
+		});
+		this.showBurgerMenu()
         this.isMapLoading = false
     },
     methods: {
-        ...mapMutations('map', {
-            hideMap: 'HIDE_MAP',
-            setCurrentCoords: 'SET_CURRENT_COORDS',
-            switchToMapMode: 'UNSET_INPUT_ADDRESS_MODE',
-            switchToAddressMode: 'SET_INPUT_ADDRESS_MODE'
+        ...mapMutations( {
+            hideMap: 'map/HIDE_MAP',
+            setCurrentCoords: 'map/SET_CURRENT_COORDS',
+            switchToMapMode: 'map/UNSET_INPUT_ADDRESS_MODE',
+			switchToAddressMode: 'map/SET_INPUT_ADDRESS_MODE',
+			showBurgerMenu: 'device/SHOW_BURGER_MENU',
         }),
         ...mapActions('map', {
             getLocation: 'getLocation',
@@ -96,8 +101,10 @@ export default {
             }
             this.mapInstance = mapInstance
             this.ymaps = ymaps
-            getClose(ymaps, mapInstance, () => {
-                this.hideMap()
+            getClose(ymaps, mapInstance, async () => {
+				setTimeout(() => {
+					this.hideMap();
+				}, 100);
             })
             getZoomIn(ymaps, mapInstance)
             getZoomOut(ymaps, mapInstance)
@@ -188,7 +195,7 @@ $header: 65px;
 
 .ymap-container {
     width: 100vw;
-    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
 }
 
 ymaps .customMapBtn {
@@ -214,6 +221,13 @@ ymaps [title="Определить ваше местоположение"] {
     -webkit-box-shadow: 0px 2px 5px 0px rgba(50, 50, 50, 0.5);
     -moz-box-shadow: 0px 2px 5px 0px rgba(50, 50, 50, 0.5);
     box-shadow: 0px 2px 5px 0px rgba(50, 50, 50, 0.5);
+}
+
+.close{
+	position: relative;
+	z-index: 400;
+	top: .5rem;
+	left: .5rem;
 }
 
 .plus {

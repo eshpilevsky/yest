@@ -29,10 +29,6 @@ export default {
 		},
 		newLocation: function (val) {
 			this.setLocation(val)
-		},
-		currentLocation (newValue) {
-			console.log('currentLocation -> newValue', newValue)
-			// this.map.setCenter([newValue.latitude, newValue.longitude], 17)
 		}
 	},
 	mounted () {
@@ -92,7 +88,6 @@ export default {
                     }
                 });
                 btnMinus.events.add('click', function (event) {
-                    console.log('click btn minus');
                     myMap.setZoom(myMap.getZoom() - 1, {
                         duration: 500
                     });

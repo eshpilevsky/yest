@@ -60,7 +60,7 @@ export default {
 <style lang="scss" >
 
 .manual-enter-address{
-	height: 100vh;
+	height: calc(var(--vh, 1vh) * 100);
     width: 100vw;
     background-color: white;
     padding: 5px;

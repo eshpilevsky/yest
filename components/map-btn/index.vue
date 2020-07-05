@@ -1,7 +1,7 @@
 <template>
-<v-btn class="black--text set-you-adress" height="40" width="245" color="primary" dense rounded depressed @click="showMap">
+<v-btn class="black--text set-you-address" height="40" width="245" color="primary" dense rounded depressed @click="showMap">
     <i class="material-icons near_me_icon">near_me</i>
-	<span class="adress">
+	<span class="address">
 		{{this.text}}
 	</span>
 </v-btn>
@@ -41,13 +41,16 @@ export default {
 
 <style>
 
-.adress{
+.address{
 	max-width: 200px;
-	text-overflow: clip;
+	text-overflow: ellipsis;
     overflow: hidden;
+	direction: rtl;
+  	text-align: left;
+	
 }
 
-.set-you-adress {
+.set-you-address {
     position: relative;
     top: 50%;
     left: 50%;

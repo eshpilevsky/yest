@@ -83,13 +83,11 @@ export default {
 
     redirectCategoryByUrl () {
       const findZone = this.getZoneList.find((zone) => {
-      console.log("redirectCategoryByUrl -> findZone", findZone)
         if (zone.alias === this.$route.params.region) {
           return zone.id
         }
       })
       const findCategory = this.getCategoryList.find((category) => {
-      console.log("redirectCategoryByUrl -> findCategory", findCategory)
         if (category.alias === this.$route.params.alias) {
           return category
         }

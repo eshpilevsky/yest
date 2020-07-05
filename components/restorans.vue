@@ -161,17 +161,16 @@ export default {
             return `${openTime.slice(0, 5)} - ${closeTime.slice(0, 5)}`;
         },
         goToRes(info) {
-		console.log('goToRes -> info', info)
-		let name = info.name
-		let result = name.replace(' ', '')
-		this.$router.push(`/restaurant/${result}`)
+            let name = info.name
+            let result = name.replace(' ', '')
+            this.$router.push(`/restaurant/${result}`)
         },
         showMore() {
             this.limit += 24;
-        this.getRestaurants(
-            this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[0],
-            this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[1],
-        );
+            this.getRestaurants(
+                this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[0],
+                this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[1],
+            );
         }
     },
     computed: {
@@ -186,7 +185,6 @@ export default {
         },
         computedOpenTime() {
             let cu = this.filterByCategory(this.restaurants)
-            console.log("computedOpenTime -> cu", cu)
             const openRestorants = [];
             const closeRestorants = [];
             const currentDay = new Date().getDay();
@@ -242,7 +240,6 @@ export default {
     },
     watch: {
         getSelectedCategory(newValue) {
-            console.log("getSelectedCategory -> newValue", newValue)
             this.limit = 24;
         },
         getUserCoordinate(newValue, oldValue) {
@@ -250,8 +247,6 @@ export default {
         }
     },
     mounted() {
-		console.error('user coord',this.getUserCoordinate);
-
         this.getRestaurants(
             this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[0],
             this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[1],
@@ -261,8 +256,7 @@ export default {
 </script>
 
 <style scoped>
-
-.block-bottom{
+.block-bottom {
     width: 100%;
 }
 
@@ -378,7 +372,7 @@ export default {
     flex-wrap: wrap;
     /* padding-left: 10px; */
     max-width: 300px;
-	padding-top: 5px;
+    padding-top: 5px;
 }
 
 .tags-list-item {
@@ -554,7 +548,7 @@ export default {
 
 @media screen and (max-width: 450px) {
 
-    .block-bottom{
+    .block-bottom {
         height: 85px;
     }
 
@@ -564,7 +558,7 @@ export default {
 
     .test {
         width: 100%;
-		height: 40px;
+        height: 40px;
     }
 
     .noLocationTag {
@@ -594,7 +588,7 @@ export default {
     .list-item-bottom {
         flex-direction: row-reverse;
         justify-content: space-between;
-		height: 30px;
+        height: 30px;
     }
 
     .tags-list-item {
@@ -607,7 +601,7 @@ export default {
 
     .restorane-list-item-name {
         min-height: 50px;
-		padding-bottom: 0px;
+        padding-bottom: 0px;
     }
 
     .containe {

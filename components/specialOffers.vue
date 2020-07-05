@@ -59,13 +59,11 @@ export default {
 	},
 	methods: {
 		getSpecialOffers () {
-			console.log(' getSpecialOffersgetSpecialOffersgetSpecialOffers', this.getUserCoordinate)
 			ApiService.post(`/restaurants/special-offers`, {
 				zone_id: this.getSelectedZone.id,
 				latitude: parseInt(this.getUserCoordinate.latitude),
 				longitude: parseInt(this.getUserCoordinate.longitude)
 			}).then((response) => {
-				console.log('getSpecialOffers -> response', response)
 				if (response.status === 200) {
 					const resp = response.data
 					this.specilaOffers = resp
