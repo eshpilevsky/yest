@@ -1,12 +1,12 @@
 <template>
-<div class="header-contain" :class="{ burgerOverlaySet: showburgerOverlay == true}">
+<div class="header-contain" v-if="!isMapVisible" :class="{ burgerOverlaySet: showburgerOverlay == true}">
     <div class="containe">
         <div class="burger-log" @click="showHideSidebar()" v-show="showSidebar == false" />
         <v-navigation-drawer v-model="showSidebar" absolute left temporary burgerOverlay-opacity="0.7" class="newHeader" v-if="showSidebar == true">
             <v-list>
                 <div class="burger-log-close" @click="showHideSidebar()" />
                 <div class="mobile-logo-block">
-                    <img src="../../assets/logo.png" class="logo-img" alt="logomobile">
+                    <img src="@/assets/logo.png" class="logo-img" alt="logomobile">
                 </div>
                 <div class="primary-links">
                     <div>
