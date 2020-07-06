@@ -78,8 +78,8 @@ export default {
             this.getSuggestions(newValue)
             // this.showAdressList = true
         },
-        getUserLocation(newValue) {
-            this.serachAdress = newValue.locationAdres
+        getCurrentAddress(newValue) {
+            this.serachAdress = newValue
         },
         getSelectedZone(newValue) {
             // this.serachAdress = ''

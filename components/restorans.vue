@@ -178,7 +178,8 @@ export default {
             getSelectedZone: "zone/getSelectedZone",
             getSelectedCategory: "user/getSelectedCategory",
             getUserCoordinate: "map/getCurrentCoords",
-            getCurrentAddress: "map/getCurrentAddress"
+            getCurrentAddress: "map/getCurrentAddress",
+            getCurrentCoords: "map/getCurrentCoords"
 		}),
 		checkAddress(){
 			return this.getCurrentAddress > 0 ? true : false
@@ -245,8 +246,10 @@ export default {
         getSelectedCategory(newValue) {
             this.limit = 24;
         },
-        getUserCoordinate(newValue, oldValue) {
-            // this.getRestaurants(newValue.latitude, newValue.longitude);
+        getCurrentAddress(newValue) {
+            console.error('getCurrentCoords -> newValue', newValue)
+            console.error('getCurrentCoords -> newValue', this.getCurrentCoords)
+            // this.getRestaurants(newValue[0], newValue[1]);
         }
     },
     mounted() {

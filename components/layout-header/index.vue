@@ -112,32 +112,7 @@
                 {{this.getCurrentAddress}}
             </v-btn>
             <v-overlay :value="burgerOverlay" :opacity=".5">
-                <div class="desktop-map">
-                    <div class="desktop-map-top">
-                        <div class="desktop-map-title">
-                            Укажите адрес доставки
-                        </div>
-                        <div>
-                            <v-icon @click="showDesktopMap()" color="black">close</v-icon>
-                        </div>
-                    </div>
-                    <div class="map-actions">
-                        <v-text-field placeholder="Укажите адрес доставки..." v-model="deliveryAddress" dark dense filled outlined clearable background-color="primary">
-                            <template v-slot:prepend>
-                                <v-btn outlined dense color='primary'>
-                                    <v-icon>near_me</v-icon>
-                                    Определить
-                                </v-btn>
-                            </template>
-                        </v-text-field>
-                        <v-btn color="primary" class="pl-2" @click="saveAdress()">
-                            Ok
-                        </v-btn>
-                    </div>
-                    <div class="map">
-						<MapDesktop @selectAddress='selectAddress' :saveAddress='saveAddress'></MapDesktop>
-                    </div>
-                </div>
+					<MapDesktop @closeMap='closeDesktopMap()'></MapDesktop>
             </v-overlay>
             <v-menu offset-y>
                 <template v-slot:activator="{ on }">
@@ -181,7 +156,6 @@ export default {
             showSetAdressBtn: false,
             showMap: false,
             showSidebar: false,
-            deliveryAddress: '',
             items: [{
                     title: 'Home',
                     icon: 'dashboard'
@@ -196,7 +170,8 @@ export default {
 	},
 	watch: {
 		getCurrentAddress(newValue, oldValue) {
-            console.log('getCurrentAddress -> newValue', newValue)
+			console.log('getCurrentAddress -> newValue', newValue)
+			this
 			return newValue
 		}
 	},
@@ -204,20 +179,16 @@ export default {
 		...mapMutations( {
             setCurrentCoords: 'map/SET_CURRENT_COORDS',
         }),
-		saveAdress(){
-			this.saveAddress = true
-		},
-		selectAddress(value){
-            console.log('selectAddress -> address', value)
-			this.deliveryAddress = value
-		},
         onClick(e) {
             this.coords = e.get('coords')
             this.setCurrentCoords(this.coords)
-        },
+		},
         showDesktopMap() {
-            this.burgerOverlay = !this.burgerOverlay
-            this.deliveryAddress = this.getCurrentAddress
+            this.burgerOverlay = true
+        },
+        closeDesktopMap() {
+			console.error('emit close');
+            this.burgerOverlay = false
         },
         showHideSidebar() {
             console.error('was click');
@@ -253,7 +224,10 @@ export default {
             canDisplayMap: 'device/isMobile',
             getCurrentAddress: 'map/getCurrentAddress',
             isInputAddressMode: 'map/isInputAddressMode',
-        })
+		}),
+		checkAddress(){
+			return this.getCurrentAddress > 0 ? true : false
+		},
     },
     created() {
         this.$store.dispatch('zone/queryZones')

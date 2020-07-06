@@ -110,27 +110,13 @@ const typeToIcon = {
 	const btn = new ymaps.control.GeolocationControl({
 	  options: {
 		float: 'none',
-		noPlacemark: true,
 		clickHandler,
 		layout: ymaps.templateLayoutFactory.createClass(
-		  "<div class='customGeoBtn myGeo'><div/>"
+		  "<div class='customGeoBtn myGeo' id='myGeoBtn'><div/>"
 		),
-		position: {
-		  bottom: '35vh',
-		  right: '25px'
-		}
 	  }
 	})
-	btn.events.add('locationchange', function (event) {
-	  var position = event.get('position'),
-		locationPlacemark = new ymaps.Placemark(position);
-	  mapInstance.panTo(position);
-	});
 	mapInstance.controls.add(btn)
-	btn.events.add('locationchange', function (event) {
-	  var position = event.get('position')
-	  myMap.panTo(position)
-	});
 	return btn
   }
   

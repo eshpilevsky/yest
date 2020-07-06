@@ -1,17 +1,36 @@
 <template>
 <div>
-    <div v-if="isMapLoading" class="map-loading">
-        <v-progress-circular indeterminate size="40" color="grey"></v-progress-circular>
+    <div class="desktop-map">
+        <div class="desktop-map-top">
+            <div class="desktop-map-title">
+                Укажите адрес доставки
+            </div>
+            <div class="close-icon">
+                <v-icon @click="emitClose()" color="black">close</v-icon>
+            </div>
+        </div>
+        <div class="map-actions">
+            <v-btn height='40' outlined dense small shaped color='primary' @click="getMyGeo()" class="near_me-btn">
+                <v-icon>near_me</v-icon>
+                Определить
+            </v-btn>
+            <v-text-field height='40' dense placeholder="Укажите адрес доставки..." v-model="address" dark filled outlined clearable background-color="primary" class="address-input btnFz"></v-text-field>
+            <v-btn height='40' color="primary" class="ml-2" @click="confirmPosition()">
+                Ok
+            </v-btn>
+        </div>
+        <div v-if="isMapLoading" class="map-loading">
+            <v-progress-circular indeterminate size="40" color="grey"></v-progress-circular>
+        </div>
+        <div v-else>
+            <yandex-map :coords="coords" :zoom="17" @click.stop="onClick" @map-was-initialized="onInit" :controls="controls" :options="options" @boundschange="onBoundsChange" />
+        </div>
     </div>
-	<div v-else>
-		{{this.address}}
-		<yandex-map  :coords="coords" :zoom="17" @click.stop="onClick" @map-was-initialized="onInit" :controls="controls" :options="options" @boundschange="onBoundsChange" />
-	</div>
+
 </div>
 </template>
 
 <script>
-
 import {
     loadYmap
 } from 'vue-yandex-maps'
@@ -21,12 +40,8 @@ import {
     mapMutations
 } from 'vuex'
 import {
-    getClose,
     getGeo,
-    getIamHere,
     getPlace,
-    getZoomIn,
-    getZoomOut
 } from './factory'
 import MapSuggest from '@/components/map-suggest'
 import {
@@ -41,11 +56,7 @@ import {
 export default {
     components: {
         MapSuggest
-	},
-	props: {
-		isDesktop: Boolean,
-		saveAdress: Boolean
-	},
+    },
     data: () => ({
         controls: ['zoomControl'],
         options: {
@@ -56,8 +67,8 @@ export default {
         coords: [],
         mapInstance: null,
         isMapLoading: true,
-		ymaps: null,
-	}),
+        ymaps: null,
+    }),
     computed: {
         ...mapGetters('map', {
             isMapVisible: 'isMapVisible',
@@ -69,40 +80,43 @@ export default {
         currentAddress() {
             return this.getCurrentAddress
         }
-	},
-	watch: {
-		async saveAddress(newValue, oldValue) {
-            console.log('saveAddress -> newValue', newValue)
-			if (newValue) {
-			const coords = mapInstance.getCenter()
-                await this.getGeoObjects({
-                    coords,
-                    ymaps
-				})
-			}
-		}
-	},
+    },
     async mounted() {
-		if (performance.navigation.type == 1) {
-			this.hideMap()
-		}
-		this.isMapLoading = true
+        if (performance.navigation.type == 1) {
+            this.hideMap()
+        }
+        this.isMapLoading = true
         await loadYmap({
             ...yMapSettings
-		});
+        });
         this.isMapLoading = false
     },
     methods: {
-        ...mapMutations( {
+        ...mapMutations({
             hideMap: 'map/HIDE_MAP',
             setCurrentCoords: 'map/SET_CURRENT_COORDS',
             switchToMapMode: 'map/UNSET_INPUT_ADDRESS_MODE',
-			switchToAddressMode: 'map/SET_INPUT_ADDRESS_MODE',
+            switchToAddressMode: 'map/SET_INPUT_ADDRESS_MODE',
         }),
         ...mapActions('map', {
             getLocation: 'getLocation',
             getGeoObjects: 'getGeoObjects'
         }),
+        getMyGeo() {
+            const myGeoBtn = document.getElementById('myGeoBtn')
+            myGeoBtn.click()
+        },
+        emitClose() {
+            this.$emit('closeMap')
+        },
+        async confirmPosition() {
+            const coords = this.mapInstance.getCenter()
+            await this.getGeoObjects({
+                coords,
+                ymaps
+            })
+            this.$emit('closeMap')
+        },
         async onInit(mapInstance) {
             if (this.getCurrentAddress !== '') {
                 this.address = this.getCurrentAddress
@@ -112,16 +126,9 @@ export default {
             }
             this.mapInstance = mapInstance
             this.ymaps = ymaps
-            // getClose(ymaps, mapInstance, async () => {
-			// 	setTimeout(() => {
-			// 		this.hideMap();
-			// 	}, 100);
-            // })
-            // getZoomIn(ymaps, mapInstance)
-            // getZoomOut(ymaps, mapInstance)
             getPlace(ymaps, mapInstance)
             getGeo(ymaps, mapInstance)
-           
+
             if (this.getCurrentCoords.length === 0) {
                 await this.getLocation()
             }
@@ -142,33 +149,98 @@ export default {
                     })
                     .then((res) => {
                         const geoObjects = res.geoObjects.get(0)
-						component.coords = geoObjects.geometry.getCoordinates()
+                        component.coords = geoObjects.geometry.getCoordinates()
                         if (component.geolocationAvailable) {
-							component.address = getAddressFromString(selectedValue)
+                            component.address = getAddressFromString(selectedValue)
                             mapInstance.setCenter(component.coords, 17)
-							this.switchToMapMode()
-                            return 
+                            this.switchToMapMode()
+                            return
                         }
                         const bounds = geoObjects.properties.get('boundenBy')
                         mapInstance.setBounds(bounds, {
                             checkZoomRange: true
                         })
                         mapInstance.setCenter()
-						component.address = getAddresFromGeoobject(res.geoObjects.get(0))
+                        component.address = getAddresFromGeoobject(res.geoObjects.get(0))
                     })
             }
         },
         async onBoundsChange() {
             const coords = this.mapInstance.getCenter()
-			this.address = await getAddresByCoords(this.ymaps, coords)
+            this.address = await getAddresByCoords(this.ymaps, coords)
             console.log('onBoundsChange -> this.address', this.address)
-			await this.$emit('selectAddress', this.address)
+            await this.$emit('selectAddress', this.address)
         }
     },
 };
 </script>
 
-<style lang="scss" >
+<style scoped>
+
+.near_me-btn{
+	border-top-right-radius: 0px !important;
+	border-bottom-right-radius: 0px !important;
+}
+
+.btnFz{
+	font-size: 19px;
+}
+
+.address-input{
+	font-weight: bold;
+	border-top-left-radius: 0px !important;
+	border-bottom-left-radius: 0px !important;
+}
+
+.close-icon{
+	position: relative;
+    left: 2rem;
+    bottom: 2.5rem;
+    opacity: .5;
+}
+
+.map {
+    height: 100%;
+    width: 100%;
+}
+
+.desktop-map-top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.map-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+	max-height: 55px;
+}
+
+.desktop-map-title {
+    margin: 0;
+    font-size: 30px;
+    line-height: 1.2;
+    font-weight: 400;
+    color: black;
+	height: 45px;
+}
+
+.desktop-map {
+    min-width: 800px;
+    font-size: 16px;
+    background: white;
+    min-height: 600px;
+    border-radius: 10px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+</style><style lang="scss">
 $size: 40px;
 $header: 65px;
 
@@ -187,6 +259,7 @@ $header: 65px;
 .myGeo {
     background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIHN0cm9rZT0iIzQ0M0MwRiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjYiIGQ9Ik01LjAwMiAxMC44OEwxOCA2bC00Ljg3MiAxMy0xLjYyOC02LjV6Ii8+PC9zdmc+);
     border-radius: 100%;
+	margin: .5rem;
 }
 
 .map-loading {
@@ -196,7 +269,7 @@ $header: 65px;
     align-items: center;
     justify-content: center;
     background-image: url('../../assets/mapBg.svg');
-	background-size: cover;
+    background-size: cover;
 }
 
 .ymap-container {
@@ -229,11 +302,11 @@ ymaps [title="Определить ваше местоположение"] {
     box-shadow: 0px 2px 5px 0px rgba(50, 50, 50, 0.5);
 }
 
-.close{
-	position: relative;
-	z-index: 400;
-	top: .5rem;
-	left: .5rem;
+.close {
+    position: relative;
+    z-index: 400;
+    top: .5rem;
+    left: .5rem;
 }
 
 .plus {
@@ -249,8 +322,6 @@ ymaps [title="Определить ваше местоположение"] {
 .place {
     background-color: transparent;
     box-shadow: none;
-	font-size: 20px !important;
+    font-size: 20px !important;
 }
-
 </style>
-
