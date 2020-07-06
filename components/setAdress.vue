@@ -32,7 +32,8 @@
 
 <script>
 import {
-    mapGetters
+	mapGetters,
+	mapMutations
 } from 'vuex'
 import MapBtn from '@/components/map-btn'
 import axios from 'axios'
@@ -88,14 +89,11 @@ export default {
         }
     },
     methods: {
+		...mapMutations( {
+            setCurrentAddress: 'map/SET_CURRENT_ADDRESS',
+        }),
         clearAdress() {
-            // this.$store.dispatch('user/setUserLocation', {
-            // 	coords: {
-            //         latitude: null,
-            //         longitude: null
-            //     },
-            //     locationAdress: null
-            // })
+			this.setCurrentAddress('');
         },
         show(value) {
             var body = document.getElementsByTagName('body')[0]
@@ -238,8 +236,6 @@ export default {
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
     max-width: 1420px;
-    background-position-x: -650px;
-    background-position-y: -70px;
 }
 
 .info-setPlace {

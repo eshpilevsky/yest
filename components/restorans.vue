@@ -6,7 +6,7 @@
             <div class="list-item-block">
                 <img contain :lazy-src="notFindImg" :src="item.cover" class="restorane-logo" :class="{closeRestorane:item.is_open == false }" />
                 <div class="block-bottom">
-                    <div class="delivery-time-desktop" v-show="getUserLocation.locationAdress !== null">
+                    <div class="delivery-time-desktop" v-show="checkAddress">
                         <div class="time-title">
                             {{item.time.min}}-{{item.time.max}}
                         </div>
@@ -21,17 +21,17 @@
                             <div class="rating">{{ item.rating }}</div>
                         </v-chip>
                     </div>
-                    <div class="list-item-bottom" :class="{noLocation: getUserLocation.locationAdress == null}">
+                    <div class="list-item-bottom" :class="{noLocation: checkAddress}">
                         <div class="bottom-left">
                             <v-chip class="item-bottom-right" color="primary" v-if="item.rating !== 0">
                                 <v-icon color="#FFFADF">star</v-icon>
                                 <div class="rating">{{ item.rating }}</div>
                             </v-chip>
-                            <div class="bottom-tags-list" :class="{noLocationTag: getUserLocation.locationAdress == null}">
+                            <div class="bottom-tags-list" :class="{noLocationTag: checkAddress}">
                                 <span class="tags-list-item">{{ compudtedTags(item.tags) }}</span>
                             </div>
                         </div>
-                        <div class="delivery-time-mobile" v-if="getUserLocation.locationAdress !== null">
+                        <div class="delivery-time-mobile" v-if="checkAddress">
                             {{item.time.min}} - {{item.time.max}} мин •&nbsp;
                         </div>
                     </div>
@@ -178,8 +178,11 @@ export default {
             getSelectedZone: "zone/getSelectedZone",
             getSelectedCategory: "user/getSelectedCategory",
             getUserCoordinate: "map/getCurrentCoords",
-            getUserLocation: "user/getUserLocation"
-        }),
+            getCurrentAddress: "map/getCurrentAddress"
+		}),
+		checkAddress(){
+			return this.getCurrentAddress > 0 ? true : false
+		},
         swiper() {
             return this.$refs.mySwiper.$swiper;
         },
@@ -286,7 +289,7 @@ export default {
 }
 
 .delivery-time-desktop {
-    right: -90px;
+    right: -65%;
     padding: 10px 17px;
     position: relative;
     font-size: 16px;
@@ -295,6 +298,8 @@ export default {
     background: #fff;
     border-radius: 23px 23px 0 0;
     height: 0;
+	max-width: 80px;
+    top: 0px;
 }
 
 .delivery-time-desktop:before,
