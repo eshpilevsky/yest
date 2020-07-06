@@ -19,7 +19,7 @@ const typeToIcon = {
 	  btn = new ymaps.control.Button({
 		options: {
 		  layout: ymaps.templateLayoutFactory.createClass(
-			`<div class='customMapBtn ${type}'><i class="material-icons ${typeToIcon[type]}_icon">${typeToIcon[type]}</i><div/>`
+			`<div class='customMapBtnDesktop ${type}'><i class="material-icons ${typeToIcon[type]}_icon">${typeToIcon[type]}</i><div/>`
 		  ),
 		}
 	  })
@@ -30,7 +30,7 @@ const typeToIcon = {
 		},
 		options: {
 		  layout: ymaps.templateLayoutFactory.createClass(
-			`<div class='customMapBtn ${type}'>{{ data.content }}<div/>`
+			`<div class='customMapBtnDesktop ${type}'>{{ data.content }}<div/>`
 		  )
 		}
 	  })

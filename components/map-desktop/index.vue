@@ -175,7 +175,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 
 .near_me-btn{
 	border-top-right-radius: 0px !important;
@@ -240,7 +240,9 @@ export default {
     flex-direction: column;
     align-items: flex-start;
 }
-</style><style lang="scss">
+</style>
+
+<style lang="scss">
 $size: 40px;
 $header: 65px;
 
@@ -262,7 +264,7 @@ $header: 65px;
 	margin: .5rem;
 }
 
-.map-loading {
+.desktop-map div .map-loading {
     max-width: 720px;
     max-height: 400px;
     display: flex;
@@ -272,17 +274,17 @@ $header: 65px;
     background-size: cover;
 }
 
-.ymap-container {
+.desktop-map div section.ymap-container {
     max-width: 720px;
     max-height: 400px;
 }
 
-ymaps .customMapBtn {
+ymaps .customMapBtnDesktop {
     text-align: center;
 }
 
-ymaps .customMapBtn,
-ymaps .customMapBtn i.material-icons {
+ymaps .customMapBtnDesktop,
+ymaps .customMapBtnDesktop i.material-icons {
     font-size: $size;
     line-height: $size;
 }
@@ -291,7 +293,7 @@ ymaps [title="Определить ваше местоположение"] {
     border-radius: 50%;
 }
 
-.customMapBtn {
+.customMapBtnDesktop {
     padding: 1vw;
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.5);

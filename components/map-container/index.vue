@@ -173,7 +173,7 @@ ymaps {
 }
 
 .customGeoBtn {
-    height: 40px;
+    height: 40px !important;
     width: 40px;
     border: none;
     display: inline-block;
@@ -203,8 +203,8 @@ ymaps {
 }
 
 .ymap-container {
-    width: 100vw;
-    height: calc(var(--vh, 1vh) * 100);
+    width: 100vw !important;
+    height: calc(var(--vh, 1vh) * 100) !important;
 }
 
 ymaps .customMapBtn {
