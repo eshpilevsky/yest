@@ -113,7 +113,7 @@ export const getGeo = (
       noPlacemark: true,
       clickHandler,
       layout: ymaps.templateLayoutFactory.createClass(
-        `<div class='customGeoBtn myGeo'><i class="material-icons">near_me</i><div/>`
+		`<div class='customMapBtn getGeo'><i class="material-icons">near_me</i><div/>`
       ),
       position: {
         bottom: '35vh',
