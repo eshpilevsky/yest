@@ -130,13 +130,12 @@
                                 </v-btn>
                             </template>
                         </v-text-field>
-                        <v-btn color="primary" class="pl-2">
+                        <v-btn color="primary" class="pl-2" @click="saveAdress()">
                             Ok
                         </v-btn>
                     </div>
                     <div class="map">
-                        map
-                        <!-- <yandex-map :coords="coords" :zoom="17" @click.stop="onClick" @map-was-initialized="onInit" :controls="controls" :options="options" @boundschange="onBoundsChange" /> -->
+						<MapDesktop @selectAddress='selectAddress' :saveAddress='saveAddress'></MapDesktop>
                     </div>
                 </div>
             </v-overlay>
@@ -164,14 +163,14 @@ import {
 } from 'vuex'
 import MapBtn from '@/components/map-btn'
 import MapContainer from '@/components/map-container'
-// import EnterAdressBtn from '../components/enterAdressBtn.vue'
+import MapDesktop from '@/components/map-desktop'
 
 export default {
     name: 'layout-header',
     components: {
-        // EnterAdressBtn,
         MapBtn,
-        MapContainer
+        MapContainer,
+        MapDesktop,
     },
     data() {
         return {
@@ -192,9 +191,26 @@ export default {
                     icon: 'question_answer'
                 }
 			],
+			saveAddress: false
         }
 	},
+	watch: {
+		getCurrentAddress(newValue, oldValue) {
+            console.log('getCurrentAddress -> newValue', newValue)
+			return newValue
+		}
+	},
     methods: {
+		...mapMutations( {
+            setCurrentCoords: 'map/SET_CURRENT_COORDS',
+        }),
+		saveAdress(){
+			this.saveAddress = true
+		},
+		selectAddress(value){
+            console.log('selectAddress -> address', value)
+			this.deliveryAddress = value
+		},
         onClick(e) {
             this.coords = e.get('coords')
             this.setCurrentCoords(this.coords)
@@ -284,10 +300,8 @@ export default {
 }
 </style><style scoped>
 .map {
-    border: 1px solid red;
     height: 100%;
     width: 100%;
-    color: green;
 }
 
 .desktop-map-top {
