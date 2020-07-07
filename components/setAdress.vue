@@ -24,8 +24,7 @@
                 </v-list-item>
             </v-list>
         </div>
-        <map-btn v-if="canDisplayMap === true" />
-        <!-- <EnterAdressBtn class="setAdress" @show='show'/> -->
+        <map-btn v-if="this.canDisplayMap" />
     </div>
 </div>
 </template>
@@ -38,12 +37,10 @@ import {
 import MapBtn from '@/components/map-btn'
 import axios from 'axios'
 
-// import EnterAdressBtn from '../components/enterAdressBtn.vue'
 export default {
     name: 'setAdress',
     components: {
         MapBtn
-        // EnterAdressBtn
     },
     data() {
         return {
@@ -75,14 +72,13 @@ export default {
             return newValue
         },
         serachAdress(newValue) {
-            this.getSuggestions(newValue)
-            // this.showAdressList = true
+            // this.getSuggestions(newValue)
+            this.showAdressList = true
         },
         getCurrentAddress(newValue) {
             this.serachAdress = newValue
         },
         getSelectedZone(newValue) {
-            // this.serachAdress = ''
             if (this.getUserLocation.locationAdress !== null) {
                 this.serachAdress = this.getUserLocation.locationAdress
             };

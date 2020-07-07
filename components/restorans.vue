@@ -14,20 +14,20 @@
                             мин
                         </div>
                     </div>
-                    <div class="test">
+                    <div class="card-title">
                         <div class="restorane-list-item-name">{{ item.name }}</div>
                         <v-chip class="item-bottom-right-mob" color="primary" v-if="item.rating !== 0">
                             <v-icon color="#FFFADF">star</v-icon>
                             <div class="rating">{{ item.rating }}</div>
                         </v-chip>
                     </div>
-                    <div class="list-item-bottom" :class="{noLocation: checkAddress}">
+                    <div class="list-item-bottom" :class="{noLocation: !checkAddress}">
                         <div class="bottom-left">
                             <v-chip class="item-bottom-right" color="primary" v-if="item.rating !== 0">
                                 <v-icon color="#FFFADF">star</v-icon>
                                 <div class="rating">{{ item.rating }}</div>
                             </v-chip>
-                            <div class="bottom-tags-list" :class="{noLocationTag: checkAddress}">
+                            <div class="bottom-tags-list" :class="{noLocationTag: !checkAddress}">
                                 <span class="tags-list-item">{{ compudtedTags(item.tags) }}</span>
                             </div>
                         </div>
@@ -182,7 +182,7 @@ export default {
             getCurrentCoords: "map/getCurrentCoords"
 		}),
 		checkAddress(){
-			return this.getCurrentAddress > 0 ? true : false
+			return this.getCurrentAddress.length > 0 ? true : false
 		},
         swiper() {
             return this.$refs.mySwiper.$swiper;
@@ -266,7 +266,7 @@ export default {
     width: 100%;
 }
 
-.test {
+.card-title {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -378,9 +378,7 @@ export default {
 .bottom-tags-list {
     display: flex;
     flex-wrap: wrap;
-    /* padding-left: 10px; */
     max-width: 300px;
-    padding-top: 5px;
 }
 
 .tags-list-item {
@@ -564,7 +562,7 @@ export default {
         display: none;
     }
 
-    .test {
+    .card-title {
         width: 100%;
         height: 40px;
     }
