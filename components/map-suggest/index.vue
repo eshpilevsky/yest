@@ -70,16 +70,9 @@ export default {
         suggestPlaces(e) {
             this.loading = true
             const component = this
-
-            // ymaps.setBounds([
-            //     [27.405475, 53.832828],
-            //     [27.702106, 53.948831]
-            // ], {
-            //     checkZoomRange: true,
-            //     duration: 500
-            // });
             ymaps.suggest(e, {
-                results: 6
+				results: 6,
+				boundedBy:[[51.753588, 23.148098], [55.591263, 31.491889]]
             }).then((items) => {
                 component.places = items
                 component.loading = false

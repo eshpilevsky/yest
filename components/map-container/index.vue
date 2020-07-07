@@ -129,10 +129,10 @@ export default {
             this.setCurrentCoords(this.coords)
         },
         selectedPlace(place) {
-			// console.log(this.mapInstance.getBounds());
 			const component = this
             ymaps.geocode(place.value, {
 				results: 1,
+				boundedBy:[[51.753588, 23.148098], [55.591263, 31.491889]]
             }).then((geo) => {
                 const geoObjects = geo.geoObjects.get(0)
                 component.coords = geoObjects.geometry.getCoordinates()
@@ -145,7 +145,8 @@ export default {
             if (mapInstance !== null) {
                 const selectedValue = e.get('item').value
                 ymaps.geocode(selectedValue, {
-                        results: 1
+						results: 1,
+						boundedBy:[[51.753588, 23.148098], [55.591263, 31.491889]]
                     })
                     .then((res) => {
                         const geoObjects = res.geoObjects.get(0)
