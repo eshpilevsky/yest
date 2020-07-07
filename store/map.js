@@ -53,6 +53,7 @@ export const mutations = {
 };
 
 export const actions = {
+	
   async getLocation({
     commit
   }) {

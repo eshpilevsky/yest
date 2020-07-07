@@ -10,16 +10,16 @@
         <span class="info-setPlace">
             Укажите ваше местоположение, чтобы мы смогли предложить вам список доступных ресторанов
         </span>
-        <v-text-field class='search-me' prepend-inner-icon="near_me" label="Укажите адрес доставки..." v-model='serachAdress' solo clearable @click:clear="clearAdress">
+        <v-text-field class='search-me' prepend-inner-icon="near_me" label="Укажите адрес доставки..." v-model='searchAddress' solo clearable @click:clear="clearAdress">
             <template v-slot:append-outer>
-                <v-btn class="showRest-block" color='primary' @click="getSuggestions(serachAdress)">Показать рестораны</v-btn>
+                <v-btn class="showRest-block" color='primary' @click="showRestuarants()">Показать рестораны</v-btn>
             </template>
         </v-text-field>
         <div v-if="showAdressList == true" class="adressList" v-click-outside="closeAdressList">
             <v-list>
                 <v-list-item v-for="(item, index) in suggestions" :key="'adres'+index" class="itemAdress" @click="selectAdress(item)">
                     <v-list-item-content>
-                        <v-list-item-title>{{item.text}}</v-list-item-title>
+                        <v-list-item-title>{{item.value}}</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
@@ -35,8 +35,12 @@ import {
 	mapMutations
 } from 'vuex'
 import MapBtn from '@/components/map-btn'
-import axios from 'axios'
-
+import {
+    settings
+} from '@/plugins/ymapPlugin'
+import {
+    loadYmap
+} from 'vue-yandex-maps'
 export default {
     name: 'setAdress',
     components: {
@@ -44,12 +48,14 @@ export default {
     },
     data() {
         return {
-            serachAdress: '',
+            searchAddress: '',
             overlay: false,
             showAdressList: false,
             ww: 0,
             suggestions: [],
-            filteredLocations: []
+			filteredLocations: [],
+			ymaps: null,
+			loadingSuggest: false,
         }
     },
     computed: {
@@ -71,23 +77,47 @@ export default {
         getSelectedCategoryTitle(newValue) {
             return newValue
         },
-        serachAdress(newValue) {
-            // this.getSuggestions(newValue)
+        searchAddress(newValue) {
+            this.getSuggest(newValue)
             this.showAdressList = true
         },
         getCurrentAddress(newValue) {
-            this.serachAdress = newValue
+            this.searchAddress = newValue
         },
         getSelectedZone(newValue) {
             if (this.getUserLocation.locationAdress !== null) {
-                this.serachAdress = this.getUserLocation.locationAdress
+                this.searchAddress = this.getUserLocation.locationAdress
             };
         }
     },
     methods: {
 		...mapMutations( {
-            setCurrentAddress: 'map/SET_CURRENT_ADDRESS',
-        }),
+			setCurrentAddress: 'map/SET_CURRENT_ADDRESS',
+			setCurrentCoords: 'map/SET_CURRENT_COORDS',
+		}),
+		showRestuarants(){
+			const component = this
+			this.setCurrentAddress(this.searchAddress)
+            ymaps.geocode(this.searchAddress, {
+				results: 1,
+				boundedBy:[[51.753588, 23.148098], [55.591263, 31.491889]]
+            }).then((geo) => {
+                const geoObjects = geo.geoObjects.get(0)
+				component.coords = geoObjects.geometry.getCoordinates()
+				component.setCurrentCoords(geoObjects.geometry.getCoordinates())
+            });
+		},
+		getSuggest(str){
+			this.loadingSuggest = true
+            const component = this
+            ymaps.suggest(str, {
+				results: 6,
+				boundedBy:[[51.753588, 23.148098], [55.591263, 31.491889]]
+            }).then((items) => {
+                component.suggestions = items
+                component.loadingSuggest = false
+            });
+		},
         clearAdress() {
 			this.setCurrentAddress('');
         },
@@ -105,55 +135,22 @@ export default {
         closeAdressList() {
             this.showAdressList = false
         },
-        selectAdress(adress) {
-            this.serachAdress = adress.text
-            const ySecretKey = '3ada3000-4fe5-4450-8bd0-9840db3bf539'
-            // axios.get(`https://geocode-maps.yandex.ru/1.x/?apikey=${ySecretKey}&format=json&lang=ru_RU&geocode=${adress.text}`).then((response) => {
-            // 	const currentLocation = response.data.response.GeoObjectCollection.featureMember[0].GeoObject
-            // 	const locationName = currentLocation.name
-            // 	let coordStr = currentLocation.Point.pos.split(' ')
-            // 	var result = {
-            // 		coords: {
-            // 		latitude: coordStr[0],
-            // 		longitude: coordStr[1]
-            // 		},
-            // 		locationAdress: locationName.trim()
-            // 	}
-            // 	console.log('selectAdress -> result', result)
-            // 	this.$store.dispatch('user/setUserLocation', result)
-            // 	this.showAdressList = false
-            // }).catch((error) => {
-            // 	console.error(error)
-            // })
+        selectAdress(address) {
+			this.searchAddress = address.value
+			this.showAdressList = false
         },
-        getSuggestions(text) {
-            // if (text.length > 3) {
-            //     text = this.getSelectedZone.name + text
-            //     let result = []
-            //     eslint-disable-next-line no-undef
-            //     ymaps.suggest(text, {
-            //     	results: 6
-            //     })
-            //     	.then(items => {
-            //     		items.forEach(item => {
-            //     		const currentItem = item.value.split(',')
-            //     		if (currentItem.length > 3 && currentItem.length < 5) {
-            //     		result.push({
-            //     		text: currentItem.slice(2).join(',')
-            //     		})
-            //     		}
-            //     		})
-            //     		this.suggestions = result
-            //     	})
-            // }
-        }
     },
     beforeMount() {
         this.ww = window.innerWidth;
     },
-    mounted() {
-        this.serachAdress = this.getCurrentAddress
-        this.showAdressList = false
+    async mounted() {
+        this.searchAddress = this.getCurrentAddress
+        await loadYmap({
+			...settings,
+            debug: true
+        });
+		this.ymaps = ymaps
+		this.showAdressList = false
     }
 }
 </script>
@@ -175,8 +172,8 @@ export default {
 .adressList {
     background-color: #fff;
     border: 1px solid rgba(0, 0, 0, 0.4);
-    width: 60%;
-    position: relative;
+    width: 50%;
+    position: absolute;
     z-index: 100;
 }
 
