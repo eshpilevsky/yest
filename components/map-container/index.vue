@@ -1,6 +1,5 @@
 <template>
-
-<v-overlay :value="isMapVisible" >
+<v-overlay :value="isMapVisible">
     <div v-if="isMapLoading" class="map-loading">
         <v-progress-circular indeterminate size="40" color="grey"></v-progress-circular>
     </div>
@@ -10,7 +9,7 @@
             <div class="currentAddress-put" @click="switchToAddressMode">Изменить адрес доставки</div>
         </div>
         <yandex-map v-show="!isInputAddressMode" :coords="coords" :zoom="17" @click.stop="onClick" @map-was-initialized="onInit" :controls="controls" :options="options" @boundschange="onBoundsChange" />
-        <map-suggest v-show="isInputAddressMode" @select="onSelect" @selectedPlace='selectedPlace()'/>
+        <map-suggest v-show="isInputAddressMode" @select="onSelect" @selectedPlace='selectedPlace' />
     </div>
 </v-overlay>
 </template>
@@ -45,10 +44,10 @@ import {
 export default {
     components: {
         MapSuggest
-	},
-	props: {
-		isDesktop: Boolean,
-	},
+    },
+    props: {
+        isDesktop: Boolean,
+    },
     data: () => ({
         controls: [],
         options: {
@@ -59,8 +58,8 @@ export default {
         coords: [],
         mapInstance: null,
         isMapLoading: true,
-		ymaps: null,
-	}),
+        ymaps: null,
+    }),
     computed: {
         ...mapGetters('map', {
             isMapVisible: 'isMapVisible',
@@ -74,21 +73,21 @@ export default {
         }
     },
     async mounted() {
-		if (performance.navigation.type == 1) {
-			this.hideMap()
-		}
-		this.isMapLoading = true
+        if (performance.navigation.type == 1) {
+            this.hideMap()
+        }
+        this.isMapLoading = true
         await loadYmap({
             ...yMapSettings
-		});
+        });
         this.isMapLoading = false
     },
     methods: {
-        ...mapMutations( {
+        ...mapMutations({
             hideMap: 'map/HIDE_MAP',
             setCurrentCoords: 'map/SET_CURRENT_COORDS',
             switchToMapMode: 'map/UNSET_INPUT_ADDRESS_MODE',
-			switchToAddressMode: 'map/SET_INPUT_ADDRESS_MODE',
+            switchToAddressMode: 'map/SET_INPUT_ADDRESS_MODE',
         }),
         ...mapActions('map', {
             getLocation: 'getLocation',
@@ -104,9 +103,9 @@ export default {
             this.mapInstance = mapInstance
             this.ymaps = ymaps
             getClose(ymaps, mapInstance, async () => {
-				setTimeout(() => {
-					this.hideMap();
-				}, 100);
+                setTimeout(() => {
+                    this.hideMap();
+                }, 100);
             })
             getZoomIn(ymaps, mapInstance)
             getZoomOut(ymaps, mapInstance)
@@ -117,8 +116,8 @@ export default {
                 await this.getGeoObjects({
                     coords,
                     ymaps
-				})
-				await this.hideMap()
+                })
+                await this.hideMap()
             })
             if (this.getCurrentCoords.length === 0) {
                 await this.getLocation()
@@ -128,11 +127,17 @@ export default {
         onClick(e) {
             this.coords = e.get('coords')
             this.setCurrentCoords(this.coords)
-		},
-		selectedPlace(place){
-            console.log('selectedPlace -> place', place)
-			
-		},
+        },
+        selectedPlace(place) {
+			// console.log(this.mapInstance.getBounds());
+			const component = this
+            ymaps.geocode(place.value, {
+				results: 1,
+            }).then((geo) => {
+                const geoObjects = geo.geoObjects.get(0)
+                component.coords = geoObjects.geometry.getCoordinates()
+            });
+        },
         onSelect(e) {
             const mapInstance = this.mapInstance
             const ymaps = this.ymaps
@@ -144,19 +149,19 @@ export default {
                     })
                     .then((res) => {
                         const geoObjects = res.geoObjects.get(0)
-						component.coords = geoObjects.geometry.getCoordinates()
+                        component.coords = geoObjects.geometry.getCoordinates()
                         if (component.geolocationAvailable) {
-							component.address = getAddressFromString(selectedValue)
+                            component.address = getAddressFromString(selectedValue)
                             mapInstance.setCenter(component.coords, 17)
-							this.switchToMapMode()
-                            return 
+                            this.switchToMapMode()
+                            return
                         }
                         const bounds = geoObjects.properties.get('boundenBy')
                         mapInstance.setBounds(bounds, {
                             checkZoomRange: true
                         })
                         mapInstance.setCenter()
-						component.address = getAddresFromGeoobject(res.geoObjects.get(0))
+                        component.address = getAddresFromGeoobject(res.geoObjects.get(0))
                     })
             }
         },
@@ -173,7 +178,7 @@ $size: 7vw;
 $header: 65px;
 
 ymaps {
-	color:black
+    color: black
 }
 
 .customGeoBtn {
@@ -190,8 +195,8 @@ ymaps {
 
 .myGeo {
     border-radius: 100%;
-	background-color: rgba(255, 255, 255, 0.5);
-	display: flex;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -203,7 +208,7 @@ ymaps {
     align-items: center;
     justify-content: center;
     background-image: url('../../assets/mapBg.svg');
-	background-size: cover;
+    background-size: cover;
 }
 
 .ymap-container {
@@ -236,11 +241,11 @@ ymaps [title="Определить ваше местоположение"] {
     box-shadow: 0px 2px 5px 0px rgba(50, 50, 50, 0.5);
 }
 
-.close{
-	position: relative;
-	z-index: 400;
-	top: .5rem;
-	left: .5rem;
+.close {
+    position: relative;
+    z-index: 400;
+    top: .5rem;
+    left: .5rem;
 }
 
 .plus {
@@ -297,12 +302,10 @@ h2.currentAddress-title {
     pointer-events: auto;
     background-color: rgba(255, 255, 255, 0.8);
 }
-</style>
-
-<style scoped>
+</style><style scoped>
 .v-overlay__content {
     width: 100vw;
     height: 100vh;
-	background: #fff;
+    background: #fff;
 }
 </style>

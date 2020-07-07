@@ -45,9 +45,6 @@ export default {
             ...settings,
             debug: true
         });
-        // this.addsuggestPlacesView(ymaps)
-        // this.suggestPlaces(searchString)
-
     },
     watch: {
         searchString(newValue, oldValue) {
@@ -73,12 +70,19 @@ export default {
         suggestPlaces(e) {
             this.loading = true
             const component = this
+
+            // ymaps.setBounds([
+            //     [27.405475, 53.832828],
+            //     [27.702106, 53.948831]
+            // ], {
+            //     checkZoomRange: true,
+            //     duration: 500
+            // });
             ymaps.suggest(e, {
                 results: 6
             }).then((items) => {
                 component.places = items
                 component.loading = false
-
             });
         },
         appendIconCallback(e) {
