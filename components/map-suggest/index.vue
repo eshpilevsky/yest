@@ -1,9 +1,23 @@
 <template>
 <div class="manual-enter-address">
-	<div class="search-address">
-		<input class="address-input" v-model="searchString" placeholder="Укажите адрес доставки..." />
-		<div class="black--text cancel" @click="onCancel">Отменить</div>
-	</div>
+    <div class="search-address">
+        <input class="address-input" v-model="searchString" placeholder="Укажите адрес доставки..." />
+        <div class="black--text cancel" @click="onCancel">Отменить</div>
+    </div>
+    <div class="palces-list" v-if="!loading">
+        <div class="places-item" v-for="(item, index) in places" :key="`place${index}`" @click="selectPlace(item)">
+            <div class="item-title">
+                {{item.displayName}}
+            </div>
+            <div class="item-description">
+                {{item.value}}
+            </div>
+            <v-divider />
+        </div>
+    </div>
+    <div v-else class="suggets-loading">
+        <v-progress-circular indeterminate size="40" color="grey"></v-progress-circular>
+    </div>
 </div>
 </template>
 
@@ -19,14 +33,29 @@ import {
 import {
     settings
 } from '@/plugins/ymapPlugin'
-
 export default {
     data: () => ({
-        searchString: ''
+        searchString: '',
+        ymaps: null,
+        loading: false,
+        places: []
     }),
     async mounted() {
-        await loadYmap(settings);
-        this.addSuggestView(ymaps)
+        await loadYmap({
+            ...settings,
+            debug: true
+        });
+        // this.addsuggestPlacesView(ymaps)
+        // this.suggestPlaces(searchString)
+
+    },
+    watch: {
+        searchString(newValue, oldValue) {
+            this.suggestPlaces(newValue)
+        },
+        places(newValue) {
+            return newValue
+        }
     },
     methods: {
         ...mapMutations('map', {
@@ -37,66 +66,109 @@ export default {
             getCurrentCoords: 'getCurrentCoords',
             getCurrentAddress: 'getCurrentAddress'
         }),
-        addSuggestView(ymaps) {
-            var suggestView = new ymaps.SuggestView(this.$el.querySelector('input'))
-            suggestView.events.add('select', (e) => {
-                this.$emit('select', e)
-            })
+        selectPlace(item) {
+            this.$emit('selectedPlace', item)
+            this.switchToMapMode()
+        },
+        suggestPlaces(e) {
+            this.loading = true
+            const component = this
+            ymaps.suggest(e, {
+                results: 6
+            }).then((items) => {
+                component.places = items
+                component.loading = false
+
+            });
         },
         appendIconCallback(e) {
             this.searchString = ''
         },
         onCancel() {
-			this.searchString = ''
+            this.searchString = ''
             this.switchToMapMode()
         }
     }
 }
 </script>
 
+<style scoped>
+.suggets-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
 
-<style lang="scss" >
+.places-item {
+    max-width: 100%;
+    margin-left: 16px;
+    padding-top: 9px;
+    padding-left: 4px;
+    padding-right: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, .05);
+    padding-bottom: 13px;
+}
 
-input:focus{
+.item-description {
+    color: #b0b0b0;
+    font-size: 14px;
+}
+
+.item-title {
+    color: #000000;
+    font-size: 16px;
+}
+
+.palces {
+    width: 100%;
+    height: 100%;
+    background: red;
+}
+</style><style lang="scss">
+input:focus {
     outline: none;
 }
 
-.address-input{
-	font-size: 14px;
-	padding: 10px;
-	width: 100%;
-	color: #000;
+.address-input {
+    font-size: 14px;
+    padding: 10px;
+    width: 100%;
+    color: #000;
 }
-.manual-enter-address{
-	height: calc(var(--vh, 1vh) * 100);
+
+.manual-enter-address {
+    height: calc(var(--vh, 1vh) * 100);
     width: 100vw;
     background-color: white;
     padding: 5px 0;
 }
 
-.theme--dark.v-input{
-	display: flex;
+.theme--dark.v-input {
+    display: flex;
     justify-content: center;
     align-items: baseline;
 }
 
-.cancel{
-	font-size: 14px;
-	margin: 5px;
-	padding: 5px;
-	border-left: 1px solid rgba(0, 0, 0, .1);
+.cancel {
+    font-size: 14px;
+    margin: 5px;
+    padding: 5px;
+    border-left: 1px solid rgba(0, 0, 0, .1);
 }
 
-.theme--dark.v-input input, .theme--dark.v-input textarea,
+.theme--dark.v-input input,
+.theme--dark.v-input textarea,
 .v-text-field__slot,
-.v-label{
-	color: black !important;
+.v-label {
+    color: black !important;
 }
-.theme--dark.v-text-field--solo > .v-input__control > .v-input__slot {
+
+.theme--dark.v-text-field--solo>.v-input__control>.v-input__slot {
     background: none !important;
 }
 
-ymaps[class*=suggest-item_selected_yes] {
+ymaps[class*=suggestPlaces-item_selected_yes] {
     background-color: #00A646;
 }
 
@@ -105,12 +177,12 @@ ymaps[class*=suggest-item_selected_yes] {
 }
 
 .search-address {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
     margin: auto;
-	border-bottom: 1px solid rgba(0, 0, 0, .1);
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
 }
 </style>

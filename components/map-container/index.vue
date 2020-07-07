@@ -10,7 +10,7 @@
             <div class="currentAddress-put" @click="switchToAddressMode">Изменить адрес доставки</div>
         </div>
         <yandex-map v-show="!isInputAddressMode" :coords="coords" :zoom="17" @click.stop="onClick" @map-was-initialized="onInit" :controls="controls" :options="options" @boundschange="onBoundsChange" />
-        <map-suggest v-show="isInputAddressMode" @select="onSelect" />
+        <map-suggest v-show="isInputAddressMode" @select="onSelect" @selectedPlace='selectedPlace()'/>
     </div>
 </v-overlay>
 </template>
@@ -128,7 +128,11 @@ export default {
         onClick(e) {
             this.coords = e.get('coords')
             this.setCurrentCoords(this.coords)
-        },
+		},
+		selectedPlace(place){
+            console.log('selectedPlace -> place', place)
+			
+		},
         onSelect(e) {
             const mapInstance = this.mapInstance
             const ymaps = this.ymaps
