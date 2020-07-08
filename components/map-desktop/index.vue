@@ -10,14 +10,26 @@
             </div>
         </div>
         <div class="map-actions">
-            <v-btn height='40' outlined dense small shaped color='primary' @click="getMyGeo()" class="near_me-btn">
-                <v-icon>near_me</v-icon>
-                Определить
-            </v-btn>
-            <v-text-field height='40' dense placeholder="Укажите адрес доставки..." v-model="address" dark filled outlined clearable background-color="primary" class="address-input btnFz"></v-text-field>
-            <v-btn height='40' color="primary" class="ml-2" @click="confirmPosition()">
-                Ok
-            </v-btn>
+            <div class="map-actions-top">
+                <v-btn height='40' outlined dense small shaped color='primary' @click="getMyGeo()" class="near_me-btn">
+                    <v-icon>near_me</v-icon>
+                    Определить
+                </v-btn>
+                <v-text-field height='40' dense placeholder="Укажите адрес доставки..." v-model="address" dark filled outlined clearable background-color="primary" class="address-input btnFz"></v-text-field>
+
+                <v-btn height='40' color="primary" class="ml-2" @click="confirmPosition()">
+                    Ok
+                </v-btn>
+            </div>
+            <div v-if="showSuggestList" class="map-actions-bottom" v-click-outside="closeAdressList">
+                <v-list class="sugList" background="white">
+                    <v-list-item v-for="(item, index) in suggestList" :key="'sug'+index" class="itemAdress" @click="selectAdress(item)">
+                        <v-list-item-content>
+                            <v-list-item-title>{{item.value}}</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+            </div>
         </div>
         <div v-if="isMapLoading" class="map-loading-desktop">
             <v-progress-circular indeterminate size="40" color="grey"></v-progress-circular>
@@ -65,9 +77,11 @@ export default {
         },
         address: '',
         coords: [],
+        suggestList: [],
         mapInstance: null,
         isMapLoading: true,
         ymaps: null,
+        showSuggestList: false,
     }),
     computed: {
         ...mapGetters('map', {
@@ -91,6 +105,11 @@ export default {
         });
         this.isMapLoading = false
     },
+    watch: {
+        address(newValue, oldValue) {
+            this.suggestPlaces(newValue)
+        }
+    },
     methods: {
         ...mapMutations({
             hideMap: 'map/HIDE_MAP',
@@ -102,6 +121,39 @@ export default {
             getLocation: 'getLocation',
             getGeoObjects: 'getGeoObjects'
         }),
+        selectAdress(address) {
+            console.log('selectAdress -> address', address)
+            this.showSuggestList = false
+            const component = this
+            this.setCurrentAddress(address)
+            ymaps.geocode(address, {
+                results: 1,
+                boundedBy: [
+                    [51.753588, 23.148098],
+                    [55.591263, 31.491889]
+                ]
+            }).then((geo) => {
+                const geoObjects = geo.geoObjects.get(0)
+                component.coords = geoObjects.geometry.getCoordinates()
+                component.setCurrentCoords(geoObjects.geometry.getCoordinates())
+            });
+
+        },
+        suggestPlaces(str) {
+            this.showSuggestList = false
+            const component = this
+            ymaps.suggest(str, {
+                results: 6,
+                boundedBy: [
+                    [51.753588, 23.148098],
+                    [55.591263, 31.491889]
+                ]
+            }).then((items) => {
+                component.suggestList = items
+                console.log('suggestPlaces -> items', items)
+                component.showSuggestList = true
+            });
+        },
         getMyGeo() {
             const myGeoBtn = document.getElementById('myGeoBtn')
             myGeoBtn.click()
@@ -114,7 +166,9 @@ export default {
             await this.getGeoObjects({
                 coords,
                 ymaps
-            })
+			})
+			this.setCurrentCoords(this.coords)
+			this.setCurrentAddress(this.address)
             this.$emit('closeMap')
         },
         async onInit(mapInstance) {
@@ -168,7 +222,6 @@ export default {
         async onBoundsChange() {
             const coords = this.mapInstance.getCenter()
             this.address = await getAddresByCoords(this.ymaps, coords)
-            console.log('onBoundsChange -> this.address', this.address)
             await this.$emit('selectAddress', this.address)
         }
     },
@@ -176,24 +229,38 @@ export default {
 </script>
 
 <style>
-
-.near_me-btn{
-	border-top-right-radius: 0px !important;
-	border-bottom-right-radius: 0px !important;
+.map-actions-top {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
 }
 
-.btnFz{
-	font-size: 19px;
+.map-actions-bottom {
+    margin-left: 150px;
+    margin-right: 0px;
+    width: 78%;
+    position: relative;
+    bottom: 26px;
 }
 
-.address-input{
-	font-weight: bold;
-	border-top-left-radius: 0px !important;
-	border-bottom-left-radius: 0px !important;
+.near_me-btn {
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
 }
 
-.close-icon{
-	position: relative;
+.btnFz {
+    font-size: 19px;
+}
+
+.address-input {
+    font-weight: bold;
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+}
+
+.close-icon {
+    position: relative;
     left: 2rem;
     bottom: 2.5rem;
     opacity: .5;
@@ -211,13 +278,15 @@ export default {
     align-items: center;
 }
 
+.map-actions {}
+
 .map-actions {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
     width: 100%;
-	max-height: 55px;
+    max-height: 55px;
 }
 
 .desktop-map-title {
@@ -226,7 +295,7 @@ export default {
     line-height: 1.2;
     font-weight: 400;
     color: black;
-	height: 45px;
+    height: 45px;
 }
 
 .desktop-map {
@@ -240,9 +309,7 @@ export default {
     flex-direction: column;
     align-items: flex-start;
 }
-</style>
-
-<style lang="scss">
+</style><style lang="scss">
 $size: 40px;
 $header: 65px;
 
@@ -261,14 +328,14 @@ $header: 65px;
 .myGeo {
     background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIHN0cm9rZT0iIzQ0M0MwRiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjYiIGQ9Ik01LjAwMiAxMC44OEwxOCA2bC00Ljg3MiAxMy0xLjYyOC02LjV6Ii8+PC9zdmc+);
     border-radius: 100%;
-	margin: .5rem;
+    margin: .5rem;
 }
 
 .map-loading-desktop {
     max-width: 720px;
     max-height: 400px;
-	width: 100vh;
-	height: 100vw;
+    width: 100vh;
+    height: 100vw;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -175,6 +175,7 @@ export default {
     width: 50%;
     position: absolute;
     z-index: 100;
+	margin-top: -2rem;
 }
 
 .showRest-block {
