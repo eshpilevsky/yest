@@ -206,6 +206,7 @@ export default {
 .search-me {
     width: 80%;
     height: 50px;
+	margin-bottom: 2rem !important;
 }
 
 .setAdressContaine-info {
