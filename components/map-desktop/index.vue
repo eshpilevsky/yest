@@ -19,7 +19,7 @@
                 Ok
             </v-btn>
         </div>
-        <div v-if="isMapLoading" class="map-loading">
+        <div v-if="isMapLoading" class="map-loading-desktop">
             <v-progress-circular indeterminate size="40" color="grey"></v-progress-circular>
         </div>
         <div v-else>
@@ -264,9 +264,11 @@ $header: 65px;
 	margin: .5rem;
 }
 
-.desktop-map div .map-loading {
+.map-loading-desktop {
     max-width: 720px;
     max-height: 400px;
+	width: 100vh;
+	height: 100vw;
     display: flex;
     align-items: center;
     justify-content: center;
