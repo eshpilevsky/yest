@@ -1,9 +1,9 @@
 <template>
   <div style="padding-bottom: 0px">
-    <setAdress v-if="showSetAdress === true"/>
-	<!-- <specialOffers v-show="showSpecialOffer === true"/> -->
+    <setAdress v-if="showSetAdress"/>
+	<specialOffers v-show="getCurrentAddress.length > 0"/>
 	<categories/>
-	<mobileSearch v-show="this.showSearch === true" />
+	<mobileSearch v-show="showSearch" />
 	<restorans/>
   </div>
 </template>
@@ -12,7 +12,7 @@
 
 import setAdress from '~/components/setAdress'
 import categories from '~/components/categories.vue'
-// import specialOffers from '~/components/specialOffers.vue'
+import specialOffers from '~/components/specialOffers.vue'
 import restorans from '~/components/restorans.vue'
 import mobileSearch from '~/components/mobileSearch.vue'
 import {
@@ -23,7 +23,7 @@ export default {
   name: 'Home',
   components: {
     categories,
-    // specialOffers,
+    specialOffers,
     restorans,
     mobileSearch,
     setAdress
@@ -52,6 +52,7 @@ export default {
       selectedZoneId: 'zone/getSelectedZone',
       getZoneList: 'zone/getZoneList',
       getCategoryList: 'user/getCategoryList',
+      getCurrentAddress: "map/getCurrentAddress",
       getUserLocation: 'user/getUserLocation'
     })
   },

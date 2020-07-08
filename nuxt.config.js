@@ -63,7 +63,9 @@ module.exports = {
       src: '~/plugins/is-mobile',
       // mode: 'client',
       // ssr: false
-    }
+	},
+	{ src: '@/plugins/vue-awesome-swiper', ssr: false },
+
   ],
   /*
    ** Nuxt.js dev-modules
