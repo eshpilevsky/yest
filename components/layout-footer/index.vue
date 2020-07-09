@@ -147,6 +147,7 @@ export default {
 .footer-top-right{
 	display: flex;
 	align-items: center;
+	padding-right: 30px;
 }
 
 .footer-top-left {
@@ -172,12 +173,12 @@ export default {
     max-width: 1420px;
     margin: auto;
     padding: 0 120px;
-    margin-right: 20px;
 }
 
 .social-links {
     display: flex;
     flex-direction: row;
+	padding-right: 20px;
 }
 
 .social-links-img {
@@ -201,6 +202,7 @@ export default {
     text-align: end;
     display: flex;
     flex-direction: column;
+	align-items: flex-end;
     width: 100%;
 }
 
