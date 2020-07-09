@@ -17,7 +17,7 @@
         </v-text-field>
         <div v-if="showAdressList == true" class="adressList" v-click-outside="closeAdressList">
             <v-list>
-                <v-list-item v-for="(item, index) in suggestions" :key="'adres'+index" class="itemAdress" @click="selectAdress(item)">
+                <v-list-item v-for="(item, index) in suggestions" :key="'adres'+index" class="itemAdress" @click="() => selectAdress(item)">
                     <v-list-item-content>
                         <v-list-item-title>{{item.value}}</v-list-item-title>
                     </v-list-item-content>
@@ -98,7 +98,7 @@ export default {
 		showRestuarants(){
 			const component = this
 			this.setCurrentAddress(this.searchAddress)
-            ymaps.geocode(this.searchAddress, {
+            this.ymaps.geocode(this.searchAddress, {
 				results: 1,
 				boundedBy:[[51.753588, 23.148098], [55.591263, 31.491889]]
             }).then((geo) => {
@@ -110,7 +110,7 @@ export default {
 		getSuggest(str){
 			this.loadingSuggest = true
             const component = this
-            ymaps.suggest(str, {
+            this.ymaps.suggest(str, {
 				results: 6,
 				boundedBy:[[51.753588, 23.148098], [55.591263, 31.491889]]
             }).then((items) => {
@@ -140,16 +140,16 @@ export default {
 			this.showAdressList = false
         },
     },
-    beforeMount() {
-        this.ww = window.innerWidth;
-    },
-    async mounted() {
-        this.searchAddress = this.getCurrentAddress
-        await loadYmap({
+    async beforeMount() {
+		this.ww = window.innerWidth;
+		await loadYmap({
 			...settings,
             debug: true
         });
 		this.ymaps = ymaps
+    },
+     mounted() {
+        this.searchAddress = this.getCurrentAddress
 		this.showAdressList = false
     }
 }

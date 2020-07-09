@@ -1,6 +1,6 @@
 <template>
   <div style="padding-bottom: 0px">
-    <setAdress v-if="showSetAdress"/>
+    <setAdress v-if="showSetAdress" />
 	<specialOffers v-show="getCurrentAddress.length > 0"/>
 	<categories/>
 	<mobileSearch v-show="showSearch" />
@@ -73,7 +73,7 @@ export default {
         lastScrollTop = st <= 0 ? 0 : st
       })
 
-      if (this.getUserLocation.locationAdress !== null) {
+      if (this.getCurrentAddress.length > 0) {
         this.showSetAdress = false
       } else {
         this.showSetAdress = true

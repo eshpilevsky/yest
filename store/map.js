@@ -23,6 +23,7 @@ export const mutations = {
       const longitude = crd.longitude
       state.data.currentCoords[0] = latitude
       state.data.currentCoords[1] = longitude
+      console.log('SHOW_MAP -> state.data.currentCoords', state.data.currentCoords)
     }, (error) => {
       console.warn(`ERROR(${error.code}): ${error.message}`)
     }, {
@@ -63,14 +64,18 @@ export const actions = {
           const {
             latitude,
             longitude
-          } = location.coords
+		} = location.coords
+			console.log('latitude', latitude)
+			console.log('longitude', longitude)
           commit('SET_CURRENT_COORDS', [latitude, longitude])
-          resolve()
+          resolve(true)
         },
         () => {
+		  resolve(false)
           commit('SET_GEOLOCATION_DENIED')
-          commit('SET_INPUT_ADDRESS_MODE')
-          reject()
+		  commit('SET_INPUT_ADDRESS_MODE')
+
+        //   reject()
         }
       )
     })

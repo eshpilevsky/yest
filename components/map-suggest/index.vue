@@ -44,7 +44,8 @@ export default {
         await loadYmap({
             ...settings,
             debug: true
-        });
+		});
+		this.ymaps = ymaps
     },
     watch: {
         searchString(newValue, oldValue) {
@@ -70,7 +71,7 @@ export default {
         suggestPlaces(str) {
             this.loading = true
             const component = this
-            ymaps.suggest(str, {
+            this.ymaps.suggest(str, {
 				results: 6,
 				boundedBy:[[51.753588, 23.148098], [55.591263, 31.491889]]
             }).then((items) => {

@@ -71,15 +71,16 @@ export default {
         currentAddress() {
             return this.getCurrentAddress
         }
-    },
-    async mounted() {
+	},
+    async beforeMount() {
         if (performance.navigation.type == 1) {
             this.hideMap()
         }
         this.isMapLoading = true
         await loadYmap({
             ...yMapSettings
-        });
+		});
+		this.ymaps = ymaps
         this.isMapLoading = false
     },
     methods: {
@@ -101,7 +102,6 @@ export default {
                 this.coords = this.getCurrentCoords
             }
             this.mapInstance = mapInstance
-            this.ymaps = ymaps
             getClose(ymaps, mapInstance, async () => {
                 setTimeout(() => {
                     this.hideMap();
@@ -123,16 +123,20 @@ export default {
                 await this.getLocation()
             }
             this.coords = this.getCurrentCoords
+            console.error('onInit -> this.coords', this.coords)
         },
         onClick(e) {
             this.coords = e.get('coords')
             this.setCurrentCoords(this.coords)
         },
         selectedPlace(place) {
-			const component = this
-            ymaps.geocode(place.value, {
-				results: 1,
-				boundedBy:[[51.753588, 23.148098], [55.591263, 31.491889]]
+            const component = this
+            this.ymaps.geocode(place.value, {
+                results: 1,
+                boundedBy: [
+                    [51.753588, 23.148098],
+                    [55.591263, 31.491889]
+                ]
             }).then((geo) => {
                 const geoObjects = geo.geoObjects.get(0)
                 component.coords = geoObjects.geometry.getCoordinates()
@@ -145,8 +149,11 @@ export default {
             if (mapInstance !== null) {
                 const selectedValue = e.get('item').value
                 ymaps.geocode(selectedValue, {
-						results: 1,
-						boundedBy:[[51.753588, 23.148098], [55.591263, 31.491889]]
+                        results: 1,
+                        boundedBy: [
+                            [51.753588, 23.148098],
+                            [55.591263, 31.491889]
+                        ]
                     })
                     .then((res) => {
                         const geoObjects = res.geoObjects.get(0)
@@ -223,8 +230,11 @@ ymaps .customMapBtn {
 
 ymaps .customMapBtn,
 ymaps .customMapBtn i.material-icons {
-    font-size: $size;
-    line-height: $size;
+    font-size: 7vw;
+    line-height: 7vw;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 ymaps [title="Определить ваше местоположение"] {

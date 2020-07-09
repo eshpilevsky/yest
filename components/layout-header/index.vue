@@ -87,7 +87,7 @@
                 </div>
             </v-list>
         </v-navigation-drawer>
-        <nuxt-link v-if="showSetAdressBtn == false" v-show="showSidebar == false" to="/" class="mobileLogo">
+        <nuxt-link v-if="!showSetAdressBtn" v-show="showSidebar == false" to="/" class="mobileLogo">
             <img src="../../assets/logo.png" class="burger-logo-img" alt="logodesktop">
         </nuxt-link>
         <div v-else class="logo-img">
@@ -112,7 +112,7 @@
                 {{this.getCurrentAddress}}
             </v-btn>
             <v-overlay :value="burgerOverlay" :opacity=".5">
-					<MapDesktop @closeMap='closeDesktopMap()'></MapDesktop>
+                <MapDesktop @closeMap='closeDesktopMap()'></MapDesktop>
             </v-overlay>
             <v-menu offset-y>
                 <template v-slot:activator="{ on }">
@@ -133,8 +133,8 @@
 
 <script>
 import {
-	mapGetters,
-	mapMutations
+    mapGetters,
+    mapMutations
 } from 'vuex'
 import MapBtn from '@/components/map-btn'
 import MapContainer from '@/components/map-container'
@@ -164,30 +164,32 @@ export default {
                     title: 'About',
                     icon: 'question_answer'
                 }
-			],
-			saveAddress: false
+            ],
+            saveAddress: false
         }
-	},
-	watch: {
-		getCurrentAddress(newValue, oldValue) {
-			console.log('getCurrentAddress -> newValue', newValue)
-			this
-			return newValue
-		}
-	},
+    },
+    watch: {
+        getCurrentAddress(newValue, oldValue) {
+            console.log('getCurrentAddress -> newValue', newValue)
+            if (newValue.length > 0) {
+                this.showSetAdressBtn = true
+            }
+            return newValue
+        }
+    },
     methods: {
-		...mapMutations( {
+        ...mapMutations({
             setCurrentCoords: 'map/SET_CURRENT_COORDS',
         }),
         onClick(e) {
             this.coords = e.get('coords')
             this.setCurrentCoords(this.coords)
-		},
+        },
         showDesktopMap() {
             this.burgerOverlay = true
         },
         closeDesktopMap() {
-			console.error('emit close');
+            console.error('emit close');
             this.burgerOverlay = false
         },
         showHideSidebar() {
@@ -224,15 +226,18 @@ export default {
             canDisplayMap: 'device/isMobile',
             getCurrentAddress: 'map/getCurrentAddress',
             isInputAddressMode: 'map/isInputAddressMode',
-		}),
-		checkAddress(){
-			return this.getCurrentAddress > 0 ? true : false
-		},
+        }),
+        checkAddress() {
+            return this.getCurrentAddress > 0 ? true : false
+        },
     },
     created() {
         this.$store.dispatch('zone/queryZones')
     },
     mounted() {
+        if (this.getCurrentAddress.length > 0) {
+            this.showSetAdressBtn = true
+        }
         let lastScrollTop = 0
         if (window.innerWidth < 450) {
             if (this.getUserLocation.locationAdress == null) {

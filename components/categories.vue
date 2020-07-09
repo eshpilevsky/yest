@@ -258,7 +258,6 @@ export default {
                     console.error(error)
                 })
             } else {
-				console.log('width? ->', window.innerWidth);
 				if (window.innerWidth < 500) {
 					oldCategoryImg.setAttribute('style', `background-image: url("https://menu-menu.by/images/category_icons/new/4529d57df6bc970d11c1f3496296d99b-200x200.jpg");`)
 				} else{

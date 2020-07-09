@@ -108,7 +108,10 @@ export default {
     watch: {
         address(newValue, oldValue) {
             this.suggestPlaces(newValue)
-        }
+		},
+		getCurrentCoords(newValue){
+			return newValue
+		}
     },
     methods: {
         ...mapMutations({
