@@ -109,7 +109,9 @@
                 <v-icon>
                     near_me
                 </v-icon>
-                {{this.getCurrentAddress}}
+				<span class="zone-btn-address">
+                	{{this.getCurrentAddress}}
+				</span>
             </v-btn>
             <v-overlay :value="burgerOverlay" :opacity=".5">
                 <MapDesktop @closeMap='closeDesktopMap()'></MapDesktop>
@@ -266,8 +268,19 @@ export default {
 </script>
 
 <style>
-.v-burgerOverlay__scrim {
-    /* height: 100vh !important; */
+
+.zone-btn-address{
+    text-overflow: clip;
+    overflow: hidden;
+}
+
+.zone-btn .v-btn__content{
+	max-width: 200px;
+    overflow: hidden;
+	direction: rtl;
+  	text-align: left;
+	display: flex;
+    flex-direction: row-reverse;
 }
 
 .burger-logo-img {
@@ -278,6 +291,7 @@ export default {
     height: 40px !important;
 }
 </style><style scoped>
+
 .map {
     height: 100%;
     width: 100%;
@@ -461,6 +475,8 @@ export default {
     font-size: 15px !important;
     text-transform: none !important;
     color: #000 !important;
+	text-overflow: clip;
+    overflow: hidden;
 }
 
 .links {

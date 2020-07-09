@@ -47,7 +47,6 @@ export default {
     overflow: hidden;
 	direction: rtl;
   	text-align: left;
-	
 }
 
 .set-you-address {
