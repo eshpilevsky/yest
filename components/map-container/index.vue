@@ -1,7 +1,8 @@
 <template>
 <v-overlay :value="isMapVisible">
-    <div v-if="isMapLoading" class="map-loading">
+    <div v-if="this.getMapLoading" class="map-loading">
         <v-progress-circular indeterminate size="40" color="grey"></v-progress-circular>
+		{{this.getMapLoading}}
     </div>
     <div v-else>
         <div class="currentAddress" v-show="!isInputAddressMode">
@@ -45,9 +46,6 @@ export default {
     components: {
         MapSuggest
     },
-    props: {
-        isDesktop: Boolean,
-    },
     data: () => ({
         controls: [],
         options: {
@@ -55,33 +53,39 @@ export default {
             suppressMapOpenBlock: true
         },
         address: '',
-        coords: [],
+        coords: [53.902515, 27.561456],
         mapInstance: null,
-        isMapLoading: true,
         ymaps: null,
-    }),
+	}),
+	watch: {
+		getMapLoading(newValue, oldValue) {
+			return newValue
+		}
+	},
     computed: {
         ...mapGetters('map', {
             isMapVisible: 'isMapVisible',
             getCurrentCoords: 'getCurrentCoords',
             getCurrentAddress: 'getCurrentAddress',
             isInputAddressMode: 'isInputAddressMode',
-            geolocationAvailable: 'geolocationAvailable'
+            geolocationAvailable: 'geolocationAvailable',
+            getMapLoading: 'getMapLoading',
         }),
         currentAddress() {
             return this.getCurrentAddress
         }
 	},
-    async beforeMount() {
-        if (performance.navigation.type == 1) {
-            this.hideMap()
-        }
-        this.isMapLoading = true
+	async beforeMount(){
         await loadYmap({
             ...yMapSettings
 		});
+        console.log('mounted -> ymaps', ymaps)
 		this.ymaps = ymaps
-        this.isMapLoading = false
+	},
+    async mounted() {
+        if (performance.navigation.type == 1) {
+            this.hideMap()
+        }
     },
     methods: {
         ...mapMutations({

@@ -9,29 +9,36 @@ export const state = () => ({
     currentCoords: [],
     inputAddressMode: false,
     address: '',
-    geolocationDenied: false
+    geolocationDenied: false,
+    loading: true,
   },
   status: 0
 })
 
 export const mutations = {
-  SHOW_MAP(state) {
+  async SHOW_MAP(state) {
     state.data.visible = true
-    navigator.geolocation.getCurrentPosition((pos) => {
+    await navigator.geolocation.getCurrentPosition((pos) => {
       const crd = pos.coords
       const latitude = crd.latitude
       const longitude = crd.longitude
       state.data.currentCoords[0] = latitude
       state.data.currentCoords[1] = longitude
-      console.log('SHOW_MAP -> state.data.currentCoords', state.data.currentCoords)
+      state.data.loading = false
     }, (error) => {
       console.warn(`ERROR(${error.code}): ${error.message}`)
+      state.data.inputAddressMode = true
     }, {
       enableHighAccuracy: true,
       timeout: 5000,
       maximumAge: 0
     })
-
+    navigator.geolocation.watchPosition(() => {},
+      (error) => {
+        console.log('SHOW_MAP -> error', error)
+        state.data.loading = false
+        state.data.inputAddressMode = true
+      });
   },
   HIDE_MAP(state) {
     state.data.visible = false
@@ -54,7 +61,7 @@ export const mutations = {
 };
 
 export const actions = {
-	
+
   async getLocation({
     commit
   }) {
@@ -64,18 +71,18 @@ export const actions = {
           const {
             latitude,
             longitude
-		} = location.coords
-			console.log('latitude', latitude)
-			console.log('longitude', longitude)
+          } = location.coords
+          console.log('latitude', latitude)
+          console.log('longitude', longitude)
           commit('SET_CURRENT_COORDS', [latitude, longitude])
           resolve(true)
         },
         () => {
-		  resolve(false)
+          resolve(false)
           commit('SET_GEOLOCATION_DENIED')
-		  commit('SET_INPUT_ADDRESS_MODE')
+          commit('SET_INPUT_ADDRESS_MODE')
 
-        //   reject()
+          //   reject()
         }
       )
     })
@@ -105,6 +112,9 @@ export const getters = {
   },
   geolocationAvailable(state) {
     return !state.data.geolocationDenied
+  },
+  getMapLoading(state) {
+    return state.data.loading
   },
   isInputAddressMode(state) {
     return state.data.inputAddressMode

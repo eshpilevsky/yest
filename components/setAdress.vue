@@ -98,16 +98,13 @@ export default {
 		}),
 		showRestuarants(){
 			const component = this
-			console.log('save entered addres ->',this.searchAddress );
 			this.setCurrentAddress(this.searchAddress)
             ymaps.geocode(this.searchAddress, {
 				results: 1,
 				boundedBy:[[51.753588, 23.148098], [55.591263, 31.491889]]
             }).then((geo) => {
-            	console.log('GeoCODER RESULT showRestuarants -> geo', geo)
                 const geoObjects = geo.geoObjects.get(0)
 				component.coords = geoObjects.geometry.getCoordinates()
-                console.log('GeoCODER RESULT showRestuarants -> geoObjects.geometry.getCoordinates()', geoObjects.geometry.getCoordinates())
 				component.setCurrentCoords(geoObjects.geometry.getCoordinates())
             });
 		},
