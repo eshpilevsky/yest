@@ -246,6 +246,9 @@ export default {
         getSelectedCategory(newValue) {
             this.limit = 24;
         },
+        getUserCoordinate(newValue) {
+			this.getRestaurants(newValue[0],newValue[1]);
+        },
     },
     mounted() {
         this.getRestaurants(
