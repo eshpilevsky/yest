@@ -246,11 +246,6 @@ export default {
         getSelectedCategory(newValue) {
             this.limit = 24;
         },
-        getCurrentAddress(newValue) {
-            console.error('getCurrentCoords -> newValue', newValue)
-            console.error('getCurrentCoords -> newValue', this.getCurrentCoords)
-            // this.getRestaurants(newValue[0], newValue[1]);
-        }
     },
     mounted() {
         this.getRestaurants(

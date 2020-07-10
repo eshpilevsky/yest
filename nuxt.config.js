@@ -125,5 +125,11 @@ module.exports = {
      */
     extend(config, ctx) {}
   },
+  vue: {
+	config: {
+	  productionTip: false,
+	  devtools: true
+	}
+  },
   telemetry: false
 }

@@ -15,14 +15,13 @@
                     <v-icon>near_me</v-icon>
                     Определить
                 </v-btn>
-                <v-text-field height='40' dense placeholder="Укажите адрес доставки..." v-model="address" dark filled outlined clearable background-color="primary" class="address-input btnFz"></v-text-field>
-
+                <v-text-field @focus="showSuggestList = true" height='40' dense placeholder="Укажите адрес доставки..." v-model="address" dark filled outlined clearable background-color="primary" class="address-input btnFz"></v-text-field>
                 <v-btn height='40' color="primary" class="ml-2" @click="confirmPosition()">
                     Ok
                 </v-btn>
             </div>
-            <div v-if="showSuggestList" class="map-actions-bottom" v-click-outside="closeAdressList">
-                <v-list class="sugList" background="white">
+            <div v-if="showSuggestList" class="map-actions-bottom">
+                <v-list class="sugList">
                     <v-list-item v-for="(item, index) in suggestList" :key="'sug'+index" class="itemAdress" @click="selectAdress(item)">
                         <v-list-item-content>
                             <v-list-item-title>{{item.value}}</v-list-item-title>
@@ -76,7 +75,8 @@ export default {
             suppressMapOpenBlock: true
         },
         address: '',
-        coords: [],
+        coords: [53.902474, 27.561461],
+        // coords: [],
         suggestList: [],
         mapInstance: null,
         isMapLoading: true,
@@ -91,32 +91,22 @@ export default {
             isInputAddressMode: 'isInputAddressMode',
             geolocationAvailable: 'geolocationAvailable'
         }),
-        currentAddress() {
-            return this.getCurrentAddress
-        }
-    },
-    async mounted() {
-        if (performance.navigation.type == 1) {
-            this.hideMap()
-        }
-        this.isMapLoading = true
-        await loadYmap({
-            ...yMapSettings
-        });
-        this.isMapLoading = false
     },
     watch: {
         address(newValue, oldValue) {
-            this.suggestPlaces(newValue)
-		},
-		getCurrentCoords(newValue){
-			return newValue
-		}
+            if (newValue.length > 3) {
+				// this.suggestPlaces(newValue)		            
+			}
+        },
+        coords(newValue) {
+            return newValue
+        }
     },
     methods: {
         ...mapMutations({
             hideMap: 'map/HIDE_MAP',
             setCurrentCoords: 'map/SET_CURRENT_COORDS',
+            setCurrentAddress: 'map/SET_CURRENT_ADDRESS',
             switchToMapMode: 'map/UNSET_INPUT_ADDRESS_MODE',
             switchToAddressMode: 'map/SET_INPUT_ADDRESS_MODE',
         }),
@@ -125,10 +115,8 @@ export default {
             getGeoObjects: 'getGeoObjects'
         }),
         selectAdress(address) {
-            console.log('selectAdress -> address', address)
             this.showSuggestList = false
             const component = this
-            this.setCurrentAddress(address)
             ymaps.geocode(address, {
                 results: 1,
                 boundedBy: [
@@ -165,13 +153,13 @@ export default {
             this.$emit('closeMap')
         },
         async confirmPosition() {
-            const coords = this.mapInstance.getCenter()
-            await this.getGeoObjects({
-                coords,
-                ymaps
-			})
-			this.setCurrentCoords(this.coords)
-			this.setCurrentAddress(this.address)
+            // const coords = this.mapInstance.getCenter()
+            // await this.getGeoObjects({
+            //     coords,
+            //     ymaps
+            // })
+            await this.setCurrentCoords(this.coords)
+            await this.setCurrentAddress(this.address)
             this.$emit('closeMap')
         },
         async onInit(mapInstance) {
@@ -182,7 +170,6 @@ export default {
                 this.coords = this.getCurrentCoords
             }
             this.mapInstance = mapInstance
-            this.ymaps = ymaps
             getPlace(ymaps, mapInstance)
             getGeo(ymaps, mapInstance)
 
@@ -228,6 +215,30 @@ export default {
             await this.$emit('selectAddress', this.address)
         }
     },
+    beforeMount() {
+
+        if (this.getCurrentAddress.length > 0) {
+            this.address = this.getCurrentAddress
+        }
+            console.log('beforeMount -> this.getCurrentCoords', this.getCurrentCoords)
+        if (this.getCurrentCoords.length > 0) {
+            this.coords = this.getCurrentCoords
+            console.log('mounted -> this.coords', this.coords)
+        }
+    },
+    async mounted() {
+
+        if (performance.navigation.type == 1) {
+            this.hideMap()
+        }
+        this.isMapLoading = true
+        await loadYmap({
+            ...yMapSettings
+        });
+
+        this.isMapLoading = false
+        this.mapInstance.setCenter(this.coords, 17)
+    },
 };
 </script>
 
@@ -242,9 +253,9 @@ export default {
 .map-actions-bottom {
     margin-left: 150px;
     margin-right: 0px;
-    width: 78%;
     position: relative;
     bottom: 26px;
+    z-index: 9;
 }
 
 .near_me-btn {

@@ -87,7 +87,7 @@
                 </div>
             </v-list>
         </v-navigation-drawer>
-        <nuxt-link v-if="!showSetAdressBtn" v-show="showSidebar == false" to="/" class="mobileLogo">
+        <nuxt-link v-if="!showSidebar" to="/" class="mobileLogo">
             <img src="../../assets/logo.png" class="burger-logo-img" alt="logodesktop">
         </nuxt-link>
         <div v-else class="logo-img">
@@ -105,7 +105,7 @@
             </nuxt-link>
         </div>
         <div class="technical-Btns">
-            <v-btn small rounded outlined class="zone-btn" color="primary" @click="showDesktopMap()">
+            <v-btn v-if="this.getCurrentAddress.length > 0" small rounded outlined class="zone-btn" color="primary" @click="showDesktopMap()">
                 <v-icon>
                     near_me
                 </v-icon>

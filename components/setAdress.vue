@@ -17,7 +17,7 @@
         </v-text-field>
         <div v-if="showAdressList == true" class="adressList" v-click-outside="closeAdressList">
             <v-list>
-                <v-list-item v-for="(item, index) in suggestions" :key="'adres'+index" class="itemAdress" @click="() => selectAdress(item)">
+                <v-list-item v-for="(item, index) in suggestions" :key="'adres'+index" class="itemAdress" @click="selectAdress(item)">
                     <v-list-item-content>
                         <v-list-item-title>{{item.value}}</v-list-item-title>
                     </v-list-item-content>
@@ -56,6 +56,7 @@ export default {
 			filteredLocations: [],
 			ymaps: null,
 			loadingSuggest: false,
+			coords: []
         }
     },
     computed: {
@@ -97,13 +98,16 @@ export default {
 		}),
 		showRestuarants(){
 			const component = this
+			console.log('save entered addres ->',this.searchAddress );
 			this.setCurrentAddress(this.searchAddress)
-            this.ymaps.geocode(this.searchAddress, {
+            ymaps.geocode(this.searchAddress, {
 				results: 1,
 				boundedBy:[[51.753588, 23.148098], [55.591263, 31.491889]]
             }).then((geo) => {
+            	console.log('GeoCODER RESULT showRestuarants -> geo', geo)
                 const geoObjects = geo.geoObjects.get(0)
 				component.coords = geoObjects.geometry.getCoordinates()
+                console.log('GeoCODER RESULT showRestuarants -> geoObjects.geometry.getCoordinates()', geoObjects.geometry.getCoordinates())
 				component.setCurrentCoords(geoObjects.geometry.getCoordinates())
             });
 		},
@@ -115,7 +119,7 @@ export default {
 				boundedBy:[[51.753588, 23.148098], [55.591263, 31.491889]]
             }).then((items) => {
                 component.suggestions = items
-                component.loadingSuggest = false
+				component.loadingSuggest = false
             });
 		},
         clearAdress() {
