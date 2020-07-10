@@ -15,7 +15,7 @@
                     <v-icon>near_me</v-icon>
                     Определить
                 </v-btn>
-                <v-text-field @focus="showSuggestList = true" height='40' dense placeholder="Укажите адрес доставки..." v-model="address" dark filled outlined clearable background-color="primary" class="address-input btnFz"></v-text-field>
+                <v-text-field @focus="focusInput" @blur="blurInput()" height='40' dense placeholder="Укажите адрес доставки..." v-model="address" dark filled outlined clearable background-color="primary" class="address-input btnFz"></v-text-field>
                 <v-btn height='40' color="primary" class="ml-2" @click="confirmPosition()">
                     Ok
                 </v-btn>
@@ -95,7 +95,7 @@ export default {
     watch: {
         address(newValue, oldValue) {
             if (newValue.length > 3) {
-				// this.suggestPlaces(newValue)		            
+				this.suggestPlaces(newValue)		            
 			}
         },
         coords(newValue) {
@@ -113,10 +113,17 @@ export default {
         ...mapActions('map', {
             getLocation: 'getLocation',
             getGeoObjects: 'getGeoObjects'
-        }),
-        selectAdress(address) {
+		}),
+		focusInput(){
+			this.showSuggestList = true
+		},
+		blurInput(){
+			this.showSuggestList = false
+		},
+        async selectAdress(address) {
             this.showSuggestList = false
-            const component = this
+			const component = this
+			await this.setCurrentAddress(address.value)
             ymaps.geocode(address, {
                 results: 1,
                 boundedBy: [
@@ -131,7 +138,6 @@ export default {
 
         },
         suggestPlaces(str) {
-            this.showSuggestList = false
             const component = this
             ymaps.suggest(str, {
                 results: 6,
@@ -141,8 +147,6 @@ export default {
                 ]
             }).then((items) => {
                 component.suggestList = items
-                console.log('suggestPlaces -> items', items)
-                component.showSuggestList = true
             });
         },
         getMyGeo() {
@@ -237,7 +241,8 @@ export default {
         });
 
         this.isMapLoading = false
-        this.mapInstance.setCenter(this.coords, 17)
+		this.mapInstance.setCenter(this.coords, 17)
+		this.showSuggestList = false
     },
 };
 </script>
