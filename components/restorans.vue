@@ -1,6 +1,6 @@
 <template>
 <div class="containe">
-    <h2 class="restorane-title">Рестораны</h2>
+    <h2 class="restorane-title" id="restTitle">Рестораны</h2>
     <v-flex cols-12 wrap class="restorane-list" v-if="loadingRest === false">
         <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in this.computedOpenTime" :key="index" class="restorane-list-item" @click="goToRes(item)">
             <div class="list-item-block">

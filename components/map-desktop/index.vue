@@ -15,13 +15,13 @@
                     <v-icon>near_me</v-icon>
                     Определить
                 </v-btn>
-                <v-text-field @focus="focusInput" @blur="blurInput()" height='40' dense placeholder="Укажите адрес доставки..." v-model="address" dark filled outlined clearable background-color="primary" class="address-input btnFz"></v-text-field>
+                <v-text-field @focus="focusInput" @blur="blurInput" height='40' dense placeholder="Укажите адрес доставки..." v-model="address" dark filled outlined clearable background-color="primary" class="address-input btnFz"></v-text-field>
                 <v-btn height='40' color="primary" class="ml-2" @click="confirmPosition()">
                     Ok
                 </v-btn>
             </div>
             <div v-if="showSuggestList" class="map-actions-bottom">
-                <v-list class="sugList">
+                <v-list class="sugList" max-width="505px">
                     <v-list-item v-for="(item, index) in suggestList" :key="'sug'+index" class="itemAdress" @click="selectAdress(item)">
                         <v-list-item-content>
                             <v-list-item-title>{{item.value}}</v-list-item-title>
@@ -95,8 +95,8 @@ export default {
     watch: {
         address(newValue, oldValue) {
             if (newValue.length > 3) {
-				this.suggestPlaces(newValue)		            
-			}
+                this.suggestPlaces(newValue)
+            }
         },
         coords(newValue) {
             return newValue
@@ -113,18 +113,20 @@ export default {
         ...mapActions('map', {
             getLocation: 'getLocation',
             getGeoObjects: 'getGeoObjects'
-		}),
-		focusInput(){
-			this.showSuggestList = true
-		},
-		blurInput(){
-			this.showSuggestList = false
-		},
+        }),
+        focusInput() {
+            setTimeout(() => {
+                this.showSuggestList = true
+            }, 500);
+        },
+        blurInput() {
+            setTimeout(() => {
+                this.showSuggestList = false
+            }, 500);
+        },
         async selectAdress(address) {
-            this.showSuggestList = false
-			const component = this
-			await this.setCurrentAddress(address.value)
-            ymaps.geocode(address, {
+            const component = this
+            ymaps.geocode(address.value, {
                 results: 1,
                 boundedBy: [
                     [51.753588, 23.148098],
@@ -133,9 +135,11 @@ export default {
             }).then((geo) => {
                 const geoObjects = geo.geoObjects.get(0)
                 component.coords = geoObjects.geometry.getCoordinates()
-                component.setCurrentCoords(geoObjects.geometry.getCoordinates())
-            });
-
+                 component.setCurrentCoords(geoObjects.geometry.getCoordinates())
+				 component.setCurrentAddress(address.value)
+				 component.mapInstance.setCenter(geoObjects.geometry.getCoordinates(), 17)
+			});
+		
         },
         suggestPlaces(str) {
             const component = this
@@ -157,11 +161,6 @@ export default {
             this.$emit('closeMap')
         },
         async confirmPosition() {
-            // const coords = this.mapInstance.getCenter()
-            // await this.getGeoObjects({
-            //     coords,
-            //     ymaps
-            // })
             await this.setCurrentCoords(this.coords)
             await this.setCurrentAddress(this.address)
             this.$emit('closeMap')
@@ -183,12 +182,10 @@ export default {
             this.coords = this.getCurrentCoords
         },
         onClick(e) {
-			console.log('CLICK');
             this.coords = e.get('coords')
             this.setCurrentCoords(this.coords)
         },
         onSelect(e) {
-			console.log('ONSLECT');
             const mapInstance = this.mapInstance
             const ymaps = this.ymaps
             const component = this
@@ -216,9 +213,7 @@ export default {
             }
         },
         async onBoundsChange() {
-			console.log('onBoundsChange');
-			const coords = this.mapInstance.getCenter()
-			console.log('onBoundsChange coords', coords);
+            const coords = this.mapInstance.getCenter()
             this.address = await getAddresByCoords(ymaps, coords)
             await this.$emit('selectAddress', this.address)
         }
@@ -238,11 +233,11 @@ export default {
         }
         if (this.getCurrentCoords.length > 0) {
             this.coords = this.getCurrentCoords
-		}
-		
+        }
+
         this.isMapLoading = false
-		// this.mapInstance.setCenter(this.coords, 17)
-		this.showSuggestList = false
+        // this.mapInstance.setCenter(this.coords, 17)
+        this.showSuggestList = false
     },
 };
 </script>

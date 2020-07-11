@@ -10,12 +10,12 @@
         <span class="info-setPlace">
             Укажите ваше местоположение, чтобы мы смогли предложить вам список доступных ресторанов
         </span>
-        <v-text-field class='search-me' prepend-inner-icon="near_me" label="Укажите адрес доставки..." v-model='searchAddress' solo clearable @click:clear="clearAdress">
+        <v-text-field @focus="focusInput" @blur="blurInput()" class='search-me' prepend-inner-icon="near_me" label="Укажите адрес доставки..." v-model='searchAddress' solo clearable @click:clear="clearAdress">
             <template v-slot:append-outer>
                 <v-btn class="showRest-block" color='primary' @click="showRestuarants()">Показать рестораны</v-btn>
             </template>
         </v-text-field>
-        <div v-if="showAdressList == true" class="adressList" v-click-outside="closeAdressList">
+        <div v-if="showAdressList && searchAddress.length > 3" class="adressList">
             <v-list>
                 <v-list-item v-for="(item, index) in suggestions" :key="'adres'+index" class="itemAdress" @click="selectAdress(item)">
                     <v-list-item-content>
@@ -79,8 +79,9 @@ export default {
             return newValue
         },
         searchAddress(newValue) {
-            this.getSuggest(newValue)
-            this.showAdressList = true
+            if (newValue.length > 3) {
+                this.getSuggest(newValue)
+            }
         },
         getCurrentAddress(newValue) {
             this.searchAddress = newValue
@@ -96,9 +97,18 @@ export default {
             setCurrentAddress: 'map/SET_CURRENT_ADDRESS',
             setCurrentCoords: 'map/SET_CURRENT_COORDS',
         }),
-        showRestuarants() {
+        focusInput() {
+            setTimeout(() => {
+                this.showAdressList = true
+            }, 500);
+        },
+        blurInput() {
+            setTimeout(() => {
+                this.showAdressList = false
+            }, 500);
+        },
+        async showRestuarants() {
             const component = this
-            this.setCurrentAddress(this.searchAddress)
             ymaps.geocode(this.searchAddress, {
                 results: 1,
                 boundedBy: [
@@ -109,12 +119,21 @@ export default {
                 const geoObjects = geo.geoObjects.get(0)
                 component.coords = geoObjects.geometry.getCoordinates()
                 component.setCurrentCoords(geoObjects.geometry.getCoordinates())
+                component.setCurrentAddress(component.searchAddress)
+            });
+            const id = 'restTitle';
+            const yOffset = -70;
+            const element = document.getElementById(id);
+            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            window.scrollTo({
+                top: y,
+                behavior: 'smooth'
             });
         },
         getSuggest(str) {
             this.loadingSuggest = true
             const component = this
-            this.ymaps.suggest(str, {
+            ymaps.suggest(str, {
                 results: 6,
                 boundedBy: [
                     [51.753588, 23.148098],
@@ -139,12 +158,8 @@ export default {
                 headContainer.style.visibility = 'visible'
             }
         },
-        closeAdressList() {
-            this.showAdressList = false
-        },
         selectAdress(address) {
             this.searchAddress = address.value
-            this.showAdressList = false
         },
     },
     async beforeMount() {
@@ -157,14 +172,13 @@ export default {
     },
     mounted() {
         this.searchAddress = this.getCurrentAddress
-        this.showAdressList = false
     }
 }
 </script>
 
 <style scoped>
 .map-btn {
-    display: none;
+    visibility: hidden;
 }
 
 .setAdress {
@@ -261,7 +275,7 @@ export default {
 
 @media screen and (max-width: 450px) {
     .map-btn {
-        display: none;
+        visibility: visible;
     }
 
     .setAdress {
