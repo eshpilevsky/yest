@@ -24,15 +24,15 @@
                 </v-list-item>
             </v-list>
         </div>
-        <map-btn v-if="this.canDisplayMap" />
+        <map-btn v-if="this.canDisplayMap" class="map-btn" />
     </div>
 </div>
 </template>
 
 <script>
 import {
-	mapGetters,
-	mapMutations
+    mapGetters,
+    mapMutations
 } from 'vuex'
 import MapBtn from '@/components/map-btn'
 import {
@@ -53,10 +53,10 @@ export default {
             showAdressList: false,
             ww: 0,
             suggestions: [],
-			filteredLocations: [],
-			ymaps: null,
-			loadingSuggest: false,
-			coords: []
+            filteredLocations: [],
+            ymaps: null,
+            loadingSuggest: false,
+            coords: []
         }
     },
     computed: {
@@ -92,35 +92,41 @@ export default {
         }
     },
     methods: {
-		...mapMutations( {
-			setCurrentAddress: 'map/SET_CURRENT_ADDRESS',
-			setCurrentCoords: 'map/SET_CURRENT_COORDS',
-		}),
-		showRestuarants(){
-			const component = this
-			this.setCurrentAddress(this.searchAddress)
+        ...mapMutations({
+            setCurrentAddress: 'map/SET_CURRENT_ADDRESS',
+            setCurrentCoords: 'map/SET_CURRENT_COORDS',
+        }),
+        showRestuarants() {
+            const component = this
+            this.setCurrentAddress(this.searchAddress)
             ymaps.geocode(this.searchAddress, {
-				results: 1,
-				boundedBy:[[51.753588, 23.148098], [55.591263, 31.491889]]
+                results: 1,
+                boundedBy: [
+                    [51.753588, 23.148098],
+                    [55.591263, 31.491889]
+                ]
             }).then((geo) => {
                 const geoObjects = geo.geoObjects.get(0)
-				component.coords = geoObjects.geometry.getCoordinates()
-				component.setCurrentCoords(geoObjects.geometry.getCoordinates())
+                component.coords = geoObjects.geometry.getCoordinates()
+                component.setCurrentCoords(geoObjects.geometry.getCoordinates())
             });
-		},
-		getSuggest(str){
-			this.loadingSuggest = true
+        },
+        getSuggest(str) {
+            this.loadingSuggest = true
             const component = this
             this.ymaps.suggest(str, {
-				results: 6,
-				boundedBy:[[51.753588, 23.148098], [55.591263, 31.491889]]
+                results: 6,
+                boundedBy: [
+                    [51.753588, 23.148098],
+                    [55.591263, 31.491889]
+                ]
             }).then((items) => {
                 component.suggestions = items
-				component.loadingSuggest = false
+                component.loadingSuggest = false
             });
-		},
+        },
         clearAdress() {
-			this.setCurrentAddress('');
+            this.setCurrentAddress('');
         },
         show(value) {
             var body = document.getElementsByTagName('body')[0]
@@ -137,26 +143,30 @@ export default {
             this.showAdressList = false
         },
         selectAdress(address) {
-			this.searchAddress = address.value
-			this.showAdressList = false
+            this.searchAddress = address.value
+            this.showAdressList = false
         },
     },
     async beforeMount() {
-		this.ww = window.innerWidth;
-		await loadYmap({
-			...settings,
+        this.ww = window.innerWidth;
+        await loadYmap({
+            ...settings,
             debug: true
         });
-		this.ymaps = ymaps
+        this.ymaps = ymaps
     },
-     mounted() {
+    mounted() {
         this.searchAddress = this.getCurrentAddress
-		this.showAdressList = false
+        this.showAdressList = false
     }
 }
 </script>
 
 <style scoped>
+.map-btn {
+    display: none;
+}
+
 .setAdress {
     display: none;
 }
@@ -176,7 +186,7 @@ export default {
     width: 50%;
     position: absolute;
     z-index: 100;
-	margin-top: -2rem;
+    margin-top: -2rem;
 }
 
 .showRest-block {
@@ -208,7 +218,7 @@ export default {
 .search-me {
     width: 80%;
     height: 50px;
-	margin-bottom: 2rem !important;
+    margin-bottom: 2rem !important;
 }
 
 .setAdressContaine-info {
@@ -250,6 +260,9 @@ export default {
 }
 
 @media screen and (max-width: 450px) {
+    .map-btn {
+        display: none;
+    }
 
     .setAdress {
         display: flex;

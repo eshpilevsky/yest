@@ -179,7 +179,7 @@ export default {
         },
         async onBoundsChange() {
             const coords = this.mapInstance.getCenter()
-            this.address = await getAddresByCoords(this.ymaps, coords)
+            this.address = await getAddresByCoords(ymaps, coords)
         }
     },
 };

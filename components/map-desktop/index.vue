@@ -183,10 +183,12 @@ export default {
             this.coords = this.getCurrentCoords
         },
         onClick(e) {
+			console.log('CLICK');
             this.coords = e.get('coords')
             this.setCurrentCoords(this.coords)
         },
         onSelect(e) {
+			console.log('ONSLECT');
             const mapInstance = this.mapInstance
             const ymaps = this.ymaps
             const component = this
@@ -214,20 +216,11 @@ export default {
             }
         },
         async onBoundsChange() {
-            const coords = this.mapInstance.getCenter()
-            this.address = await getAddresByCoords(this.ymaps, coords)
+			console.log('onBoundsChange');
+			const coords = this.mapInstance.getCenter()
+			console.log('onBoundsChange coords', coords);
+            this.address = await getAddresByCoords(ymaps, coords)
             await this.$emit('selectAddress', this.address)
-        }
-    },
-    beforeMount() {
-
-        if (this.getCurrentAddress.length > 0) {
-            this.address = this.getCurrentAddress
-        }
-            console.log('beforeMount -> this.getCurrentCoords', this.getCurrentCoords)
-        if (this.getCurrentCoords.length > 0) {
-            this.coords = this.getCurrentCoords
-            console.log('mounted -> this.coords', this.coords)
         }
     },
     async mounted() {
@@ -240,8 +233,15 @@ export default {
             ...yMapSettings
         });
 
+        if (this.getCurrentAddress.length > 0) {
+            this.address = this.getCurrentAddress
+        }
+        if (this.getCurrentCoords.length > 0) {
+            this.coords = this.getCurrentCoords
+		}
+		
         this.isMapLoading = false
-		this.mapInstance.setCenter(this.coords, 17)
+		// this.mapInstance.setCenter(this.coords, 17)
 		this.showSuggestList = false
     },
 };
