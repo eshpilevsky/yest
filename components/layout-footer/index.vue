@@ -370,6 +370,7 @@ export default {
 
     .links-list {
         text-align: start;
+		align-items: flex-start;
         display: flex;
         flex-direction: column;
         padding: 0 20px;

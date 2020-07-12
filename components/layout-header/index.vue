@@ -88,7 +88,8 @@
             </v-list>
         </v-navigation-drawer>
         <nuxt-link v-if="!showSidebar" to="/" class="mobileLogo">
-            <img src="../../assets/logo.png" class="burger-logo-img" alt="logodesktop">
+            <img src="@/assets/logo.png" class="burger-logo-img" :class="{hideLogo : this.getCurrentAddress.length > 0}" alt="logodesktop">
+            <map-btn v-if="this.getCurrentAddress.length > 0" class="header-map-btn" />
         </nuxt-link>
         <div v-else class="logo-img">
             <map-btn v-if="canDisplayMap === true" />
@@ -109,9 +110,9 @@
                 <v-icon>
                     near_me
                 </v-icon>
-				<span class="zone-btn-address">
-                	{{this.getCurrentAddress}}
-				</span>
+                <span class="zone-btn-address">
+                    {{this.getCurrentAddress}}
+                </span>
             </v-btn>
             <v-overlay :value="burgerOverlay" :opacity=".5">
                 <MapDesktop @closeMap='closeDesktopMap()'></MapDesktop>
@@ -223,7 +224,7 @@ export default {
     computed: {
         ...mapGetters({
             getSelectedZone: 'zone/getSelectedZone',
-			getCurrentAddress: 'map/getCurrentAddress',
+            getCurrentAddress: 'map/getCurrentAddress',
             isMapVisible: 'map/isMapVisible',
             canDisplayMap: 'device/isMobile',
             getCurrentAddress: 'map/getCurrentAddress',
@@ -268,18 +269,17 @@ export default {
 </script>
 
 <style>
-
-.zone-btn-address{
+.zone-btn-address {
     text-overflow: clip;
     overflow: hidden;
 }
 
-.zone-btn .v-btn__content{
-	max-width: 200px;
+.zone-btn .v-btn__content {
+    max-width: 200px;
     overflow: hidden;
-	direction: rtl;
-  	text-align: left;
-	display: flex;
+    direction: rtl;
+    text-align: left;
+    display: flex;
     flex-direction: row-reverse;
 }
 
@@ -291,6 +291,15 @@ export default {
     height: 40px !important;
 }
 </style><style scoped>
+
+.hideLogo{
+	display: none !important; 
+}
+
+.header-map-btn {
+    display: none;
+	margin-top: 40px;
+}
 
 .map {
     height: 100%;
@@ -475,7 +484,7 @@ export default {
     font-size: 15px !important;
     text-transform: none !important;
     color: #000 !important;
-	text-overflow: clip;
+    text-overflow: clip;
     overflow: hidden;
 }
 
@@ -551,6 +560,10 @@ export default {
 }
 
 @media screen and (max-width: 450px) {
+
+    .header-map-btn {
+        display: flex;
+    }
 
     .burger-log {
         display: flex;
@@ -718,7 +731,7 @@ export default {
     background-color: #fff;
     overflow-x: hidden;
     padding-top: 65px;
-    transition: 0.5s;
+    /* transition: 0.5s; */
 }
 
 .bm-burgerOverlay {

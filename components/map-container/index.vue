@@ -79,7 +79,6 @@ export default {
         await loadYmap({
             ...yMapSettings
 		});
-        console.log('mounted -> ymaps', ymaps)
 		this.ymaps = ymaps
 	},
     async mounted() {
@@ -143,7 +142,8 @@ export default {
                 ]
             }).then((geo) => {
                 const geoObjects = geo.geoObjects.get(0)
-                component.coords = geoObjects.geometry.getCoordinates()
+				component.coords = geoObjects.geometry.getCoordinates()
+				component.mapInstance.setCenter(geoObjects.geometry.getCoordinates(), 17)
             });
         },
         onSelect(e) {

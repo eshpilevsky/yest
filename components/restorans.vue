@@ -591,7 +591,7 @@ export default {
 
     .list-item-bottom {
         flex-direction: row-reverse;
-        justify-content: space-between;
+        justify-content: flex-end;
         height: 30px;
     }
 
