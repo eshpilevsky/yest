@@ -491,9 +491,6 @@ export default {
     transition: 0.5s;
 }
 
-.restorane-list-item {
-    /* margin: 20px 20px 0px 0px; */
-}
 
 .restorane-list {
     display: flex;
@@ -554,6 +551,7 @@ export default {
 
     .restorane-list-item:hover {
         transition: none;
+		transform: none;
     }
 
     .restorane-list-item:not(:hover) {
