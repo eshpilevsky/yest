@@ -1,18 +1,21 @@
 <template>
-<v-overlay :value="isMapVisible">
-    <div v-if="this.getMapLoading" class="map-loading">
-        <v-progress-circular indeterminate size="40" color="grey"></v-progress-circular>
-		{{this.getMapLoading}}
-    </div>
-    <div v-else>
-        <div class="currentAddress" v-show="!isInputAddressMode">
-            <h2 class="currentAddress-title">{{address}}</h2>
-            <div class="currentAddress-put" @click="switchToAddressMode">Изменить адрес доставки</div>
+<no-ssr>
+
+    <v-overlay :value="isMapVisible">
+        <div v-if="this.getMapLoading" class="map-loading">
+            <v-progress-circular indeterminate size="40" color="grey"></v-progress-circular>
+            {{this.getMapLoading}}
         </div>
-        <yandex-map v-show="!isInputAddressMode" :coords="coords" :zoom="17" @click.stop="onClick" @map-was-initialized="onInit" :controls="controls" :options="options" @boundschange="onBoundsChange" />
-        <map-suggest v-show="isInputAddressMode" @select="onSelect" @selectedPlace='selectedPlace' />
-    </div>
-</v-overlay>
+        <div v-else>
+            <div class="currentAddress" v-show="!isInputAddressMode">
+                <h2 class="currentAddress-title">{{address}}</h2>
+                <div class="currentAddress-put" @click="switchToAddressMode">Изменить адрес доставки</div>
+            </div>
+            <yandex-map v-show="!isInputAddressMode" :coords="coords" :zoom="17" @click.stop="onClick" @map-was-initialized="onInit" :controls="controls" :options="options" @boundschange="onBoundsChange" />
+            <map-suggest v-show="isInputAddressMode" @select="onSelect" @selectedPlace='selectedPlace' />
+        </div>
+    </v-overlay>
+</no-ssr>
 </template>
 
 <script>
@@ -56,12 +59,12 @@ export default {
         coords: [53.902515, 27.561456],
         mapInstance: null,
         ymaps: null,
-	}),
-	watch: {
-		getMapLoading(newValue, oldValue) {
-			return newValue
-		}
-	},
+    }),
+    watch: {
+        getMapLoading(newValue, oldValue) {
+            return newValue
+        }
+    },
     computed: {
         ...mapGetters('map', {
             isMapVisible: 'isMapVisible',
@@ -74,13 +77,13 @@ export default {
         currentAddress() {
             return this.getCurrentAddress
         }
-	},
-	async beforeMount(){
+    },
+    async beforeMount() {
         await loadYmap({
             ...yMapSettings
-		});
-		this.ymaps = ymaps
-	},
+        });
+        this.ymaps = ymaps
+    },
     async mounted() {
         if (performance.navigation.type == 1) {
             this.hideMap()
@@ -142,8 +145,8 @@ export default {
                 ]
             }).then((geo) => {
                 const geoObjects = geo.geoObjects.get(0)
-				component.coords = geoObjects.geometry.getCoordinates()
-				component.mapInstance.setCenter(geoObjects.geometry.getCoordinates(), 17)
+                component.coords = geoObjects.geometry.getCoordinates()
+                component.mapInstance.setCenter(geoObjects.geometry.getCoordinates(), 17)
             });
         },
         onSelect(e) {
@@ -236,9 +239,9 @@ ymaps .customMapBtn,
 ymaps .customMapBtn i.material-icons {
     font-size: 7vw;
     line-height: 7vw;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 ymaps [title="Определить ваше местоположение"] {

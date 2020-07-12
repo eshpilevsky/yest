@@ -1,5 +1,5 @@
 <template>
-<div>
+<no-ssr>
     <div class="desktop-map">
         <div class="desktop-map-top">
             <div class="desktop-map-title">
@@ -37,8 +37,7 @@
             <yandex-map :coords="coords" :zoom="17" @click.stop="onClick" @map-was-initialized="onInit" :controls="controls" :options="options" @boundschange="onBoundsChange" />
         </div>
     </div>
-
-</div>
+</no-ssr>
 </template>
 
 <script>
@@ -135,11 +134,11 @@ export default {
             }).then((geo) => {
                 const geoObjects = geo.geoObjects.get(0)
                 component.coords = geoObjects.geometry.getCoordinates()
-                 component.setCurrentCoords(geoObjects.geometry.getCoordinates())
-				 component.setCurrentAddress(address.value)
-				 component.mapInstance.setCenter(geoObjects.geometry.getCoordinates(), 17)
-			});
-		
+                component.setCurrentCoords(geoObjects.geometry.getCoordinates())
+                component.setCurrentAddress(address.value)
+                component.mapInstance.setCenter(geoObjects.geometry.getCoordinates(), 17)
+            });
+
         },
         suggestPlaces(str) {
             const component = this

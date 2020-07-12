@@ -201,7 +201,6 @@ export default {
         },
         selectCategory(item, boll) {
             this.oldCategoryImg = document.getElementById('bgImg') ? document.getElementById('bgImg') : null
-            console.log('selectCategory -> this.oldCategoryImg', this.oldCategoryImg)
             if (item.id !== 0) {
                 if (boll === true) {
                     this.more.text = item.name
@@ -227,7 +226,8 @@ export default {
                                     name: item.name
                                 })
                                 if (this.oldCategoryImg != null) {
-									this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.defaultBg + '");'
+									// this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.defaultBg + '");'
+										this.oldCategoryImg.setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.defaultBg + '");')
                                 }
                                 if (item.id === 0) {
                                     this.$router.push(`/${this.getSelectedZone.alias}`)
@@ -246,11 +246,13 @@ export default {
 
                             if (window.innerWidth > 450) {
                                 if (this.oldCategoryImg != null) {
-									this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.bg + '");'
+									this.oldCategoryImg.setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + bg + '");')
+									// this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.bg + '");'
                                 }
                             } else {
                                 if (this.oldCategoryImg != null) {
-									this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + response.data.category_icon + '");'
+									this.oldCategoryImg.setAttribute('style', 'background-image: url("' + response.data.category_icon + '");')
+									// this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + response.data.category_icon + '");'
                                 }
                             }
                             if (item.id === 0) {
@@ -266,14 +268,13 @@ export default {
             } else {
                 if (window.innerWidth < 500) {
                     if (this.oldCategoryImg != null) {
-						this.oldCategoryImg.style.backgroundImage = 'url("https://menu-menu.by/images/category_icons/new/4529d57df6bc970d11c1f3496296d99b-200x200.jpg");'
-                        // this.oldCategoryImg.setAttribute('style', 'background-image: url("https://menu-menu.by/images/category_icons/new/4529d57df6bc970d11c1f3496296d99b-200x200.jpg");')
+						// this.oldCategoryImg.style.backgroundImage = 'url("https://menu-menu.by/images/category_icons/new/4529d57df6bc970d11c1f3496296d99b-200x200.jpg");'
+                        this.oldCategoryImg.setAttribute('style', 'background-image: url("https://menu-menu.by/images/category_icons/new/4529d57df6bc970d11c1f3496296d99b-200x200.jpg");')
                     }
                 } else {
                     if (this.oldCategoryImg != null) {
-						// this.oldCategoryImg.setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.defaultBg + '");')
-						this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.defaultBg + '");'
-
+						this.oldCategoryImg.setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.defaultBg + '");')
+						// this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.defaultBg + '");'
                     }
                 }
                 this.$store.dispatch('user/selectCategory', {

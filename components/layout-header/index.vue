@@ -234,10 +234,8 @@ export default {
             return this.getCurrentAddress > 0 ? true : false
         },
     },
-    created() {
-        this.$store.dispatch('zone/queryZones')
-    },
     mounted() {
+        this.$store.dispatch('zone/queryZones')
         if (this.getCurrentAddress.length > 0) {
             this.showSetAdressBtn = true
         }

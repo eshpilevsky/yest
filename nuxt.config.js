@@ -19,7 +19,11 @@ module.exports = {
         hid: 'description',
         name: 'description',
         content: process.env.npm_package_description || ''
-      }
+	  },
+	  {
+		'http-equiv': 'ScreenOrientation',
+		content: 'autoRotate:disabled',
+	  }
     ],
     link: [{
       rel: 'icon',
