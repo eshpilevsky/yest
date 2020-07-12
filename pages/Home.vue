@@ -1,6 +1,6 @@
 <template>
 <div style="padding-bottom: 0px">
-    <setAdress v-show="showSetAdress == true" :class="{hide: showSetAdress == false}"/>
+    <setAdress :class="{hide: showSetAdress == false}" />
     <specialOffers v-show="getCurrentAddress.length > 0" />
     <categories />
     <mobileSearch v-show="showSearch" />
@@ -117,13 +117,19 @@ export default {
 </script>
 
 <style scoped>
-
-.hide{
-	display: none !important;
-}
-
 .home-container {
     position: relative;
     z-index: 1;
+}
+
+.hide {
+    display: flex !important;
+}
+
+@media screen and (max-width: 450px) {
+
+    .hide {
+        display: none !important;
+    }
 }
 </style>
