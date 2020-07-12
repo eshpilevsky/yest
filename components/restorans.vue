@@ -180,10 +180,10 @@ export default {
             getUserCoordinate: "map/getCurrentCoords",
             getCurrentAddress: "map/getCurrentAddress",
             getCurrentCoords: "map/getCurrentCoords"
-		}),
-		checkAddress(){
-			return this.getCurrentAddress.length > 0 ? true : false
-		},
+        }),
+        checkAddress() {
+            return this.getCurrentAddress.length > 0 ? true : false
+        },
         swiper() {
             return this.$refs.mySwiper.$swiper;
         },
@@ -247,7 +247,7 @@ export default {
             this.limit = 24;
         },
         getUserCoordinate(newValue) {
-			this.getRestaurants(newValue[0],newValue[1]);
+            this.getRestaurants(newValue[0], newValue[1]);
         },
     },
     mounted() {
@@ -299,7 +299,7 @@ export default {
     background: #fff;
     border-radius: 23px 23px 0 0;
     height: 0;
-	max-width: 80px;
+    max-width: 80px;
     top: 0px;
 }
 
@@ -551,6 +551,14 @@ export default {
 }
 
 @media screen and (max-width: 450px) {
+
+    .restorane-list-item:hover {
+        transition: none;
+    }
+
+    .restorane-list-item:not(:hover) {
+        transition: none;
+    }
 
     .block-bottom {
         height: 85px;

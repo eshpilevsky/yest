@@ -129,6 +129,11 @@ export default {
 </script>
 
 <style scoped>
+#swiper{
+	padding-top: 40px;
+	padding-bottom: 40px;
+}
+
 .customBtnNext,
 .swiper-container-rtl .customBtnPrev {
     right: 10px;

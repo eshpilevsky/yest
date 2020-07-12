@@ -6,7 +6,7 @@
             <v-list>
                 <div class="burger-log-close" @click="showHideSidebar()" />
                 <div class="mobile-logo-block">
-                    <img src="@/assets/logo.png" class="logo-img" alt="logomobile">
+                    <img src="@/assets/yest_logo.svg" class="logo-img" alt="logomobile">
                 </div>
                 <div class="primary-links">
                     <div>
@@ -88,7 +88,7 @@
             </v-list>
         </v-navigation-drawer>
         <nuxt-link v-if="!showSidebar" to="/" class="mobileLogo">
-            <img src="@/assets/logo.png" class="burger-logo-img" :class="{hideLogo : this.getCurrentAddress.length > 0}" alt="logodesktop">
+            <img src="@/assets/yest_logo.svg" class="burger-logo-img" :class="{hideLogo : this.getCurrentAddress.length > 0}" alt="logodesktop">
             <map-btn v-if="this.getCurrentAddress.length > 0" class="header-map-btn" />
         </nuxt-link>
         <div v-else class="logo-img">
