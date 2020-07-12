@@ -39,13 +39,6 @@ export default {
     showSearch (newValue, oldValue) {
       return newValue
     },
-    getUserLocation (newValue, oldValue) {
-      if (newValue.locationAdress !== null) {
-        this.showSpecialOffer = false
-      } else {
-        this.showSpecialOffer = true
-      }
-    }
   },
   computed: {
     ...mapGetters({
@@ -53,7 +46,6 @@ export default {
       getZoneList: 'zone/getZoneList',
       getCategoryList: 'user/getCategoryList',
       getCurrentAddress: "map/getCurrentAddress",
-      getUserLocation: 'user/getUserLocation'
     })
   },
   mounted () {

@@ -96,7 +96,6 @@ export default {
             getSelectedZone: "zone/getSelectedZone",
             getSelectedCategory: "user/getSelectedCategory",
             getUserCoordinate: "user/getUserCoordinate",
-            getUserLocation: "user/getUserLocation"
         }),
     }
 }

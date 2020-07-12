@@ -1,5 +1,5 @@
 <template>
-<div class='setAdressContaine containerr' id='bgImg'>
+<div class='setAdressContaine containerr' id='bgImg' >
     <div class="setAdressContaine-info">
         <span class="info-pre-title">
             Yest.by • {{this.getSelectedZone.name}} {{this.getSelectedCategoryName ? `• ${this.getSelectedCategoryName}` : ``}}
@@ -63,7 +63,6 @@ export default {
         ...mapGetters({
             getSelectedZone: 'zone/getSelectedZone',
             getSelectedCategoryTitle: 'user/getSelectedCategoryTitle',
-            getUserLocation: 'user/getUserLocation',
             getSelectedCategoryName: 'user/getSelectedCategoryName',
             canDisplayMap: 'device/isMobile',
             getCurrentAddress: 'map/getCurrentAddress'
@@ -86,11 +85,6 @@ export default {
         getCurrentAddress(newValue) {
             this.searchAddress = newValue
         },
-        getSelectedZone(newValue) {
-            if (this.getUserLocation.locationAdress !== null) {
-                this.searchAddress = this.getUserLocation.locationAdress
-            };
-        }
     },
     methods: {
         ...mapMutations({

@@ -25,7 +25,7 @@
                 </v-list>
             </v-menu>
         </div>
-        <v-menu offset-y top :close-on-content-click="false" v-model="sortMenu" v-if="this.getUserLocation.locationAdress !== null">
+        <!-- <v-menu offset-y top :close-on-content-click="false" v-model="sortMenu" v-if="this.getCurrentAddress.length > 0">
             <template v-slot:activator="{ on }">
                 <v-btn rounded dense depressed class="sort-btn category-chips" v-on="on">
                     <v-icon left>
@@ -48,7 +48,7 @@
                     </v-btn>
                 </div>
             </div>
-        </v-menu>
+        </v-menu> -->
     </div>
     <div v-else class="category-list">
         <v-skeleton-loader v-for="(item, index) in 10" :key="'catListSkeleton' + index" type="chip" class="category-list-loading"></v-skeleton-loader>
@@ -67,11 +67,11 @@
     <v-divider class="divider" />
     <v-text-field placeholder="Название, кухня или блюдо" clearable prepend-inner-icon="search" outlined class="searchDesktop" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch"></v-text-field>
     <v-text-field placeholder="Найти в Еде" height="48" clearable prepend-inner-icon="search" outlined dense filled class="searchMobile" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch">
-        <template v-slot:append-outer v-if="this.getUserLocation.locationAdress !== null">
+        <!-- <template v-slot:append-outer v-if="this.getCurrentAddress.length > 0" >
             <v-btn rounded height="40px">
                 <i class="material-icons" color='#000'>sync_alt</i>
             </v-btn>
-        </template>
+        </template> -->
     </v-text-field>
 </div>
 </template>
@@ -130,6 +130,7 @@ export default {
             },
             sortMenu: false,
             defaultBg: 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png',
+            oldCategoryImg: null,
         }
     },
     computed: {
@@ -137,8 +138,8 @@ export default {
             getSelectedZone: 'zone/getSelectedZone',
             getSelectedCategory: 'user/getSelectedCategory',
             getUserCoordinate: 'user/getUserCoordinate',
-            getUserLocation: 'user/getUserLocation',
-            getSearchNameKitchenDish: 'user/getSearchNameKitchenDish'
+            getCurrentAddress: 'map/getCurrentAddress',
+            getSearchNameKitchenDish: 'user/getSearchNameKitchenDish',
         })
     },
     watch: {
@@ -146,7 +147,6 @@ export default {
             return newValue
         },
         getSelectedZone(newValue) {
-            //   this.selectCategory(this.getSelectedCategory, false)
             this.getCategories()
         },
         searchNameKitchenDish(newValue) {
@@ -168,7 +168,6 @@ export default {
                     })
                     this.$store.dispatch('user/setSelectedCategoryTitle', 'Быстрая доставка еды в Минскe')
                 } else {
-                    // this.$store.dispatch('user/selectCategory', allCategory[0].id)
                     this.selectCategory(this.getSelectedCategory, false)
                 }
                 this.allCategory = resp
@@ -201,7 +200,8 @@ export default {
             }
         },
         selectCategory(item, boll) {
-			var oldCategoryImg = document.getElementById('bgImg')
+            this.oldCategoryImg = document.getElementById('bgImg') ? document.getElementById('bgImg') : null
+            console.log('selectCategory -> this.oldCategoryImg', this.oldCategoryImg)
             if (item.id !== 0) {
                 if (boll === true) {
                     this.more.text = item.name
@@ -226,9 +226,11 @@ export default {
                                     alias: item.alias,
                                     name: item.name
                                 })
-                                oldCategoryImg.setAttribute('style', `background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url(${defaultBg});`)
+                                if (this.oldCategoryImg != null) {
+									this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.defaultBg + '");'
+                                }
                                 if (item.id === 0) {
-                                    this.$router.replace(`/${this.getSelectedZone.alias}`)
+                                    this.$router.push(`/${this.getSelectedZone.alias}`)
                                 } else {
                                     this.$router.push(`/${this.getSelectedZone.alias}/restaurants/category/${item.alias}`)
                                 }
@@ -239,18 +241,22 @@ export default {
                                 alias: response.data.alias,
                                 name: item.name
                             })
-                            this.$store.dispatch('user/setSelectedCategoryTitle', response.data.header+' в '+response.data.city)
+                            this.$store.dispatch('user/setSelectedCategoryTitle', response.data.header + ' в ' + response.data.city)
                             var bg = response.data.background
 
                             if (window.innerWidth > 450) {
-                                oldCategoryImg.setAttribute('style', `background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url(${bg});`)
+                                if (this.oldCategoryImg != null) {
+									this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.bg + '");'
+                                }
                             } else {
-                                oldCategoryImg.style.backgroundImage = `url('${response.data.category_icon}')`
+                                if (this.oldCategoryImg != null) {
+									this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + response.data.category_icon + '");'
+                                }
                             }
                             if (item.id === 0) {
-                                this.$router.replace(`/${this.getSelectedZone.alias}`)
+                                this.$router.push(`/${this.getSelectedZone.alias}`)
                             } else {
-                                this.$router.replace(`/${this.getSelectedZone.alias}/restaurants/category/${response.data.alias}`)
+                                this.$router.push(`/${this.getSelectedZone.alias}/restaurants/category/${response.data.alias}`)
                             }
                         }
                     }
@@ -258,17 +264,24 @@ export default {
                     console.error(error)
                 })
             } else {
-				if (window.innerWidth < 500) {
-					oldCategoryImg.setAttribute('style', `background-image: url("https://menu-menu.by/images/category_icons/new/4529d57df6bc970d11c1f3496296d99b-200x200.jpg");`)
-				} else{
-					oldCategoryImg.setAttribute('style', `background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("${this.defaultBg}");`)
-				}
+                if (window.innerWidth < 500) {
+                    if (this.oldCategoryImg != null) {
+						this.oldCategoryImg.style.backgroundImage = 'url("https://menu-menu.by/images/category_icons/new/4529d57df6bc970d11c1f3496296d99b-200x200.jpg");'
+                        // this.oldCategoryImg.setAttribute('style', 'background-image: url("https://menu-menu.by/images/category_icons/new/4529d57df6bc970d11c1f3496296d99b-200x200.jpg");')
+                    }
+                } else {
+                    if (this.oldCategoryImg != null) {
+						// this.oldCategoryImg.setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.defaultBg + '");')
+						this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.defaultBg + '");'
+
+                    }
+                }
                 this.$store.dispatch('user/selectCategory', {
                     id: 0,
                     alias: item.alias,
                     name: item.name
                 })
-                this.$router.replace(`/${this.getSelectedZone.alias}`)
+                this.$router.push(`/${this.getSelectedZone.alias}`)
                 this.$store.dispatch('user/setSelectedCategoryTitle', `Быстрая доставка в ${this.getSelectedZone.name}`)
             }
         },

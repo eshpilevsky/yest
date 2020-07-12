@@ -223,7 +223,7 @@ export default {
     computed: {
         ...mapGetters({
             getSelectedZone: 'zone/getSelectedZone',
-            getUserLocation: 'user/getUserLocation',
+			getCurrentAddress: 'map/getCurrentAddress',
             isMapVisible: 'map/isMapVisible',
             canDisplayMap: 'device/isMobile',
             getCurrentAddress: 'map/getCurrentAddress',
@@ -242,7 +242,7 @@ export default {
         }
         let lastScrollTop = 0
         if (window.innerWidth < 450) {
-            if (this.getUserLocation.locationAdress == null) {
+            if (this.getUserLocation.length > 0) {
                 window.addEventListener('scroll', () => {
                     const st = window.pageYOffset || document.documentElement.scrollTop
                     if (st > lastScrollTop) {

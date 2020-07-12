@@ -24,7 +24,6 @@ export const mutations = {
       const longitude = crd.longitude
       state.data.currentCoords[0] = latitude
       state.data.currentCoords[1] = longitude
-      state.data.loading = false
     }, (error) => {
       console.warn(`ERROR(${error.code}): ${error.message}`)
       state.data.inputAddressMode = true
@@ -32,7 +31,8 @@ export const mutations = {
       enableHighAccuracy: true,
       timeout: 5000,
       maximumAge: 0
-    })
+	})
+	state.data.loading = false
     navigator.geolocation.watchPosition(() => {},
       (error) => {
         console.log('SHOW_MAP -> error', error)
