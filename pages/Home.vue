@@ -39,11 +39,14 @@ export default {
             return newValue
         },
         getCurrentAddress(newValue, oldValue) {
-            console.log('getCurrentAddress -> newValue', newValue)
-            if (newValue.length > 0) {
-                this.showSetAdress = false
-            } else {
-                this.showSetAdress = true
+            if (window.innerWidth < 450) {
+                if (newValue.length > 0) {
+                    this.showSetAdress = false
+                    console.log('getCurrentAddress -> this.showSetAdress', this.showSetAdress)
+                } else {
+					this.showSetAdress = true
+                    console.log('getCurrentAddress -> this.showSetAdress', this.showSetAdress)
+                }
             }
         },
     },
@@ -116,7 +119,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style >
 .home-container {
     position: relative;
     z-index: 1;

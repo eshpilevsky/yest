@@ -173,7 +173,6 @@ export default {
     },
     watch: {
         getCurrentAddress(newValue, oldValue) {
-            console.log('getCurrentAddress -> newValue', newValue)
             if (newValue.length > 0) {
                 this.showSetAdressBtn = true
             }

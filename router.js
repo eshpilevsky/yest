@@ -12,7 +12,7 @@ export function createRouter() {
     routes: [{
         path: '/',
         component: Home,
-      },
+	  },
       {
         path: '/:region',
         component: Home,

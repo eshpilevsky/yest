@@ -1,5 +1,5 @@
 <template>
-<div class="categories-containe">
+<div class="categories-containe" v-if="!hideCategory">
     <div class="category-list" v-show="!loadingCategories">
         <div>
             <v-chip class="category-chips" v-for="(item, index) in first" :key="'firstCategor' + index" :color="item.id === getSelectedCategory.id ? 'primary': 'white'" @click="selectCategory(item, false)">
@@ -131,6 +131,7 @@ export default {
             sortMenu: false,
             defaultBg: 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png',
             oldCategoryImg: null,
+            hideCategory: false,
         }
     },
     computed: {
@@ -160,30 +161,38 @@ export default {
             }).then((response) => {
                 const resp = response.data
                 const allCategory = this.categoryAll.concat(response.data)
-                this.$store.dispatch('user/allCategory', allCategory)
-                if (this.getSelectedCategory.id === null) {
-                    this.$store.dispatch('user/selectCategory', {
-                        id: allCategory[0].id,
-                        alias: allCategory[0].alias
-                    })
-                    this.$store.dispatch('user/setSelectedCategoryTitle', 'Быстрая доставка еды в Минскe')
+                    console.log('getCategories -> allCategory', allCategory)
+                if (allCategory.length == 1) {
+					this.loadingCategories = false
+					this.hideCategory = true
+                    console.log('getCategories -> this.hideCategory', this.hideCategory)
+
                 } else {
-                    this.selectCategory(this.getSelectedCategory, false)
+					this.$store.dispatch('user/allCategory', allCategory)
+					if (this.getSelectedCategory.id === null) {
+						this.$store.dispatch('user/selectCategory', {
+							id: allCategory[0].id,
+							alias: allCategory[0].alias
+						})
+						this.$store.dispatch('user/setSelectedCategoryTitle', `Быстрая доставка еды в ${this.getSelectedZone.name}`)
+					} else {
+						this.selectCategory(this.getSelectedCategory, false)
+					}
+					this.allCategory = resp
+					this.first = allCategory.slice(0, this.sliceCounter)
+					this.second = allCategory.slice(this.sliceCounter, resp.length)
+					var qwe = this.first.find((category) => {
+						if (category.id === this.getSelectedCategory.id) {
+							return true
+						}
+					})
+					if (qwe === undefined) {
+						this.more.text = this.getSelectedCategory.name
+						this.more.id = this.getSelectedCategory.id
+						this.more.isMore = true
+					}
+					this.loadingCategories = false
                 }
-                this.allCategory = resp
-                this.first = allCategory.slice(0, this.sliceCounter)
-                this.second = allCategory.slice(this.sliceCounter, resp.length)
-                var qwe = this.first.find((category) => {
-                    if (category.id === this.getSelectedCategory.id) {
-                        return true
-                    }
-                })
-                if (qwe === undefined) {
-                    this.more.text = this.getSelectedCategory.name
-                    this.more.id = this.getSelectedCategory.id
-                    this.more.isMore = true
-                }
-                this.loadingCategories = false
             }).catch((error) => {
                 console.error(error)
             })
@@ -226,8 +235,8 @@ export default {
                                     name: item.name
                                 })
                                 if (this.oldCategoryImg != null) {
-									// this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.defaultBg + '");'
-										this.oldCategoryImg.setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.defaultBg + '");')
+                                    // this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.defaultBg + '");'
+                                    this.oldCategoryImg.setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.defaultBg + '");')
                                 }
                                 if (item.id === 0) {
                                     this.$router.push(`/${this.getSelectedZone.alias}`)
@@ -246,13 +255,13 @@ export default {
 
                             if (window.innerWidth > 450) {
                                 if (this.oldCategoryImg != null) {
-									this.oldCategoryImg.setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + bg + '");')
-									// this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.bg + '");'
+                                    this.oldCategoryImg.setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + bg + '");')
+                                    // this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.bg + '");'
                                 }
                             } else {
                                 if (this.oldCategoryImg != null) {
-									this.oldCategoryImg.setAttribute('style', 'background-image: url("' + response.data.category_icon + '");')
-									// this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + response.data.category_icon + '");'
+                                    this.oldCategoryImg.setAttribute('style', 'background-image: url("' + response.data.category_icon + '");')
+                                    // this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + response.data.category_icon + '");'
                                 }
                             }
                             if (item.id === 0) {
@@ -268,13 +277,13 @@ export default {
             } else {
                 if (window.innerWidth < 500) {
                     if (this.oldCategoryImg != null) {
-						// this.oldCategoryImg.style.backgroundImage = 'url("https://menu-menu.by/images/category_icons/new/4529d57df6bc970d11c1f3496296d99b-200x200.jpg");'
+                        // this.oldCategoryImg.style.backgroundImage = 'url("https://menu-menu.by/images/category_icons/new/4529d57df6bc970d11c1f3496296d99b-200x200.jpg");'
                         this.oldCategoryImg.setAttribute('style', 'background-image: url("https://menu-menu.by/images/category_icons/new/4529d57df6bc970d11c1f3496296d99b-200x200.jpg");')
                     }
                 } else {
                     if (this.oldCategoryImg != null) {
-						this.oldCategoryImg.setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.defaultBg + '");')
-						// this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.defaultBg + '");'
+                        this.oldCategoryImg.setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.defaultBg + '");')
+                        // this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.defaultBg + '");'
                     }
                 }
                 this.$store.dispatch('user/selectCategory', {

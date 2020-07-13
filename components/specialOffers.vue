@@ -1,35 +1,15 @@
 <template>
-<div class='containe'>
-    <!-- <client-only>
-        <swiper v-show="!loadingSO" class='specialOfferSwiper' ref="mySwiper" :options="this.swiperOptions">
-            <swiper-slide v-for='(item, index) in specilaOffers' :key='index'>
-                <nuxt-link :to='item.link'>
-                    <v-img :src='item.image' class="specialOfferImg" />
-                </nuxt-link>
-            </swiper-slide>
-            <div class="customBtnPrev" slot="button-prev"></div>
-            <div class="customBtnNext" slot="button-next"></div>
-            <div class="swiper-pagination" slot="pagination"></div>
-        </swiper>
-        <div v-show="loadingSO" class="loading">
-            <v-skeleton-loader type="image" class="loading-item"></v-skeleton-loader>
-        </div>
-    </client-only> -->
-    <!-- <client-only> -->
-        <div v-swiper="swiperOptions" id='swiper'>
-            <div class="swiper-wrapper">
-                <div class="swiper-slide" v-for='(item, index) in specilaOffers' :key='index'>
-                    <v-img :src='item.image' class="specialOfferImg" />
-                </div>
+<div class='containe' v-if="!hide">
+    <div v-swiper="swiperOptions" id='swiper'>
+        <div class="swiper-wrapper">
+            <div class="swiper-slide" v-for='(item, index) in specilaOffers' :key='index'>
+                <v-img :src='item.image' class="specialOfferImg" />
             </div>
-            <div class="customBtnPrev" slot="button-prev" ></div>
-            <div class="customBtnNext" slot="button-next" ></div>
-            <div class="swiper-pagination" slot="pagination"></div>
-            <!-- <div class="swiper-button-prev" slot="button-prev"></div>
-        <div class="swiper-button-next" slot="button-next"></div>
-        <div class="swiper-pagination" slot="pagination"></div> -->
         </div>
-    <!-- </client-only> -->
+        <div class="customBtnPrev" slot="button-prev"></div>
+        <div class="customBtnNext" slot="button-next"></div>
+        <div class="swiper-pagination" slot="pagination"></div>
+    </div>
 </div>
 </template>
 
@@ -53,6 +33,7 @@ export default {
             serachAdress: '',
             specilaOffers: [],
             loadingSO: true,
+            hide: false,
             notFindImg: require('../assets/logo.png'),
             swiperOptions: {
                 observer: true,
@@ -60,8 +41,6 @@ export default {
                 slidesPerView: 1,
                 spaceBetween: 30,
                 navigation: {
-                    // nextEl: '.swiper-button-next',
-                    // prevEl: '.swiper-button-prev',
                     nextEl: '.customBtnNext',
                     prevEl: '.customBtnPrev',
                 },
@@ -78,16 +57,12 @@ export default {
             getSelectedZone: 'zone/getSelectedZone',
             getUserCoordinate: 'user/getUserCoordinate'
         }),
-        // swiper() {
-        //     return this.$refs.mySwiper
-        // }
     },
     methods: {
         prevImg() {
             const sw = document.getElementById('swiper')[0]
             console.log('prevImg -> sw', sw)
             sw.nextEl()
-
         },
         nextImg() {
 
@@ -101,6 +76,11 @@ export default {
                 if (response.status === 200) {
                     const resp = response.data
                     this.specilaOffers = resp
+                        console.log('getSpecialOffers -> resp', resp)
+                    if (resp.length == 0) {
+						this.hide = true
+                        console.log('getSpecialOffers -> this.hide', this.hide)
+                    }
                     this.loadingSO = false
                 }
             }).catch((error) => {
@@ -129,9 +109,9 @@ export default {
 </script>
 
 <style scoped>
-#swiper{
-	padding-top: 20px;
-	padding-bottom: 20px;
+#swiper {
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .customBtnNext,
@@ -210,7 +190,7 @@ export default {
     margin: auto;
     border-left: 1px solid rgba(0, 0, 0, .1);
     border-right: 1px solid rgba(0, 0, 0, .1);
-	padding-top: 1rem;
+    padding-top: 1rem;
 }
 
 @media screen and (max-width: 768px) {

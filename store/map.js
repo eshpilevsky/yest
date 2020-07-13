@@ -44,7 +44,9 @@ export const mutations = {
     state.data.visible = false
   },
   SET_CURRENT_COORDS(state, coords) {
-    state.data.currentCoords = coords
+	  if (coords != null) {
+		state.data.currentCoords = coords
+	  }
   },
   SET_CURRENT_ADDRESS(state, address) {
     state.data.address = address

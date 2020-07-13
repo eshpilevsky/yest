@@ -1,5 +1,5 @@
 <template>
-<div class='setAdressContaine containerr' id='bgImg' >
+<div class='setAdressContaine containerr' id='bgImg'>
     <div class="setAdressContaine-info">
         <span class="info-pre-title">
             Yest.by • {{this.getSelectedZone.name}} {{this.getSelectedCategoryName ? `• ${this.getSelectedCategoryName}` : ``}}
@@ -84,6 +84,10 @@ export default {
         },
         getCurrentAddress(newValue) {
             this.searchAddress = newValue
+        },
+        getSelectedZone(newValue) {
+            this.setCurrentCoords(null)
+            this.setCurrentAddress('')
         },
     },
     methods: {

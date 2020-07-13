@@ -1,7 +1,7 @@
 <template>
 <div class="containe">
     <h2 class="restorane-title" id="restTitle">Рестораны</h2>
-    <v-flex cols-12 wrap class="restorane-list" v-show="!loadingRest">
+    <v-flex cols-12 wrap class="restorane-list" v-if="loadingRest == false">
         <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in this.computedOpenTime" :key="index" class="restorane-list-item" @click="goToRes(item)">
             <div class="list-item-block">
                 <img contain :lazy-src="notFindImg" :src="item.cover" class="restorane-logo" :class="{closeRestorane:item.is_open == false }" />
@@ -39,10 +39,10 @@
             </div>
         </v-flex>
     </v-flex>
-    <v-flex cols-12 wrap v-show="loadingRest" class="loading">
+    <v-flex cols-12 wrap v-show="loadingRest == true" class="loading">
         <v-skeleton-loader v-for="item in 9" :key="item" type="card" class="loading-item"></v-skeleton-loader>
     </v-flex>
-    <div v-show="notFound" class="notFound">
+    <div v-show="notFound == true" class="notFound">
         <div class="notfoundTitle">Нас тут ещё нет :(</div>
         <div class="notFoundDescription pa-4">Но мы подключаем десятки новых мест каждую неделю. Может быит, и здесь окажемся! Если оставите свою почту, сразу вам сообщим. Обещаем не спамить.</div>
         <div class="d-flex justify-center align-center pb-4">
@@ -140,6 +140,7 @@ export default {
                 .then(response => {
                     const resp = response.data;
                     const rest = resp.restaurants;
+                    console.log('getRestaurants -> rest', rest)
                     if (resp.status === 200) {
                         this.restaurants = [];
                         this.restaurants = rest;
@@ -248,6 +249,12 @@ export default {
         },
         getUserCoordinate(newValue) {
             this.getRestaurants(newValue[0], newValue[1]);
+        },
+        getSelectedZone() {
+            this.getRestaurants(
+                this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[0],
+                this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[1],
+            );
         },
     },
     mounted() {
@@ -491,7 +498,6 @@ export default {
     transition: 0.5s;
 }
 
-
 .restorane-list {
     display: flex;
     flex-direction: row;
@@ -551,7 +557,7 @@ export default {
 
     .restorane-list-item:hover {
         transition: none;
-		transform: none;
+        transform: none;
     }
 
     .restorane-list-item:not(:hover) {
