@@ -1,6 +1,6 @@
 <template>
 <div class="categories-containe">
-    <div class="category-list" v-if="loadingCategories == false">
+    <div class="category-list" v-show="!loadingCategories">
         <div>
             <v-chip class="category-chips" v-for="(item, index) in first" :key="'firstCategor' + index" :color="item.id === getSelectedCategory.id ? 'primary': 'white'" @click="selectCategory(item, false)">
                 <div class="category-name">
@@ -25,7 +25,7 @@
                 </v-list>
             </v-menu>
         </div>
-        <!-- <v-menu offset-y top :close-on-content-click="false" v-model="sortMenu" v-if="this.getCurrentAddress.length > 0">
+        <!-- <v-menu offset-y top :close-on-content-click="false" v-model="sortMenu" v-show="this.getCurrentAddress.length > 0">
             <template v-slot:activator="{ on }">
                 <v-btn rounded dense depressed class="sort-btn category-chips" v-on="on">
                     <v-icon left>
@@ -50,24 +50,24 @@
             </div>
         </v-menu> -->
     </div>
-    <div v-else class="category-list">
+    <div v-show="loadingCategories" class="category-list">
         <v-skeleton-loader v-for="(item, index) in 10" :key="'catListSkeleton' + index" type="chip" class="category-list-loading"></v-skeleton-loader>
     </div>
-    <div class="category-list-mobile" v-if="loadingCategories == false">
-        <div v-for="(item, index) in allCategory" :key="'adaptiveCatList' + index" v-if="item.category_icon" class="category-list-mobile-item" @click="selectCategoryAdaptive(item, false)">
+    <div class="category-list-mobile" v-show="!loadingCategories">
+        <div v-for="(item, index) in allCategory" :key="'adaptiveCatList' + index" v-show="item.category_icon" class="category-list-mobile-item" @click="selectCategoryAdaptive(item, false)">
             <img :src="item.category_icon" class="category_icon" />
             <span :class="{selected: item.id === getSelectedCategory.id}" class="item-name">
                 {{ item.name }}
             </span>
         </div>
     </div>
-    <div v-else class="category-list-mobile-loading">
+    <div v-show="loadingCategories" class="category-list-mobile-loading">
         <v-skeleton-loader v-for="(item, index) in 5" :key="'skeletLoader' + index" type="avatar" class="loading-item"></v-skeleton-loader>
     </div>
     <v-divider class="divider" />
     <v-text-field placeholder="Название, кухня или блюдо" clearable prepend-inner-icon="search" outlined class="searchDesktop" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch"></v-text-field>
     <v-text-field placeholder="Найти в Еде" height="48" clearable prepend-inner-icon="search" outlined dense filled class="searchMobile" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch">
-        <!-- <template v-slot:append-outer v-if="this.getCurrentAddress.length > 0" >
+        <!-- <template v-slot:append-outer v-show="this.getCurrentAddress.length > 0" >
             <v-btn rounded height="40px">
                 <i class="material-icons" color='#000'>sync_alt</i>
             </v-btn>

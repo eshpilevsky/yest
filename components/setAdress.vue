@@ -15,7 +15,7 @@
                 <v-btn class="showRest-block" color='primary' @click="showRestuarants()">Показать рестораны</v-btn>
             </template>
         </v-text-field>
-        <div v-if="showAdressList && searchAddress.length > 3" class="adressList">
+        <div v-show="showAdressList && searchAddress.length > 3" class="adressList">
             <v-list>
                 <v-list-item v-for="(item, index) in suggestions" :key="'adres'+index" class="itemAdress" @click="selectAdress(item)">
                     <v-list-item-content>
@@ -24,7 +24,7 @@
                 </v-list-item>
             </v-list>
         </div>
-        <map-btn v-if="this.canDisplayMap" class="map-btn" />
+        <map-btn v-show="this.canDisplayMap" class="map-btn" />
     </div>
 </div>
 </template>

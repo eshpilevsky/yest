@@ -1,13 +1,13 @@
 <template>
 <v-app>
-	<layout-header v-if="isMapVisible === false"/>
-    <v-content v-if="isMapVisible === false">
+	<layout-header v-show="!isMapVisible"/>
+    <v-content v-show="!isMapVisible">
         <v-container class="main_cont">
             <nuxt />
         </v-container>
     </v-content>
-	<layout-footer v-if="isMapVisible === false"/>
-    <map-container v-if="canDisplayMap === true"/>
+	<layout-footer v-show="!isMapVisible"/>
+    <map-container v-show="canDisplayMap"/>
 </v-app>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
 <div class='containe'>
     <!-- <client-only>
-        <swiper v-if="loadingSO === false" class='specialOfferSwiper' ref="mySwiper" :options="this.swiperOptions">
+        <swiper v-show="!loadingSO" class='specialOfferSwiper' ref="mySwiper" :options="this.swiperOptions">
             <swiper-slide v-for='(item, index) in specilaOffers' :key='index'>
                 <nuxt-link :to='item.link'>
                     <v-img :src='item.image' class="specialOfferImg" />
@@ -11,7 +11,7 @@
             <div class="customBtnNext" slot="button-next"></div>
             <div class="swiper-pagination" slot="pagination"></div>
         </swiper>
-        <div v-else class="loading">
+        <div v-show="loadingSO" class="loading">
             <v-skeleton-loader type="image" class="loading-item"></v-skeleton-loader>
         </div>
     </client-only> -->

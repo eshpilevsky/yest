@@ -7,8 +7,8 @@
                     <img src="../../assets/logo.png" class="footer-logo" alt="logo">
                 </div>
                 <div class="footer-top-right">
-                    <img v-if="showAdnroid == true" src="../../assets/googlePlay.svg" class="footer-top-img" />
-                    <img v-if="showMacOs == true" src="../../assets/appStore.svg" class="footer-top-img" />
+                    <img v-show="showAdnroid" src="../../assets/googlePlay.svg" class="footer-top-img" />
+                    <img v-show="showMacOs" src="../../assets/appStore.svg" class="footer-top-img" />
                 </div>
             </div>
         </div>
@@ -35,7 +35,7 @@
                     {{ category.name }}
                   </router-link>
                 </div>
-                <div v-if="!all" class="bottom-items" @click="showAllCategory()">
+                <div v-show="!all" class="bottom-items" @click="showAllCategory()">
                   Показать все >
                 </div>
               </div>

@@ -20,7 +20,7 @@
                     Ok
                 </v-btn>
             </div>
-            <div v-if="showSuggestList" class="map-actions-bottom">
+            <div v-show="showSuggestList" class="map-actions-bottom">
                 <v-list class="sugList" max-width="505px">
                     <v-list-item v-for="(item, index) in suggestList" :key="'sug'+index" class="itemAdress" @click="selectAdress(item)">
                         <v-list-item-content>
@@ -30,10 +30,10 @@
                 </v-list>
             </div>
         </div>
-        <div v-if="isMapLoading" class="map-loading-desktop">
+        <div v-show="isMapLoading" class="map-loading-desktop">
             <v-progress-circular indeterminate size="40" color="grey"></v-progress-circular>
         </div>
-        <div v-else>
+        <div v-show="!isMapLoading">
             <yandex-map :coords="coords" :zoom="17" @click.stop="onClick" @map-was-initialized="onInit" :controls="controls" :options="options" @boundschange="onBoundsChange" />
         </div>
     </div>

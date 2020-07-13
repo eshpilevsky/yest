@@ -135,5 +135,5 @@ module.exports = {
 	  devtools: true
 	}
   },
-  telemetry: false
+  telemetry: false,
 }

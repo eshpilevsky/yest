@@ -1,6 +1,6 @@
 <template>
 <div id="map" class="smallMap">
-    <yandex-map v-if="pageReady" :coords="current_coords" :zoom="17" @click="onClick">
+    <yandex-map v-show="pageReady" :coords="current_coords" :zoom="17" @click="onClick">
         <ymap-marker :coords="current_coords" marker-id="123" hint-content="Моё местопложение" />
     </yandex-map>
 </div>

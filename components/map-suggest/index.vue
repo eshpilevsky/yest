@@ -4,7 +4,7 @@
         <input class="address-input" v-model="searchString" placeholder="Укажите адрес доставки..." />
         <div class="black--text cancel" @click="onCancel">Отменить</div>
     </div>
-    <div class="palces-list" v-if="!loading">
+    <div class="palces-list" v-show="!loading">
         <div class="places-item" v-for="(item, index) in places" :key="`place${index}`" @click="selectPlace(item)">
             <div class="item-title">
                 {{item.displayName}}
@@ -15,7 +15,7 @@
             <v-divider />
         </div>
     </div>
-    <div v-else class="suggets-loading">
+    <div v-show="loading" class="suggets-loading">
         <v-progress-circular indeterminate size="40" color="grey"></v-progress-circular>
     </div>
 </div>

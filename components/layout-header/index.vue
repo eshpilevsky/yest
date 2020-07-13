@@ -1,8 +1,8 @@
 <template>
-<div class="header-contain" v-if="!isMapVisible" :class="{ burgerOverlaySet: showburgerOverlay == true}">
+<div class="header-contain" v-show="!isMapVisible" :class="{ burgerOverlaySet: showburgerOverlay == true}">
     <div class="containe">
         <div class="burger-log" @click="showHideSidebar()" v-show="showSidebar == false" />
-        <v-navigation-drawer v-model="showSidebar" absolute left temporary burgerOverlay-opacity="0.7" class="newHeader" v-if="showSidebar == true">
+        <v-navigation-drawer v-model="showSidebar" absolute left temporary burgerOverlay-opacity="0.7" class="newHeader" v-show="showSidebar">
             <v-list>
                 <div class="burger-log-close" @click="showHideSidebar()" />
                 <div class="mobile-logo-block">
@@ -87,12 +87,12 @@
                 </div>
             </v-list>
         </v-navigation-drawer>
-        <nuxt-link v-if="!showSidebar" to="/" class="mobileLogo">
+        <nuxt-link v-show="!showSidebar" to="/" class="mobileLogo">
             <img src="@/assets/logo.png" class="burger-logo-img" :class="{hideLogo : this.getCurrentAddress.length > 0}" alt="logodesktop">
-            <map-btn v-if="this.getCurrentAddress.length > 0" class="header-map-btn" />
+            <map-btn v-show="this.getCurrentAddress.length > 0" class="header-map-btn" />
         </nuxt-link>
-        <div v-else class="logo-img">
-            <map-btn v-if="canDisplayMap === true" />
+        <div v-show="showSidebar" class="logo-img">
+            <map-btn v-show="canDisplayMap" />
         </div>
         <div class="links-list">
             <nuxt-link to="/">
@@ -106,7 +106,7 @@
             </nuxt-link>
         </div>
         <div class="technical-Btns">
-            <v-btn v-if="this.getCurrentAddress.length > 0" small rounded outlined class="zone-btn" color="primary" @click="showDesktopMap()">
+            <v-btn v-show="this.getCurrentAddress.length > 0" small rounded outlined class="zone-btn" color="primary" @click="showDesktopMap()">
                 <v-icon>
                     near_me
                 </v-icon>

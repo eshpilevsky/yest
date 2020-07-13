@@ -2,11 +2,10 @@
 <no-ssr>
 
     <v-overlay :value="isMapVisible">
-        <div v-if="this.getMapLoading" class="map-loading">
+        <div v-show="this.getMapLoading" class="map-loading">
             <v-progress-circular indeterminate size="40" color="grey"></v-progress-circular>
-            {{this.getMapLoading}}
         </div>
-        <div v-else>
+        <div v-show="!this.getMapLoading">
             <div class="currentAddress" v-show="!isInputAddressMode">
                 <h2 class="currentAddress-title">{{address}}</h2>
                 <div class="currentAddress-put" @click="switchToAddressMode">Изменить адрес доставки</div>

@@ -1,7 +1,7 @@
 <template>
 <div class="containe">
     <h2 class="restorane-title" id="restTitle">Рестораны</h2>
-    <v-flex cols-12 wrap class="restorane-list" v-if="loadingRest === false">
+    <v-flex cols-12 wrap class="restorane-list" v-show="!loadingRest">
         <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in this.computedOpenTime" :key="index" class="restorane-list-item" @click="goToRes(item)">
             <div class="list-item-block">
                 <img contain :lazy-src="notFindImg" :src="item.cover" class="restorane-logo" :class="{closeRestorane:item.is_open == false }" />
@@ -16,14 +16,14 @@
                     </div>
                     <div class="card-title">
                         <div class="restorane-list-item-name">{{ item.name }}</div>
-                        <v-chip class="item-bottom-right-mob" color="primary" v-if="item.rating !== 0">
+                        <v-chip class="item-bottom-right-mob" color="primary" v-show="item.rating !== 0">
                             <v-icon color="#FFFADF">star</v-icon>
                             <div class="rating">{{ item.rating }}</div>
                         </v-chip>
                     </div>
                     <div class="list-item-bottom" :class="{noLocation: !checkAddress}">
                         <div class="bottom-left">
-                            <v-chip class="item-bottom-right" color="primary" v-if="item.rating !== 0">
+                            <v-chip class="item-bottom-right" color="primary" v-show="item.rating !== 0">
                                 <v-icon color="#FFFADF">star</v-icon>
                                 <div class="rating">{{ item.rating }}</div>
                             </v-chip>
@@ -31,7 +31,7 @@
                                 <span class="tags-list-item">{{ compudtedTags(item.tags) }}</span>
                             </div>
                         </div>
-                        <div class="delivery-time-mobile" v-if="checkAddress">
+                        <div class="delivery-time-mobile" v-show="checkAddress">
                             {{item.time.min}} - {{item.time.max}} мин •&nbsp;
                         </div>
                     </div>
@@ -39,10 +39,10 @@
             </div>
         </v-flex>
     </v-flex>
-    <v-flex cols-12 wrap v-else class="loading">
+    <v-flex cols-12 wrap v-show="loadingRest" class="loading">
         <v-skeleton-loader v-for="item in 9" :key="item" type="card" class="loading-item"></v-skeleton-loader>
     </v-flex>
-    <div v-if="notFound == true" class="notFound">
+    <div v-show="notFound" class="notFound">
         <div class="notfoundTitle">Нас тут ещё нет :(</div>
         <div class="notFoundDescription pa-4">Но мы подключаем десятки новых мест каждую неделю. Может быит, и здесь окажемся! Если оставите свою почту, сразу вам сообщим. Обещаем не спамить.</div>
         <div class="d-flex justify-center align-center pb-4">
