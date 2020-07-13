@@ -156,17 +156,16 @@ export default {
     },
     methods: {
         getCategories() {
+			this.hideCategory = false
             ApiService.post('/categories', {
                 zone_id: this.getSelectedZone.id
             }).then((response) => {
                 const resp = response.data
                 const allCategory = this.categoryAll.concat(response.data)
-                    console.log('getCategories -> allCategory', allCategory)
                 if (allCategory.length == 1) {
+					this.$store.dispatch('user/setSelectedCategoryTitle', `Бесплатная и быстрая доставка еды в `)
 					this.loadingCategories = false
 					this.hideCategory = true
-                    console.log('getCategories -> this.hideCategory', this.hideCategory)
-
                 } else {
 					this.$store.dispatch('user/allCategory', allCategory)
 					if (this.getSelectedCategory.id === null) {
@@ -174,6 +173,7 @@ export default {
 							id: allCategory[0].id,
 							alias: allCategory[0].alias
 						})
+                        console.log('getCategories -> this.getSelectedZone.name', this.getSelectedZone.name)
 						this.$store.dispatch('user/setSelectedCategoryTitle', `Быстрая доставка еды в ${this.getSelectedZone.name}`)
 					} else {
 						this.selectCategory(this.getSelectedCategory, false)
@@ -305,6 +305,7 @@ export default {
         }
     },
     mounted() {
+		this.hideCategory = false
         this.ww = window.innerWidth
         if (this.getSearchNameKitchenDish !== null) {
             this.searchNameKitchenDish = this.getSearchNameKitchenDish

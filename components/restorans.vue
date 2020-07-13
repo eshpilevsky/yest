@@ -140,15 +140,15 @@ export default {
                 .then(response => {
                     const resp = response.data;
                     const rest = resp.restaurants;
-                    console.log('getRestaurants -> rest', rest)
                     if (resp.status === 200) {
                         this.restaurants = [];
-                        this.restaurants = rest;
+						this.restaurants = rest;
+						this.notFound = false;
                         this.loadingRest = false;
                     } else if (resp.status === 404) {
-                        this.restaurants.length = 0;
-                        this.loadingRest = false;
+                        this.restaurants = [];
                         this.notFound = true;
+                        this.loadingRest = false;
                     }
                 })
                 .catch(error => {
@@ -250,7 +250,8 @@ export default {
         getUserCoordinate(newValue) {
             this.getRestaurants(newValue[0], newValue[1]);
         },
-        getSelectedZone() {
+        getSelectedZone(newValue) {
+            console.log('getSelectedZone -> newValue', newValue)
             this.getRestaurants(
                 this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[0],
                 this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[1],

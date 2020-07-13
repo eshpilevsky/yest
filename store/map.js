@@ -35,7 +35,6 @@ export const mutations = {
 	state.data.loading = false
     navigator.geolocation.watchPosition(() => {},
       (error) => {
-        console.log('SHOW_MAP -> error', error)
         state.data.loading = false
         state.data.inputAddressMode = true
       });
@@ -74,8 +73,6 @@ export const actions = {
             latitude,
             longitude
           } = location.coords
-          console.log('latitude', latitude)
-          console.log('longitude', longitude)
           commit('SET_CURRENT_COORDS', [latitude, longitude])
           resolve(true)
         },

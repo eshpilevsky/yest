@@ -61,13 +61,13 @@ export default {
     methods: {
         prevImg() {
             const sw = document.getElementById('swiper')[0]
-            console.log('prevImg -> sw', sw)
             sw.nextEl()
         },
         nextImg() {
 
         },
         getSpecialOffers() {
+			this.hide = false
             ApiService.post(`/restaurants/special-offers`, {
                 zone_id: this.getSelectedZone.id,
                 latitude: parseInt(this.getUserCoordinate.latitude),
@@ -76,10 +76,8 @@ export default {
                 if (response.status === 200) {
                     const resp = response.data
                     this.specilaOffers = resp
-                        console.log('getSpecialOffers -> resp', resp)
                     if (resp.length == 0) {
 						this.hide = true
-                        console.log('getSpecialOffers -> this.hide', this.hide)
                     }
                     this.loadingSO = false
                 }

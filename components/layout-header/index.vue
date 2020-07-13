@@ -288,14 +288,9 @@ export default {
     height: 40px !important;
 }
 </style><style scoped>
-
-.hideLogo{
-	display: none !important; 
-}
-
 .header-map-btn {
     display: none;
-	margin-top: 40px;
+    margin-top: 40px;
 }
 
 .map {
@@ -557,6 +552,10 @@ export default {
 }
 
 @media screen and (max-width: 450px) {
+
+    .hideLogo {
+        display: none !important;
+    }
 
     .header-map-btn {
         display: flex;
