@@ -11,16 +11,29 @@ export function createRouter() {
     mode: 'history',
     routes: [{
         path: '/',
-        component: Home,
+		component: Home,
+		children:[{
+			path:':region',
+			children:[{
+				path:'restaurants',
+				children:[{
+					path:'category',
+					children:[{
+						path:':region'
+					}]
+				}]
+			}]
+			
+		}]
 	  },
-      {
-        path: '/:region',
-        component: Home,
-      },
-      {
-        path: '/:region/restaurants/category/:alias',
-        component: Home,
-      },
+    //   {
+    //     path: '/:region',
+    //     component: Home,
+    //   },
+    //   {
+    //     path: '/:region/restaurants/category/:alias',
+    //     component: Home,
+    //   },
       {
         path: '/restaurant/:resName',
         component: restaurants,
