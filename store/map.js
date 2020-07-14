@@ -37,11 +37,17 @@ export const mutations = {
         name: 'geolocation'
       })
       .then(function (permissionStatus) {
+		  setTimeout(() => {
+			  alert(this.state)
+		  }, 5000);
         permissionStatus.onchange = function () {
 		 if(this.state == 'prompt') {
 			state.data.loading = true
 		 } else if (this.state == 'granted') {
 			state.data.loading = false
+			setTimeout(() => {
+				
+			}, 5000);
 		  } else if(this.state == 'denied'){
 			state.data.loading = false
 			state.data.inputAddressMode = true
