@@ -1,11 +1,9 @@
 <template>
-<no-ssr>
-
     <v-overlay :value="isMapVisible">
-        <div v-show="this.getMapLoading" class="map-loading">
+        <div v-if="this.getMapLoading" class="map-loading">
             <v-progress-circular indeterminate size="40" color="grey"></v-progress-circular>
         </div>
-        <div v-show="!this.getMapLoading">
+        <div v-else>
             <div class="currentAddress" v-show="!isInputAddressMode">
                 <h2 class="currentAddress-title">{{address}}</h2>
                 <div class="currentAddress-put" @click="switchToAddressMode">Изменить адрес доставки</div>
@@ -14,7 +12,6 @@
             <map-suggest v-show="isInputAddressMode" @select="onSelect" @selectedPlace='selectedPlace' />
         </div>
     </v-overlay>
-</no-ssr>
 </template>
 
 <script>
@@ -61,6 +58,7 @@ export default {
     }),
     watch: {
         getMapLoading(newValue, oldValue) {
+            console.log('getMapLoading -> newValue', newValue)
             return newValue
         }
     },
@@ -86,7 +84,10 @@ export default {
     async mounted() {
         if (performance.navigation.type == 1) {
             this.hideMap()
-        }
+		}
+		setInterval(() => {
+			console.log('this.getMapLoading ->', this.getMapLoading);
+		}, 2000);
     },
     methods: {
         ...mapMutations({
@@ -94,6 +95,7 @@ export default {
             setCurrentCoords: 'map/SET_CURRENT_COORDS',
             switchToMapMode: 'map/UNSET_INPUT_ADDRESS_MODE',
             switchToAddressMode: 'map/SET_INPUT_ADDRESS_MODE',
+            loadf: 'map/LOADF',
         }),
         ...mapActions('map', {
             getLocation: 'getLocation',
@@ -127,7 +129,8 @@ export default {
             if (this.getCurrentCoords.length === 0) {
                 await this.getLocation()
             }
-            this.coords = this.getCurrentCoords
+			this.coords = this.getCurrentCoords
+			await this.loadf()
             console.error('onInit -> this.coords', this.coords)
         },
         onClick(e) {
@@ -135,8 +138,9 @@ export default {
             this.setCurrentCoords(this.coords)
         },
         selectedPlace(place) {
+            console.log('selectedPlace -> place', place)
             const component = this
-            this.ymaps.geocode(place.value, {
+            ymaps.geocode(place.value, {
                 results: 1,
                 boundedBy: [
                     [51.753588, 23.148098],
@@ -144,6 +148,7 @@ export default {
                 ]
             }).then((geo) => {
                 const geoObjects = geo.geoObjects.get(0)
+                console.log('selectedPlace -> geoObjects.geometry.getCoordinates()', geoObjects.geometry.getCoordinates())
                 component.coords = geoObjects.geometry.getCoordinates()
                 component.mapInstance.setCenter(geoObjects.geometry.getCoordinates(), 17)
             });

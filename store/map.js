@@ -26,26 +26,36 @@ export const mutations = {
       state.data.currentCoords[1] = longitude
     }, (error) => {
       console.warn(`ERROR(${error.code}): ${error.message}`)
-      state.data.inputAddressMode = true
     }, {
       enableHighAccuracy: true,
       timeout: 5000,
       maximumAge: 0
-	})
-	state.data.loading = false
-    navigator.geolocation.watchPosition(() => {},
-      (error) => {
-        state.data.loading = false
-        state.data.inputAddressMode = true
+    })
+
+    // Check for Geolocation API permissions
+    navigator.permissions.query({
+        name: 'geolocation'
+      })
+      .then(function (permissionStatus) {
+        console.log('geolocation permission state is ', permissionStatus.state);
+        permissionStatus.onchange = function () {
+		  console.log('geolocation permission state has changed to ', this.state);
+		  if (this.state == 'granted') {
+			state.data.loading = false
+		  } else if(this.state == 'denied'){
+			state.data.loading = false
+			state.data.inputAddressMode = true
+		  }
+        };
       });
   },
   HIDE_MAP(state) {
     state.data.visible = false
   },
   SET_CURRENT_COORDS(state, coords) {
-	  if (coords != null) {
-		state.data.currentCoords = coords
-	  }
+    if (coords != null) {
+      state.data.currentCoords = coords
+    }
   },
   SET_CURRENT_ADDRESS(state, address) {
     state.data.address = address
@@ -58,6 +68,9 @@ export const mutations = {
   },
   SET_GEOLOCATION_DENIED(state) {
     state.data.geolocationDenied = true
+  },
+  LOADF(state) {
+    state.data.loading = false
   }
 };
 
