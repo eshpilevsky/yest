@@ -25,22 +25,22 @@ export const mutations = {
       state.data.currentCoords[0] = latitude
       state.data.currentCoords[1] = longitude
     }, (error) => {
-      console.warn(`ERROR(${error.code}): ${error.message}`)
+	  console.warn(`ERROR(${error.code}): ${error.message}`)
+	  state.data.inputAddressMode = true
     }, {
       enableHighAccuracy: true,
       timeout: 5000,
       maximumAge: 0
     })
 
-    // Check for Geolocation API permissions
     navigator.permissions.query({
         name: 'geolocation'
       })
       .then(function (permissionStatus) {
-        console.log('geolocation permission state is ', permissionStatus.state);
         permissionStatus.onchange = function () {
-		  console.log('geolocation permission state has changed to ', this.state);
-		  if (this.state == 'granted') {
+		 if(this.state == 'prompt') {
+			state.data.loading = true
+		 } else if (this.state == 'granted') {
 			state.data.loading = false
 		  } else if(this.state == 'denied'){
 			state.data.loading = false
