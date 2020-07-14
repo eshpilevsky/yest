@@ -5,7 +5,7 @@
             Yest.by • {{this.getSelectedZone.name}} {{this.getSelectedCategoryName ? `• ${this.getSelectedCategoryName}` : ``}}
         </span>
         <h1 class="info-title">
-            {{computedTitle[0] }} <br /> {{computedTitle[0]}}
+            {{computedTitle[0] }} <br /> {{ computedTitle[1] ? ` в ${computedTitle[1]}` : ''}}
         </h1>
         <span class="info-setPlace">
             Укажите ваше местоположение, чтобы мы смогли предложить вам список доступных ресторанов
@@ -68,7 +68,6 @@ export default {
             getCurrentAddress: 'map/getCurrentAddress'
         }),
         computedTitle() {
-			console.log('computedTitle -> this.getSelectedCategoryTitle', this.getSelectedCategoryTitle)
 			let a = this.getSelectedCategoryTitle
             let b = a.split(' в ')
             return [b[0], b[1]]

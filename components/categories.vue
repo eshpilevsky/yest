@@ -163,7 +163,7 @@ export default {
                 const resp = response.data
                 const allCategory = this.categoryAll.concat(response.data)
                 if (allCategory.length == 1) {
-					this.$store.dispatch('user/setSelectedCategoryTitle', `Бесплатная и быстрая доставка еды в `)
+					this.$store.dispatch('user/setSelectedCategoryTitle', null)
 					this.loadingCategories = false
 					this.hideCategory = true
                 } else {

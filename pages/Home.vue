@@ -43,7 +43,7 @@ export default {
                 if (newValue.length > 0) {
                     this.showSetAdress = false
                 } else {
-					this.showSetAdress = true
+                    this.showSetAdress = true
                 }
             }
         },
@@ -57,7 +57,7 @@ export default {
         })
     },
     mounted() {
-        // this.redirectCategoryByUrl()
+        this.redirectCategoryByUrl()
         let lastScrollTop = 0
         if (window.innerWidth < 450) {
             window.addEventListener('scroll', () => {
@@ -81,7 +81,6 @@ export default {
         }
     },
     methods: {
-
         redirectCategoryByUrl() {
             const findZone = this.getZoneList.find((zone) => {
                 if (zone.alias === this.$route.params.region) {
@@ -92,7 +91,8 @@ export default {
                 if (category.alias === this.$route.params.alias) {
                     return category
                 }
-            })
+			})
+
             if (findZone !== undefined) {
                 this.$store.dispatch('zone/setSelectedZone', findZone.id)
             }
@@ -117,7 +117,7 @@ export default {
 }
 </script>
 
-<style >
+<style>
 .home-container {
     position: relative;
     z-index: 1;

@@ -5,7 +5,7 @@ export const state = () => ({
       id: null,
       alias: null
     },
-    selectedCategoryTitle: 'Быстрая доставка еды в Минскe',
+    selectedCategoryTitle: '',
     searchNameKitchenDish: null,
     categoryList: {},
     userLocation: {
@@ -34,8 +34,12 @@ export const mutations = {
   },
 
   SET_CATEGORY_TITLE(state, payload) {
-    state.status = '200'
-    state.data.selectedCategoryTitle = payload
+	state.status = '200'
+	if (payload == null) {
+		state.data.selectedCategoryTitle = 'Быстрая и бесплатная доставка'
+	} else {
+		state.data.selectedCategoryTitle = payload
+	}
   },
 
   CATEGOTY_LIST(state, payload) {

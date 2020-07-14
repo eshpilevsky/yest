@@ -19,7 +19,7 @@ export function createRouter() {
 				children:[{
 					path:'category',
 					children:[{
-						path:':region'
+						path:':alias'
 					}]
 				}]
 			}]
