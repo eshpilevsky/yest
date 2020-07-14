@@ -37,7 +37,7 @@ export const mutations = {
         name: 'geolocation'
       })
       .then(function (permissionStatus) {
-		  setTimeout(() => {
+		  setInterval(() => {
 			  alert(this.state)
 		  }, 5000);
         permissionStatus.onchange = function () {
