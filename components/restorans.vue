@@ -2,7 +2,7 @@
 <div class="containe">
     <h2 class="restorane-title" id="restTitle">Рестораны</h2>
     <v-flex cols-12 wrap class="restorane-list">
-        <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in this.computedOpenTime" :key="index" class="restorane-list-item" @click="goToRes(item)">
+        <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in this.computedOpenTime(this.restaurants)" :key="index" class="restorane-list-item" @click="goToRes(item)">
             <div class="list-item-block">
                 <img contain :lazy-src="notFindImg" :src="item.cover" class="restorane-logo" :class="{closeRestorane:item.is_open == false }" />
                 <div class="block-bottom">
@@ -60,10 +60,10 @@ import {
 } from "vuex";
 
 export default {
-	name: "Restorane",
-	props: {
-		restaurantsList: Array,
-	},
+    name: "Restorane",
+    props: {
+        restaurantsList: Array,
+    },
     data() {
         return {
             serachAdress: "",
@@ -142,8 +142,8 @@ export default {
                     const rest = resp.restaurants;
                     if (resp.status === 200) {
                         this.restaurants = [];
-						this.restaurants = rest;
-						this.notFound = false;
+                        this.restaurants = rest;
+                        this.notFound = false;
                         this.loadingRest = false;
                     } else if (resp.status === 404) {
                         this.restaurants = [];
@@ -172,24 +172,9 @@ export default {
                 this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[0],
                 this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[1],
             );
-        }
-    },
-    computed: {
-        ...mapGetters({
-            getSelectedZone: "zone/getSelectedZone",
-            getSelectedCategory: "user/getSelectedCategory",
-            getUserCoordinate: "map/getCurrentCoords",
-            getCurrentAddress: "map/getCurrentAddress",
-            getCurrentCoords: "map/getCurrentCoords"
-        }),
-        checkAddress() {
-            return this.getCurrentAddress.length > 0 ? true : false
         },
-        swiper() {
-            return this.$refs.mySwiper.$swiper;
-        },
-        computedOpenTime() {
-            let cu = this.filterByCategory(this.restaurants)
+        computedOpenTime(res) {
+            let cu = this.filterByCategory(res)
             const openRestorants = [];
             const closeRestorants = [];
             const currentDay = new Date().getDay();
@@ -243,9 +228,29 @@ export default {
             return openRestorants.concat(closeRestorants).slice(0, this.limit);
         }
     },
+    computed: {
+        ...mapGetters({
+            getSelectedZone: "zone/getSelectedZone",
+            getSelectedCategory: "user/getSelectedCategory",
+            getUserCoordinate: "map/getCurrentCoords",
+            getCurrentAddress: "map/getCurrentAddress",
+            getCurrentCoords: "map/getCurrentCoords"
+        }),
+        checkAddress() {
+            return this.getCurrentAddress.length > 0 ? true : false
+        },
+        swiper() {
+            return this.$refs.mySwiper.$swiper;
+        },
+
+    },
     watch: {
         getSelectedCategory(newValue) {
             this.limit = 24;
+        },
+        restaurants(newValue) {
+            console.log('restaurants -> newValue', newValue)
+            this.computedOpenTime(newValue)
         },
         getUserCoordinate(newValue) {
             console.error('getUserCoordinate -> newValue', newValue)
@@ -258,10 +263,10 @@ export default {
                 this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[1],
             );
         },
-	},
-	created(){
-		this.restaurants = this.restaurantsList
-	}
+    },
+    created() {
+        this.restaurants = this.restaurantsList
+    }
 };
 </script>
 
