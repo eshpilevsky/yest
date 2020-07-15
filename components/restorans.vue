@@ -1,7 +1,7 @@
 <template>
 <div class="containe">
     <h2 class="restorane-title" id="restTitle">Рестораны</h2>
-    <v-flex cols-12 wrap class="restorane-list" v-if="loadingRest == false">
+    <v-flex cols-12 wrap class="restorane-list">
         <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in this.computedOpenTime" :key="index" class="restorane-list-item" @click="goToRes(item)">
             <div class="list-item-block">
                 <img contain :lazy-src="notFindImg" :src="item.cover" class="restorane-logo" :class="{closeRestorane:item.is_open == false }" />
@@ -39,9 +39,6 @@
             </div>
         </v-flex>
     </v-flex>
-    <v-flex cols-12 wrap v-show="loadingRest == true" class="loading">
-        <v-skeleton-loader v-for="item in 9" :key="item" type="card" class="loading-item"></v-skeleton-loader>
-    </v-flex>
     <div v-show="notFound == true" class="notFound">
         <div class="notfoundTitle">Нас тут ещё нет :(</div>
         <div class="notFoundDescription pa-4">Но мы подключаем десятки новых мест каждую неделю. Может быит, и здесь окажемся! Если оставите свою почту, сразу вам сообщим. Обещаем не спамить.</div>
@@ -63,7 +60,10 @@ import {
 } from "vuex";
 
 export default {
-    name: "Restorane",
+	name: "Restorane",
+	props: {
+		restaurantsList: Array,
+	},
     data() {
         return {
             serachAdress: "",
@@ -248,22 +248,20 @@ export default {
             this.limit = 24;
         },
         getUserCoordinate(newValue) {
+            console.error('getUserCoordinate -> newValue', newValue)
             this.getRestaurants(newValue[0], newValue[1]);
         },
         getSelectedZone(newValue) {
-            console.log('getSelectedZone -> newValue', newValue)
+            console.error('getSelectedZone -> newValue', newValue)
             this.getRestaurants(
                 this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[0],
                 this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[1],
             );
         },
-    },
-    mounted() {
-        this.getRestaurants(
-            this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[0],
-            this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[1],
-        );
-    }
+	},
+	created(){
+		this.restaurants = this.restaurantsList
+	}
 };
 </script>
 

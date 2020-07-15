@@ -2,9 +2,9 @@
 <div style="padding-bottom: 0px">
     <setAdress :class="{hide: showSetAdress == false}" />
     <specialOffers v-show="getCurrentAddress.length > 0" />
-    <categories />
+    <categories :categoriesList='categoriesList'/>
     <mobileSearch v-show="showSearch" />
-    <restorans />
+    <restorans :restaurantsList='restaurantsList'/>
 </div>
 </template>
 
@@ -14,6 +14,9 @@ import categories from '~/components/categories.vue'
 import specialOffers from '~/components/specialOffers.vue'
 import restorans from '~/components/restorans.vue'
 import mobileSearch from '~/components/mobileSearch.vue'
+import ApiService from "~/common/api.service";
+import axios from 'axios'
+
 import {
     mapGetters
 } from 'vuex'
@@ -31,7 +34,26 @@ export default {
         return {
             showSearch: false,
             showSetAdress: true,
-            showSpecialOffer: false,
+			showSpecialOffer: false,
+			rest: [],
+        }
+	},
+	async asyncData({
+        context
+    }) {
+        let restaurantsList = await axios.post('https://yestapi.xyz/restaurants', {
+            zone_id: 1,
+            limit: 100,
+            start: 0,
+		})
+        let categoriesList = await axios.post('https://yestapi.xyz/categories', {
+            zone_id: 1})
+        // let zoneList = await axios.post('https://yestapi.xyz/get-zones')
+		
+        return {
+            restaurantsList: restaurantsList.data.restaurants,
+            categoriesList: categoriesList.data,
+            // zoneList: zoneList.data
         }
     },
     watch: {
@@ -57,7 +79,9 @@ export default {
         })
     },
     mounted() {
-        this.redirectCategoryByUrl()
+		setTimeout(() => {
+			this.redirectCategoryByUrl()
+		}, 100);
         let lastScrollTop = 0
         if (window.innerWidth < 450) {
             window.addEventListener('scroll', () => {
@@ -86,7 +110,8 @@ export default {
                 if (zone.alias === this.$route.params.region) {
                     return zone.id
                 }
-            })
+			})
+			
             const findCategory = this.getCategoryList.find((category) => {
                 if (category.alias === this.$route.params.alias) {
                     return category

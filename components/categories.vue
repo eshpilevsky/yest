@@ -1,6 +1,6 @@
 <template>
 <div class="categories-containe" v-if="!hideCategory">
-    <div class="category-list" v-show="!loadingCategories">
+    <div class="category-list" >
         <div>
             <v-chip class="category-chips" v-for="(item, index) in first" :key="'firstCategor' + index" :color="item.id === getSelectedCategory.id ? 'primary': 'white'" @click="selectCategory(item, false)">
                 <div class="category-name">
@@ -50,19 +50,13 @@
             </div>
         </v-menu> -->
     </div>
-    <div v-show="loadingCategories" class="category-list">
-        <v-skeleton-loader v-for="(item, index) in 10" :key="'catListSkeleton' + index" type="chip" class="category-list-loading"></v-skeleton-loader>
-    </div>
-    <div class="category-list-mobile" v-show="!loadingCategories">
+    <div class="category-list-mobile" >
         <div v-for="(item, index) in allCategory" :key="'adaptiveCatList' + index" v-show="item.category_icon" class="category-list-mobile-item" @click="selectCategoryAdaptive(item, false)">
             <img :src="item.category_icon" class="category_icon" />
             <span :class="{selected: item.id === getSelectedCategory.id}" class="item-name">
                 {{ item.name }}
             </span>
         </div>
-    </div>
-    <div v-show="loadingCategories" class="category-list-mobile-loading">
-        <v-skeleton-loader v-for="(item, index) in 5" :key="'skeletLoader' + index" type="avatar" class="loading-item"></v-skeleton-loader>
     </div>
     <v-divider class="divider" />
     <v-text-field placeholder="Название, кухня или блюдо" clearable prepend-inner-icon="search" outlined class="searchDesktop" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch"></v-text-field>
@@ -84,7 +78,10 @@ import {
 } from 'vuex'
 
 export default {
-    name: 'Categories',
+	name: 'Categories',
+	props: {
+		categoriesList: Array,
+	},
     data() {
         return {
             first: [],
@@ -303,7 +300,10 @@ export default {
             // const possi = si.getBoundingClientRect().top
             // window.scrollTo(0, si.getBoundingClientRect().top - 210)
         }
-    },
+	},
+	created(){
+		this.allCategory = this.categoriesList
+	},
     mounted() {
 		this.hideCategory = false
         this.ww = window.innerWidth
