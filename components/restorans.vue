@@ -70,6 +70,7 @@ export default {
             restaurants: [],
             selcatmass: [],
             mergeMassive: [],
+            resultRestuarantsList: [],
             loadingRest: true,
             notFound: false,
             limit: 24,
@@ -223,8 +224,8 @@ export default {
                     closeRestorants.push(item);
                     item.is_open = false;
                 }
-            });
-            this.loadingRest = false;
+			});
+			
             return openRestorants.concat(closeRestorants).slice(0, this.limit);
         }
     },
@@ -263,9 +264,13 @@ export default {
                 this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[1],
             );
         },
-    },
-    created() {
-        this.restaurants = this.restaurantsList
+	},
+    async created() {
+		if (this.restaurantsList != null) {
+			this.restaurants = this.restaurantsList
+		} else {
+			this.notFound = true
+		}
     }
 };
 </script>

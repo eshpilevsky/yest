@@ -2,9 +2,9 @@
 <div style="padding-bottom: 0px">
     <setAdress :class="{hide: showSetAdress == false}" />
     <specialOffers v-show="getCurrentAddress.length > 0" />
-    <categories :categoriesList='categoriesList'/>
+    <categories :categoriesList='categoriesList' />
     <mobileSearch v-show="showSearch" />
-    <restorans :restaurantsList='restaurantsList'/>
+    <restorans :restaurantsList='restaurantsList' />
 </div>
 </template>
 
@@ -34,24 +34,46 @@ export default {
         return {
             showSearch: false,
             showSetAdress: true,
-			showSpecialOffer: false,
-			rest: [],
+            showSpecialOffer: false,
+            rest: [],
         }
-	},
-	async asyncData({
-        context
+    },
+    async asyncData({
+        app,
+        params,
+        store
     }) {
-        let restaurantsList = await axios.post('https://yestapi.xyz/restaurants', {
-            zone_id: 1,
-            limit: 100,
-            start: 0,
-		})
-        let categoriesList = await axios.post('https://yestapi.xyz/categories', {
-            zone_id: 1})
-        // let zoneList = await axios.post('https://yestapi.xyz/get-zones')
+        console.log('Data -> store', store)
+        const selectedZone = store.getters['zone/getSelectedZone']
+		const currentCoord = store.getters['map/getCurrentCoords']
 		
+        
+        var paramsToRestuarants = {}
+        if (currentCoord.length > 0) {
+            paramsToRestuarants = {
+                zone_id: parseInt(selectedZone.id),
+                limit: 100,
+                start: 0,
+                latitude: parseFloat(latitude),
+                longitude: parseFloat(longitude)
+            }
+        } else {
+            paramsToRestuarants = {
+                zone_id: parseInt(selectedZone.id),
+                limit: 100,
+                start: 0,
+            }
+        }
+
+        let restaurantsList = await axios.post('https://yestapi.xyz/restaurants', paramsToRestuarants)
+        console.log('restaurantsList', restaurantsList)
+        let categoriesList = await axios.post('https://yestapi.xyz/categories', {
+            zone_id: selectedZone.id
+        })
+        // let zoneList = await axios.post('https://yestapi.xyz/get-zones')
+
         return {
-            restaurantsList: restaurantsList.data.restaurants,
+            restaurantsList: restaurantsList.data.status =='404' ? null : restaurantsList.data.restaurants,
             categoriesList: categoriesList.data,
             // zoneList: zoneList.data
         }
@@ -79,9 +101,9 @@ export default {
         })
     },
     mounted() {
-		setTimeout(() => {
-			this.redirectCategoryByUrl()
-		}, 100);
+        // setTimeout(() => {
+        //     this.redirectCategoryByUrl()
+        // }, 100);
         let lastScrollTop = 0
         if (window.innerWidth < 450) {
             window.addEventListener('scroll', () => {
@@ -110,13 +132,13 @@ export default {
                 if (zone.alias === this.$route.params.region) {
                     return zone.id
                 }
-			})
-			
+            })
+
             const findCategory = this.getCategoryList.find((category) => {
                 if (category.alias === this.$route.params.alias) {
                     return category
                 }
-			})
+            })
 
             if (findZone !== undefined) {
                 this.$store.dispatch('zone/setSelectedZone', findZone.id)
