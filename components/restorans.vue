@@ -2,7 +2,7 @@
 <div class="containe">
     <h2 class="restorane-title" id="restTitle">Рестораны</h2>
     <v-flex cols-12 wrap class="restorane-list">
-        <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in this.restaurants" :key="index" class="restorane-list-item" @click="goToRes(item)">
+        <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in computedOpenTime(this.restaurants)" :key="index" class="restorane-list-item" @click="goToRes(item)">
             <div class="list-item-block">
                 <img contain :lazy-src="notFindImg" :src="item.cover" class="restorane-logo" :class="{closeRestorane:item.is_open == false }" />
                 <div class="block-bottom">
