@@ -1,8 +1,8 @@
 <template>
 <div class="categories-containe" v-if="!hideCategory">
-    <div class="category-list" >
+    <div class="category-list">
         <div>
-            <v-chip class="category-chips" v-for="(item, index) in first" :key="'firstCategor' + index" :color="item.id === getSelectedCategory.id ? 'primary': 'white'" @click="selectCategory(item, false)">
+            <v-chip class="category-chips" v-for="(item, index) in first" :key="'firstCategor' + index" :color="item.alias == currentRouteAlias ? 'primary': 'white'" @click="selectCategory(item, false)">
                 <div class="category-name">
                     {{ item.name }}
                 </div>
@@ -50,7 +50,7 @@
             </div>
         </v-menu> -->
     </div>
-    <div class="category-list-mobile" >
+    <div class="category-list-mobile">
         <div v-for="(item, index) in allCategory" :key="'adaptiveCatList' + index" v-show="item.category_icon" class="category-list-mobile-item" @click="selectCategoryAdaptive(item, false)">
             <img :src="item.category_icon" class="category_icon" />
             <span :class="{selected: item.id === getSelectedCategory.id}" class="item-name">
@@ -78,10 +78,10 @@ import {
 } from 'vuex'
 
 export default {
-	name: 'Categories',
-	props: {
-		categoriesList: Array,
-	},
+    name: 'Categories',
+    props: {
+        categoriesList: Array,
+    },
     data() {
         return {
             first: [],
@@ -129,6 +129,7 @@ export default {
             defaultBg: 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png',
             oldCategoryImg: null,
             hideCategory: false,
+            currentRouteAlias: '',
         }
     },
     computed: {
@@ -144,56 +145,11 @@ export default {
         getSelectedCategory(newValue) {
             return newValue
         },
-        getSelectedZone(newValue) {
-            this.getCategories()
-        },
         searchNameKitchenDish(newValue) {
             this.$store.dispatch('user/setSearchNameKitchenDish', newValue)
         }
     },
     methods: {
-        getCategories() {
-			this.hideCategory = false
-            ApiService.post('/categories', {
-                zone_id: this.getSelectedZone.id
-            }).then((response) => {
-                const resp = response.data
-                const allCategory = this.categoryAll.concat(response.data)
-                if (allCategory.length == 1) {
-					this.$store.dispatch('user/setSelectedCategoryTitle', null)
-					this.loadingCategories = false
-					this.hideCategory = true
-                } else {
-					this.$store.dispatch('user/allCategory', allCategory)
-					if (this.getSelectedCategory.id === null) {
-						this.$store.dispatch('user/selectCategory', {
-							id: allCategory[0].id,
-							alias: allCategory[0].alias
-						})
-                        console.log('getCategories -> this.getSelectedZone.name', this.getSelectedZone.name)
-						this.$store.dispatch('user/setSelectedCategoryTitle', `Быстрая доставка еды в ${this.getSelectedZone.name}`)
-					} else {
-						this.selectCategory(this.getSelectedCategory, false)
-					}
-					this.allCategory = resp
-					this.first = allCategory.slice(0, this.sliceCounter)
-					this.second = allCategory.slice(this.sliceCounter, resp.length)
-					var qwe = this.first.find((category) => {
-						if (category.id === this.getSelectedCategory.id) {
-							return true
-						}
-					})
-					if (qwe === undefined) {
-						this.more.text = this.getSelectedCategory.name
-						this.more.id = this.getSelectedCategory.id
-						this.more.isMore = true
-					}
-					this.loadingCategories = false
-                }
-            }).catch((error) => {
-                console.error(error)
-            })
-        },
         selectCategoryAdaptive(selectCategory, boll) {
             if (selectCategory.id == this.getSelectedCategory.id) {
                 this.selectCategory({
@@ -205,92 +161,99 @@ export default {
                 this.selectCategory(selectCategory, boll)
             }
         },
-        selectCategory(item, boll) {
-            this.oldCategoryImg = document.getElementById('bgImg') ? document.getElementById('bgImg') : null
-            if (item.id !== 0) {
-                if (boll === true) {
-                    this.more.text = item.name
-                    this.more.id = item.id
-                    this.more.isMore = true
-                } else {
-                    this.more.text = 'Ещё'
-                    this.more.id = -1
-                    this.more.isMore = false
-                }
-                ApiService.post('/categories/info', {
-                    zone_id: this.getSelectedZone.id,
-                    category_id: item.id
-                }).then((response) => {
-                    if (response.status === 200) {
-                        const respData = response.data
-                        if (respData.hasOwnProperty('status')) {
-                            if (response.data.status === 404) {
-                                this.$store.dispatch('user/setSelectedCategoryTitle', 'Бесплатная и быстрая доставка')
-                                this.$store.dispatch('user/selectCategory', {
-                                    id: item.id,
-                                    alias: item.alias,
-                                    name: item.name
-                                })
-                                if (this.oldCategoryImg != null) {
-                                    // this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.defaultBg + '");'
-                                    this.oldCategoryImg.setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.defaultBg + '");')
-                                }
-                                if (item.id === 0) {
-                                    this.$router.push(`/${this.getSelectedZone.alias}`)
-                                } else {
-                                    this.$router.push(`/${this.getSelectedZone.alias}/restaurants/category/${item.alias}`)
-                                }
-                            }
-                        } else {
-                            this.$store.dispatch('user/selectCategory', {
-                                id: item.id,
-                                alias: response.data.alias,
-                                name: item.name
-                            })
-                            this.$store.dispatch('user/setSelectedCategoryTitle', response.data.header + ' в ' + response.data.city)
-                            var bg = response.data.background
+        selectCategory(category, boll) {
+            // this.$store.dispatch('user/selectCategory', {
+            //     id: category.id,
+            //     alias: category.alias,
+            //     name: category.name
+            // });
 
-                            if (window.innerWidth > 450) {
-                                if (this.oldCategoryImg != null) {
-                                    this.oldCategoryImg.setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + bg + '");')
-                                    // this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.bg + '");'
-                                }
-                            } else {
-                                if (this.oldCategoryImg != null) {
-                                    this.oldCategoryImg.setAttribute('style', 'background-image: url("' + response.data.category_icon + '");')
-                                    // this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + response.data.category_icon + '");'
-                                }
-                            }
-                            if (item.id === 0) {
-                                this.$router.push(`/${this.getSelectedZone.alias}`)
-                            } else {
-                                this.$router.push(`/${this.getSelectedZone.alias}/restaurants/category/${response.data.alias}`)
-                            }
-                        }
-                    }
-                }).catch((error) => {
-                    console.error(error)
-                })
-            } else {
-                if (window.innerWidth < 500) {
-                    if (this.oldCategoryImg != null) {
-                        // this.oldCategoryImg.style.backgroundImage = 'url("https://menu-menu.by/images/category_icons/new/4529d57df6bc970d11c1f3496296d99b-200x200.jpg");'
-                        this.oldCategoryImg.setAttribute('style', 'background-image: url("https://menu-menu.by/images/category_icons/new/4529d57df6bc970d11c1f3496296d99b-200x200.jpg");')
-                    }
-                } else {
-                    if (this.oldCategoryImg != null) {
-                        this.oldCategoryImg.setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.defaultBg + '");')
-                        // this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.defaultBg + '");'
-                    }
-                }
-                this.$store.dispatch('user/selectCategory', {
-                    id: 0,
-                    alias: item.alias,
-                    name: item.name
-                })
-                this.$router.push(`/${this.getSelectedZone.alias}`)
-                this.$store.dispatch('user/setSelectedCategoryTitle', `Быстрая доставка в ${this.getSelectedZone.name}`)
-            }
+            this.$router.push(`/${this.getSelectedZone.alias}/restaurants/category/${category.alias}`)
+            // this.oldCategoryImg = document.getElementById('bgImg') ? document.getElementById('bgImg') : null
+            // if (item.id !== 0) {
+            //     if (boll === true) {
+            //         this.more.text = item.name
+            //         this.more.id = item.id
+            //         this.more.isMore = true
+            //     } else {
+            //         this.more.text = 'Ещё'
+            //         this.more.id = -1
+            //         this.more.isMore = false
+            //     }
+            //     ApiService.post('/categories/info', {
+            //         zone_id: this.getSelectedZone.id,
+            //         category_id: item.id
+            //     }).then((response) => {
+            //         if (response.status === 200) {
+            //             const respData = response.data
+            //             if (respData.hasOwnProperty('status')) {
+            //                 if (response.data.status === 404) {
+            //                     this.$store.dispatch('user/setSelectedCategoryTitle', 'Бесплатная и быстрая доставка')
+            //                     this.$store.dispatch('user/selectCategory', {
+            //                         id: item.id,
+            //                         alias: item.alias,
+            //                         name: item.name
+            //                     })
+            //                     if (this.oldCategoryImg != null) {
+            //                         // this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.defaultBg + '");'
+            //                         this.oldCategoryImg.setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.defaultBg + '");')
+            //                     }
+            //                     // if (item.id === 0) {
+            //                     //     this.$router.push(`/${this.getSelectedZone.alias}`)
+            //                     // } else {
+            //                     //     this.$router.push(`/${this.getSelectedZone.alias}/restaurants/category/${item.alias}`)
+            //                     // }
+            //                 }
+            //             } else {
+            //                 this.$store.dispatch('user/selectCategory', {
+            //                     id: item.id,
+            //                     alias: response.data.alias,
+            //                     name: item.name
+            //                 })
+            //                 this.$store.dispatch('user/setSelectedCategoryTitle', response.data.header + ' в ' + response.data.city)
+            //                 var bg = response.data.background
+
+            //                 if (window.innerWidth > 450) {
+            //                     if (this.oldCategoryImg != null) {
+            //                         this.oldCategoryImg.setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + bg + '");')
+            //                         // this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.bg + '");'
+            //                     }
+            //                 } else {
+            //                     if (this.oldCategoryImg != null) {
+            //                         this.oldCategoryImg.setAttribute('style', 'background-image: url("' + response.data.category_icon + '");')
+            //                         // this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + response.data.category_icon + '");'
+            //                     }
+            //                 }
+            //                 // if (item.id === 0) {
+            //                 //     this.$router.push(`/${this.getSelectedZone.alias}`)
+            //                 // } else {
+            //                 //     this.$router.push(`/${this.getSelectedZone.alias}/restaurants/category/${response.data.alias}`)
+            //                 // }
+            //             }
+            //         }
+            //     }).catch((error) => {
+            //         console.error(error)
+            //     })
+            // } else {
+            //     if (window.innerWidth < 500) {
+            //         if (this.oldCategoryImg != null) {
+            //             // this.oldCategoryImg.style.backgroundImage = 'url("https://menu-menu.by/images/category_icons/new/4529d57df6bc970d11c1f3496296d99b-200x200.jpg");'
+            //             this.oldCategoryImg.setAttribute('style', 'background-image: url("https://menu-menu.by/images/category_icons/new/4529d57df6bc970d11c1f3496296d99b-200x200.jpg");')
+            //         }
+            //     } else {
+            //         if (this.oldCategoryImg != null) {
+            //             this.oldCategoryImg.setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.defaultBg + '");')
+            //             // this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.defaultBg + '");'
+            //         }
+            //     }
+            //     this.$store.dispatch('user/selectCategory', {
+            //         id: 0,
+            //         alias: item.alias,
+            //         name: item.name
+            //     })
+            //     // this.$router.push(`/${this.getSelectedZone.alias}`)
+            //     this.$store.dispatch('user/setSelectedCategoryTitle', `Быстрая доставка в ${this.getSelectedZone.name}`)
+            // }
         },
         dropSearch() {
             this.$store.dispatch('user/setSearchNameKitchenDish', null)
@@ -300,12 +263,17 @@ export default {
             // const possi = si.getBoundingClientRect().top
             // window.scrollTo(0, si.getBoundingClientRect().top - 210)
         }
-	},
-	created(){
-		this.allCategory = this.categoriesList
-	},
+    },
+    created() {
+        },
     mounted() {
-		this.hideCategory = false
+        this.allCategory = this.categoriesList
+        this.first = this.allCategory.slice(0, this.sliceCounter)
+        this.second = this.allCategory.slice(this.sliceCounter, this.allCategory.length)
+
+        this.currentRouteAlias = this.$route.params.alias
+
+        this.hideCategory = false
         this.ww = window.innerWidth
         if (this.getSearchNameKitchenDish !== null) {
             this.searchNameKitchenDish = this.getSearchNameKitchenDish
@@ -319,7 +287,6 @@ export default {
                 }
             }
         }
-        this.getCategories()
     }
 }
 </script>

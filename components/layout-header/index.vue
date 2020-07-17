@@ -150,6 +150,7 @@ export default {
         MapContainer,
         MapDesktop,
     },
+
     data() {
         return {
             calcWidth: 340,

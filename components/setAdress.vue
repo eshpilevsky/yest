@@ -5,7 +5,7 @@
             Yest.by • {{this.getSelectedZone.name}} {{this.getSelectedCategoryName ? `• ${this.getSelectedCategoryName}` : ``}}
         </span>
         <h1 class="info-title">
-            {{computedTitle[0] }} <br /> {{ computedTitle[1] ? ` в ${computedTitle[1]}` : ''}}
+            {{selectedCategoryTitle}} <br /> в {{ city}}
         </h1>
         <span class="info-setPlace">
             Укажите ваше местоположение, чтобы мы смогли предложить вам список доступных ресторанов
@@ -46,6 +46,9 @@ export default {
     components: {
         MapBtn
     },
+    props: {
+        selectedCategoryInfo: Object,
+    },
     data() {
         return {
             searchAddress: '',
@@ -55,32 +58,28 @@ export default {
             suggestions: [],
             filteredLocations: [],
             ymaps: null,
+            selectedCategoryTitle: null,
+            city: null,
             loadingSuggest: false,
-            coords: []
+            coords: [],
+            bgImg: null,
         }
     },
     computed: {
         ...mapGetters({
             getSelectedZone: 'zone/getSelectedZone',
-            getSelectedCategoryTitle: 'user/getSelectedCategoryTitle',
+            // getSelectedCategoryTitle: 'user/getSelectedCategoryTitle',
             getSelectedCategoryName: 'user/getSelectedCategoryName',
             canDisplayMap: 'device/isMobile',
             getCurrentAddress: 'map/getCurrentAddress'
         }),
-        computedTitle() {
-			let a = this.getSelectedCategoryTitle
-            let b = a.split(' в ')
-            return [b[0], b[1]]
-        }
     },
     watch: {
         getSelectedCategoryTitle(newValue) {
             return newValue
         },
         searchAddress(newValue) {
-            if (newValue.length > 3) {
-                this.getSuggest(newValue)
-            }
+            this.getSuggest(newValue)
         },
         getCurrentAddress(newValue) {
             this.searchAddress = newValue
@@ -160,15 +159,17 @@ export default {
             this.searchAddress = address.value
         },
     },
-    async beforeMount() {
-        this.ww = window.innerWidth;
-        await loadYmap({
-            ...settings,
-            debug: true
-        });
-        this.ymaps = ymaps
+    async created() {
+        this.selectedCategoryTitle = this.selectedCategoryInfo.header
+        this.city = this.selectedCategoryInfo.city
+        this.bgImg = this.selectedCategoryInfo.background
     },
-    mounted() {
+    async mounted() {
+        await loadYmap({
+            ...settings
+        });
+        var oldBg = document.getElementById('bgImg');
+        oldBg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.bgImg + '");'
         this.searchAddress = this.getCurrentAddress
     }
 }

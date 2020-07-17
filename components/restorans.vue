@@ -250,7 +250,6 @@ export default {
             this.limit = 24;
         },
         restaurants(newValue) {
-            console.log('restaurants -> newValue', newValue)
             this.computedOpenTime(newValue)
         },
         getUserCoordinate(newValue) {

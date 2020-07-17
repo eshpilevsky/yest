@@ -28,6 +28,9 @@ export default {
     directives: {
         swiper: directive
     },
+    props: {
+        getSpecialOffersData: Array,
+    },
     data() {
         return {
             serachAdress: '',
@@ -86,16 +89,10 @@ export default {
             })
         }
     },
-    watch: {
-        getSpecialOffers(newValue) {
-            this.loadingSO = true
-            setTimeout(() => {
-                this.getSpecialOffers()
-            }, 100)
-        }
+    created(){
+        console.log(this.getSpecialOffersData);
     },
     mounted() {
-        this.getSpecialOffers()
         if (window.innerWidth < 450) {
             this.swiperOptions.effect = 'none'
             this.swiperOptions.spaceBetween = 1

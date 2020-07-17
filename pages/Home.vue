@@ -1,7 +1,7 @@
 <template>
 <div style="padding-bottom: 0px">
-    <setAdress :class="{hide: showSetAdress == false}" />
-    <specialOffers v-show="getCurrentAddress.length > 0" />
+    <setAdress :selectedCategoryInfo='selectedCategoryInfo' :class="{hide: showSetAdress == false}" />
+    <specialOffers :getSpecialOffersData='getSpecialOffersData.data' v-show="getCurrentAddress.length > 0" />
     <categories :categoriesList='categoriesList' />
     <mobileSearch v-show="showSearch" />
     <restorans :restaurantsList='restaurantsList' />
@@ -36,6 +36,7 @@ export default {
             showSetAdress: true,
             showSpecialOffer: false,
             rest: [],
+            getSpecialOffersData: [],
         }
     },
     async asyncData({
@@ -43,19 +44,22 @@ export default {
         params,
         store
     }) {
-        console.log('Data -> store', store)
+        let currentRegion = app.router.currentRoute.params.region
+        let currentAlias = app.router.currentRoute.params.alias
+        // console.log("store", store)
         const selectedZone = store.getters['zone/getSelectedZone']
-		const currentCoord = store.getters['map/getCurrentCoords']
-		
-        
-        var paramsToRestuarants = {}
+        const getUserCoordinate = store.getters['user/getUserCoordinate']
+        const currentCoord = store.getters['map/getCurrentCoords']
+        const selectedCategory = store.getters['user/getSelectedCategory']
+        let paramsToRestuarants = {}
+
         if (currentCoord.length > 0) {
             paramsToRestuarants = {
                 zone_id: parseInt(selectedZone.id),
                 limit: 100,
                 start: 0,
-                latitude: parseFloat(latitude),
-                longitude: parseFloat(longitude)
+                latitude: currentCoord[0],
+                longitude: currentCoord[1],
             }
         } else {
             paramsToRestuarants = {
@@ -66,16 +70,49 @@ export default {
         }
 
         let restaurantsList = await axios.post('https://yestapi.xyz/restaurants', paramsToRestuarants)
-        console.log('restaurantsList', restaurantsList)
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
             zone_id: selectedZone.id
         })
-        // let zoneList = await axios.post('https://yestapi.xyz/get-zones')
+
+        let zoneList = await axios.get('https://yestapi.xyz/get-zones')
+        let zoneListData = zoneList.data
+        const categoryAll = [{
+            name: 'Все',
+            id: 0,
+            alias: 'all'
+        }]
+        let categoriesListData = categoryAll.concat(categoriesList.data)
+
+        // await zoneListData.find((zone) => {
+        //     if (zone.alias != currentRegion) {
+        //         // app.router.push('/404')
+        //     }
+        // })
+
+        let selectedCategoryInfo = [];
+        let selectedCategoryId = []
+        if (currentAlias != undefined) {
+            selectedCategoryId = categoriesListData.find((category) => {
+                if (category.alias == currentAlias) {
+                    return category
+                }
+            })
+
+            selectedCategoryInfo = await axios.post('https://yestapi.xyz/categories/info', {
+                zone_id: selectedZone.id,
+                category_id: selectedCategoryId.id
+            })
+        };
+            console.log("selectedCategoryInfo", selectedCategoryInfo)
+            // setTimeout(() => {
+            //     console.log("currentCoord", currentCoord)
+            // }, 1000);
 
         return {
-            restaurantsList: restaurantsList.data.status =='404' ? null : restaurantsList.data.restaurants,
-            categoriesList: categoriesList.data,
-            // zoneList: zoneList.data
+            restaurantsList: restaurantsList.data.status == '404' ? null : restaurantsList.data.restaurants,
+            categoriesList: categoriesListData,
+            zoneList: zoneList.data,
+            selectedCategoryInfo: selectedCategoryInfo.data,
         }
     },
     watch: {
@@ -98,12 +135,20 @@ export default {
             getZoneList: 'zone/getZoneList',
             getCategoryList: 'user/getCategoryList',
             getCurrentAddress: "map/getCurrentAddress",
+            getCurrentCoords: "map/getCurrentCoords",
         })
     },
+    async created() {
+        if (this.getCurrentCoords.length > 0) {
+            this.getSpecialOffersData = await axios.post(`https://yestapi.xyz/restaurants/special-offers`, {
+                zone_id: this.selectedZoneId.id,
+                latitude: this.getCurrentCoords[0],
+                longitude: this.getCurrentCoords[1]
+            })
+            console.log("mounted -> this.getSpecialOffersData", this.getSpecialOffersData)
+        }
+    },
     mounted() {
-        // setTimeout(() => {
-        //     this.redirectCategoryByUrl()
-        // }, 100);
         let lastScrollTop = 0
         if (window.innerWidth < 450) {
             window.addEventListener('scroll', () => {
@@ -126,41 +171,6 @@ export default {
             }
         }
     },
-    methods: {
-        redirectCategoryByUrl() {
-            const findZone = this.getZoneList.find((zone) => {
-                if (zone.alias === this.$route.params.region) {
-                    return zone.id
-                }
-            })
-
-            const findCategory = this.getCategoryList.find((category) => {
-                if (category.alias === this.$route.params.alias) {
-                    return category
-                }
-            })
-
-            if (findZone !== undefined) {
-                this.$store.dispatch('zone/setSelectedZone', findZone.id)
-            }
-            if (findCategory !== undefined) {
-                this.$store.dispatch('user/selectCategory', findCategory)
-            } else {
-                this.$store.dispatch('user/selectCategory', {
-                    id: 0,
-                    alias: 'all',
-                    name: 'Все'
-                })
-            }
-        }
-    }
-    // metaInfo: {
-    // 	title: 'Быстрая Доставка еды из кафе и ресторанов Минска, Беларусь - Главная Минск, Беларусь - Menu.by',
-    // 	meta: [{ // set meta
-    // 		name: 'keyWords',
-    // 		content: 'My Example App'
-    // 	}]
-    // }
 }
 </script>
 

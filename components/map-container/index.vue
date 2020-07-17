@@ -58,7 +58,6 @@ export default {
     }),
     watch: {
         getMapLoading(newValue, oldValue) {
-            console.log('getMapLoading -> newValue', newValue)
             return newValue
         }
     },
@@ -85,9 +84,6 @@ export default {
         if (performance.navigation.type == 1) {
             this.hideMap()
 		}
-		setInterval(() => {
-			console.log('this.getMapLoading ->', this.getMapLoading);
-		}, 2000);
     },
     methods: {
         ...mapMutations({
@@ -138,7 +134,6 @@ export default {
             this.setCurrentCoords(this.coords)
         },
         selectedPlace(place) {
-            console.log('selectedPlace -> place', place)
             const component = this
             ymaps.geocode(place.value, {
                 results: 1,
@@ -148,7 +143,6 @@ export default {
                 ]
             }).then((geo) => {
                 const geoObjects = geo.geoObjects.get(0)
-                console.log('selectedPlace -> geoObjects.geometry.getCoordinates()', geoObjects.geometry.getCoordinates())
                 component.coords = geoObjects.geometry.getCoordinates()
                 component.mapInstance.setCenter(geoObjects.geometry.getCoordinates(), 17)
             });
