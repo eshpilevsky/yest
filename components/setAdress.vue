@@ -2,10 +2,10 @@
 <div class='setAdressContaine containerr' id='bgImg'>
     <div class="setAdressContaine-info">
         <span class="info-pre-title">
-            Yest.by • {{this.getSelectedZone.name}} {{this.getSelectedCategoryName ? `• ${this.getSelectedCategoryName}` : ``}}
+            Yest.by • {{this.currentRegion}} {{this.currentCategory.name}}
         </span>
         <h1 class="info-title">
-            {{selectedCategoryTitle}} <br /> в {{ city}}
+            {{header }} <br /> {{` в ${city}`}}
         </h1>
         <span class="info-setPlace">
             Укажите ваше местоположение, чтобы мы смогли предложить вам список доступных ресторанов
@@ -35,19 +35,17 @@ import {
     mapMutations
 } from 'vuex'
 import MapBtn from '@/components/map-btn'
-import {
-    settings
-} from '@/plugins/ymapPlugin'
-import {
-    loadYmap
-} from 'vue-yandex-maps'
+
 export default {
     name: 'setAdress',
     components: {
         MapBtn
     },
     props: {
-        selectedCategoryInfo: Object,
+        ymaps: Object,
+        selectedCategoryInfoData: Object,
+        currentRegion: Object,
+        currentCategory: Object,
     },
     data() {
         return {
@@ -57,18 +55,17 @@ export default {
             ww: 0,
             suggestions: [],
             filteredLocations: [],
-            ymaps: null,
-            selectedCategoryTitle: null,
-            city: null,
             loadingSuggest: false,
             coords: [],
-            bgImg: null,
+            header: null,
+            city: null,
+            currentRegion: null,
         }
     },
     computed: {
         ...mapGetters({
             getSelectedZone: 'zone/getSelectedZone',
-            // getSelectedCategoryTitle: 'user/getSelectedCategoryTitle',
+            getSelectedCategoryTitle: 'user/getSelectedCategoryTitle',
             getSelectedCategoryName: 'user/getSelectedCategoryName',
             canDisplayMap: 'device/isMobile',
             getCurrentAddress: 'map/getCurrentAddress'
@@ -79,7 +76,9 @@ export default {
             return newValue
         },
         searchAddress(newValue) {
-            this.getSuggest(newValue)
+            if (newValue.length > 3) {
+                this.getSuggest(newValue)
+            }
         },
         getCurrentAddress(newValue) {
             this.searchAddress = newValue
@@ -106,7 +105,7 @@ export default {
         },
         async showRestuarants() {
             const component = this
-            ymaps.geocode(this.searchAddress, {
+            await this.ymaps.geocode(this.searchAddress, {
                 results: 1,
                 boundedBy: [
                     [51.753588, 23.148098],
@@ -127,10 +126,10 @@ export default {
                 behavior: 'smooth'
             });
         },
-        getSuggest(str) {
+        async getSuggest(str) {
             this.loadingSuggest = true
             const component = this
-            ymaps.suggest(str, {
+            await this.ymaps.suggest(str, {
                 results: 6,
                 boundedBy: [
                     [51.753588, 23.148098],
@@ -159,18 +158,17 @@ export default {
             this.searchAddress = address.value
         },
     },
-    async created() {
-        this.selectedCategoryTitle = this.selectedCategoryInfo.header
-        this.city = this.selectedCategoryInfo.city
-        this.bgImg = this.selectedCategoryInfo.background
+    beforeMount() {
+        this.ww = window.innerWidth;
     },
-    async mounted() {
-        await loadYmap({
-            ...settings
-        });
-        var oldBg = document.getElementById('bgImg');
-        oldBg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.bgImg + '");'
-        this.searchAddress = this.getCurrentAddress
+    created() {
+        if (this.selectedCategoryInfoData != null) {
+            this.header = this.selectedCategoryInfoData.header
+            this.city = this.selectedCategoryInfoData.city
+        } else {
+            this.header = `Быстрая и бесплатная доставка`
+            this.city = `${this.region}`
+        }
     }
 }
 </script>

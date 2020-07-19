@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Home from './pages/Home.vue'
+import notFound from './pages/notFound.vue'
 import restaurants from './pages/restaurants.vue'
 
 Vue.use(Router)
@@ -10,7 +11,8 @@ export function createRouter() {
   return new Router({
     mode: 'history',
     routes: [{
-        path: '/',
+		path: '/',
+		redirect: '/minsk',
 		component: Home,
 		children:[{
 			path:':region',
@@ -23,17 +25,12 @@ export function createRouter() {
 					}]
 				}]
 			}]
-			
 		}]
 	  },
-    //   {
-    //     path: '/:region',
-    //     component: Home,
-    //   },
-    //   {
-    //     path: '/:region/restaurants/category/:alias',
-    //     component: Home,
-    //   },
+      {
+        path: '/404',
+        component: notFound,
+      },
       {
         path: '/restaurant/:resName',
         component: restaurants,

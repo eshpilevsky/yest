@@ -2,7 +2,7 @@
 <div class="categories-containe" v-if="!hideCategory">
     <div class="category-list">
         <div>
-            <v-chip class="category-chips" v-for="(item, index) in first" :key="'firstCategor' + index" :color="item.alias == currentRouteAlias ? 'primary': 'white'" @click="selectCategory(item, false)">
+            <v-chip class="category-chips" v-for="(item, index) in first" :key="'firstCategor' + index" :color="item.alias == selectedCategory ? 'primary': 'white'" @click="selectCategory(item, false)">
                 <div class="category-name">
                     {{ item.name }}
                 </div>
@@ -87,7 +87,6 @@ export default {
             first: [],
             second: [],
             allCategory: [],
-            selectedCategory: null,
             loadingCategories: true,
             searchNameKitchenDish: '',
             firstCategoryId: [],
@@ -129,7 +128,12 @@ export default {
             defaultBg: 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png',
             oldCategoryImg: null,
             hideCategory: false,
-            currentRouteAlias: '',
+            selectedCategory: null,
+        }
+    },
+    watch: {
+        $route(to, from) {
+            this.selectedCategory = to.params.alias
         }
     },
     computed: {
@@ -141,15 +145,49 @@ export default {
             getSearchNameKitchenDish: 'user/getSearchNameKitchenDish',
         })
     },
-    watch: {
-        getSelectedCategory(newValue) {
-            return newValue
-        },
-        searchNameKitchenDish(newValue) {
-            this.$store.dispatch('user/setSearchNameKitchenDish', newValue)
-        }
-    },
     methods: {
+        getCategories() {
+            this.hideCategory = false
+            ApiService.post('/categories', {
+                zone_id: this.getSelectedZone.id
+            }).then((response) => {
+                const resp = response.data
+                const allCategory = this.categoryAll.concat(response.data)
+                if (allCategory.length == 1) {
+                    this.$store.dispatch('user/setSelectedCategoryTitle', null)
+                    this.loadingCategories = false
+                    this.hideCategory = true
+                } else {
+                    this.$store.dispatch('user/allCategory', allCategory)
+                    if (this.getSelectedCategory.id === null) {
+                        this.$store.dispatch('user/selectCategory', {
+                            id: allCategory[0].id,
+                            alias: allCategory[0].alias
+                        })
+                        console.log('getCategories -> this.getSelectedZone.name', this.getSelectedZone.name)
+                        this.$store.dispatch('user/setSelectedCategoryTitle', `Быстрая доставка еды в ${this.getSelectedZone.name}`)
+                    } else {
+                        this.selectCategory(this.getSelectedCategory, false)
+                    }
+                    this.allCategory = resp
+                    this.first = allCategory.slice(0, this.sliceCounter)
+                    this.second = allCategory.slice(this.sliceCounter, resp.length)
+                    var qwe = this.first.find((category) => {
+                        if (category.id === this.getSelectedCategory.id) {
+                            return true
+                        }
+                    })
+                    if (qwe === undefined) {
+                        this.more.text = this.getSelectedCategory.name
+                        this.more.id = this.getSelectedCategory.id
+                        this.more.isMore = true
+                    }
+                    this.loadingCategories = false
+                }
+            }).catch((error) => {
+                console.error(error)
+            })
+        },
         selectCategoryAdaptive(selectCategory, boll) {
             if (selectCategory.id == this.getSelectedCategory.id) {
                 this.selectCategory({
@@ -161,14 +199,9 @@ export default {
                 this.selectCategory(selectCategory, boll)
             }
         },
-        selectCategory(category, boll) {
-            // this.$store.dispatch('user/selectCategory', {
-            //     id: category.id,
-            //     alias: category.alias,
-            //     name: category.name
-            // });
+        selectCategory(item, boll) {
+            this.$router.push(`/${this.getSelectedZone.alias}/restaurants/category/${item.alias}`)
 
-            this.$router.push(`/${this.getSelectedZone.alias}/restaurants/category/${category.alias}`)
             // this.oldCategoryImg = document.getElementById('bgImg') ? document.getElementById('bgImg') : null
             // if (item.id !== 0) {
             //     if (boll === true) {
@@ -198,11 +231,11 @@ export default {
             //                         // this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.defaultBg + '");'
             //                         this.oldCategoryImg.setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.defaultBg + '");')
             //                     }
-            //                     // if (item.id === 0) {
-            //                     //     this.$router.push(`/${this.getSelectedZone.alias}`)
-            //                     // } else {
-            //                     //     this.$router.push(`/${this.getSelectedZone.alias}/restaurants/category/${item.alias}`)
-            //                     // }
+            //                     if (item.id === 0) {
+            //                         this.$router.push(`/${this.getSelectedZone.alias}`)
+            //                     } else {
+            //                         this.$router.push(`/${this.getSelectedZone.alias}/restaurants/category/${item.alias}`)
+            //                     }
             //                 }
             //             } else {
             //                 this.$store.dispatch('user/selectCategory', {
@@ -224,11 +257,11 @@ export default {
             //                         // this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + response.data.category_icon + '");'
             //                     }
             //                 }
-            //                 // if (item.id === 0) {
-            //                 //     this.$router.push(`/${this.getSelectedZone.alias}`)
-            //                 // } else {
-            //                 //     this.$router.push(`/${this.getSelectedZone.alias}/restaurants/category/${response.data.alias}`)
-            //                 // }
+            //                 if (item.id === 0) {
+            //                     this.$router.push(`/${this.getSelectedZone.alias}`)
+            //                 } else {
+            //                     this.$router.push(`/${this.getSelectedZone.alias}/restaurants/category/${response.data.alias}`)
+            //                 }
             //             }
             //         }
             //     }).catch((error) => {
@@ -251,7 +284,7 @@ export default {
             //         alias: item.alias,
             //         name: item.name
             //     })
-            //     // this.$router.push(`/${this.getSelectedZone.alias}`)
+            //     this.$router.push(`/${this.getSelectedZone.alias}`)
             //     this.$store.dispatch('user/setSelectedCategoryTitle', `Быстрая доставка в ${this.getSelectedZone.name}`)
             // }
         },
@@ -265,14 +298,17 @@ export default {
         }
     },
     created() {
-        },
+        if (this.categoriesList != null) {
+            this.selectedCategory = this.$route.params.alias
+            this.allCategory = this.categoriesList
+            this.first = this.allCategory.slice(0, this.sliceCounter)
+            this.second = this.allCategory.slice(this.sliceCounter, this.categoriesList.length)
+
+        } else {
+            this.$router.push('/minsk')
+        }
+    },
     mounted() {
-        this.allCategory = this.categoriesList
-        this.first = this.allCategory.slice(0, this.sliceCounter)
-        this.second = this.allCategory.slice(this.sliceCounter, this.allCategory.length)
-
-        this.currentRouteAlias = this.$route.params.alias
-
         this.hideCategory = false
         this.ww = window.innerWidth
         if (this.getSearchNameKitchenDish !== null) {
@@ -287,6 +323,7 @@ export default {
                 }
             }
         }
+        // this.getCategories()
     }
 }
 </script>

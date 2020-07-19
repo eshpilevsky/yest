@@ -103,8 +103,7 @@ export default {
             showMacOs: false,
             showAdnroid: false
         }
-	},
-	
+    },
     computed: {
         ...mapGetters({
             getCategoryList: 'user/getCategoryList',

@@ -2,7 +2,7 @@
 <div class="containe">
     <h2 class="restorane-title" id="restTitle">Рестораны</h2>
     <v-flex cols-12 wrap class="restorane-list">
-        <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in computedOpenTime(this.restaurants)" :key="index" class="restorane-list-item" @click="goToRes(item)">
+        <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in this.restaurants" :key="index" class="restorane-list-item" @click="goToRes(item)">
             <div class="list-item-block">
                 <img contain :lazy-src="notFindImg" :src="item.cover" class="restorane-logo" :class="{closeRestorane:item.is_open == false }" />
                 <div class="block-bottom">
@@ -70,7 +70,6 @@ export default {
             restaurants: [],
             selcatmass: [],
             mergeMassive: [],
-            resultRestuarantsList: [],
             loadingRest: true,
             notFound: false,
             limit: 24,
@@ -224,8 +223,8 @@ export default {
                     closeRestorants.push(item);
                     item.is_open = false;
                 }
-			});
-			
+            });
+            this.loadingRest = false;
             return openRestorants.concat(closeRestorants).slice(0, this.limit);
         }
     },
@@ -245,31 +244,8 @@ export default {
         },
 
     },
-    watch: {
-        getSelectedCategory(newValue) {
-            this.limit = 24;
-        },
-        restaurants(newValue) {
-            this.computedOpenTime(newValue)
-        },
-        getUserCoordinate(newValue) {
-            console.error('getUserCoordinate -> newValue', newValue)
-            this.getRestaurants(newValue[0], newValue[1]);
-        },
-        getSelectedZone(newValue) {
-            console.error('getSelectedZone -> newValue', newValue)
-            this.getRestaurants(
-                this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[0],
-                this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[1],
-            );
-        },
-	},
-    async created() {
-		if (this.restaurantsList != null) {
-			this.restaurants = this.restaurantsList
-		} else {
-			this.notFound = true
-		}
+    created() {
+        this.restaurants = this.restaurantsList
     }
 };
 </script>
