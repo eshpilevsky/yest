@@ -11,16 +11,21 @@ export function createRouter() {
   return new Router({
     mode: 'history',
     routes: [{
-		path: '/',
+        path: '/',
+		name: 'home',
 		redirect: '/minsk',
 		component: Home,
 		children:[{
 			path:':region',
+			name:':region',
 			children:[{
 				path:'restaurants',
+				name:'restaurants',
 				children:[{
 					path:'category',
+					name:'category',
 					children:[{
+						name:'alias',
 						path:':alias'
 					}]
 				}]

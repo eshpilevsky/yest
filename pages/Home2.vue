@@ -1,7 +1,7 @@
 <template>
 <div style="padding-bottom: 0px">
     <setAdress :ymaps='ymaps' :class="{hide: showSetAdress == false}" />
-    <!-- <specialOffers v-show="getCurrentAddress.length > 0" /> -->
+    <specialOffers v-show="getCurrentAddress.length > 0" />
     <categories :categoriesList='categoriesList' />
     <mobileSearch v-show="showSearch" />
     <restorans :restaurantsList='restaurantsList' />
@@ -49,55 +49,30 @@ export default {
     async asyncData({
         app,
         context,
-        store,
-        params
+        store
     }) {
-        
-        console.log("params", params)
-        console.log('START ASYNC');
+        console.log('START ASYNC 222');
         let zoneList = await axios.get('https://yestapi.xyz/get-zones')
         let regionByUrl = app.router.currentRoute.params.region;
         const zoneListData = zoneList.data
-
         let currentZone = zoneListData.find((zones) => {
-            if (zones.alias == params.region) {
+            if (zones.alias == regionByUrl) {
                 return zones
             }
         })
+
+            console.log("currentZone", currentZone)
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
-            zone_id: currentZone.id !=undefined ? currentZone.id : 1,
+            zone_id: 1
         })
-        let categoriesListData = categoriesList.data
-        let currentCategory = categoriesListData.find((category) => {
-            if (category.alias == params.alias) {
-                return category
-            }
-        })
-        console.log("currentCategory", currentCategory)
 
         let restaurantsList = await axios.post('https://yestapi.xyz/restaurants', {
-            zone_id: currentZone.id !=undefined ? currentZone.id : 1,
+            zone_id: 1,
             limit: 100,
             start: 0,
         })
-        let restaurantsListData = restaurantsList.data.restaurants
-        function sortByCat(list) {
-            let selcatmass = [];
-            list.forEach((item, i, arr) => {
-                item.tags.find((tag, i, arr) => {
-                    if (tag.id === currentCategory.id) {
-                        selcatmass.push(item);
-                    }
-                });
-            });
-            return selcatmass;
-        }
-        
-        var sortingByCategory = sortByCat(restaurantsListData)
-
-            // console.log("filtredRest", filtredRest)
         return {
-            restaurantsList: sortingByCategory,
+            restaurantsList: restaurantsList.data.restaurants,
             categoriesList: categoriesList.data,
             // zoneList: zoneList.data
         }

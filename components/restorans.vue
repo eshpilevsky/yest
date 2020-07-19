@@ -2,7 +2,7 @@
 <div class="containe">
     <h2 class="restorane-title" id="restTitle">Рестораны</h2>
     <v-flex cols-12 wrap class="restorane-list">
-        <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in this.restaurants" :key="index" class="restorane-list-item" @click="goToRes(item)">
+        <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in computedOpenTime(this.restaurants)" :key="index" class="restorane-list-item" @click="goToRes(item)">
             <div class="list-item-block">
                 <img contain :lazy-src="notFindImg" :src="item.cover" class="restorane-logo" :class="{closeRestorane:item.is_open == false }" />
                 <div class="block-bottom">
@@ -100,6 +100,7 @@ export default {
             return result;
         },
         filterByCategory(restList) {
+            console.log("filterByCategory -> restList", restList)
             if (this.getSelectedCategory.id == 0) {
                 this.itemCounter = restList.length
                 return restList.slice(0, this.limit)
@@ -114,6 +115,7 @@ export default {
                     });
                 });
                 this.itemCounter = selcatmass.length
+                console.log("filterByCategory -> selcatmass", selcatmass)
                 return selcatmass.slice(0, this.limit);
             }
         },
@@ -145,6 +147,7 @@ export default {
                         this.restaurants = rest;
                         this.notFound = false;
                         this.loadingRest = false;
+                        this.computedOpenTime(this.restaurants)
                     } else if (resp.status === 404) {
                         this.restaurants = [];
                         this.notFound = true;
@@ -174,7 +177,9 @@ export default {
             );
         },
         computedOpenTime(res) {
+            console.log("computedOpenTime -> res", res)
             let cu = this.filterByCategory(res)
+            console.log("computedOpenTime -> cu", cu)
             const openRestorants = [];
             const closeRestorants = [];
             const currentDay = new Date().getDay();
@@ -228,6 +233,17 @@ export default {
             return openRestorants.concat(closeRestorants).slice(0, this.limit);
         }
     },
+    watch: {
+        $route(to, from) {
+            console.log("$route -> to", to)
+            console.log("$route -> from", from)
+
+            this.getRestaurants(
+                this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[0],
+                this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[1],
+            );
+        }
+    },
     computed: {
         ...mapGetters({
             getSelectedZone: "zone/getSelectedZone",
@@ -246,6 +262,12 @@ export default {
     },
     created() {
         this.restaurants = this.restaurantsList
+    },
+    mounted() {
+        this.getRestaurants(
+            this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[0],
+            this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[1],
+        );
     }
 };
 </script>

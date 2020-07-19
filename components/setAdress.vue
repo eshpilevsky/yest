@@ -2,10 +2,10 @@
 <div class='setAdressContaine containerr' id='bgImg'>
     <div class="setAdressContaine-info">
         <span class="info-pre-title">
-            Yest.by • {{this.currentRegion}} {{this.currentCategory.name}}
+            Yest.by • {{this.getSelectedZone.name}} {{this.getSelectedCategoryName ? `• ${this.getSelectedCategoryName}` : ``}}
         </span>
         <h1 class="info-title">
-            {{header }} <br /> {{` в ${city}`}}
+            {{computedTitle[0] }} <br /> {{ computedTitle[1] ? ` в ${computedTitle[1]}` : ''}}
         </h1>
         <span class="info-setPlace">
             Укажите ваше местоположение, чтобы мы смогли предложить вам список доступных ресторанов
@@ -43,9 +43,6 @@ export default {
     },
     props: {
         ymaps: Object,
-        selectedCategoryInfoData: Object,
-        currentRegion: Object,
-        currentCategory: Object,
     },
     data() {
         return {
@@ -57,9 +54,6 @@ export default {
             filteredLocations: [],
             loadingSuggest: false,
             coords: [],
-            header: null,
-            city: null,
-            currentRegion: null,
         }
     },
     computed: {
@@ -70,6 +64,11 @@ export default {
             canDisplayMap: 'device/isMobile',
             getCurrentAddress: 'map/getCurrentAddress'
         }),
+        computedTitle() {
+			let a = this.getSelectedCategoryTitle
+            let b = a.split(' в ')
+            return [b[0], b[1]]
+        }
     },
     watch: {
         getSelectedCategoryTitle(newValue) {
@@ -120,11 +119,11 @@ export default {
             const id = 'restTitle';
             const yOffset = -70;
             const element = document.getElementById(id);
-            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-            window.scrollTo({
-                top: y,
-                behavior: 'smooth'
-            });
+            // const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            // window.scrollTo({
+            //     top: y,
+            //     behavior: 'smooth'
+            // });
         },
         async getSuggest(str) {
             this.loadingSuggest = true
@@ -158,17 +157,11 @@ export default {
             this.searchAddress = address.value
         },
     },
-    beforeMount() {
+    async beforeMount() {
         this.ww = window.innerWidth;
     },
-    created() {
-        if (this.selectedCategoryInfoData != null) {
-            this.header = this.selectedCategoryInfoData.header
-            this.city = this.selectedCategoryInfoData.city
-        } else {
-            this.header = `Быстрая и бесплатная доставка`
-            this.city = `${this.region}`
-        }
+    mounted() {
+        this.searchAddress = this.getCurrentAddress
     }
 }
 </script>
