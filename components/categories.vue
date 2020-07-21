@@ -2,7 +2,7 @@
 <div class="categories-containe" v-if="!hideCategory">
     <div class="category-list">
         <div>
-            <v-chip class="category-chips" v-for="(item, index) in first" :key="'firstCategor' + index" :color="item.alias == selectedCategory ? 'primary': 'white'" @click="selectCategory(item, false)">
+            <v-chip class="category-chips" v-for="(item, index) in first" :key="'firstCategor' + index" :color="item.alias == selectedCategory && !more.isMore ? 'primary': 'white'" @click="selectCategory(item, false)">
                 <div class="category-name">
                     {{ item.name }}
                 </div>
@@ -205,7 +205,8 @@ export default {
             //     alias: item.alias,
             //     name: item.name
             // })
-            // this.$router.push(`/minsk/restaurants/category/${item.alias}`)
+            // this.$router.push(`/${this.getSelectedZone.alias}/restaurants/category/${item.alias}`)
+
             this.oldCategoryImg = document.getElementById('bgImg') ? document.getElementById('bgImg') : null
             if (item.id !== 0) {
                 if (boll === true) {
@@ -291,6 +292,9 @@ export default {
                 this.$router.push(`/${this.getSelectedZone.alias}`)
                 this.$store.dispatch('user/setSelectedCategoryTitle', `Быстрая доставка в ${this.getSelectedZone.name}`)
             }
+            setTimeout(() => {
+                location.reload()
+            }, 500);
         },
         dropSearch() {
             this.$store.dispatch('user/setSearchNameKitchenDish', null)

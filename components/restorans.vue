@@ -1,8 +1,8 @@
 <template>
 <div class="containe">
-    <h2 class="restorane-title" id="restTitle">Рестораны</h2>
+    <h2 class="restorane-title" id="restTitle">Рестораны </h2>
     <v-flex cols-12 wrap class="restorane-list">
-        <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in computedOpenTime(this.restaurants)" :key="index" class="restorane-list-item" @click="goToRes(item)">
+        <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in this.restaurants" :key="index" class="restorane-list-item" @click="goToRes(item)">
             <div class="list-item-block">
                 <img contain :lazy-src="notFindImg" :src="item.cover" class="restorane-logo" :class="{closeRestorane:item.is_open == false }" />
                 <div class="block-bottom">
@@ -47,7 +47,7 @@
         </div>
     </div>
     <div class="show-btn-block">
-        <v-btn color="primary" class="showMore-btn" @click="showMore" v-show="itemCounter > limit">Показать ещё</v-btn>
+        <v-btn color="primary" class="showMore-btn" @click="showMore" v-show="this.restaurants.length > limit">Показать ещё</v-btn>
     </div>
 </div>
 </template>
@@ -63,6 +63,7 @@ export default {
     name: "Restorane",
     props: {
         restaurantsList: Array,
+        currentCategory: Object,
     },
     data() {
         return {
@@ -84,7 +85,8 @@ export default {
                     nextEl: ".swiper-button-next",
                     prevEl: ".swiper-button-prev"
                 }
-            }
+            },
+            restList: null,
         };
     },
     methods: {
@@ -100,7 +102,6 @@ export default {
             return result;
         },
         filterByCategory(restList) {
-            console.log("filterByCategory -> restList", restList)
             if (this.getSelectedCategory.id == 0) {
                 this.itemCounter = restList.length
                 return restList.slice(0, this.limit)
@@ -109,13 +110,12 @@ export default {
                 this.selcatmass = selcatmass;
                 restList.forEach((item, i, arr) => {
                     item.tags.find((tag, i, arr) => {
-                        if (tag.id === this.getSelectedCategory.id) {
+                        if (tag.id === this.currentCategory.id) {
                             selcatmass.push(item);
                         }
                     });
                 });
                 this.itemCounter = selcatmass.length
-                console.log("filterByCategory -> selcatmass", selcatmass)
                 return selcatmass.slice(0, this.limit);
             }
         },
@@ -147,7 +147,6 @@ export default {
                         this.restaurants = rest;
                         this.notFound = false;
                         this.loadingRest = false;
-                        this.computedOpenTime(this.restaurants)
                     } else if (resp.status === 404) {
                         this.restaurants = [];
                         this.notFound = true;
@@ -171,15 +170,10 @@ export default {
         },
         showMore() {
             this.limit += 24;
-            this.getRestaurants(
-                this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[0],
-                this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[1],
-            );
+            this.computedOpenTime(this.restaurants)
         },
         computedOpenTime(res) {
-            console.log("computedOpenTime -> res", res)
             let cu = this.filterByCategory(res)
-            console.log("computedOpenTime -> cu", cu)
             const openRestorants = [];
             const closeRestorants = [];
             const currentDay = new Date().getDay();
@@ -229,19 +223,7 @@ export default {
                     item.is_open = false;
                 }
             });
-            this.loadingRest = false;
             return openRestorants.concat(closeRestorants).slice(0, this.limit);
-        }
-    },
-    watch: {
-        $route(to, from) {
-            console.log("$route -> to", to)
-            console.log("$route -> from", from)
-
-            this.getRestaurants(
-                this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[0],
-                this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[1],
-            );
         }
     },
     computed: {
@@ -262,12 +244,7 @@ export default {
     },
     created() {
         this.restaurants = this.restaurantsList
-    },
-    mounted() {
-        this.getRestaurants(
-            this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[0],
-            this.getUserCoordinate.length == 0 ? 0 : this.getUserCoordinate[1],
-        );
+        this.restaurants.slice(0,this.limit)
     }
 };
 </script>

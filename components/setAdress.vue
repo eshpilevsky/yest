@@ -1,11 +1,11 @@
 <template>
-<div class='setAdressContaine containerr' id='bgImg'>
+<div class='setAdressContaine containerr' id='bgImg' >
     <div class="setAdressContaine-info">
         <span class="info-pre-title">
-            Yest.by • {{this.getSelectedZone.name}} {{this.getSelectedCategoryName ? `• ${this.getSelectedCategoryName}` : ``}}
+            Yest.by • {{this.currentZone.name}} • {{this.currentCategory.name}}
         </span>
         <h1 class="info-title">
-            {{computedTitle[0] }} <br /> {{ computedTitle[1] ? ` в ${computedTitle[1]}` : ''}}
+            {{this.categoryInfoData.header }} <br /> в {{ this.categoryInfoData.city }}
         </h1>
         <span class="info-setPlace">
             Укажите ваше местоположение, чтобы мы смогли предложить вам список доступных ресторанов
@@ -43,6 +43,9 @@ export default {
     },
     props: {
         ymaps: Object,
+        categoryInfoData: Object,
+        currentCategory: Object,
+        currentZone: Object,
     },
     data() {
         return {
@@ -119,11 +122,11 @@ export default {
             const id = 'restTitle';
             const yOffset = -70;
             const element = document.getElementById(id);
-            // const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-            // window.scrollTo({
-            //     top: y,
-            //     behavior: 'smooth'
-            // });
+            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            window.scrollTo({
+                top: y,
+                behavior: 'smooth'
+            });
         },
         async getSuggest(str) {
             this.loadingSuggest = true
@@ -162,6 +165,7 @@ export default {
     },
     mounted() {
         this.searchAddress = this.getCurrentAddress
+        document.getElementById('bgImg').setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.categoryInfoData.background + '");')
     }
 }
 </script>

@@ -12,26 +12,21 @@ export function createRouter() {
     mode: 'history',
     routes: [{
         path: '/',
-		name: 'home',
-		redirect: '/minsk',
-		component: Home,
-		children:[{
-			path:':region',
-			name:':region',
-			children:[{
-				path:'restaurants',
-				name:'restaurants',
-				children:[{
-					path:'category',
-					name:'category',
-					children:[{
-						name:'alias',
-						path:':alias'
-					}]
-				}]
-			}]
-		}]
-	  },
+        component: Home,
+        redirect: '/minsk',
+        children: [{
+          path: ':region',
+          children: [{
+            path: 'restaurants',
+            children: [{
+              path: 'category',
+              children: [{
+                path: ':alias'
+              }]
+            }]
+          }]
+        }]
+      },
       {
         path: '/404',
         component: notFound,

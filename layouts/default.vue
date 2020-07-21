@@ -3,7 +3,7 @@
 	<layout-header v-show="!isMapVisible"/>
     <v-content v-show="!isMapVisible">
         <v-container class="main_cont">
-            <nuxt :key="$route.fullPath"/>
+            <nuxt />
         </v-container>
     </v-content>
 	<layout-footer v-show="!isMapVisible"/>
