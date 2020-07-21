@@ -47,7 +47,7 @@
         </div>
     </div>
     <div class="show-btn-block">
-        <v-btn color="primary" class="showMore-btn" @click="showMore" v-show="this.restaurants.length > limit">Показать ещё</v-btn>
+        <v-btn color="primary" class="showMore-btn" @click="showMore" v-show="this.counterRest > limit">Показать ещё</v-btn>
     </div>
 </div>
 </template>
@@ -73,7 +73,7 @@ export default {
             mergeMassive: [],
             loadingRest: true,
             notFound: false,
-            limit: 24,
+            limit: 20,
             itemCounter: 0,
             params: {},
             rubel: require("../assets/rubel.png"),
@@ -87,7 +87,32 @@ export default {
                 }
             },
             restList: null,
+            counterRest: 0,
         };
+    },
+    computed: {
+        ...mapGetters({
+            getSelectedZone: "zone/getSelectedZone",
+            getSelectedCategory: "user/getSelectedCategory",
+            getCurrentAddress: "map/getCurrentAddress",
+            getCurrentCoords: "map/getCurrentCoords"
+        }),
+        checkAddress() {
+            return this.getCurrentAddress.length > 0 ? true : false
+        },
+        swiper() {
+            return this.$refs.mySwiper.$swiper;
+        },
+
+    },
+    watch: {
+        getSelectedCategory(newValue, oldValue) {
+            this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
+        },
+        getSelectedZone(newValue, oldValue) {
+            console.log('getSelectedZone -> newValue RESTORANS', newValue)
+            this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
+        },
     },
     methods: {
         compudtedTags(tags) {
@@ -104,19 +129,20 @@ export default {
         filterByCategory(restList) {
             if (this.getSelectedCategory.id == 0) {
                 this.itemCounter = restList.length
+                this.counterRest = restList.length
                 return restList.slice(0, this.limit)
             } else {
                 const selcatmass = [];
                 this.selcatmass = selcatmass;
                 restList.forEach((item, i, arr) => {
                     item.tags.find((tag, i, arr) => {
-                        if (tag.id === this.currentCategory.id) {
+                        if (tag.id === this.getSelectedCategory.id) {
                             selcatmass.push(item);
                         }
                     });
                 });
                 this.itemCounter = selcatmass.length
-                return selcatmass.slice(0, this.limit);
+                return selcatmass
             }
         },
         getRestaurants(latitude, longitude) {
@@ -144,13 +170,13 @@ export default {
                     const rest = resp.restaurants;
                     if (resp.status === 200) {
                         this.restaurants = [];
-                        this.restaurants = rest;
+                        // this.restaurants = rest;
+                        this.restaurants = this.computedOpenTime(rest)
+                        console.log('getRestaurants -> this.restaurants', this.restaurants)
                         this.notFound = false;
-                        this.loadingRest = false;
                     } else if (resp.status === 404) {
                         this.restaurants = [];
                         this.notFound = true;
-                        this.loadingRest = false;
                     }
                 })
                 .catch(error => {
@@ -170,7 +196,7 @@ export default {
         },
         showMore() {
             this.limit += 24;
-            this.computedOpenTime(this.restaurants)
+            this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
         },
         computedOpenTime(res) {
             let cu = this.filterByCategory(res)
@@ -223,28 +249,15 @@ export default {
                     item.is_open = false;
                 }
             });
+            // this.restaurants = openRestorants.concat(closeRestorants)
+            console.error('computedOpenTime -> this.counterRest ', this.counterRest)
             return openRestorants.concat(closeRestorants).slice(0, this.limit);
         }
     },
-    computed: {
-        ...mapGetters({
-            getSelectedZone: "zone/getSelectedZone",
-            getSelectedCategory: "user/getSelectedCategory",
-            getUserCoordinate: "map/getCurrentCoords",
-            getCurrentAddress: "map/getCurrentAddress",
-            getCurrentCoords: "map/getCurrentCoords"
-        }),
-        checkAddress() {
-            return this.getCurrentAddress.length > 0 ? true : false
-        },
-        swiper() {
-            return this.$refs.mySwiper.$swiper;
-        },
 
-    },
     created() {
         this.restaurants = this.restaurantsList
-        this.restaurants.slice(0,this.limit)
+        this.restaurants.slice(0, this.limit)
     }
 };
 </script>
