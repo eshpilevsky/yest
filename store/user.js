@@ -23,9 +23,7 @@ export const state = () => ({
 export const mutations = {
   SELECT_CATEGORY(state, payload) {
     state.status = '200'
-    state.data.selectedCategory.id = payload.id
-    state.data.selectedCategory.alias = payload.alias
-    state.data.selectedCategory.name = payload.name
+    state.data.selectedCategory = payload
   },
 
   SET_LANGUAGE(state, payload) {

@@ -2,7 +2,7 @@
 <div class="categories-containe" v-if="!hideCategory">
     <div class="category-list">
         <div>
-            <v-chip class="category-chips" v-for="(item, index) in first" :key="'firstCategor' + index" :color="item.alias == selectedCategory && !more.isMore ? 'primary': 'white'" @click="selectCategory(item, false)">
+            <v-chip class="category-chips" v-for="(item, index) in first" :key="'firstCategor' + index" :color="item.alias == getSelectedCategory.alias ? 'primary': 'white'" @click="selectCategory(item, false)">
                 <div class="category-name">
                     {{ item.name }}
                 </div>
@@ -132,8 +132,9 @@ export default {
         }
     },
     watch: {
-        $route(to, from) {
-            this.selectedCategory = to.params.alias
+        getSelectedZone() {
+			this.getCategories()
+			this.selectedCategory = this.getSelectedCategory
         }
     },
     computed: {
@@ -292,9 +293,6 @@ export default {
                 this.$router.push(`/${this.getSelectedZone.alias}`)
                 this.$store.dispatch('user/setSelectedCategoryTitle', `Быстрая доставка в ${this.getSelectedZone.name}`)
             }
-            setTimeout(() => {
-                location.reload()
-            }, 500);
         },
         dropSearch() {
             this.$store.dispatch('user/setSearchNameKitchenDish', null)
@@ -327,7 +325,6 @@ export default {
                 }
             }
         }
-        // this.getCategories()
     }
 }
 </script>

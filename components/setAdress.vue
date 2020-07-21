@@ -56,7 +56,7 @@ export default {
             suggestions: [],
             filteredLocations: [],
             loadingSuggest: false,
-            coords: [],
+			coords: [],
         }
     },
     computed: {
@@ -64,18 +64,17 @@ export default {
             getSelectedZone: 'zone/getSelectedZone',
             getSelectedCategoryTitle: 'user/getSelectedCategoryTitle',
             getSelectedCategoryName: 'user/getSelectedCategoryName',
+            getSelectedCategory: 'user/getSelectedCategory',
             canDisplayMap: 'device/isMobile',
             getCurrentAddress: 'map/getCurrentAddress'
-        }),
-        computedTitle() {
-			let a = this.getSelectedCategoryTitle
-            let b = a.split(' в ')
-            return [b[0], b[1]]
-        }
+        })
     },
     watch: {
         getSelectedCategoryTitle(newValue) {
-            return newValue
+            console.log('getSelectedCategoryTitle -> this.getSelectedCategoryTitle', this.getSelectedCategoryTitle)
+			let newTitle = this.computedTitle(this.getSelectedCategoryTitle)
+			this.categoryInfoData.header = newTitle[0]
+			this.categoryInfoData.city = newTitle[1]
         },
         searchAddress(newValue) {
             if (newValue.length > 3) {
@@ -94,7 +93,11 @@ export default {
         ...mapMutations({
             setCurrentAddress: 'map/SET_CURRENT_ADDRESS',
             setCurrentCoords: 'map/SET_CURRENT_COORDS',
-        }),
+		}),
+        computedTitle(str) {
+            let b = str.split(' в ')
+            return [b[0], b[1]]
+        },
         focusInput() {
             setTimeout(() => {
                 this.showAdressList = true
