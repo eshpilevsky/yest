@@ -34,7 +34,7 @@ export default {
             specilaOffers: [],
             loadingSO: true,
             hide: false,
-            notFindImg: require('../assets/logo.png'),
+            notFindImg: require('../assets/logo.svg'),
             swiperOptions: {
                 observer: true,
                 observeParents: true,

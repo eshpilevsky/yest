@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="delivery-time-mobile" v-show="checkAddress">
-                            {{item.time.min}} - {{item.time.max}} мин •&nbsp;
+                            {{item.time.min}} &mdash; {{item.time.max}} мин •&nbsp;
                         </div>
                     </div>
                 </div>
@@ -77,7 +77,7 @@ export default {
             itemCounter: 0,
             params: {},
             rubel: require("../assets/rubel.png"),
-            notFindImg: require("../assets/logo.png"),
+            notFindImg: require("../assets/logo.svg"),
             swiperOptions: {
                 slidesPerView: 3,
                 spaceBetween: 30,

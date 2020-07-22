@@ -311,6 +311,7 @@ export default {
         this.second = this.allCategory.slice(this.sliceCounter, this.categoriesList.length)
     },
     mounted() {
+		this.getCategories()
         this.hideCategory = false
         this.ww = window.innerWidth
         if (this.getSearchNameKitchenDish !== null) {

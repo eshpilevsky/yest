@@ -4,7 +4,7 @@
         <div class="footer-top">
             <div class="top-block">
                 <div class="footer-top-left">
-                    <img src="../../assets/logo.png" class="footer-logo" alt="logo">
+                    <img src="../../assets/logo.svg" class="footer-logo" alt="logo">
                 </div>
                 <div class="footer-top-right">
                     <img v-show="showAdnroid" src="../../assets/googlePlay.svg" class="footer-top-img" />
@@ -17,7 +17,7 @@
                 <div class="footer-center-left">
                     <div class="footer-center-column">
                         <div class="bottom-title">
-                            Регион
+                            Регионы
                         </div>
                         <div class="regions-list">
                             <div class="bottom-items" v-for="(region, regindex) in this.$store.state.zone.data.zone" :key="'foot'+regindex">
@@ -25,7 +25,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="footer-center-column">
+                    <div class="footer-center-column">
               <div class="bottom-title">
                 Блюда и кухни
               </div>
@@ -39,8 +39,8 @@
                   Показать все >
                 </div>
               </div>
-            </div> -->
-                </div>
+            </div>
+                    </div>
                 <div class="footer-center-column">
                     <div class="links-list">
                         <div class="bottom-title ">
@@ -98,10 +98,11 @@ export default {
     data() {
         return {
             defaultCatergory: 10,
-            mass: {},
+            mass: this.$store.state.user.data.categoryList,
             all: false,
             showMacOs: false,
-            showAdnroid: false
+            showAdnroid: false,
+            limit: 5,
         }
     },
     computed: {
@@ -111,10 +112,10 @@ export default {
 
         }),
         computedCategory() {
-            if (this.all === true) {
-                return this.getCategoryList
+            if (this.all) {
+                return this.mass
             } else {
-                return this.getCategoryList
+                return this.mass.slice(0,4)
             }
         }
     },
@@ -129,7 +130,6 @@ export default {
         }
     },
     mounted() {
-        this.mass = this.getCategoryList
         if (navigator.userAgent.includes('Mac OS')) {
             this.showMacOs = true
         } else if (navigator.userAgent.includes('Android')) {
@@ -143,11 +143,10 @@ export default {
 </script>
 
 <style scoped>
-
-.footer-top-right{
-	display: flex;
-	align-items: center;
-	padding-right: 30px;
+.footer-top-right {
+    display: flex;
+    align-items: center;
+    padding-right: 30px;
 }
 
 .footer-top-left {
@@ -178,13 +177,13 @@ export default {
 .social-links {
     display: flex;
     flex-direction: row;
-	padding-right: 20px;
+    padding-right: 20px;
 }
 
 .social-links-img {
-    padding-left: 5px;
-    max-width: 27px;
-    max-height: 27px;
+    padding-left: 10px;
+    max-width: 32px;
+    max-height: 32px;
     cursor: pointer;
 }
 
@@ -202,7 +201,7 @@ export default {
     text-align: end;
     display: flex;
     flex-direction: column;
-	align-items: flex-end;
+    align-items: flex-end;
     width: 100%;
 }
 
@@ -216,7 +215,7 @@ export default {
     color: #b8b8b8 !important;
     cursor: pointer;
     font-size: 13px !important;
-    margin-bottom: 26px;
+    margin-bottom: 15px;
     padding: 0 !important;
     text-decoration: none !important;
 }
@@ -250,7 +249,7 @@ export default {
     padding: 20px 0px;
     max-width: 1420px;
     margin: auto;
-	padding-top: 5px !important;
+    padding-top: 5px !important;
 }
 
 .footer-top-img {
@@ -303,7 +302,7 @@ export default {
 .footer-logo {
     opacity: .5;
     max-height: 40px;
-	filter: grayscale(1);
+    filter: grayscale(1);
 }
 
 @media screen and (max-width: 350px) {
@@ -316,9 +315,9 @@ export default {
 
 @media screen and (max-width: 450px) {
 
-	.footer-bottom {
-    	padding: 15px 0px;
-	}
+    .footer-bottom {
+        padding: 15px 0px;
+    }
 
     .bottom-block {
         padding: 0 20px;
@@ -369,7 +368,7 @@ export default {
 
     .links-list {
         text-align: start;
-		align-items: flex-start;
+        align-items: flex-start;
         display: flex;
         flex-direction: column;
         padding: 0 20px;
@@ -388,12 +387,14 @@ export default {
     .footer-center-column {
         width: 100%;
     }
-	.bottom-items:last-child{
-		margin-bottom: 15px !important;
-	}
-  .footer-logo {
-    max-height: 30px;
-  }
+
+    .bottom-items:last-child {
+        margin-bottom: 15px !important;
+    }
+
+    .footer-logo {
+        max-height: 30px;
+    }
 
 }
 </style>
