@@ -9,8 +9,8 @@ module.exports = {
     titleTemplate: '%s - ' + process.env.npm_package_name,
     title: process.env.npm_package_name || '',
     meta: [{
-      charset: 'utf-8'
-    },
+        charset: 'utf-8'
+      },
       {
         name: 'viewport',
         content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
@@ -19,20 +19,24 @@ module.exports = {
         hid: 'description',
         name: 'description',
         content: process.env.npm_package_description || ''
-	  },
-	  {
-		'http-equiv': 'ScreenOrientation',
-		content: 'autoRotate:disabled',
-	  }
+      },
+      {
+        'http-equiv': 'ScreenOrientation',
+        content: 'autoRotate:disabled',
+      }
     ],
     link: [{
-      rel: 'icon',
-      type: 'image/x-icon',
-      href: '/favicon.png'
-    },
+        rel: 'icon',
+        type: 'image/x-icon',
+        href: '/favicon.png'
+      },
       {
         rel: 'stylesheet',
         href: 'https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined'
+      },
+      {
+        rel: 'stylesheet',
+        href: 'https://yastatic.net/s3/eda-front/prod-www/fonts/YSText-Regular.woff2'
       }
     ],
   },
@@ -50,9 +54,9 @@ module.exports = {
    ** Plugins to load before mounting the App
    */
   plugins: [{
-    src: '~plugins/vuex-persist',
-    ssr: false
-  },
+      src: '~plugins/vuex-persist',
+      ssr: false
+    },
     // {
     //   src: '~/plugins/ymapPlugin.js',
     //   mode: 'client'
@@ -65,8 +69,11 @@ module.exports = {
       src: '~/plugins/is-mobile',
       // mode: 'client',
       // ssr: false
-	},
-	{ src: '@/plugins/vue-awesome-swiper', ssr: false },
+    },
+    {
+      src: '@/plugins/vue-awesome-swiper',
+      ssr: false
+    },
 
   ],
   /*
@@ -125,13 +132,15 @@ module.exports = {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {}
+    extend(config, ctx) {
+		config.resolve.symlinks = false
+	}
   },
   vue: {
-	config: {
-	  productionTip: false,
-	  devtools: true
-	}
+    config: {
+      productionTip: false,
+      devtools: true
+    }
   },
   telemetry: false,
 }

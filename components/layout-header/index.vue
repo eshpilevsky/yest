@@ -6,7 +6,7 @@
             <v-list>
                 <div class="burger-log-close" @click="showHideSidebar()" />
                 <div class="mobile-logo-block">
-                    <img src="@/assets/logo.png" class="logo-img" alt="logomobile">
+                    <img src="@/assets/logo.svg" class="logo-img" alt="logomobile">
                 </div>
                 <div class="primary-links">
                     <div>
@@ -88,7 +88,7 @@
             </v-list>
         </v-navigation-drawer>
         <nuxt-link v-show="!showSidebar" to="/" class="mobileLogo">
-            <img src="@/assets/logo.png" class="burger-logo-img" :class="{hideLogo : this.getCurrentAddress.length > 0}" alt="logodesktop">
+            <img src="@/assets/logo.svg" class="burger-logo-img" :class="{hideLogo : this.getCurrentAddress.length > 0}" alt="logodesktop">
             <map-btn v-show="this.getCurrentAddress.length > 0" class="header-map-btn" />
         </nuxt-link>
         <div v-show="showSidebar" class="logo-img">
@@ -129,6 +129,9 @@
                     </v-list-item>
                 </v-list>
             </v-menu>
+            <v-btn small rounded outlined class="zone-btn" color="primary" >
+                Войти
+            </v-btn>
         </div>
     </div>
 </div>
@@ -281,7 +284,7 @@ export default {
 }
 
 .burger-logo-img {
-    max-height: 50px;
+    max-height: 60px;
 }
 
 .logo-img {
@@ -409,7 +412,7 @@ export default {
     justify-content: center;
     align-items: center;
     padding: 20px;
-    border-top: 30vh solid rgb(245, 245, 245);
+    border-top: 20vh solid rgb(245, 245, 245);
     width: 100%;
     /* padding-top: 18vh; */
 }
@@ -452,6 +455,7 @@ export default {
     color: black !important;
     padding: 0 20px;
     text-decoration: none !important;
+	line-height: 1em;
 }
 
 .language-switcher p {

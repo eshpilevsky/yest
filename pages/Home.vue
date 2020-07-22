@@ -72,9 +72,12 @@ export default {
 
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
             zone_id: currentZone.id
-        })
+		})
+		
         let categoriesListData = categoriesList.data
 
+
+	    store.dispatch('user/allCategory', categoriesListData)
         let categoryAll = [{
             name: 'Все',
             id: 0,
@@ -89,13 +92,10 @@ export default {
             currentCategory = categoriesListData[0]
         }
 
-        console.log("currentZone", currentZone)
-        console.log("currentCategory", currentCategory)
         let categoryInfo = await axios.post('https://yestapi.xyz/categories/info', {
             zone_id: currentZone.id,
             category_id: currentCategory.id
         })
-        console.log("categoryInfo", categoryInfo)
 
         let categoryInfoData;
         if (categoryInfo.status != 404) {
