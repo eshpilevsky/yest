@@ -44,13 +44,6 @@ export default {
             ymaps: null,
         }
     },
-
-    watchQuery(newQuery, oldQuery) {
-        console.log("watchQuery -> oldQuery", oldQuery)
-        console.log("watchQuery -> newQuery", newQuery)
-        // Only execute component methods if the old query string contained `bar`
-        // and the new query string contains `foo`
-    },
     async asyncData({
         app,
         context,

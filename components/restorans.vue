@@ -265,6 +265,7 @@ export default {
 <style scoped>
 .block-bottom {
     width: 100%;
+	padding: 16px 20px 20px;
 }
 
 .card-title {
@@ -412,8 +413,6 @@ export default {
     justify-content: flex-start;
     align-items: center;
     width: 100%;
-    margin-bottom: 10px;
-    padding-left: 10px;
     font-weight: bold;
 }
 
@@ -477,8 +476,7 @@ export default {
     text-overflow: ellipsis;
     width: 100%;
     text-align: start;
-    padding: 10px;
-    min-height: 40px;
+    min-height: 30px;
     text-align: left;
 }
 

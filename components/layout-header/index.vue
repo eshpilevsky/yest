@@ -129,9 +129,6 @@
                     </v-list-item>
                 </v-list>
             </v-menu>
-            <v-btn small rounded outlined class="zone-btn" color="primary" >
-                Войти
-            </v-btn>
         </div>
     </div>
 </div>

@@ -160,7 +160,9 @@ export default {
             }
         },
         selectAdress(address) {
-            this.searchAddress = address.value
+			var adv = address.value
+			var addressSplit = adv.split('Беларусь,')
+            this.searchAddress = addressSplit[1]
         },
     },
     async beforeMount() {
