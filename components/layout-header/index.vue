@@ -584,7 +584,7 @@ export default {
 
     .mobile-logo-block {
         position: absolute;
-        top: 5px;
+        top: 10px;
         left: 90px;
         min-height: 60px;
         max-height: 140px;

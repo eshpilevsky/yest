@@ -10,7 +10,7 @@
         <span class="info-setPlace">
             Укажите ваше местоположение, чтобы мы смогли предложить вам список доступных ресторанов
         </span>
-        <v-text-field @focus="focusInput" @blur="blurInput()" class='search-me' prepend-inner-icon="near_me" label="Укажите адрес доставки..." v-model='searchAddress' solo clearable @click:clear="clearAdress">
+        <v-text-field @focus="focusInput" @blur="blurInput()" dense class='search-me' prepend-inner-icon="near_me" label="Укажите адрес доставки..." v-model='searchAddress' solo clearable @click:clear="clearAdress">
             <template v-slot:append-outer>
                 <v-btn class="showRest-block" color='primary' @click="showRestuarants()">Показать рестораны</v-btn>
             </template>
@@ -250,7 +250,7 @@ export default {
     justify-content: flex-start;
     align-items: flex-start;
     margin: auto;
-    margin-top: 4.5rem;
+    margin-top: 2.5rem;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
     max-width: 1420px;

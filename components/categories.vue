@@ -52,7 +52,6 @@
     </div>
     <div class="category-list-mobile">
         <div v-for="(item, index) in allCategory" :key="'adaptiveCatList' + index" v-show="item.category_icon" class="category-list-mobile-item" @click="selectCategoryAdaptive(item, false)">
-            <img :src="item.category_icon" class="category_icon" />
             <span :class="{selected: item.id === getSelectedCategory.id}" class="item-name">
                 {{ item.name }}
             </span>
@@ -411,7 +410,7 @@ export default {
 }
 
 .category-list {
-    padding: 40px 15px;
+    padding: 20px 15px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
