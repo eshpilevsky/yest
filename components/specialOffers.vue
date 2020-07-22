@@ -99,7 +99,7 @@ export default {
         if (window.innerWidth < 450) {
             this.swiperOptions.effect = 'none'
             this.swiperOptions.spaceBetween = 1
-            this.swiperOptions.slidesPerView = 1.15
+            this.swiperOptions.slidesPerView = 1.5
             this.swiperOptions.pagination.el = ''
         }
     }

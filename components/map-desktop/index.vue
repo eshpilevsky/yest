@@ -407,5 +407,6 @@ ymaps [title="Определить ваше местоположение"] {
     background-color: transparent;
     box-shadow: none;
     font-size: 20px !important;
+	padding-left: 20px;
 }
 </style>

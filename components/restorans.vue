@@ -265,6 +265,7 @@ export default {
 <style scoped>
 .block-bottom {
     width: 100%;
+	padding: 16px 20px 20px;
 }
 
 .card-title {
@@ -329,10 +330,6 @@ export default {
 }
 
 .list-item-block {
-    /* height: 100%; */
-    /* width: 100%; */
-    max-height: 310px;
-    min-height: 310px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -416,8 +413,6 @@ export default {
     justify-content: flex-start;
     align-items: center;
     width: 100%;
-    margin-bottom: 10px;
-    padding-left: 10px;
     font-weight: bold;
 }
 
@@ -458,6 +453,7 @@ export default {
     height: 100%;
     width: 100%;
     min-height: 222px;
+    max-height: 222px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     object-fit: cover;
@@ -480,8 +476,7 @@ export default {
     text-overflow: ellipsis;
     width: 100%;
     text-align: start;
-    padding: 10px;
-    min-height: 40px;
+    min-height: 30px;
     text-align: left;
 }
 

@@ -129,9 +129,6 @@
                     </v-list-item>
                 </v-list>
             </v-menu>
-            <v-btn small rounded outlined class="zone-btn" color="primary" >
-                Войти
-            </v-btn>
         </div>
     </div>
 </div>
@@ -587,7 +584,7 @@ export default {
 
     .mobile-logo-block {
         position: absolute;
-        top: 5px;
+        top: 10px;
         left: 90px;
         min-height: 60px;
         max-height: 140px;

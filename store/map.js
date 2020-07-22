@@ -10,7 +10,7 @@ export const state = () => ({
     inputAddressMode: false,
     address: '',
     geolocationDenied: false,
-    loading: true,
+    loading: false,
   },
   status: 0
 })
