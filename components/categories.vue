@@ -18,7 +18,7 @@
                         </v-icon>
                     </v-chip>
                 </template>
-                <v-list>
+                <v-list class="list-component">
                     <v-list-item v-for="(item, index) in second" :key="'secondCategor' + index" class="more-category-list" @click="selectCategory(item, true)">
                         <v-list-item-title>{{ item.name }}</v-list-item-title>
                     </v-list-item>
@@ -132,8 +132,8 @@ export default {
     },
     watch: {
         getSelectedZone() {
-			this.getCategories()
-			this.selectedCategory = this.getSelectedCategory
+            this.getCategories()
+            this.selectedCategory = this.getSelectedCategory
         }
     },
     computed: {
@@ -310,7 +310,7 @@ export default {
         this.second = this.allCategory.slice(this.sliceCounter, this.categoriesList.length)
     },
     mounted() {
-		this.getCategories()
+        this.getCategories()
         this.hideCategory = false
         this.ww = window.innerWidth
         if (this.getSearchNameKitchenDish !== null) {
@@ -330,6 +330,10 @@ export default {
 </script>
 
 <style>
+.v-menu__content {
+    overflow-y: scroll !important;
+}
+
 @media screen and (max-width: 450px) {
     .v-input__prepend-inner {
         margin-top: 13px !important;
@@ -345,6 +349,10 @@ export default {
     }
 }
 </style><style scoped>
+.list-component {
+    overflow: scroll;
+}
+
 .sort-block-bottom {
     padding: 20px;
 }
@@ -548,7 +556,7 @@ export default {
         overflow: hidden;
         overflow-x: auto;
         padding: 10px 0;
-		padding-left: 16px;
+        padding-left: 16px;
         border-top: 1px solid rgba(0, 0, 0, .1);
     }
 

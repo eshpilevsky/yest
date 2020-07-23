@@ -316,6 +316,11 @@ export default {
 
 @media screen and (max-width: 450px) {
 
+	.footer-top-right{
+		display: flex;
+		flex-direction: column;
+	}
+
     .footer-bottom {
         padding: 15px 0px;
     }
@@ -330,11 +335,12 @@ export default {
     }
 
     .footer-top-img {
-        padding: 0px;
+        padding: 5px;
     }
 
     .top-block {
         padding: 20px 20px;
+		flex-direction: column;
     }
 
     .footer-top {
