@@ -50,7 +50,7 @@ export default {
         store,
         params
     }) {
-        console.log('START ASYNC');
+        console.log('START ASYNC DATA');
         let getCurrentCoords = store.getters['map/getCurrentCoords']
         let zoneList = await axios.get('https://yestapi.xyz/get-zones')
         const zoneListData = zoneList.data
@@ -66,7 +66,7 @@ export default {
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
             zone_id: currentZone.id
 		})
-		
+
         let categoriesListData = categoriesList.data
 
 
