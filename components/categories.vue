@@ -548,6 +548,7 @@ export default {
         overflow: hidden;
         overflow-x: auto;
         padding: 10px 0;
+		padding-left: 16px;
         border-top: 1px solid rgba(0, 0, 0, .1);
     }
 

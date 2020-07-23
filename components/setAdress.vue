@@ -10,7 +10,7 @@
         <span class="info-setPlace">
             Укажите ваше местоположение, чтобы мы смогли предложить вам список доступных ресторанов
         </span>
-        <v-text-field @focus="focusInput" @blur="blurInput()" class='search-me' prepend-inner-icon="near_me" label="Укажите адрес доставки..." v-model='searchAddress' solo clearable @click:clear="clearAdress">
+        <v-text-field @focus="focusInput" @blur="blurInput()" class='search-me' max-width='500px' prepend-inner-icon="near_me" @click:prepend-inner="openMap()" label="Укажите адрес доставки..." v-model='searchAddress' solo clearable @click:clear="clearAdress">
             <template v-slot:append-outer>
                 <v-btn class="showRest-block" color='primary' @click="showRestuarants()">Показать рестораны</v-btn>
             </template>
@@ -27,6 +27,9 @@
         </div>
         <map-btn v-show="this.canDisplayMap" class="map-btn" />
     </div>
+    <v-overlay :value="showDesktopMap" :opacity=".5">
+        <MapDesktop @closeMap='closeDesktopMap()'></MapDesktop>
+    </v-overlay>
 </div>
 </template>
 
@@ -36,11 +39,13 @@ import {
     mapMutations
 } from 'vuex'
 import MapBtn from '@/components/map-btn'
+import MapDesktop from '@/components/map-desktop'
 
 export default {
     name: 'setAdress',
     components: {
-        MapBtn
+        MapBtn,
+        MapDesktop,
     },
     props: {
         ymaps: Object,
@@ -58,6 +63,7 @@ export default {
             filteredLocations: [],
             loadingSuggest: false,
             coords: [],
+            showDesktopMap: false,
         }
     },
     computed: {
@@ -94,6 +100,12 @@ export default {
             setCurrentAddress: 'map/SET_CURRENT_ADDRESS',
             setCurrentCoords: 'map/SET_CURRENT_COORDS',
         }),
+        openMap() {
+			this.showDesktopMap = true
+        },
+        closeDesktopMap() {
+			this.showDesktopMap = false
+        },
         computedTitle(str) {
             let b = str.split(' в ')
             return [b[0], b[1]]
@@ -176,9 +188,8 @@ export default {
 </script>
 
 <style scoped>
-
-.itemAdress-sub{
-	color: #aaa !important;
+.itemAdress-sub {
+    color: #aaa !important;
 }
 
 .itemAdress .v-list-item__content {
@@ -186,7 +197,7 @@ export default {
 }
 
 .itemAdress:hover {
-    background: rgba(128, 128, 128, 0.2)!important;
+    background: rgba(128, 128, 128, 0.2) !important;
 }
 
 .map-btn {
@@ -209,10 +220,10 @@ export default {
 .adressList {
     background-color: #fff;
     border: 1px solid rgba(0, 0, 0, 0.4);
-    width: 48vw;
     position: absolute;
     z-index: 100;
-    margin-top: -35px;
+    margin-top: -5px;
+    max-width: 810px;
 }
 
 .showRest-block {
@@ -270,6 +281,18 @@ export default {
 
 .info-setPlace {
     display: none;
+}
+
+@media screen and (max-width: 1500px) {
+    .adressList {
+        max-width: 620px;
+    }
+}
+
+@media screen and (max-width: 1300px) {
+    .adressList {
+        max-width: 395px;
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -350,7 +373,7 @@ export default {
     .setAdressContaine-info {
         padding: 40px 16px;
         margin-top: -10px;
-		padding-bottom: 0px;
+        padding-bottom: 0px;
     }
 
     .search-me {

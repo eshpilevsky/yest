@@ -1,5 +1,5 @@
 <template>
-<div class="containe">
+<div class="restuarants-container">
     <h2 class="restorane-title" id="restTitle">Рестораны </h2>
     <v-flex cols-12 wrap class="restorane-list">
         <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in this.restaurants" :key="index" class="restorane-list-item" @click="goToRes(item)">
@@ -265,7 +265,7 @@ export default {
 <style scoped>
 .block-bottom {
     width: 100%;
-	padding: 16px 20px 20px;
+    padding: 16px 20px 20px;
 }
 
 .card-title {
@@ -480,10 +480,6 @@ export default {
     text-align: left;
 }
 
-.hidetime{
-	padding-top: 12px;
-}
-
 .restorane-list-item:hover {
     transition: 0.5s;
     transform: scale(1.05);
@@ -513,13 +509,21 @@ export default {
     cursor: pointer;
 }
 
-.containe {
+.restuarants-container {
     width: 100%;
     max-width: 1420px;
     margin: auto;
-    margin-bottom: 2rem;
+    margin-bottom: .5rem;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-top: 8px solid rgba(245, 245, 245, 0.6);
+}
+
+.hidetime {
+    padding-top: 12px;
+}
+
+@media screen and (max-width: 1265px) {
+    .restuarants-container {}
 }
 
 @media screen and (max-width: 1000px) {
@@ -549,6 +553,9 @@ export default {
 }
 
 @media screen and (max-width: 450px) {
+    .hidetime {
+        padding-top: 0px;
+    }
 
     .restorane-list-item:hover {
         transition: none;
@@ -615,7 +622,7 @@ export default {
         padding-bottom: 0px;
     }
 
-    .containe {
+    .restuarants-container {
         margin-bottom: 0;
     }
 
