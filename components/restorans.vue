@@ -15,7 +15,7 @@
                         </div>
                     </div>
                     <div class="card-title">
-                        <div class="restorane-list-item-name">{{ item.name }}</div>
+                        <div class="restorane-list-item-name" :class="{hidetime: checkAddress}">{{ item.name }}</div>
                         <v-chip class="item-bottom-right-mob" color="primary" v-show="item.rating !== 0">
                             <v-icon color="#FFFADF">star</v-icon>
                             <div class="rating">{{ item.rating }}</div>
@@ -298,7 +298,7 @@ export default {
     padding: 10px 17px;
     position: relative;
     font-size: 16px;
-    margin-top: -19px;
+    margin-top: -35px;
     text-align: center;
     background: #fff;
     border-radius: 23px 23px 0 0;
@@ -428,7 +428,7 @@ export default {
 
 .showMore-btn {
     margin: 0 90px !important;
-    width: 87% !important;
+    width: 85% !important;
     margin-bottom: 20px !important;
     color: #000 !important;
     font-weight: bold !important;
@@ -478,6 +478,10 @@ export default {
     text-align: start;
     min-height: 30px;
     text-align: left;
+}
+
+.hidetime{
+	padding-top: 12px;
 }
 
 .restorane-list-item:hover {
@@ -565,7 +569,7 @@ export default {
 
     .card-title {
         width: 100%;
-        height: 40px;
+        height: 25px;
     }
 
     .noLocationTag {

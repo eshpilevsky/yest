@@ -38,7 +38,7 @@ export default {
             swiperOptions: {
                 observer: true,
                 observeParents: true,
-                slidesPerView: 1,
+                slidesPerView: 4,
                 spaceBetween: 30,
                 navigation: {
                     nextEl: '.customBtnNext',

@@ -1,5 +1,5 @@
 <template>
-<div class='setAdressContaine containerr' id='bgImg' >
+<div class='setAdressContaine containerr' id='bgImg'>
     <div class="setAdressContaine-info">
         <span class="info-pre-title">
             Yest.by • {{this.currentZone.name}} • {{this.currentCategory.name}}
@@ -10,7 +10,7 @@
         <span class="info-setPlace">
             Укажите ваше местоположение, чтобы мы смогли предложить вам список доступных ресторанов
         </span>
-        <v-text-field @focus="focusInput" @blur="blurInput()" dense class='search-me' prepend-inner-icon="near_me" label="Укажите адрес доставки..." v-model='searchAddress' solo clearable @click:clear="clearAdress">
+        <v-text-field @focus="focusInput" @blur="blurInput()" class='search-me' prepend-inner-icon="near_me" label="Укажите адрес доставки..." v-model='searchAddress' solo clearable @click:clear="clearAdress">
             <template v-slot:append-outer>
                 <v-btn class="showRest-block" color='primary' @click="showRestuarants()">Показать рестораны</v-btn>
             </template>
@@ -19,7 +19,8 @@
             <v-list>
                 <v-list-item v-for="(item, index) in suggestions" :key="'adres'+index" class="itemAdress" @click="selectAdress(item)">
                     <v-list-item-content>
-                        <v-list-item-title>{{item.value}}</v-list-item-title>
+                        <v-list-item-title>{{item.displayName}}</v-list-item-title>
+                        <v-list-item-subtitle class="itemAdress-sub">{{item.value}}</v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
@@ -56,7 +57,7 @@ export default {
             suggestions: [],
             filteredLocations: [],
             loadingSuggest: false,
-			coords: [],
+            coords: [],
         }
     },
     computed: {
@@ -71,13 +72,12 @@ export default {
     },
     watch: {
         getSelectedCategoryTitle(newValue) {
-            console.log('getSelectedCategoryTitle -> this.getSelectedCategoryTitle', this.getSelectedCategoryTitle)
-			let newTitle = this.computedTitle(this.getSelectedCategoryTitle)
-			this.categoryInfoData.header = newTitle[0]
-			this.categoryInfoData.city = newTitle[1]
+            let newTitle = this.computedTitle(this.getSelectedCategoryTitle)
+            this.categoryInfoData.header = newTitle[0]
+            this.categoryInfoData.city = newTitle[1]
         },
         searchAddress(newValue) {
-            if (newValue.length > 3) {
+            if (newValue.length > 1) {
                 this.getSuggest(newValue)
             }
         },
@@ -93,7 +93,7 @@ export default {
         ...mapMutations({
             setCurrentAddress: 'map/SET_CURRENT_ADDRESS',
             setCurrentCoords: 'map/SET_CURRENT_COORDS',
-		}),
+        }),
         computedTitle(str) {
             let b = str.split(' в ')
             return [b[0], b[1]]
@@ -135,7 +135,7 @@ export default {
             this.loadingSuggest = true
             const component = this
             await this.ymaps.suggest(str, {
-                results: 6,
+                results: 5,
                 boundedBy: [
                     [51.753588, 23.148098],
                     [55.591263, 31.491889]
@@ -160,8 +160,8 @@ export default {
             }
         },
         selectAdress(address) {
-			var adv = address.value
-			var addressSplit = adv.split('Беларусь,')
+            var adv = address.value
+            var addressSplit = adv.split('Беларусь,')
             this.searchAddress = addressSplit[1]
         },
     },
@@ -176,6 +176,19 @@ export default {
 </script>
 
 <style scoped>
+
+.itemAdress-sub{
+	color: #aaa !important;
+}
+
+.itemAdress .v-list-item__content {
+    padding: 6px 0 !important;
+}
+
+.itemAdress:hover {
+    background: rgba(128, 128, 128, 0.2)!important;
+}
+
 .map-btn {
     visibility: hidden;
 }
@@ -196,10 +209,10 @@ export default {
 .adressList {
     background-color: #fff;
     border: 1px solid rgba(0, 0, 0, 0.4);
-    width: 50%;
+    width: 48vw;
     position: absolute;
     z-index: 100;
-    margin-top: -2rem;
+    margin-top: -35px;
 }
 
 .showRest-block {
@@ -231,13 +244,12 @@ export default {
 .search-me {
     width: 80%;
     height: 50px;
-    margin-bottom: 2rem !important;
 }
 
 .setAdressContaine-info {
     padding: 50px 80px;
     min-width: 100%;
-    margin-bottom: -40px;
+    /* margin-bottom: 70px; */
 }
 
 .setAdressContaine {
@@ -338,6 +350,7 @@ export default {
     .setAdressContaine-info {
         padding: 40px 16px;
         margin-top: -10px;
+		padding-bottom: 0px;
     }
 
     .search-me {
