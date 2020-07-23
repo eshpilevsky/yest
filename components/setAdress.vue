@@ -10,7 +10,7 @@
         <span class="info-setPlace">
             Укажите ваше местоположение, чтобы мы смогли предложить вам список доступных ресторанов
         </span>
-        <v-text-field @focus="focusInput" @blur="blurInput()" class='search-me' max-width='500px' prepend-inner-icon="near_me" @click:prepend-inner="openMap" label="Укажите адрес доставки..." v-model='searchAddress' solo clearable @click:clear="clearAdress">
+        <v-text-field @focus="focusInput" @blur="blurInput()" class='search-me' max-width='500px' prepend-inner-icon="near_me" @click:prepend-inner="openMap()" label="Укажите адрес доставки..." v-model='searchAddress' solo clearable @click:clear="clearAdress">
             <template v-slot:append-outer>
                 <v-btn class="showRest-block" color='primary' @click="showRestuarants()">Показать рестораны</v-btn>
             </template>
@@ -27,6 +27,9 @@
         </div>
         <map-btn v-show="this.canDisplayMap" class="map-btn" />
     </div>
+    <v-overlay :value="showDesktopMap" :opacity=".5">
+        <MapDesktop @closeMap='closeDesktopMap()'></MapDesktop>
+    </v-overlay>
 </div>
 </template>
 
@@ -36,11 +39,13 @@ import {
     mapMutations
 } from 'vuex'
 import MapBtn from '@/components/map-btn'
+import MapDesktop from '@/components/map-desktop'
 
 export default {
     name: 'setAdress',
     components: {
-        MapBtn
+        MapBtn,
+        MapDesktop,
     },
     props: {
         ymaps: Object,
@@ -58,6 +63,7 @@ export default {
             filteredLocations: [],
             loadingSuggest: false,
             coords: [],
+            showDesktopMap: false,
         }
     },
     computed: {
@@ -95,7 +101,10 @@ export default {
             setCurrentCoords: 'map/SET_CURRENT_COORDS',
         }),
         openMap() {
-            console.error('open map');
+			this.showDesktopMap = true
+        },
+        closeDesktopMap() {
+			this.showDesktopMap = false
         },
         computedTitle(str) {
             let b = str.split(' в ')
