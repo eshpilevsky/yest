@@ -1,5 +1,5 @@
 <template>
-<div class='containe' v-if="!hide">
+<div class='specialOffer-container' v-if="!hide">
     <div v-swiper="swiperOptions" id='swiper'>
         <div class="swiper-wrapper">
             <div class="swiper-slide" v-for='(item, index) in specilaOffers' :key='index'>
@@ -38,7 +38,7 @@ export default {
             swiperOptions: {
                 observer: true,
                 observeParents: true,
-                slidesPerView: 1,
+                slidesPerView: 4,
                 spaceBetween: 30,
                 navigation: {
                     nextEl: '.customBtnNext',
@@ -67,7 +67,7 @@ export default {
 
         },
         getSpecialOffers() {
-			this.hide = false
+            this.hide = false
             ApiService.post(`/restaurants/special-offers`, {
                 zone_id: this.getSelectedZone.id,
                 latitude: parseInt(this.getUserCoordinate.latitude),
@@ -77,7 +77,7 @@ export default {
                     const resp = response.data
                     this.specilaOffers = resp
                     if (resp.length == 0) {
-						this.hide = true
+                        this.hide = true
                     }
                     this.loadingSO = false
                 }
@@ -93,15 +93,17 @@ export default {
                 this.getSpecialOffers()
             }, 100)
         }
-    },
-    mounted() {
-        this.getSpecialOffers()
+	},
+	beforeMount(){
         if (window.innerWidth < 450) {
             this.swiperOptions.effect = 'none'
             this.swiperOptions.spaceBetween = 1
             this.swiperOptions.slidesPerView = 1.5
             this.swiperOptions.pagination.el = ''
         }
+	},
+    mounted() {
+        this.getSpecialOffers()
     }
 }
 </script>
@@ -182,7 +184,7 @@ export default {
     display: flex;
 }
 
-.containe {
+.specialOffer-container {
     width: 100%;
     max-width: 1420px;
     margin: auto;
@@ -212,6 +214,10 @@ export default {
 
     .specialOfferSwiper {
         padding: 1rem 0;
+    }
+
+    .specialOffer-container {
+        padding-left: 16px;
     }
 }
 </style><style>

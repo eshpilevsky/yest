@@ -1,5 +1,5 @@
 <template>
-<div class="containe">
+<div class="restuarants-container">
     <h2 class="restorane-title" id="restTitle">Рестораны </h2>
     <v-flex cols-12 wrap class="restorane-list">
         <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in this.restaurants" :key="index" class="restorane-list-item" @click="goToRes(item)">
@@ -15,7 +15,7 @@
                         </div>
                     </div>
                     <div class="card-title">
-                        <div class="restorane-list-item-name">{{ item.name }}</div>
+                        <div class="restorane-list-item-name" :class="{hidetime: checkAddress}">{{ item.name }}</div>
                         <v-chip class="item-bottom-right-mob" color="primary" v-show="item.rating !== 0">
                             <v-icon color="#FFFADF">star</v-icon>
                             <div class="rating">{{ item.rating }}</div>
@@ -265,7 +265,7 @@ export default {
 <style scoped>
 .block-bottom {
     width: 100%;
-	padding: 16px 20px 20px;
+    padding: 16px 20px 20px;
 }
 
 .card-title {
@@ -298,7 +298,7 @@ export default {
     padding: 10px 17px;
     position: relative;
     font-size: 16px;
-    margin-top: -19px;
+    margin-top: -35px;
     text-align: center;
     background: #fff;
     border-radius: 23px 23px 0 0;
@@ -428,7 +428,7 @@ export default {
 
 .showMore-btn {
     margin: 0 90px !important;
-    width: 87% !important;
+    width: 85% !important;
     margin-bottom: 20px !important;
     color: #000 !important;
     font-weight: bold !important;
@@ -509,13 +509,21 @@ export default {
     cursor: pointer;
 }
 
-.containe {
+.restuarants-container {
     width: 100%;
     max-width: 1420px;
     margin: auto;
-    margin-bottom: 2rem;
+    margin-bottom: .5rem;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-top: 8px solid rgba(245, 245, 245, 0.6);
+}
+
+.hidetime {
+    padding-top: 12px;
+}
+
+@media screen and (max-width: 1265px) {
+    .restuarants-container {}
 }
 
 @media screen and (max-width: 1000px) {
@@ -545,6 +553,9 @@ export default {
 }
 
 @media screen and (max-width: 450px) {
+    .hidetime {
+        padding-top: 0px;
+    }
 
     .restorane-list-item:hover {
         transition: none;
@@ -565,7 +576,7 @@ export default {
 
     .card-title {
         width: 100%;
-        height: 40px;
+        height: 25px;
     }
 
     .noLocationTag {
@@ -611,7 +622,7 @@ export default {
         padding-bottom: 0px;
     }
 
-    .containe {
+    .restuarants-container {
         margin-bottom: 0;
     }
 

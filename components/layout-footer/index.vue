@@ -7,8 +7,8 @@
                     <img src="../../assets/logo.svg" class="footer-logo" alt="logo">
                 </div>
                 <div class="footer-top-right">
-                    <img v-show="showAdnroid" src="../../assets/googlePlay.svg" class="footer-top-img" />
-                    <img v-show="showMacOs" src="../../assets/appStore.svg" class="footer-top-img" />
+                    <img src="../../assets/googlePlay.svg" class="footer-top-img" />
+                    <img src="../../assets/appStore.svg" class="footer-top-img" />
                 </div>
             </div>
         </div>
@@ -26,21 +26,21 @@
                         </div>
                     </div>
                     <div class="footer-center-column">
-              <div class="bottom-title">
-                Блюда и кухни
-              </div>
-              <div class="category-list">
-                <div v-for="category in computedCategory" :key="category.id + 'fot'" class="bottom-items">
-                  <router-link :to="{ path: `/${getSelectedZone.alias}/restaurants/category/${category.alias}`}">
-                    {{ category.name }}
-                  </router-link>
-                </div>
-                <div v-show="!all" class="bottom-items" @click="showAllCategory()">
-                  Показать все >
-                </div>
-              </div>
-            </div>
+                        <div class="bottom-title">
+                            Блюда и кухни
+                        </div>
+                        <div class="category-list">
+                            <div v-for="category in computedCategory" :key="category.id + 'fot'" class="bottom-items">
+                                <router-link :to="{ path: `/${getSelectedZone.alias}/restaurants/category/${category.alias}`}">
+                                    {{ category.name }}
+                                </router-link>
+                            </div>
+                            <div v-show="!all" class="bottom-items" @click="showAllCategory()">
+                                Показать все >
+                            </div>
+                        </div>
                     </div>
+                </div>
                 <div class="footer-center-column">
                     <div class="links-list">
                         <div class="bottom-title ">
@@ -115,7 +115,7 @@ export default {
             if (this.all) {
                 return this.mass
             } else {
-                return this.mass.slice(0,4)
+                return this.mass.slice(0, 4)
             }
         }
     },
@@ -129,16 +129,6 @@ export default {
             return newValue
         }
     },
-    mounted() {
-        if (navigator.userAgent.includes('Mac OS')) {
-            this.showMacOs = true
-        } else if (navigator.userAgent.includes('Android')) {
-            this.showAdnroid = true
-        } else {
-            this.showMacOs = true
-            this.showAdnroid = true
-        }
-    }
 }
 </script>
 
@@ -146,7 +136,7 @@ export default {
 .footer-top-right {
     display: flex;
     align-items: center;
-    padding-right: 30px;
+    /* padding-right: 30px; */
 }
 
 .footer-top-left {
@@ -303,6 +293,17 @@ export default {
     opacity: .5;
     max-height: 40px;
     filter: grayscale(1);
+}
+
+@media screen and (max-width: 1265px) {
+
+    .center-block,
+    .bottom-block,
+    .top-block {
+        max-width: 900px;
+		width: 100%;
+        padding: 0;
+    }
 }
 
 @media screen and (max-width: 350px) {

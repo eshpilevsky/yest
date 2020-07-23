@@ -52,13 +52,13 @@
     </div>
     <div class="category-list-mobile">
         <div v-for="(item, index) in allCategory" :key="'adaptiveCatList' + index" v-show="item.category_icon" class="category-list-mobile-item" @click="selectCategoryAdaptive(item, false)">
-            <span :class="{selected: item.id === getSelectedCategory.id}" class="item-name">
+            <v-chip :class="{selected: item.id === getSelectedCategory.id}" class="item-name">
                 {{ item.name }}
-            </span>
+            </v-chip>
         </div>
     </div>
     <v-divider class="divider" />
-    <v-text-field placeholder="Название, кухня или блюдо" clearable prepend-inner-icon="search" outlined class="searchDesktop" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch"></v-text-field>
+    <v-text-field placeholder="Название, кухня или блюдо" dense clearable prepend-inner-icon="search" outlined class="searchDesktop" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch"></v-text-field>
     <v-text-field placeholder="Найти в Еде" height="48" clearable prepend-inner-icon="search" outlined dense filled class="searchMobile" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch">
         <!-- <template v-slot:append-outer v-show="this.getCurrentAddress.length > 0" >
             <v-btn rounded height="40px">
@@ -468,12 +468,16 @@ export default {
 }
 
 .item-name {
-    padding: 5px 10px;
-    border-radius: 30px;
-    white-space: nowrap;
-    font-size: 13px;
-    text-align: center;
-    width: 83px;
+    min-height: 48px;
+    display: flex;
+    font-size: 16px !important;
+    transition: background-color 100ms;
+    align-items: center;
+    flex-shrink: 0;
+    margin-right: 8px;
+    border-radius: 16px;
+    justify-content: center;
+    background-color: #F1F0ED;
 }
 
 .searchMobile {
@@ -544,6 +548,7 @@ export default {
         overflow: hidden;
         overflow-x: auto;
         padding: 10px 0;
+		padding-left: 16px;
         border-top: 1px solid rgba(0, 0, 0, .1);
     }
 
