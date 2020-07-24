@@ -1,6 +1,6 @@
 <template>
-<v-flex class="rest-cotainer">
-    <div cols-10 xl8 :xs="12" class="left">
+<div class="rest-cotainer">
+    <div xl8 class="left">
         <div class="left-top">
             <div class="top-wrapper">
                 <div class="rating">
@@ -39,56 +39,117 @@
                             </p>
                         </v-col>
                         <v-col :md='3' class="white--text">
-                            <v-btn color="primary" large>
-                                <p class="info-btn-text">
-                                    Информация о <br /> ресторане
-                                </p>
-                                <v-icon>info</v-icon>
-                            </v-btn>
+                            <v-menu bottom origin="center center" transition="scale-transition" nudge-left='100' nudge-bottom='60'>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn color="primary" large v-bind="attrs" v-on="on">
+                                        <p class="info-btn-text">
+                                            Информация о <br /> ресторане
+                                        </p>
+                                        <v-icon>info</v-icon>
+                                    </v-btn>
+                                </template>
+                                <div>
+                                    <!-- <div class="treangle"></div> -->
+                                    <v-card max-width='460' class="restuarants-legal-info">
+                                        <div class="pa-3">
+                                            <h3>
+                                                ЛюдиЛюбят
+                                            </h3>
+                                            <span>
+                                                Каштановая аллея, 2
+                                            </span>
+                                            <span>
+                                                ПирогиЗдоровая едаДесертыЛанчиДетское меню₽
+
+                                            </span>
+                                            <p>
+                                                Исполнитель (продавец): ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ "ЛИАНА", 194354, Санкт-Петербург, ул Сикейроса, д 11, к 1 литер а, пом 15Н, ИНН 7802688786, рег.номер 1197847087173.
+                                                Режим работы ресторана: с 09:00 до 21:00
+                                            </p>
+                                        </div>
+                                    </v-card>
+                                </div>
+                            </v-menu>
                         </v-col>
                     </v-row>
                 </div>
             </div>
-            <div class="catalog">
-                <v-tabs class="catalog-tabs">
-                    <v-tab href="#11">Популярные блюда</v-tab>
-                    <v-tab href="#22">Добавки в блины</v-tab>
-                    <v-tab href="#33">Блины сладкие</v-tab>
-                    <v-tab href="#44">Блины сытные</v-tab>
-                    <v-tab href="#55">Напитки</v-tab>
-                </v-tabs>
-                <v-divider />
+        </div>
+        <div class="catalog">
+            <v-tabs v-model="tab" class="catalog-tabs">
+                <v-tab v-for="category in restCategory" :key="category.id" @click="scroll(`category${category.id}`)">
+                    {{category.name}}
+                </v-tab>
+            </v-tabs>
+            <v-divider />
+        </div>
+        <div class="catalog-list">
+            <div v-for="category in restCategory" :key="category.id">
+                <h2 v-intersect="categoryNameIntersect" :id='`category${category.id}`' class="category-title">
+                    {{category.name}}
+                </h2>
+                <div class="dishs-list">
+                    <div v-for="(item, index) in 4" :key="`dishCard${index}`" class="dishs-list-item">
+                        <cardDish :name='dish.name' :description='dish.description' :price='dish.price' :img='dish.img' :weight='dish.weight' />
+                    </div>
+                </div>
             </div>
-			<div class="catalog-list">
-				<h2 id='11'>Популярные блюда</h2>
-				<h2 id='22'>Добавки в блины</h2>
-				<h2 id='33'>Блины сладкие</h2>
-				<h2 id='44'>Блины сытные</h2>
-				<h2 id='55'>Напитки</h2>
-				<!-- <div class="">
-					<div v-for="(item, index) in 10" :key="index" class="card">
-						{{index}}
-					</div>
-				</div> -->
-			</div>
         </div>
     </div>
     <div cols-2 xl8 class="right">
+        <div class="right-map">
+            <div class="mapimg"></div>
+            <map-btn class="right-map-btn" ref="mapBtn" />
+        </div>
     </div>
-</v-flex>
+</div>
 </template>
 
 <script>
 import ApiService from "../common/api.service";
+import MapBtn from '@/components/map-btn'
+import cardDish from '@/components/cardDish'
 
 import {
     mapGetters
 } from "vuex";
 export default {
     name: 'restaurants',
+    components: {
+        MapBtn,
+        cardDish,
+    },
     data() {
         return {
-            key: 'value'
+            dish: {
+                name: 'Салат Цезарь с цыпленком',
+                description: 'Капуста пекинская, томаты черри, филе куриное, сыр пармезан, сухарики пшеничные, соль, перец, паприка красная, соус',
+                price: 165,
+                img: "https://eda.yandex/images/1387779/a3e887932dd0fb6d0f716d34c6b6afd7-450x300.jpeg",
+                weight: 230,
+            },
+            restCategory: [{
+                    name: 'Популярные блюда',
+                    id: 1,
+                },
+                {
+                    name: 'Добавки в блины',
+                    id: 2,
+                },
+                {
+                    name: 'Блины сладкие',
+                    id: 3,
+                },
+                {
+                    name: 'Блины сытные',
+                    id: 4,
+                },
+                {
+                    name: 'Напитки',
+                    id: 5,
+                },
+            ],
+            tab: null,
         }
     },
     computed: {
@@ -96,8 +157,30 @@ export default {
             getSelectedZone: "zone/getSelectedZone",
             getSelectedCategory: "user/getSelectedCategory",
             getUserCoordinate: "user/getUserCoordinate",
+            getUserLocation: "user/getUserLocation"
         }),
-    }
+    },
+    methods: {
+        scroll(id) {
+            this.tab = id
+            document.getElementById(id).scrollIntoView({
+                block: 'start',
+                behavior: 'smooth'
+            });
+
+        },
+        categoryNameIntersect(entries, observer) {
+            console.log('categoryNameIntersect -> entries', entries)
+            // let target = entries[0].target
+            // console.log('categoryNameIntersect -> target', target)
+            // this.tab = target.id
+            // if (entries[0].isIntersecting) {
+            //     this.tab = "tab-3"
+            // } else {
+            //     this.tab = "tab-1"
+            // }
+        }
+    },
 }
 </script>
 
@@ -106,15 +189,64 @@ export default {
     margin-bottom: 0 !important;
 }
 </style><style scoped>
-
-
-.card{
-	height: 100px;
-	width: 100px;
+.restuarants-legal-info {
+    position: relative !important;
+    z-index: 101 !important;
 }
 
-.catalog-list{
-	height: 100%;
+.right-map {
+    position: sticky;
+    top: 100px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 1rem;
+}
+
+.category-title {
+    font-weight: bold;
+    font-size: 24px;
+    margin-left: 10px;
+    line-height: 1.1666666666666667;
+    margin-bottom: 30px;
+}
+
+.treangle {
+    border-left: 5px solid transparent;
+    border-right: 155px solid transparent;
+    border-bottom: 50px solid white;
+}
+
+.catalog {
+    position: sticky;
+    top: 80px;
+    z-index: 10;
+}
+
+.dishs-list-item {
+    width: 47%;
+    margin: 10px;
+}
+
+.dishs-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.card {
+    height: 100px;
+    width: 100px;
+}
+
+.catalog-list {
+    border: solid 1px #eeeeee;
+    padding: 25px 80px;
+    background: #f2f2f2;
+    border-top: none;
+    background-image: linear-gradient(to bottom, #ffffff, #f2f2f2 480px);
 }
 
 .info-btn-text {
@@ -195,22 +327,35 @@ export default {
     background-position: center;
     width: 100vw;
     max-width: 55vw;
-    height: 40vh;
+    /* height: 40vh; */
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
 }
 
 .right {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.mapimg {
     background-image: url("https://static-maps.yandex.ru/1.x/?l=map&ll=30.309158,59.963836&size=620,1572&scale=2&z=16&key=AP5KxFsBAAAAr4rWXAIApROgjMkXM-bOIOmMi2amb4pKEysAAAAAAAAAAADynFDWdJDGB1mMpov177fEMLqcCA==");
-    height: 100vh;
+    background-size: cover;
+    height: 83vh;
     width: 100%;
     margin-left: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
 }
 
 .rest-cotainer {
     display: flex;
     flex-direction: row;
     padding-top: 3rem;
+    padding-bottom: 1rem;
     margin: auto;
     max-width: 1420px;
 }
