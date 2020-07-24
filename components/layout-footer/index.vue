@@ -30,11 +30,11 @@
                             Блюда и кухни
                         </div>
                         <div class="category-list">
-                            <div v-for="category in computedCategory" :key="category.id + 'fot'" class="bottom-items">
+                            <!-- <div v-for="category in computedCategory" :key="category.id + 'fot'" class="bottom-items">
                                 <router-link :to="{ path: `/${getSelectedZone.alias}/restaurants/category/${category.alias}`}">
                                     {{ category.name }}
                                 </router-link>
-                            </div>
+                            </div> -->
                             <div v-show="!all" class="bottom-items" @click="showAllCategory()">
                                 Показать все >
                             </div>
@@ -98,7 +98,7 @@ export default {
     data() {
         return {
             defaultCatergory: 10,
-            mass: this.$store.state.user.data.categoryList,
+            categoryList: this.$store.state.user.data.categoryList,
             all: false,
             showMacOs: false,
             showAdnroid: false,
@@ -113,9 +113,11 @@ export default {
         }),
         computedCategory() {
             if (this.all) {
-                return this.mass
+                return this.categoryList
             } else {
-                return this.mass.slice(0, 4)
+				// let result = this.categoryList.slice(0, 4);
+				let result = this.categoryList
+                return result
             }
         }
     },

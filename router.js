@@ -32,7 +32,8 @@ export function createRouter() {
         component: notFound,
       },
       {
-        path: '/restaurant/:resName',
+		path: '/restaurant/:resName',
+		name:'restik',
         component: restaurants,
       },
     ]
