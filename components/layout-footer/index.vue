@@ -100,8 +100,6 @@ export default {
             defaultCatergory: 10,
             categoryList: this.$store.state.user.data.categoryList,
             all: false,
-            showMacOs: false,
-            showAdnroid: false,
             limit: 5,
         }
     },

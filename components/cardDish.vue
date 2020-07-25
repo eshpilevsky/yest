@@ -2,14 +2,15 @@
 <v-card class="card-dish">
     <div class="dish-info-top">
         <div class="dish-price">
-            {{this.price}}
+            <!-- {{this.dishinfo[0]}} -->
+            {{this.dishinfo[0] != null ? this.dishinfo[0].price: 'Закончился'}}
             <img :src="rubel" />
         </div>
         <h3 class="dish-card-title">
             {{this.name}}
         </h3>
         <span class="dish-weight">
-            {{this.weight}}г
+            {{this.dishinfo[0] != null ? this.dishinfo[0].weight: null}}
         </span>
         <div class="dish-description">
             {{this.description}}
@@ -27,9 +28,8 @@ export default {
     props: {
         name: String,
         description: String,
-        price: Number,
+        dishinfo: Array,
         img: String,
-        weight: Number,
     },
     data() {
         return {

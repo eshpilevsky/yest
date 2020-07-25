@@ -191,8 +191,8 @@ export default {
         },
         goToRes(info) {
             let name = info.name
-            let result = name.replace(' ', '')
-            this.$router.push(`/restaurant/${result}`)
+            let modifName = name.replace(' ', '-')
+            this.$router.push(`/${this.getSelectedZone.alias}/restaurant/${info.restaurant_id}-${modifName.toLowerCase()}`)
         },
         showMore() {
             this.limit += 24;
