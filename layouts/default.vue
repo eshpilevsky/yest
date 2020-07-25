@@ -6,7 +6,7 @@
             <nuxt />
         </v-container>
     </v-content>
-	<!-- <layout-footer v-show="!isMapVisible"/> -->
+	<layout-footer v-show="!isMapVisible"/>
   <map-container v-show="canDisplayMap"/>
 </v-app>
 </template>
