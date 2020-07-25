@@ -3,7 +3,8 @@
     <div class="dish-info-top">
         <div class="dish-price">
             <!-- {{this.dishinfo[0]}} -->
-            {{this.dishinfo[0] != null ? this.dishinfo[0].price: 'Закончился'}}
+            <!-- {{this.dishinfo[0] != null ? this.dishinfo[0].price: 'Закончился'}} -->
+			{{this.computedPrice}}
             <img :src="rubel" />
         </div>
         <h3 class="dish-card-title">
@@ -17,7 +18,7 @@
         </div>
     </div>
     <div class="dash-info-bottom">
-        <v-img :src="this.img" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="this.name" class="dish-img" />
+        <v-img :src="'https://img.eatmealby.com/resize/dish/400/'+this.img" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="this.name" class="dish-img" />
     </div>
 </v-card>
 </template>
@@ -35,7 +36,16 @@ export default {
         return {
             rubel: require("../assets/rubel.png")
         }
-    },
+	},
+	computed: {
+		computedPrice() {
+			if (this.dishinfo.length > 1) {
+				return `От ${this.dishinfo[0].price} до ${this.dishinfo[this.dishinfo.length-1].price}`
+			} else {
+				return `${this.dishinfo[0].price}`
+			}
+		}
+	},
 
 }
 </script>

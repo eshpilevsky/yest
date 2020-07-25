@@ -55,7 +55,7 @@
                                             <v-card max-width='460' class="restuarants-legal-info">
                                                 <div class="pa-3">
                                                     <h3>
-                                                        {{restuarant.name}}
+                                                        {{restuarant.name}} 
                                                     </h3>
                                                     <span>
                                                         Каштановая аллея, 2
@@ -86,22 +86,38 @@
                 </div>
                 <div class="catalog-list">
                     <div v-for="category in restuarant.menu" :key="category.id">
-                        <h2 v-intersect="categoryNameIntersect" :id='`category${category.id}`' class="category-title">
-                            {{category.name}}
-                        </h2>
+						<div class="category-title">
+							<h2 v-intersect="categoryNameIntersect" :id='`category${category.id}`' >
+								{{category.name}}
+							</h2>
+							<span class="category-list-counter">
+								{{category.dishes.length}}
+							</span>
+						</div>
                         <div class="dishs-list">
-                            <div v-for="(item, index) in category.dishes" :key="`dishCard${index}`" class="dishs-list-item">
-                                <cardDish :name='item.name' :description='item.description' :img='dish.image' :dishinfo='item.sizes' />
+                            <div v-for="(item, index) in category.dishes" :key="`dishCard${index}`" class="dishs-list-item" @click="addToBasket(item)">
+                                <cardDish :name='item.name' :description='item.description' :img='item.image' :dishinfo='item.sizes' />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div cols-2 xl8 class="right">
-                <div class="right-map">
-                    <div class="mapimg"></div>
-                    <map-btn class="right-map-btn" ref="mapBtn" />
+                <div class="right-my-order">
+                    <div class="order-title">
+                        Мой заказ
+                    </div>
+                    <div class="my-order">
+                        <span class="my-order-text">
+							Выберите блюда и добавьте их к заказу
+                        </span>
+                    </div>
+					<div class="total-price">
+						<p class="total-title">Итого</p>
+						<p class="price">0 руб</p>
+					</div>
                 </div>
+                <v-btn block color="primary">Оформить заказ</v-btn>
             </div>
         </div>
     </div>
@@ -173,7 +189,6 @@
                     </h2>
                     <div class="dishs-list-mobile">
                         <div v-for="(item, index) in 6" :key="`dishCard${index}`" class="dishs-list-mobile-item" @click="showSelectedDish(dish)">
-                            <!-- <cardDish :name='dish.name' :description='dish.description' :price='dish.price' :img='dish.img' :weight='dish.weight' /> -->
                             <v-card class="dish-card">
                                 <div class="card-dish-top">
                                     <v-img :src="dish.img" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="dish.name" class="dish-img-mobile" />
@@ -254,18 +269,18 @@ export default {
         store,
         params
     }) {
-		console.log('START REST ASYNC');
-		let restParams = params.resName
-		let id = restParams.split('-')
-		var currentZone = store.getters['zone/getSelectedZone']
+        console.log('START REST ASYNC');
+        let restParams = params.resName
+        let id = restParams.split('-')
+        var currentZone = store.getters['zone/getSelectedZone']
         let restuarant = await axios.post(`https://yestapi.xyz/restaurant/${id[0]}`, {
             zone_id: currentZone.id,
-		})
-        console.log('restuarant', restuarant.data.menu[0].dishes[0])
+        })
+        console.log('restuarant', restuarant.data)
 
-		return{
-			restuarant: restuarant.data
-		}
+        return {
+            restuarant: restuarant.data
+        }
     },
     data() {
         return {
@@ -332,8 +347,10 @@ export default {
         }
     },
     methods: {
-        addToBasket() {
-            this.showDish = false
+        addToBasket(dish) {
+        	console.log('addToBasket -> dish', dish)
+			this.showDish = false
+			this.$store.dispatch('basket/addToBasket', dish);			
         },
         showSelectedDish(dish) {
             console.log('showSelectedDish -> dish', dish)
@@ -351,8 +368,8 @@ export default {
 
         },
         categoryNameIntersect(entries, observer) {
-			console.log('categoryNameIntersect -> entries', entries[0].target.innerText)
-			console.log(this.tab);
+            console.log('categoryNameIntersect -> entries', entries[0].target.innerText)
+            console.log(this.tab);
             // let target = entries[0].target
             // if (entries[0].isIntersecting) {
             // 	this.tab = target.id
@@ -369,8 +386,55 @@ export default {
 }
 </style><style scoped>
 
-.left{
-	width: 85%;
+
+.price{
+	font-size: 25px;
+}
+
+.total-title{
+	color: #b0b0b0;
+    font-size: 14px;
+}
+
+.total-price{
+	border-top: 1px solid rgba(0, 0, 0, .05);
+	display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.my-order-text{
+    color: #b0b0b0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    margin: auto;
+    text-align: center;
+}
+
+.right-my-order {
+    height: 82vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+	padding-bottom: 10px;
+}
+
+.order-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: auto;
+	padding: 20px;
+}
+
+.left {
+    width: 75%;
 }
 
 .counter-component {
@@ -507,23 +571,19 @@ export default {
     z-index: 101 !important;
 }
 
-.right-map {
-    position: sticky;
-    top: 100px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-left: 1rem;
+.category-list-counter{
+	color: #b0b0b0;
 }
 
 .category-title {
     font-weight: bold;
     font-size: 24px;
     margin-left: 10px;
-    line-height: 1.1666666666666667;
     margin-bottom: 30px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-right: 12px;
 }
 
 .treangle {
@@ -661,8 +721,9 @@ export default {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+	margin-left: 20px;
 	position: sticky;
-	top: 65px;
+    top: 90px;
 }
 
 .mapimg {
