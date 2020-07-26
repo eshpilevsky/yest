@@ -85,9 +85,6 @@ export default {
         if (performance.navigation.type == 1) {
             this.hideMap()
 		}
-		setInterval(() => {
-			console.log('this.getMapLoading ->', this.getMapLoading);
-		}, 2000);
     },
     methods: {
         ...mapMutations({

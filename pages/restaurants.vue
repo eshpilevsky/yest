@@ -123,8 +123,8 @@
                                         {{order.sizes[0].weight}}
                                     </div>
                                 </div>
-                                <div class="d-flex flex-column">
-                                    <div class="counter-plus">
+                                <div class="d-flex flex-column my-counter">
+                                    <div class="counter-plus" @click="increment(order.id)">
                                         <v-icon>
                                             add
                                         </v-icon>
@@ -132,14 +132,14 @@
                                     <div class="counter-count">
                                         {{order.counter}}
                                     </div>
-                                    <div class="counter-minus">
+                                    <div class="counter-minus" @click="decrement(order.id)">
                                         <v-icon>
                                             remove
                                         </v-icon>
                                     </div>
                                 </div>
-                                <div>
-                                    {{order.sizes[0].price}}
+                                <div class="pl-4">
+                                    {{order.sizes[0].price}} руб
                                 </div>
                             </div>
                         </div>
@@ -157,7 +157,7 @@
                         </div>
                     </div>
                 </div>
-                <v-btn block color="primary">Оформить заказ</v-btn>
+                <v-btn :disabled="this.getTotalPrice <= 0" color="primary">Оформить заказ</v-btn>
             </div>
         </div>
     </div>
@@ -267,11 +267,11 @@
                             </div>
                             <div class="d-flex flex-row justify-space-between ">
                                 <div class="d-flex flex-row counter-component">
-                                    <v-icon @click="dishCounter--">
+                                    <v-icon @click="dishCounter">
                                         plus_one
                                     </v-icon>
                                     {{dishCounter}}
-                                    <v-icon @click="dishCounter++">
+                                    <v-icon @click="">
                                         plus_one
                                     </v-icon>
                                 </div>
@@ -385,19 +385,26 @@ export default {
         }),
     },
     watch: {
+        getSelectedDishs(newValue) {
+            return newValue
+        },
         getTotalPrice(newValue) {
-            console.log('getTotalPrice -> newValue', newValue)
             return newValue
         },
         dishCounter(newValue) {
             return newValue
         },
         tab(newValue) {
-            console.log('tab -> newValue', newValue)
             return newValue
         },
     },
     methods: {
+        decrement(id) {
+            this.$store.dispatch('basket/decrementDishCounter', id);
+        },
+        increment(id) {
+            this.$store.dispatch('basket/incrementDishCounter', id);
+        },
         dropBasket() {
             this.$store.dispatch('basket/dropBasket');
         },
@@ -441,8 +448,24 @@ export default {
     margin-bottom: 0 !important;
 }
 </style><style scoped>
+
+.counter-count{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.my-counter:hover .counter-count,
+.my-counter:hover .counter-plus,
+.my-counter:hover .counter-minus {
+    display: flex;
+	border: .5px solid rgb(176, 176, 176);
+	background: #f2f2f2;
+}
+
 .counter-plus,
-.counter-minus{
+.counter-minus {
+    display: none;
     cursor: pointer;
 }
 
