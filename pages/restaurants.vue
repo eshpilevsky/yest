@@ -55,7 +55,7 @@
                                             <v-card max-width='460' class="restuarants-legal-info">
                                                 <div class="pa-3">
                                                     <h3>
-                                                        {{restuarant.name}} 
+                                                        {{restuarant.name}}
                                                     </h3>
                                                     <span>
                                                         Каштановая аллея, 2
@@ -79,21 +79,21 @@
                 <div class="catalog">
                     <v-tabs v-model="tab" class="catalog-tabs" center-active>
                         <v-tab v-for="(category) in restuarant.menu" :key="category.cat_id" @click="scroll(`category${category.cat_id}`)">
-                            {{category.name}} 
+                            {{category.name}}
                         </v-tab>
                     </v-tabs>
                     <v-divider />
                 </div>
                 <div class="catalog-list">
                     <div v-for="category in restuarant.menu" :key="category.cat_id">
-						<div class="category-title">
-							<h2 v-intersect="categoryNameIntersect" :id='`category${category.cat_id		}`' >
-								{{category.name}}
-							</h2>
-							<span class="category-list-counter">
-								{{category.dishes.length}}
-							</span>
-						</div>
+                        <div class="category-title">
+                            <h2 v-intersect="categoryNameIntersect" :id='`category${category.cat_id		}`'>
+                                {{category.name}}
+                            </h2>
+                            <span class="category-list-counter">
+                                {{category.dishes.length}}
+                            </span>
+                        </div>
                         <div class="dishs-list">
                             <div v-for="(item, index) in category.dishes" :key="`dishCard${index}`" class="dishs-list-item" @click="addToBasket(item)">
                                 <cardDish :name='item.name' :description='item.description' :img='item.image' :dishinfo='item.sizes' />
@@ -104,18 +104,58 @@
             </div>
             <div cols-2 xl8 class="right">
                 <div class="right-my-order">
-                    <div class="order-title">
-                        Мой заказ
+                    <div class="my-order-top">
+                        <div class="order-title">
+                            <p>
+                                Мой заказ
+                            </p>
+                            <v-icon v-show="this.getSelectedDishs.length > 0" @click="dropBasket()">
+                                delete_forever
+                            </v-icon>
+                        </div>
+                        <div v-if="this.getSelectedDishs.length > 0">
+                            <div v-for="order in this.getSelectedDishs" :key="order.id" class="order-item">
+                                <div class="d-flex flex-column order-item-info">
+                                    <div class="item-name">
+                                        {{order.name}}
+                                    </div>
+                                    <div class="order-item-weight">
+                                        {{order.sizes[0].weight}}
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <div class="counter-plus">
+                                        <v-icon>
+                                            add
+                                        </v-icon>
+                                    </div>
+                                    <div class="counter-count">
+                                        {{order.counter}}
+                                    </div>
+                                    <div class="counter-minus">
+                                        <v-icon>
+                                            remove
+                                        </v-icon>
+                                    </div>
+                                </div>
+                                <div>
+                                    {{order.sizes[0].price}}
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class="my-order">
+                            <span class="my-order-text">
+                                Выберите блюда и добавьте их к заказу
+                            </span>
+                        </div>
                     </div>
-                    <div class="my-order">
-                        <span class="my-order-text">
-							Выберите блюда и добавьте их к заказу
-                        </span>
+                    <div class="my-order-bottom">
+
+                        <div class="total-price">
+                            <p class="total-title">Итого</p>
+                            <p class="price">{{this.getTotalPrice}} руб</p>
+                        </div>
                     </div>
-					<div class="total-price">
-						<p class="total-title">Итого</p>
-						<p class="price">0 руб</p>
-					</div>
                 </div>
                 <v-btn block color="primary">Оформить заказ</v-btn>
             </div>
@@ -331,6 +371,7 @@ export default {
             selectedDish: {},
             showDish: false,
             dishCounter: 1,
+            showOptionsmenu: false,
         }
     },
     computed: {
@@ -338,10 +379,16 @@ export default {
             getSelectedZone: "zone/getSelectedZone",
             getSelectedCategory: "user/getSelectedCategory",
             getCurrentCoords: "map/getCurrentCoords",
-            getUserLocation: "user/getUserLocation"
+            getUserLocation: "user/getUserLocation",
+            getSelectedDishs: "basket/getSelectedDishs",
+            getTotalPrice: "basket/getTotalPrice",
         }),
     },
     watch: {
+        getTotalPrice(newValue) {
+            console.log('getTotalPrice -> newValue', newValue)
+            return newValue
+        },
         dishCounter(newValue) {
             return newValue
         },
@@ -351,10 +398,17 @@ export default {
         },
     },
     methods: {
+        dropBasket() {
+            this.$store.dispatch('basket/dropBasket');
+        },
         addToBasket(dish) {
-        	console.log('addToBasket -> dish', dish)
-			this.showDish = false
-			this.$store.dispatch('basket/addToBasket', dish);			
+            console.log('addToBasket -> dish', dish)
+            if (dish.options.length > 0) {
+                this.showOptionsmenu = true
+            } else {
+                this.showDish = false
+                this.$store.dispatch('basket/addToBasket', dish);
+            }
         },
         showSelectedDish(dish) {
             console.log('showSelectedDish -> dish', dish)
@@ -368,14 +422,14 @@ export default {
                 block: 'start',
                 behavior: 'smooth'
             });
-			this.tab = id
+            this.tab = id
         },
         categoryNameIntersect(entries, observer) {
             // console.log('categoryNameIntersect -> entries', entries[0].target.innerText)
             // let target = entries[0].target
             // if (entries[0].isIntersecting) {
-			// 	this.tab = entries[0].target.id
-			// 	console.log(this.tab);
+            // 	this.tab = entries[0].target.id
+            // 	console.log(this.tab);
             // } 
         }
     },
@@ -387,20 +441,42 @@ export default {
     margin-bottom: 0 !important;
 }
 </style><style scoped>
-
-
-.price{
-	font-size: 25px;
+.counter-plus,
+.counter-minus{
+    cursor: pointer;
 }
 
-.total-title{
-	color: #b0b0b0;
+.order-item-info {
+    flex: 1 1 60%;
+}
+
+.order-item-weight {
+    color: #b0b0b0;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.order-item {
+    padding: 0 20px;
+    font-size: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price {
+    font-size: 25px;
+}
+
+.total-title {
+    color: #b0b0b0;
     font-size: 14px;
 }
 
-.total-price{
-	border-top: 1px solid rgba(0, 0, 0, .05);
-	display: flex;
+.total-price {
+    border-top: 1px solid rgba(0, 0, 0, .05);
+    display: flex;
     flex-direction: column;
     justify-content: center;
     width: 100%;
@@ -408,31 +484,40 @@ export default {
     padding: 10px 0;
 }
 
-.my-order-text{
+.my-order-text {
     color: #b0b0b0;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 70%;
+    padding-top: 80%;
     margin: auto;
     text-align: center;
 }
 
 .right-my-order {
-    height: 82vh;
+    height: 84vh;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     background-color: #f2f2f2;
     border-radius: 5px;
-	margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .order-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.order-title p {
     font-size: 20px;
     font-weight: bold;
     margin-right: auto;
-	padding: 20px;
 }
 
 .left {
@@ -573,9 +658,9 @@ export default {
     z-index: 101 !important;
 }
 
-.category-list-counter{
-	color: #b0b0b0;
-	margin-left: 10px;
+.category-list-counter {
+    color: #b0b0b0;
+    margin-left: 10px;
 }
 
 .category-title h2 {
@@ -586,10 +671,10 @@ export default {
     font-weight: bold;
     font-size: 24px;
     margin-left: 10px;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	margin-right: 12px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 12px;
 }
 
 .treangle {
@@ -724,8 +809,8 @@ export default {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-	margin-left: 20px;
-	position: sticky;
+    margin-left: 20px;
+    position: sticky;
     top: 90px;
 }
 

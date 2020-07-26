@@ -1,49 +1,57 @@
 export const state = () => ({
   data: {
-	dishs: Array,
-	totalPrice: 0,
+    dishs: [],
+    totalPrice: 0,
   },
   status: 0
 })
 
 export const mutations = {
-	SAVE_TO_BASKET(state, payload) {
-		state.status = '200'
-		state.data.dishs.push(payload)
-	  },
-	INCREMENT_DISH(state, payload) {
-		state.status = '200'
-		let result = dishList.find((dish) => {
-			if(dish.id === payload.id){
-				dish.size[0].count++;
-			}
-		})
-	  },
+  SAVE_TO_BASKET(state, payload) {
+	state.status = '200'
+	payload.counter = 1
+    console.log('SAVE_TO_BASKET -> payload', payload)
+	state.data.dishs.push(payload)
+    console.log('SAVE_TO_BASKET -> state.data.dishs', state.data.dishs)
+  },
+  DROP_BASKET(state) {
+    state.status = '200'
+	state.data.dishs = []
+  },
+  INCREMENT_DISH(state, payload) {
+    state.status = '200'
+    let result = dishList.find((dish) => {
+      if (dish.id === payload.id) {
+        dish.size[0].count++;
+      }
+    })
+  },
 };
 
 export const actions = {
-	async addToBasket(context, payload) {
-        // console.error('addToBasket -> payload', payload)
-		let dishList = context.state.data.dishs
-		console.log('addToBasket -> dishList', dishList)
-		let result = await dishList.find((dish) => {
-			if(dish.id === payload.id){
-				context.commit('INCREMENT_DISH', payload)
-			}
-		})
-		if (result == undefined) {
-			context.commit('SAVE_TO_BASKET', payload)
-		}
-		
-		// context.commit('SELECT_CATEGORY', payload)
-	  },
+  async addToBasket(context, payload) {
+		let list = context.state.data.dishs
+
+      context.commit('SAVE_TO_BASKET', payload)
+  },
+  dropBasket(context) {
+      context.commit('DROP_BASKET')
+  },
 };
 
 export const getters = {
-	getSelectedDishs(state) {
-		return state.data.dishs
-	  },
-	getTotalPrice(state) {
-		return state.data.totalPrice
-	  },
+  getSelectedDishs(state) {
+    return state.data.dishs
+  },
+  getTotalPrice(state) {
+	let dl = state.data.dishs
+	let totalPrice = 0
+	dl.forEach(element => {
+		totalPrice += element.sizes[0].price
+        console.log('getTotalPrice -> element.sizes[0].price', element.sizes[0].price)
+        console.log('getTotalPrice -> totalPrice', totalPrice)
+	});
+	return totalPrice.toFixed(2)
+    // return state.data.totalPrice
+  },
 };
