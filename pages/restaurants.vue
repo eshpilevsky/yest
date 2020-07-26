@@ -78,16 +78,16 @@
                 </div>
                 <div class="catalog">
                     <v-tabs v-model="tab" class="catalog-tabs" center-active>
-                        <v-tab v-for="category in restuarant.menu" :key="category.id" @click="scroll(`category${category.id}`)">
-                            {{category.name}}
+                        <v-tab v-for="(category) in restuarant.menu" :key="category.cat_id" @click="scroll(`category${category.cat_id}`)">
+                            {{category.name}} 
                         </v-tab>
                     </v-tabs>
                     <v-divider />
                 </div>
                 <div class="catalog-list">
-                    <div v-for="category in restuarant.menu" :key="category.id">
+                    <div v-for="category in restuarant.menu" :key="category.cat_id">
 						<div class="category-title">
-							<h2 v-intersect="categoryNameIntersect" :id='`category${category.id}`' >
+							<h2 v-intersect="categoryNameIntersect" :id='`category${category.cat_id		}`' >
 								{{category.name}}
 							</h2>
 							<span class="category-list-counter">
@@ -344,7 +344,11 @@ export default {
     watch: {
         dishCounter(newValue) {
             return newValue
-        }
+        },
+        tab(newValue) {
+            console.log('tab -> newValue', newValue)
+            return newValue
+        },
     },
     methods: {
         addToBasket(dish) {
@@ -360,20 +364,18 @@ export default {
             }, 100);
         },
         scroll(id) {
-            this.tab = id
             document.getElementById(id).scrollIntoView({
                 block: 'start',
                 behavior: 'smooth'
             });
-
+			this.tab = id
         },
         categoryNameIntersect(entries, observer) {
-            console.log('categoryNameIntersect -> entries', entries[0].target.innerText)
-            console.log(this.tab);
+            // console.log('categoryNameIntersect -> entries', entries[0].target.innerText)
             // let target = entries[0].target
             // if (entries[0].isIntersecting) {
-            // 	this.tab = target.id
-            //     this.tab = "tab-3"
+			// 	this.tab = entries[0].target.id
+			// 	console.log(this.tab);
             // } 
         }
     },
@@ -423,7 +425,7 @@ export default {
     justify-content: space-between;
     background-color: #f2f2f2;
     border-radius: 5px;
-	padding-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 .order-title {
@@ -573,13 +575,17 @@ export default {
 
 .category-list-counter{
 	color: #b0b0b0;
+	margin-left: 10px;
+}
+
+.category-title h2 {
+    font-size: 24px;
 }
 
 .category-title {
     font-weight: bold;
     font-size: 24px;
     margin-left: 10px;
-    margin-bottom: 30px;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -707,9 +713,6 @@ export default {
 .left-top {
     background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("https://eda.yandex/images/1387779/4f8c9613c25d940949b9e45825d4f1ca-1100x825.jpeg");
     background-position: center;
-    width: 100vw;
-    max-width: 55vw;
-    /* height: 40vh; */
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
 }

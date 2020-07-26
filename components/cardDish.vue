@@ -2,8 +2,6 @@
 <v-card class="card-dish">
     <div class="dish-info-top">
         <div class="dish-price">
-            <!-- {{this.dishinfo[0]}} -->
-            <!-- {{this.dishinfo[0] != null ? this.dishinfo[0].price: 'Закончился'}} -->
 			{{this.computedPrice}}
             <img :src="rubel" />
         </div>
@@ -18,7 +16,7 @@
         </div>
     </div>
     <div class="dash-info-bottom">
-        <v-img :src="'https://img.eatmealby.com/resize/dish/400/'+this.img" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="this.name" class="dish-img" />
+        <v-img cover :src="'https://img.eatmealby.com/resize/dish/400/'+this.img" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="this.name" class="dish-img" />
     </div>
 </v-card>
 </template>
@@ -40,7 +38,7 @@ export default {
 	computed: {
 		computedPrice() {
 			if (this.dishinfo.length > 1) {
-				return `От ${this.dishinfo[0].price} до ${this.dishinfo[this.dishinfo.length-1].price}`
+				return `От ${this.dishinfo[0].price}`
 			} else {
 				return `${this.dishinfo[0].price}`
 			}
@@ -52,6 +50,10 @@ export default {
 
 <style scoped>
 
+.dish-info-top{
+    flex: 1 0 auto;
+}
+
 .dash-info-bottom {
     margin-top: 24px;
 }
@@ -59,6 +61,7 @@ export default {
 .card-dish {
     flex: 1 1 auto;
     width: 100%;
+    height: 100%;
     cursor: pointer;
     display: flex;
     padding: 18px 20px;
@@ -72,6 +75,8 @@ export default {
 .dish-img {
     max-height: 210px;
     border-radius: 5px;
+	background-repeat: no-repeat;
+    background-position: center;
 }
 
 .dish-description {
