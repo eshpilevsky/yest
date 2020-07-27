@@ -191,8 +191,8 @@ export default {
         },
         goToRes(info) {
             let name = info.name
-            let result = name.replace(' ', '')
-            this.$router.push(`/restaurant/${result}`)
+            let modifName = name.replace(' ', '-')
+            this.$router.push(`/${this.getSelectedZone.alias}/restaurant/${info.restaurant_id}-${modifName.toLowerCase()}`)
         },
         showMore() {
             this.limit += 24;
@@ -386,7 +386,7 @@ export default {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    max-width: 210px;
+    max-width: 320px;
 }
 
 .rating {
@@ -610,7 +610,7 @@ export default {
     }
 
     .tags-list-item {
-        max-width: 210px;
+        max-width: 3200px;
     }
 
     .bottom-tags-list {
@@ -632,6 +632,7 @@ export default {
 
     .restorane-title {
         padding: 10px 30px;
+		padding-bottom: 0;
         font-size: 20px;
     }
 

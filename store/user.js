@@ -66,6 +66,7 @@ export const mutations = {
 export const actions = {
 
   selectCategory(context, payload) {
+    console.log('selectCategory -> payload', payload)
     context.commit('SELECT_CATEGORY', payload)
   },
 

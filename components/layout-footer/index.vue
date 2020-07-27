@@ -98,10 +98,8 @@ export default {
     data() {
         return {
             defaultCatergory: 10,
-            mass: this.$store.state.user.data.categoryList,
+            categoryList: this.$store.state.user.data.categoryList,
             all: false,
-            showMacOs: false,
-            showAdnroid: false,
             limit: 5,
         }
     },
@@ -113,9 +111,11 @@ export default {
         }),
         computedCategory() {
             if (this.all) {
-                return this.mass
+                return this.categoryList
             } else {
-                return this.mass.slice(0, 4)
+				// let result = this.categoryList.slice(0, 4);
+				let result = this.categoryList
+                return result
             }
         }
     },
@@ -245,6 +245,7 @@ export default {
 .footer-top-img {
     padding: 10px 0px 10px 10px;
     max-height: 60px;
+	max-width: 140px;
 }
 
 .footer-top {
@@ -316,6 +317,11 @@ export default {
 
 @media screen and (max-width: 450px) {
 
+	.footer-top-right{
+		display: flex;
+		flex-direction: column;
+	}
+
     .footer-bottom {
         padding: 15px 0px;
     }
@@ -330,11 +336,12 @@ export default {
     }
 
     .footer-top-img {
-        padding: 0px;
+        padding: 5px;
     }
 
     .top-block {
         padding: 20px 20px;
+		flex-direction: column;
     }
 
     .footer-top {

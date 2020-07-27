@@ -87,6 +87,9 @@ export default {
                 this.getSuggest(newValue)
             }
         },
+        getSelectedCategory(newValue) {
+            this.currentCategory = newValue
+        },
         getCurrentAddress(newValue) {
             this.searchAddress = newValue
         },

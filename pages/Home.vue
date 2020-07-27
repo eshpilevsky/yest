@@ -2,7 +2,7 @@
 <div style="padding-bottom: 0px">
     <setAdress :currentZone='currentZone' :currentCategory='currentCategory' :categoryInfoData='categoryInfoData' :ymaps='ymaps' :class="{hide: showSetAdress == false}" />
     <specialOffers v-show="getCurrentAddress.length > 0" />
-    <categories :categoriesList='categoriesList' />
+    <categories :categoriesList='categoriesList' :currentCategory='currentCategory'/>
     <mobileSearch v-show="showSearch" />
     <restorans :restaurantsList='restaurantsList' :currentCategory='currentCategory' />
 </div>
@@ -66,7 +66,7 @@ export default {
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
             zone_id: currentZone.id
 		})
-
+		
         let categoriesListData = categoriesList.data
 
 
@@ -83,8 +83,8 @@ export default {
         })
         if (currentCategory === undefined) {
             currentCategory = categoriesListData[0]
-        }
-
+		}
+				
         let categoryInfo = await axios.post('https://yestapi.xyz/categories/info', {
             zone_id: currentZone.id,
             category_id: currentCategory.id
