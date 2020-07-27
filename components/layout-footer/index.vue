@@ -29,16 +29,16 @@
                         <div class="bottom-title">
                             Блюда и кухни
                         </div>
-                        <div class="category-list">
-                            <!-- <div v-for="category in computedCategory" :key="category.id + 'fot'" class="bottom-items">
-                                <router-link :to="{ path: `/${getSelectedZone.alias}/restaurants/category/${category.alias}`}">
-                                    {{ category.name }}
-                                </router-link>
-                            </div> -->
-                            <div v-show="!all" class="bottom-items" @click="showAllCategory()">
-                                Показать все >
-                            </div>
+                      <div class="category-list">
+                        <div v-for="category in computedCategory" :key="category.id + 'fot'" class="bottom-items">
+                          <router-link :to="{ path: `/${getSelectedZone.alias}/restaurants/category/${category.alias}`}">
+                            {{ category.name }}
+                          </router-link>
                         </div>
+                        <div v-show="!all" class="bottom-items" @click="showAllCategory()">
+                          Показать все >
+                        </div>
+                      </div>
                     </div>
                 </div>
                 <div class="footer-center-column">
