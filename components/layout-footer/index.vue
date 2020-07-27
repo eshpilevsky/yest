@@ -30,11 +30,11 @@
                             Блюда и кухни
                         </div>
                         <div class="category-list">
-                            <div v-for="category in computedCategory" :key="category.id + 'fot'" class="bottom-items">
+                            <!-- <div v-for="category in computedCategory" :key="category.id + 'fot'" class="bottom-items">
                                 <router-link :to="{ path: `/${getSelectedZone.alias}/restaurants/category/${category.alias}`}">
                                     {{ category.name }}
                                 </router-link>
-                            </div>
+                            </div> -->
                             <div v-show="!all" class="bottom-items" @click="showAllCategory()">
                                 Показать все >
                             </div>
