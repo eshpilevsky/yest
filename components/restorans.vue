@@ -501,7 +501,7 @@ export default {
     font-size: 28px;
     font-weight: bold;
     color: black;
-    padding: 20px 70px;
+    padding: 20px 90px;
     padding-bottom: 0;
 }
 

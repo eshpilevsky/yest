@@ -223,26 +223,26 @@
                 </v-tabs>
             </div>
             <div class="mobile-catalog">
-                <div v-for="category in restCategory" :key="category.id">
+                <div v-for="category in restuarant.menu" :key="category.id">
                     <h2 v-intersect="categoryNameIntersect" :id='`category${category.id}`' class="category-title">
                         {{category.name}}
                     </h2>
                     <div class="dishs-list-mobile">
-                        <div v-for="(item, index) in 6" :key="`dishCard${index}`" class="dishs-list-mobile-item" @click="showSelectedDish(dish)">
+                        <div v-for="(item, index) in category.dishes" :key="`dishCard${index}`" class="dishs-list-mobile-item" @click="showSelectedDish(item)">
                             <v-card class="dish-card">
                                 <div class="card-dish-top">
-                                    <v-img :src="dish.img" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="dish.name" class="dish-img-mobile" />
+                                    <v-img :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="item.name" class="dish-img-mobile" />
                                 </div>
                                 <div class="card-dish-bottom">
                                     <h3 class="dish-name">
-                                        {{dish.name}}
+                                        {{item.name}}
                                     </h3>
                                     <div class="dish-info">
                                         <div class="info-price">
-                                            {{dish.price}} руб
+                                            {{item.sizes[0].price}} руб
                                         </div>
                                         <div class="info-weight">
-                                            {{dish.weight}} г
+                                            {{item.sizes[0].weight}} г
                                         </div>
                                     </div>
                                 </div>
@@ -252,26 +252,26 @@
                     <v-bottom-sheet v-model="showDish">
                         <v-sheet>
                             <div class="selected-dish-top">
-                                <v-img :src="selectedDish.img" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="selectedDish.name" class="dish-img-mobile" />
+                                <v-img :src="selectedDish.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="selectedDish.name" class="dish-img-mobile" />
                             </div>
                             <div class="selected-dish-composition">
-                                {{selectedDish.composition}}
+                                {{selectedDish.description}}
                             </div>
                             <div class="d-flex flex-row justify-space-between">
                                 <div class="dish-bottom-name">
                                     {{selectedDish.name}}
                                 </div>
                                 <div class="dish-bottom-price">
-                                    {{selectedDish.price}} руб
+                                    <!-- {{selectedDish.sizes[0].price}} руб -->
                                 </div>
                             </div>
                             <div class="d-flex flex-row justify-space-between ">
                                 <div class="d-flex flex-row counter-component">
-                                    <v-icon @click="dishCounter">
+                                    <v-icon @click="increment()">
                                         plus_one
                                     </v-icon>
-                                    {{dishCounter}}
-                                    <v-icon @click="">
+                                    {{this.getSelectedDishs.counter}}
+                                    <v-icon @click="decrement()">
                                         plus_one
                                     </v-icon>
                                 </div>
@@ -610,6 +610,7 @@ export default {
 
 .dish-card {
     border-radius: 10px !important;
+	width: 90%;
 }
 
 .delivery-info div {
@@ -720,10 +721,13 @@ export default {
 .dishs-list-mobile {
     display: flex;
     flex-wrap: wrap;
+	justify-content: flex-start;
+	align-items: flex-start;
 }
 
 .dishs-list-mobile-item {
     margin: 10px;
+	max-width: 166px;
 }
 
 .dishs-list {
