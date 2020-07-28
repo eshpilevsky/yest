@@ -515,7 +515,7 @@ export default {
     margin: auto;
     margin-bottom: .5rem;
     border: 1px solid rgba(0, 0, 0, 0.1);
-    border-top: 8px solid rgba(245, 245, 245, 0.6);
+    border-top: 4px solid rgba(245, 245, 245, 0.6);
 }
 
 .hidetime {

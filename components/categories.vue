@@ -58,7 +58,7 @@
         </div>
     </div>
     <v-divider class="divider" />
-    <v-text-field placeholder="Название, кухня или блюдо" dense clearable prepend-inner-icon="search" outlined class="searchDesktop" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch"></v-text-field>
+    <v-text-field placeholder="Название, кухня или блюдо" height="46" dense clearable prepend-inner-icon="search" outlined class="searchDesktop" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch"></v-text-field>
     <v-text-field placeholder="Найти в Еде" height="48" clearable prepend-inner-icon="search" outlined dense filled class="searchMobile" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch">
         <!-- <template v-slot:append-outer v-show="this.getCurrentAddress.length > 0" >
             <v-btn rounded height="40px">
@@ -331,8 +331,24 @@ export default {
 </script>
 
 <style>
+.v-text-field.v-text-field--enclosed .v-text-field__details {
+    display: none !important;
+}
+
+.searchDesktop .v-input__control .v-input__slot .v-input__prepend-inner {
+    margin-top: 11px !important;
+}
+
+.theme--light.v-text-field--outlined:not(.v-input--is-focused):not(.v-input--has-state)>.v-input__control>.v-input__slot fieldset {
+    color: rgba(0, 0, 0, .1) !important;
+}
+
 .v-menu__content {
     overflow-y: scroll !important;
+}
+
+.v-text-field__details {
+    margin-bottom: 0;
 }
 
 @media screen and (max-width: 450px) {
@@ -399,9 +415,9 @@ export default {
 }
 
 .searchDesktop {
-    padding: 30px 80px !important;
-    padding-bottom: 0px !important;
-    border-bottom: 8px solid rgba(245, 245, 245, 0.6);
+    padding: 20px 80px !important;
+	padding-bottom: 16px!important;
+    border-bottom: 4px solid rgba(245, 245, 245, 0.6);
 }
 
 .selected {
@@ -437,6 +453,7 @@ export default {
 
 .divider {
     margin: 0px 0;
+    border-color: rgba(0, 0, 0, .05) !important;
 }
 
 .category-name {
