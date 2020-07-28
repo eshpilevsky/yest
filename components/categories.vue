@@ -80,7 +80,7 @@ export default {
     name: 'Categories',
     props: {
         categoriesList: Array,
-        currentCategory: Array,
+        currentCategory: Object,
     },
     data() {
         return {

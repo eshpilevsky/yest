@@ -21,7 +21,6 @@ export const mutations = {
 
 export const actions = {
 
-
   queryZones(context) {
     setTimeout(() => {
       ApiService.get(`/get-zones`).then((response) => {
@@ -44,7 +43,7 @@ export const actions = {
 
 export const getters = {
   getSelectedZone(state) {
-    const zones = state.data.zone
+	const zones = state.data.zone
     let find = {
       alias: 'minsk',
       id: 1,
@@ -57,7 +56,7 @@ export const getters = {
         }
       })
     }
-    return find
+	return find
   },
   getZoneList(state) {
     return state.data.zone

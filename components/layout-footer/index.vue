@@ -20,7 +20,7 @@
                             Регионы
                         </div>
                         <div class="regions-list">
-                            <div class="bottom-items" v-for="(region, regindex) in this.$store.state.zone.data.zone" :key="'foot'+regindex">
+                            <div class="bottom-items" v-for="(region, regindex) in this.$store.state.zone.data.zone" :key="'foot'+regindex" @click="goToRegion(region)">
                                 {{ region.name }}
                             </div>
                         </div>
@@ -30,10 +30,10 @@
                             Блюда и кухни
                         </div>
                       <div class="category-list">
-                        <div v-for="category in computedCategory" :key="category.id + 'fot'" class="bottom-items">
-                          <router-link :to="{ path: `/${getSelectedZone.alias}/restaurants/category/${category.alias}`}">
+                        <div v-for="category in computedCategory" :key="category.id + 'fotCompCat'" class="bottom-items">
+                          <div @click="goToCategory(category)">
                             {{ category.name }}
-                          </router-link>
+                          </div>
                         </div>
                         <div v-show="!all" class="bottom-items" @click="showAllCategory()">
                           Показать все >
@@ -97,7 +97,6 @@ export default {
     name: 'layout-footer',
     data() {
         return {
-            defaultCatergory: 10,
             categoryList: this.$store.state.user.data.categoryList,
             all: false,
             limit: 5,
@@ -113,8 +112,8 @@ export default {
             if (this.all) {
                 return this.categoryList
             } else {
-				// let result = this.categoryList.slice(0, 4);
-				let result = this.categoryList
+				let result = this.categoryList.slice(0, 4);
+				// let result = this.categoryList
                 return result
             }
         }
@@ -122,12 +121,15 @@ export default {
     methods: {
         showAllCategory() {
             this.all = !this.all
-        }
-    },
-    watch: {
-        defaultCatergory(newValue, oldValue) {
-            return newValue
-        }
+		},
+		goToCategory(category){
+			this.$store.dispatch('user/selectCategory', category)
+			this.$router.push(`/${this.getSelectedZone.alias}/restaurants/category/${category.alias}`)
+		},
+		goToRegion(region){
+            this.$store.dispatch('zone/setSelectedZone', region.id)
+			this.$router.push(`/${region.alias}`)
+		}
     },
 }
 </script>

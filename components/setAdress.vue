@@ -95,7 +95,9 @@ export default {
         },
         getSelectedZone(newValue) {
             this.setCurrentCoords(null)
-            this.setCurrentAddress('')
+			this.setCurrentAddress('')
+			this.currentZone.name = newValue.name
+			this.currentCategory.name = this.getSelectedCategory.name
         },
     },
     methods: {
@@ -184,8 +186,10 @@ export default {
         this.ww = window.innerWidth;
     },
     mounted() {
-        this.searchAddress = this.getCurrentAddress
-        document.getElementById('bgImg').setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.categoryInfoData.background + '");')
+		this.searchAddress = this.getCurrentAddress
+		setTimeout(() => {
+            console.log('mounted -> this.categoryInfoData.background', this.categoryInfoData.background)
+		}, 200);
     }
 }
 </script>

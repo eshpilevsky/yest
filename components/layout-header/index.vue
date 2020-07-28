@@ -228,6 +228,7 @@ export default {
             canDisplayMap: 'device/isMobile',
             getCurrentAddress: 'map/getCurrentAddress',
             isInputAddressMode: 'map/isInputAddressMode',
+            getZoneList: 'zone/getZoneList',
         }),
         checkAddress() {
             return this.getCurrentAddress > 0 ? true : false
@@ -452,7 +453,7 @@ export default {
     color: black !important;
     padding: 0 20px;
     text-decoration: none !important;
-	line-height: 1em;
+    line-height: 1em;
 }
 
 .language-switcher p {

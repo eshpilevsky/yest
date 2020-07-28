@@ -2,7 +2,7 @@
 <div style="padding-bottom: 0px">
     <setAdress :currentZone='currentZone' :currentCategory='currentCategory' :categoryInfoData='categoryInfoData' :ymaps='ymaps' :class="{hide: showSetAdress == false}" />
     <specialOffers v-show="getCurrentAddress.length > 0" />
-    <categories :categoriesList='categoriesList' :currentCategory='currentCategory'/>
+    <categories :categoriesList='categoriesList' :currentCategory='currentCategory' />
     <mobileSearch v-show="showSearch" />
     <restorans :restaurantsList='restaurantsList' :currentCategory='currentCategory' />
 </div>
@@ -42,6 +42,8 @@ export default {
             showSpecialOffer: false,
             rest: [],
             ymaps: null,
+			categoryInfoData: null,
+			currentZone: null,
         }
     },
     async asyncData({
@@ -59,18 +61,19 @@ export default {
                 return zones
             }
         })
+
         if (currentZone == undefined) {
             currentZone = zoneListData[0]
-        }
+		}
+		app.currentZone = currentZone
 
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
             zone_id: currentZone.id
-		})
-		
+        })
+
         let categoriesListData = categoriesList.data
 
-
-	    store.dispatch('user/allCategory', categoriesListData)
+        store.dispatch('user/allCategory', categoriesListData)
         let categoryAll = [{
             name: 'Все',
             id: 0,
@@ -83,8 +86,8 @@ export default {
         })
         if (currentCategory === undefined) {
             currentCategory = categoriesListData[0]
-		}
-				
+        }
+
         let categoryInfo = await axios.post('https://yestapi.xyz/categories/info', {
             zone_id: currentZone.id,
             category_id: currentCategory.id
@@ -93,6 +96,7 @@ export default {
         let categoryInfoData;
         if (categoryInfo.status != 404) {
             categoryInfoData = categoryInfo.data
+            app.categoryInfoData = categoryInfoData
         } else {
             categoryInfoData = {
                 head: 'Быстрая и бесплатная доставка',
@@ -224,9 +228,14 @@ export default {
             ...settings,
             debug: true
         });
-        this.ymaps = ymaps
+		this.ymaps = ymaps
+		await this.$store.dispatch('zone/setSelectedZone', this.currentZone.id)
+        console.error('created -> this.currentZone.id', this.currentZone.id)
     },
     mounted() {
+        setTimeout(() => {
+            document.getElementById('bgImg').setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.categoryInfoData.background + '");')
+        }, 200);
         let lastScrollTop = 0
         if (window.innerWidth < 450) {
             window.addEventListener('scroll', () => {
