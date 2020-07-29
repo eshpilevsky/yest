@@ -332,6 +332,7 @@ export default {
         background-size: auto 250px;
         background-repeat: no-repeat;
         background-position: top right;
+         margin-top: 16px;
     }
 
     .info-pre-title {
