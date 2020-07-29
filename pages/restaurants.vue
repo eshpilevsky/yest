@@ -971,7 +971,7 @@ export default {
     width: 100%;
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 992px) {
 
     .desktop-mode {
         display: none;
@@ -980,7 +980,7 @@ export default {
     .mobile-mode {
         display: flex;
         flex-direction: column;
-		margin-top: -3rem;
+	    	margin-top: -3rem;
     }
 }
 </style>

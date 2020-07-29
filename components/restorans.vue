@@ -536,7 +536,7 @@ export default {
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 992px) {
     .restorane-list {
         padding: 0px;
     }
@@ -551,7 +551,7 @@ export default {
     }
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 992px) {
     .hidetime {
         padding-top: 0px;
     }

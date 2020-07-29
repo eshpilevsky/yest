@@ -315,7 +315,7 @@ export default {
     }
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 992px) {
 
     .footer-top-right {
         display: flex;
