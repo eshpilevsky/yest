@@ -474,11 +474,16 @@ export default {
     margin-bottom: 0 !important;
 }
 </style><style scoped>
+  .right-my-order .my-order{
+    flex: auto;
+  }
+
 .my-order-top{
   display: contents;
 }
 .my-order-dishes-desktop{
   overflow: scroll;
+  flex: auto;
 }
 .desctop_btn_confirm_order{
   width: 100%;
