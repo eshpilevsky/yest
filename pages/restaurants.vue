@@ -26,7 +26,7 @@
                                     </div>
                                     <div class="restuarants-description pl-2">
                                         <div class="description-who">
-                                            Доставка Яндекс.Еды
+                                            Доставка Yest.by
                                         </div>
                                         <div class="description-price ">
                                             Доставка 29–99 ₽. Бесплатно при заказе от 1500 ₽

@@ -60,10 +60,10 @@ export default {
     display: flex;
     padding: 18px 20px;
     position: relative;
-    border-radius: 4px;
     flex-direction: column;
     background-color: #ffffff;
     border-radius: 5px;
+    box-shadow: none;
 }
 
 .dish-img {
