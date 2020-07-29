@@ -323,7 +323,7 @@
                                     {{selectedDish.name}}
                                 </div>
                                 <div class="dish-bottom-price">
-                                    <!-- {{selectedDish.sizes[0].price}} BYN -->										
+                                    <!-- {{selectedDish.sizes[0].price}} BYN -->
                                 </div>
                             </div>
                             <div class="d-flex flex-row justify-space-between m-5">
@@ -828,13 +828,36 @@ export default {
     flex-wrap: wrap;
     justify-content: flex-start;
     align-items: flex-start;
-	padding-left: 10px;
+	  padding-left: 10px;
 }
 
 .dishs-list-mobile-item {
     margin: 10px;
-    max-width: 150px;
+    max-width: calc(50% - 20px);
 }
+@media screen and (min-width: 500px){
+  .dishs-list-mobile-item {
+  max-width: calc((100% - 60px)/3);
+  }
+}
+
+  @media screen and (min-width: 620px){
+    .dishs-list-mobile-item {
+    max-width: calc((100% - 80px)/4);
+    }
+  }
+
+  @media screen and (min-width: 850px){
+    .dishs-list-mobile-item {
+    max-width: calc((100% - 100px)/5);
+    }
+  }
+
+  @media screen and (min-width: 992px) {
+    .dishs-list-mobile-item {
+    max-width: calc((100% - 120px) / 6);
+    }
+  }
 
 .dishs-list {
     display: flex;
