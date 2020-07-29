@@ -583,7 +583,7 @@ export default {
     justify-content: center;
     align-items: center;
     width: 70%;
-    padding-top: 80%;
+    /*padding-top: 80%;*/
     margin: auto;
     text-align: center;
 }
@@ -901,7 +901,7 @@ export default {
 }
 
 .right {
-    width: 100%;
+    width: 320px;
     height: 100%;
     display: flex;
     flex-direction: column;
