@@ -867,7 +867,7 @@ export default {
 
 .dishs-list-mobile-item {
     margin: 10px;
-    max-width: 150px;
+    max-width: calc((100% - 40px)/2);
 }
 @media screen and (min-width: 500px){
   .dishs-list-mobile-item {
