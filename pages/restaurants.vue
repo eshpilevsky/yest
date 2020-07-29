@@ -3,7 +3,8 @@
     <div class="desktop-mode">
         <div class="rest-cotainer">
             <div xl8 class="left">
-                <div class="left-top" style="background-image: url('https://img.eatmealby.com/resize/restaurant/900/{{restuarant.background_image}}') ">
+                <div class="left-top" :style="{backgroundImage:'url(https://img.eatmealby.com/resize/restaurant/900/'+restuarant.background_image+')'}">
+                    <!--<v-img cover :src="'https://img.eatmealby.com/resize/restaurant/900/'+restuarant.background_image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg'></v-img>-->
                     <div class="top-wrapper">
                         <div class="rating">
                             <v-chip color="primary">
