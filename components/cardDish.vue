@@ -2,8 +2,7 @@
 <v-card class="card-dish">
     <div class="dish-info-top">
         <div class="dish-price">
-			{{this.computedPrice}}
-            <img :src="rubel" />
+			{{this.computedPrice}} BYN
         </div>
         <h3 class="dish-card-title">
             {{this.name}}
@@ -30,11 +29,6 @@ export default {
         dishinfo: Array,
         img: String,
     },
-    data() {
-        return {
-            rubel: require("../assets/rubel.png")
-        }
-	},
 	computed: {
 		computedPrice() {
 			if (this.dishinfo.length > 1) {
@@ -66,10 +60,10 @@ export default {
     display: flex;
     padding: 18px 20px;
     position: relative;
-    border-radius: 4px;
     flex-direction: column;
     background-color: #ffffff;
     border-radius: 5px;
+    box-shadow: none;
 }
 
 .dish-img {

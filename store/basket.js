@@ -81,7 +81,7 @@ export const getters = {
     dl.forEach(element => {
       totalPrice += element.sizes[0].price * element.counter
     });
-    return totalPrice.toFixed(2)
+    return totalPrice.toFixed(1)
     // return state.data.totalPrice
   },
 };

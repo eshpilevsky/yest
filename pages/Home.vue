@@ -78,14 +78,15 @@ export default {
             name: 'Все',
             id: 0,
             alias: 'all'
-        }]
+		}]
+		
         let currentCategory = categoriesListData.find((category) => {
             if (category.alias == params.alias) {
                 return category
             }
         })
         if (currentCategory === undefined) {
-            currentCategory = categoriesListData[0]
+            currentCategory = categoryAll[0]
         }
 
         let categoryInfo = await axios.post('https://yestapi.xyz/categories/info', {
@@ -233,11 +234,15 @@ export default {
         console.error('created -> this.currentZone.id', this.currentZone.id)
     },
     mounted() {
-        setTimeout(() => {
-            document.getElementById('bgImg').setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.categoryInfoData.background + '");')
-        }, 200);
+        // setTimeout(() => {
+        //   if (window.innerWidth < 992) {
+        //     // document.getElementById('bgImg').setAttribute('style', 'background: #fff;')
+        //   }else{
+        //     // document.getElementById('bgImg').setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.categoryInfoData.background + '");')
+        //   }
+        //   }, 200);
         let lastScrollTop = 0
-        if (window.innerWidth < 450) {
+        if (window.innerWidth < 992) {
             window.addEventListener('scroll', () => {
                 const st = window.pageYOffset || document.documentElement.scrollTop
                 if (st > lastScrollTop) {
@@ -262,6 +267,10 @@ export default {
 </script>
 
 <style>
+html{
+	overflow-x:hidden!important;
+}
+
 .home-container {
     position: relative;
     z-index: 1;
@@ -271,7 +280,7 @@ export default {
     display: flex !important;
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 992px) {
 
     .hide {
         display: none !important;

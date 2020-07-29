@@ -24,7 +24,7 @@ export default {
     color: black;
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 992px) {
     .mobileSearch {
         display: flex;
         position: fixed;

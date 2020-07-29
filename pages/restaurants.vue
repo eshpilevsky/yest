@@ -3,7 +3,7 @@
     <div class="desktop-mode">
         <div class="rest-cotainer">
             <div xl8 class="left">
-                <div class="left-top">
+                <div class="left-top" :style="{backgroundImage:'url(https://img.eatmealby.com/resize/restaurant/900/'+restuarant.background_image+')'}">
                     <div class="top-wrapper">
                         <div class="rating">
                             <v-chip color="primary">
@@ -11,7 +11,7 @@
                                 <div>{{restuarant.rating ? restuarant.rating: 'Мало оценок'}}</div>
                             </v-chip>
                             <div class="info-delivery white--text">
-                                Доставка еды • Санкт-Петербург
+                                Доставка еды • {{this.getSelectedZone.name}}
                             </div>
                             <h1 class="restuarant-name white--text pb-3">
                                 {{restuarant.name}}
@@ -25,10 +25,10 @@
                                     </div>
                                     <div class="restuarants-description pl-2">
                                         <div class="description-who">
-                                            Доставка Яндекс.Еды
+                                            Доставка Yest.by
                                         </div>
                                         <div class="description-price ">
-                                            Доставка 29–99 ₽. Бесплатно при заказе от 1500 ₽
+                                            Доставка {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].deliveryFee}}-{{restuarant.delivery.fee[1].deliveryFee}}. Бесплатно при заказе от {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].min}} BYN
                                         </div>
                                     </div>
                                 </v-col>
@@ -37,7 +37,7 @@
                                         Заказ от
                                     </p>
                                     <p>
-                                        1500 ₽
+                                        {{restuarant.delivery.fee[0].min}}
                                     </p>
                                 </v-col>
                                 <v-col :md='3' class="white--text">
@@ -57,16 +57,24 @@
                                                     <h3>
                                                         {{restuarant.name}}
                                                     </h3>
-                                                    <span>
-                                                        Каштановая аллея, 2
-                                                    </span>
-                                                    <span>
-                                                        ПирогиЗдоровая едаДесертыЛанчиДетское меню₽
-                                                    </span>
-                                                    <p>
-                                                        Исполнитель (продавец): ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ "ЛИАНА", 194354, Санкт-Петербург, ул Сикейроса, д 11, к 1 литер а, пом 15Н, ИНН 7802688786, рег.номер 1197847087173.
+                                                    <div>
+                                                        <ul>
+                                                            <li v-for="branch in restuarant.branch">
+                                                                {{branch.address}}
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div>
+                                                        <span v-for="tag in restuarant.tags">
+                                                            {{tag.name}}
+                                                        </span>
+                                                    </div>
+                                                    <div>
+                                                        Исполнитель (продавец): {{restuarant.legal_info.business_firm_name}}, {{restuarant.legal_info.business_address}}, УНП {{restuarant.legal_info.business_unp}}.
+                                                    </div>
+                                                    <div>
                                                         Режим работы ресторана: с 09:00 до 21:00
-                                                    </p>
+                                                    </div>
                                                 </div>
                                             </v-card>
                                         </div>
@@ -78,16 +86,16 @@
                 </div>
                 <div class="catalog">
                     <v-tabs v-model="tab" class="catalog-tabs" center-active>
-                        <v-tab v-for="(category) in restuarant.menu" :key="category.cat_id" @click="scroll(`category${category.cat_id}`)">
+                        <v-tab height="70px" v-for="(category) in restuarant.menu" :key="category.cat_id" @click="scroll(`category${category.cat_id}`)">
                             {{category.name}}
                         </v-tab>
                     </v-tabs>
                     <v-divider />
                 </div>
                 <div class="catalog-list">
-                    <div v-for="category in restuarant.menu" :key="category.cat_id">
+                    <div v-for="(category, index) in restuarant.menu" :key="category.cat_id">
                         <div class="category-title">
-                            <h2 v-intersect="categoryNameIntersect" :id='`category${category.cat_id		}`'>
+                            <h2 v-intersect="categoryNameIntersect" :id='`${index}`'>
                                 {{category.name}}
                             </h2>
                             <span class="category-list-counter">
@@ -95,7 +103,7 @@
                             </span>
                         </div>
                         <div class="dishs-list">
-                            <div v-for="(item, index) in category.dishes" :key="`dishCard${index}`" class="dishs-list-item" @click="addToBasket(item)">
+                            <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" class="dishs-list-item" @click="addToBasket(item)">
                                 <cardDish :name='item.name' :description='item.description' :img='item.image' :dishinfo='item.sizes' />
                             </div>
                         </div>
@@ -113,7 +121,7 @@
                                 delete_forever
                             </v-icon>
                         </div>
-                        <div v-if="this.getSelectedDishs.length > 0">
+                        <div v-if="this.getSelectedDishs.length > 0" class="my-order-dishes-desktop">
                             <div v-for="order in this.getSelectedDishs" :key="order.id" class="order-item">
                                 <div class="d-flex flex-column order-item-info">
                                     <div class="item-name">
@@ -139,7 +147,7 @@
                                     </div>
                                 </div>
                                 <div class="pl-4">
-                                    {{order.sizes[0].price}} руб
+                                    {{order.sizes[0].price}} BYN
                                 </div>
                             </div>
                         </div>
@@ -153,17 +161,68 @@
 
                         <div class="total-price">
                             <p class="total-title">Итого</p>
-                            <p class="price">{{this.getTotalPrice}} руб</p>
+                            <p class="price">{{this.getTotalPrice}} BYN</p>
                         </div>
                     </div>
                 </div>
-                <v-btn :disabled="this.getTotalPrice <= 0" color="primary">Оформить заказ</v-btn>
+                <v-btn :disabled="this.getTotalPrice <= 0" color="primary" class="desctop_btn_confirm_order">Оформить заказ</v-btn>
             </div>
+            <v-overlay z-index="999" v-model="showOptionsmenu">
+                <v-card width="50vw" class="select-option-card">
+                    <div class="d-flex flex-row justify-space-between">
+                        <div class="select-option-title" color="secondary">
+                            Выберите опции
+                        </div>
+                        <div class="close-select-option" @click="closeOptionMenu()">
+                            <v-icon color="#000">close</v-icon>
+                        </div>
+                    </div>
+                    <div class="options-list">
+                        <div class="sizes">
+                            <div class="multi-title">
+                                РАЗМЕР НА ВЫБОР
+                            </div>
+                            <v-radio-group v-model="sizesRadioBtn" :mandatory="false" class="d-flex flex-row">
+                                <v-radio v-for="size in this.selectedDish.sizes" :key="size.id" :label="size.name" :value="size.id" color="primary"></v-radio>
+                            </v-radio-group>
+                        </div>
+                        <div class="options">
+                            <div class="multi-title">
+                                ДОПОЛНИТЕЛЬНЫЕ ИНГРЕДИЕНТЫ
+                            </div>
+                            <div v-for="option in this.selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
+                                <div>
+                                    {{option.title}}
+                                </div>
+                                <div class="d-flex flex-row justify-start align-center">
+                                    <v-checkbox v-for="option in option.variants" :key="option.id" v-model="selected" :label="option.name" :value="option.dish_option_id" color="primary"></v-checkbox>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <v-btn color="primary">Добавить</v-btn>
+                        </div>
+                        <div>
+                            <div>
+                                <v-icon>
+                                    add
+                                </v-icon>
+                                {{this.selectedDish.counter}}
+                                <v-icon>
+                                    remove
+                                </v-icon>
+                            </div>
+                        </div>
+                    </div>
+                </v-card>
+            </v-overlay>
         </div>
     </div>
     <div class="mobile-mode">
         <div class="mobile-mode_header">
-            <v-icon>arrow_back</v-icon>
+            <v-icon @click="goBack()">arrow_back</v-icon>
             <v-icon>search</v-icon>
         </div>
         <div class="mobile-rest-info">
@@ -176,15 +235,15 @@
             <div class="rest-info-center">
                 <v-chip @click="showRatingSheet = !showRatingSheet" :color="showRatingSheet == true ? 'primary': null">
                     <v-icon>star</v-icon>
-                    {{restInfo.rating}}
+                    {{restuarant.rating ? restuarant.rating: 'Мало оценок'}}
                 </v-chip>
                 <!-- add to next line v-if="this.getCurrentCoords.length > 0"-->
-                <v-chip>
+                <!-- <v-chip>
                     {{restInfo.deliveryTime.min}} - {{restInfo.deliveryTime.max}} мин
-                </v-chip>
+                </v-chip> -->
                 <!-- add to next line v-if="this.getCurrentCoords.length > 0"-->
                 <v-chip @click="showDeliveryOption = !showDeliveryOption" :color="showDeliveryOption == true ? 'primary': null">
-                    Доставка {{restInfo.deliveryPrice.min}} - {{restInfo.deliveryPrice.max}} Р
+                    Доставка 10 - 20
                 </v-chip>
                 <v-bottom-sheet v-model="showRatingSheet">
                     <v-sheet>
@@ -193,7 +252,7 @@
                             <v-icon>close</v-icon>
                         </div>
                         <div class="rating-info-bottom">
-                            {{restInfo.rating}}
+                            {{restuarant.rating ? restuarant.rating : 'Мало оценок'}}
                         </div>
                     </v-sheet>
                 </v-bottom-sheet>
@@ -207,15 +266,19 @@
                             <v-icon>
                                 directions_walk
                             </v-icon>
-                            <div>1 руб</div>
-                            <div>на заказ от 10 руб</div>
+							<div>
+                            	Доставка {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].deliveryFee}}-{{restuarant.delivery.fee[1].deliveryFee}} BYN. Бесплатно при заказе от {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].min}} BYN
+							</div>
+							<div>
+								Заказ от: {{restuarant.delivery.fee[0].min}} BYN
+							</div>
                         </div>
                     </v-sheet>
                 </v-bottom-sheet>
             </div>
             <div class="rest-info-bottom">
                 <v-tabs v-model="tab" class="catalog-tabs">
-                    <v-tab v-for="category in restCategory" :key="category.id" @click="scroll(`category${category.id}`)">
+                    <v-tab v-for="(category, index) in restuarant.menu" :key="category.id" @click="scroll(`${index}`)">
                         <v-chip>
                             {{category.name}}
                         </v-chip>
@@ -223,60 +286,63 @@
                 </v-tabs>
             </div>
             <div class="mobile-catalog">
-                <div v-for="category in restCategory" :key="category.id">
-                    <h2 v-intersect="categoryNameIntersect" :id='`category${category.id}`' class="category-title">
+                <div v-for="(category, index) in restuarant.menu" :key="category.id">
+                    <h2 v-intersect="categoryNameIntersect" :id='index' class="category-title">
                         {{category.name}}
                     </h2>
                     <div class="dishs-list-mobile">
-                        <div v-for="(item, index) in 6" :key="`dishCard${index}`" class="dishs-list-mobile-item" @click="showSelectedDish(dish)">
+                        <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" class="dishs-list-mobile-item" @click="showSelectedDish(item)">
                             <v-card class="dish-card">
                                 <div class="card-dish-top">
-                                    <v-img :src="dish.img" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="dish.name" class="dish-img-mobile" />
+                                    <v-img :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="item.name" class="dish-img-mobile" />
                                 </div>
                                 <div class="card-dish-bottom">
                                     <h3 class="dish-name">
-                                        {{dish.name}}
+                                        {{item.name}}
                                     </h3>
+                                    <div class="info-weight">
+                                        {{item.sizes[0].weight}}
+                                    </div>
                                     <div class="dish-info">
                                         <div class="info-price">
-                                            {{dish.price}} руб
-                                        </div>
-                                        <div class="info-weight">
-                                            {{dish.weight}} г
+                                            {{item.sizes[0].price}} BYN
                                         </div>
                                     </div>
                                 </div>
                             </v-card>
                         </div>
                     </div>
-                    <v-bottom-sheet v-model="showDish">
+                    <v-bottom-sheet v-model="showDish" z-index='999'>
                         <v-sheet>
                             <div class="selected-dish-top">
-                                <v-img :src="selectedDish.img" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="selectedDish.name" class="dish-img-mobile" />
+                                <v-img :src="'https://img.eatmealby.com/resize/dish/400/'+selectedDish.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="selectedDish.name" class="dish-img-mobile" />
                             </div>
                             <div class="selected-dish-composition">
-                                {{selectedDish.composition}}
+                                {{selectedDish.description}}
                             </div>
                             <div class="d-flex flex-row justify-space-between">
                                 <div class="dish-bottom-name">
                                     {{selectedDish.name}}
                                 </div>
                                 <div class="dish-bottom-price">
-                                    {{selectedDish.price}} руб
+                                    <!-- {{selectedDish.sizes[0].price}} BYN -->
                                 </div>
                             </div>
-                            <div class="d-flex flex-row justify-space-between ">
+                            <div class="d-flex flex-row justify-space-between m-5 pa-5">
                                 <div class="d-flex flex-row counter-component">
-                                    <v-icon @click="dishCounter">
-                                        plus_one
+                                    <v-icon @click="selectedDish.counter--">
+                                        <!-- <v-icon > -->
+                                        remove
                                     </v-icon>
-                                    {{dishCounter}}
-                                    <v-icon @click="">
-                                        plus_one
+                                    {{selectedDish.counter}}
+                                    <!-- 1 -->
+                                    <v-icon @click="selectedDish.counter++">
+                                        <!-- <v-icon> -->
+                                        add
                                     </v-icon>
                                 </div>
                                 <div class="add-btn">
-                                    <v-btn @click="addToBasket()">Добавить</v-btn>
+                                    <v-btn color="primary" @click="addToBasketMobile()">Добавить</v-btn>
                                 </div>
                             </div>
                         </v-sheet>
@@ -324,54 +390,17 @@ export default {
     },
     data() {
         return {
-            restInfo: {
-                name: 'Slurp Ramen Bar',
-                rating: 4.9,
-                deliveryTime: {
-                    min: 20,
-                    max: 50,
-                },
-                deliveryPrice: {
-                    min: 0,
-                    max: 15,
-                }
-            },
-            dish: {
-                name: 'Салат Цезарь с цыпленком',
-                description: 'Капуста пекинская, томаты черри, филе куриное, сыр пармезан, сухарики пшеничные, соль, перец, паприка красная, соус',
-                price: 15,
-                image: "https://eda.yandex/images/1387779/a3e887932dd0fb6d0f716d34c6b6afd7-450x300.jpeg",
-                weight: 230,
-                composition: 'Куриная грудка, соленые огурцы, помидоры, зеленый горошек, майонез, яйцо, куриная грудка, листья салата'
-            },
-            restCategory: [{
-                    name: 'Популярные блюда',
-                    id: 1,
-                },
-                {
-                    name: 'Добавки в блины',
-                    id: 2,
-                },
-                {
-                    name: 'Блины сладкие',
-                    id: 3,
-                },
-                {
-                    name: 'Блины сытные',
-                    id: 4,
-                },
-                {
-                    name: 'Напитки',
-                    id: 5,
-                },
-            ],
             tab: null,
             showRatingSheet: false,
             showDeliveryOption: false,
-            selectedDish: {},
+            selectedDish: {
+                sizes: [],
+            },
             showDish: false,
             dishCounter: 1,
             showOptionsmenu: false,
+            sizesRadioBtn: '',
+            selected: [],
         }
     },
     computed: {
@@ -397,8 +426,20 @@ export default {
         tab(newValue) {
             return newValue
         },
+        '$route.params.region': function () {
+            this.$router.push(`/${this.getSelectedZone.alias}`)
+        }
     },
     methods: {
+		goBack(){
+			this.$router.go(-1)
+		},
+        addToBasketMobile() {
+            this.showDish = false
+        },
+        closeOptionMenu() {
+            this.showOptionsmenu = false
+        },
         decrement(id) {
             this.$store.dispatch('basket/decrementDishCounter', id);
         },
@@ -410,8 +451,11 @@ export default {
         },
         addToBasket(dish) {
             console.log('addToBasket -> dish', dish)
-            if (dish.options.length > 0) {
+            this.selectedDish = dish
+            dish.counter = 1
+            if (dish.sizes.length > 1 || dish.options.length > 1) {
                 this.showOptionsmenu = true
+                this.sizesRadioBtn = dish.sizes[0].id
             } else {
                 this.showDish = false
                 this.$store.dispatch('basket/addToBasket', dish);
@@ -419,12 +463,14 @@ export default {
         },
         showSelectedDish(dish) {
             console.log('showSelectedDish -> dish', dish)
+            dish.counter = 1
             this.selectedDish = dish
             setTimeout(() => {
                 this.showDish = true
             }, 100);
         },
         scroll(id) {
+            console.log('scroll -> document.getElementById(id)', document.getElementById(id))
             document.getElementById(id).scrollIntoView({
                 block: 'start',
                 behavior: 'smooth'
@@ -432,35 +478,88 @@ export default {
             this.tab = id
         },
         categoryNameIntersect(entries, observer) {
-            // console.log('categoryNameIntersect -> entries', entries[0].target.innerText)
-            // let target = entries[0].target
-            // if (entries[0].isIntersecting) {
-            // 	this.tab = entries[0].target.id
-            // 	console.log(this.tab);
-            // } 
+            this.tab = parseInt(entries[0].target.id, 10)
         }
-    },
+    }
 }
 </script>
 
 <style>
+.v-tabs-bar {
+    height: 70px !important;
+}
+
 .v-application p {
     margin-bottom: 0 !important;
 }
 </style><style scoped>
+.catalog-tabs {
+    z-index: 0;
+}
 
-.counter-count{
-	display: flex;
-	align-items: center;
-	justify-content: center;
+.right-my-order .my-order {
+    flex: auto;
+}
+
+.my-order-top {
+    display: contents;
+}
+
+.my-order-dishes-desktop {
+    flex: auto;
+}
+
+.desctop_btn_confirm_order {
+    width: 100%;
+    font-weight: 900;
+    letter-spacing: inherit;
+}
+
+.dish-bottom-name {
+    color: #000000;
+    line-height: 1.25;
+    padding: 20px;
+}
+
+.options-list {
+    background: #fafafa;
+    padding: 0 20px;
+    margin: 0 -20px;
+}
+
+.select-option-card {
+    background: #f5f5f5 !important;
+    color: #000 !important;
+    padding: 20px;
+}
+
+.multi-title {
+    color: #b0b0b0;
+    font-size: 14px;
+}
+
+.close-select-option {
+    cursor: pointer;
+}
+
+.select-option-title {
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 36px;
+}
+
+.counter-count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .my-counter:hover .counter-count,
 .my-counter:hover .counter-plus,
 .my-counter:hover .counter-minus {
     display: flex;
-	border: .5px solid rgb(176, 176, 176);
-	background: #f2f2f2;
+    border: .5px solid rgb(176, 176, 176);
+    background: #f2f2f2;
 }
 
 .counter-plus,
@@ -513,13 +612,13 @@ export default {
     justify-content: center;
     align-items: center;
     width: 70%;
-    padding-top: 80%;
+    /*padding-top: 80%;*/
     margin: auto;
     text-align: center;
 }
 
 .right-my-order {
-    height: 84vh;
+    height: calc(100vh - 145px);
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -544,7 +643,10 @@ export default {
 }
 
 .left {
-    width: 75%;
+    width: calc(100% - 320px);
+    border: 1px solid #d5d5d5;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
 }
 
 .counter-component {
@@ -566,13 +668,15 @@ export default {
 
 .rest-info-bottom {
     position: sticky;
-    top: 65px;
+    top: 0px;
     z-index: 999;
 }
 
 .dish-img-mobile {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    min-width: 150px;
+    min-height: 150px;
 }
 
 .rest-info-center {
@@ -582,25 +686,40 @@ export default {
 .card-dish-bottom {
     display: flex;
     flex-direction: column;
+	align-items: center;
+	flex: 1 0 auto;
 }
 
 .dish-name {
     padding: 12px;
+    color: #3f3f3f;
+    overflow: hidden;
+    font-size: 15px;
+    word-break: break-word;
+    max-height: 55px;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    font-weight: normal;
+	text-align: center;
 }
 
 .dish-info {
-    width: 100%;
     height: 34px;
-    padding: 0 12px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    background: #F1F0ED;
+    margin: 10px auto;
+    width: 80%;
+    border-radius: 30px;
+    text-align: center;
 }
 
 .info-price {
     color: #3F3F3F;
     font-size: 14px;
     white-space: nowrap;
+	width: 100%;
+	text-align: center;
 }
 
 .info-weight {
@@ -609,7 +728,7 @@ export default {
 }
 
 .dish-card {
-    border-radius: 10px !important;
+    border-radius: 30px !important;
 }
 
 .delivery-info div {
@@ -656,16 +775,20 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
     padding: 0 16px;
 }
 
 .mobile-mode_header {
+	position: sticky;
+	top: 0;
+	z-index: 100;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    padding: 15px 15px 0 15px;
 }
 
 .desktop-mode {
@@ -713,17 +836,21 @@ export default {
 }
 
 .dishs-list-item {
-    width: 47%;
+    width: calc(50% - 20px);
     margin: 10px;
 }
 
 .dishs-list-mobile {
     display: flex;
     flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-left: 10px;
 }
 
 .dishs-list-mobile-item {
     margin: 10px;
+    max-width: 150px;
 }
 
 .dishs-list {
@@ -738,7 +865,7 @@ export default {
 }
 
 .catalog-list {
-    border: solid 1px #eeeeee;
+    /*border: solid 1px #eeeeee;*/
     padding: 25px 80px;
     background: #f2f2f2;
     border-top: none;
@@ -819,14 +946,18 @@ export default {
 }
 
 .left-top {
-    background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("https://eda.yandex/images/1387779/4f8c9613c25d940949b9e45825d4f1ca-1100x825.jpeg");
+    background-image: url("https://eda.yandex/images/1387779/4f8c9613c25d940949b9e45825d4f1ca-1100x825.jpeg");
+    background-blend-mode: multiply;
+    background-repeat: no-repeat;
+    background-color: rgba(0, 0, 0, .3);
     background-position: center;
+    background-size: cover;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
 }
 
 .right {
-    width: 100%;
+    width: 320px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -854,9 +985,10 @@ export default {
     padding-bottom: 1rem;
     margin: auto;
     max-width: 1420px;
+    width: 100%;
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 992px) {
 
     .desktop-mode {
         display: none;
@@ -865,6 +997,10 @@ export default {
     .mobile-mode {
         display: flex;
         flex-direction: column;
+        margin-top: -3rem;
+		z-index: 10;
+    	background: white;
+		position: relative;
     }
 }
 </style>

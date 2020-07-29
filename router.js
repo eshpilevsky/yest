@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import Home from './pages/Home.vue'
 import notFound from './pages/notFound.vue'
 import restaurants from './pages/restaurants.vue'
+import cart from './pages/Cart.vue'
 
 Vue.use(Router)
 
@@ -35,6 +36,11 @@ export function createRouter() {
 		path: '/:region/restaurant/:resName',
 		name:'restik',
         component: restaurants,
+      },
+      {
+		path: '/cart',
+		name:'cart',
+        component: cart,
       },
     ]
   })

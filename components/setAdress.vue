@@ -186,10 +186,11 @@ export default {
         this.ww = window.innerWidth;
     },
     mounted() {
-		this.searchAddress = this.getCurrentAddress
-		setTimeout(() => {
-            console.log('mounted -> this.categoryInfoData.background', this.categoryInfoData.background)
-		}, 200);
+      this.searchAddress = this.getCurrentAddress
+      setTimeout(() => {
+        console.log(this.categoryInfoData);
+              console.log('mounted -> this.categoryInfoData.background', this.categoryInfoData.background)
+      }, 200);
     }
 }
 </script>
@@ -302,18 +303,18 @@ export default {
     }
 }
 
-@media screen and (max-width: 768px) {
-    .setAdressContaine-info {
-        padding: 40px 0;
-    }
+/*@media screen and (max-width: 768px) {*/
+    /*.setAdressContaine-info {*/
+        /*padding: 40px 0;*/
+    /*}*/
 
-    .info-title {
-        font-size: 40px;
-    }
+    /*.info-title {*/
+        /*font-size: 40px;*/
+    /*}*/
 
-}
+/*}*/
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 992px) {
     .map-btn {
         visibility: visible;
     }
@@ -328,6 +329,10 @@ export default {
 
     .setAdressContaine {
         background: none;
+        background-size: auto 250px;
+        background-repeat: no-repeat;
+        background-position: top right;
+         margin-top: 16px;
     }
 
     .info-pre-title {
@@ -356,13 +361,13 @@ export default {
     .setAdressContaine {
         /* background-image: none !important; */
         /*background-size: auto;*/
-        background-position: right;
-        background-repeat: no-repeat;
-        margin-top: 0;
-        height: 100%;
-        width: 100%;
-        background-position-x: 250px;
-        background-position-y: -10px;
+        /*background-position: right;*/
+        /*background-repeat: no-repeat;*/
+        /*margin-top: 0;*/
+        /*height: 100%;*/
+        /*width: 100%;*/
+        /*background-position-x: 250px;*/
+        /*background-position-y: -10px;*/
     }
 
     .setAdressContaine:active {

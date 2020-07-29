@@ -76,7 +76,6 @@ export default {
             limit: 20,
             itemCounter: 0,
             params: {},
-            rubel: require("../assets/rubel.png"),
             notFindImg: require("../assets/logo.svg"),
             swiperOptions: {
                 slidesPerView: 3,
@@ -291,6 +290,7 @@ export default {
 
 .time-title {
     font-weight: bold;
+	white-space: nowrap;
 }
 
 .delivery-time-desktop {
@@ -501,7 +501,7 @@ export default {
     font-size: 28px;
     font-weight: bold;
     color: black;
-    padding: 20px 70px;
+    padding: 20px 90px;
     padding-bottom: 0;
 }
 
@@ -537,7 +537,7 @@ export default {
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 992px) {
     .restorane-list {
         padding: 0px;
     }
@@ -552,7 +552,7 @@ export default {
     }
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 992px) {
     .hidetime {
         padding-top: 0px;
     }
@@ -610,11 +610,11 @@ export default {
     }
 
     .tags-list-item {
-        max-width: 3200px;
+        max-width: 320px;
     }
 
     .bottom-tags-list {
-        max-width: 70%;
+        max-width: 100%;
     }
 
     .restorane-list-item-name {
