@@ -157,7 +157,7 @@
                         </div>
                     </div>
                 </div>
-                <v-btn :disabled="this.getTotalPrice <= 0" color="primary">Оформить заказ</v-btn>
+                <v-btn :disabled="this.getTotalPrice <= 0" color="primary" class="desctop_btn_confirm_order">Оформить заказ</v-btn>
             </div>
             <v-overlay z-index="999" v-model="showOptionsmenu">
                 <v-card width="50vw" class="select-option-card">
@@ -474,7 +474,11 @@ export default {
     margin-bottom: 0 !important;
 }
 </style><style scoped>
-
+.desctop_btn_confirm_order{
+  width: 100%;
+  font-weight: 900;
+  letter-spacing: inherit;
+}
 .dish-bottom-name{
 	flex: 0 1 auto;
     color: #000000;
@@ -775,7 +779,7 @@ export default {
 }
 
 .dishs-list-item {
-    width: 47%;
+    width: calc(50% - 20px);
     margin: 10px;
 }
 
