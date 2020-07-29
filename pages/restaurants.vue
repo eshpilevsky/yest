@@ -3,7 +3,7 @@
     <div class="desktop-mode">
         <div class="rest-cotainer">
             <div xl8 class="left">
-                <div class="left-top">
+                <div class="left-top" style="background-image: url('https://img.eatmealby.com/resize/restaurant/900/{{restuarant.background_image}}') ">
                     <div class="top-wrapper">
                         <div class="rating">
                             <v-chip color="primary">
