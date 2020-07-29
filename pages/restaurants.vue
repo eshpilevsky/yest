@@ -94,9 +94,9 @@
                     <v-divider />
                 </div>
                 <div class="catalog-list">
-                    <div v-for="category in restuarant.menu" :key="category.cat_id">
+                    <div v-for="(category, index) in restuarant.menu" :key="category.cat_id">
                         <div class="category-title">
-                            <h2 v-intersect="categoryNameIntersect" :id='`category${category.cat_id		}`'>
+                            <h2 v-intersect="categoryNameIntersect" :id='`${index}`'>
                                 {{category.name}}
                             </h2>
                             <span class="category-list-counter">
@@ -104,7 +104,7 @@
                             </span>
                         </div>
                         <div class="dishs-list">
-                            <div v-for="(item, index) in category.dishes" :key="`dishCard${index}`" class="dishs-list-item" @click="addToBasket(item)">
+                            <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" class="dishs-list-item" @click="addToBasket(item)">
                                 <cardDish :name='item.name' :description='item.description' :img='item.image' :dishinfo='item.sizes' />
                             </div>
                         </div>
@@ -276,7 +276,7 @@
             </div>
             <div class="rest-info-bottom">
                 <v-tabs v-model="tab" class="catalog-tabs">
-                    <v-tab v-for="category in restuarant.menu" :key="category.id" @click="scroll(`category${category.id}`)">
+                    <v-tab v-for="(category, index) in restuarant.menu" :key="category.id" @click="scroll(`${index}`)">
                         <v-chip>
                             {{category.name}}
                         </v-chip>
@@ -284,12 +284,12 @@
                 </v-tabs>
             </div>
             <div class="mobile-catalog">
-                <div v-for="category in restuarant.menu" :key="category.id">
-                    <h2 v-intersect="categoryNameIntersect" :id='`category${category.id}`' class="category-title">
+                <div v-for="(category, index) in restuarant.menu" :key="category.id">
+                    <h2 v-intersect="categoryNameIntersect" :id='index' class="category-title">
                         {{category.name}}
                     </h2>
                     <div class="dishs-list-mobile">
-                        <div v-for="(item, index) in category.dishes" :key="`dishCard${index}`" class="dishs-list-mobile-item" @click="showSelectedDish(item)">
+                        <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" class="dishs-list-mobile-item" @click="showSelectedDish(item)">
                             <v-card class="dish-card">
                                 <div class="card-dish-top">
                                     <v-img :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="item.name" class="dish-img-mobile" />
@@ -300,18 +300,18 @@
                                     </h3>
                                     <div class="dish-info">
                                         <div class="info-price">
-                                            <!-- {{item.sizes[0].price}} BYN -->
+                                            {{item.sizes[0].price}} BYN
                                         </div>
                                         <div class="info-weight">
-                                            <!-- {{item.sizes[0].weight}} г -->
+                                            {{item.sizes[0].weight}} г
                                         </div>
                                     </div>
                                 </div>
                             </v-card>
                         </div>
                     </div>
-                    <v-bottom-sheet v-model="showDish">
-                        <v-sheet>
+                    <v-bottom-sheet v-model="showDish" z-index='999'>
+                        <v-sheet >
                             <div class="selected-dish-top">
                                 <v-img :src="'https://img.eatmealby.com/resize/dish/400/'+selectedDish.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="selectedDish.name" class="dish-img-mobile" />
                             </div>
@@ -323,7 +323,7 @@
                                     {{selectedDish.name}}
                                 </div>
                                 <div class="dish-bottom-price">
-                                    <!-- {{selectedDish.sizes[0].price}} BYN -->
+                                    <!-- {{selectedDish.sizes[0].price}} BYN -->										
                                 </div>
                             </div>
                             <div class="d-flex flex-row justify-space-between m-5">
@@ -340,7 +340,7 @@
                                     </v-icon>
                                 </div>
                                 <div class="add-btn">
-                                    <v-btn color="primary" @click="addToBasket()">Добавить</v-btn>
+                                    <v-btn color="primary" @click="addToBasketMobile()">Добавить</v-btn>
                                 </div>
                             </div>
                         </v-sheet>
@@ -398,7 +398,8 @@ export default {
             dishCounter: 1,
             showOptionsmenu: false,
             sizesRadioBtn: '',
-            selected: [],
+			selected: [],
+			prevPb: null,
         }
     },
     computed: {
@@ -427,6 +428,9 @@ export default {
         },
     },
     methods: {
+		addToBasketMobile(){
+			this.showDish = false
+		},
         closeOptionMenu() {
             this.showOptionsmenu = false
         },
@@ -467,8 +471,11 @@ export default {
             this.tab = id
         },
         categoryNameIntersect(entries, observer) {
-            console.log('categoryNameIntersect -> entries', entries[0].target.innerText)
-            // let target = entries[0].target
+			console.log('categoryNameIntersect -> entries', entries[0].target)
+			this.tab = parseInt(entries[0].target.id, 10)
+            console.log('categoryNameIntersect -> this.tab ', this.tab )
+
+// let target = entries[0].target
             // if (entries[0].isIntersecting) {
             // 	this.tab = entries[0].target.id
             // 	console.log(this.tab);
@@ -503,10 +510,9 @@ export default {
   letter-spacing: inherit;
 }
 .dish-bottom-name{
-	flex: 0 1 auto;
     color: #000000;
     line-height: 1.25;
-    margin-right: auto;
+	padding: 20px;
 }
 
 .options-list {
@@ -663,6 +669,8 @@ export default {
 .dish-img-mobile {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+	min-width: 150px;
+	min-height: 150px;
 }
 
 .rest-info-center {
@@ -676,6 +684,13 @@ export default {
 
 .dish-name {
     padding: 12px;
+	color: #3f3f3f;
+    overflow: hidden;
+    font-size: 15px;
+    word-break: break-word;
+    max-height: 55px;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 
 .dish-info {
@@ -700,7 +715,6 @@ export default {
 
 .dish-card {
     border-radius: 10px !important;
-    width: 90%;
 }
 
 .delivery-info div {
@@ -814,11 +828,12 @@ export default {
     flex-wrap: wrap;
     justify-content: flex-start;
     align-items: flex-start;
+	padding-left: 10px;
 }
 
 .dishs-list-mobile-item {
     margin: 10px;
-    max-width: 166px;
+    max-width: 150px;
 }
 
 .dishs-list {

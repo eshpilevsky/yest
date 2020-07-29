@@ -77,10 +77,10 @@
                     ООО "Фудтех системс"
                 </div>
                 <div class="social-links">
-                    <img src="@/assets/fb.svg" alt="facebook" class="social-links-img">
-                    <img src="@/assets/vk.svg" alt="vk" class="social-links-img">
-                    <img src="@/assets/insta.svg" alt="instagramm" class="social-links-img">
-                    <img src="@/assets/twitter.svg" alt="twitter" class="social-links-img">
+                    <img src="../../assets/fb.svg" alt="facebook" class="social-links-img">
+                    <img src="../../assets/vk.svg" alt="vk" class="social-links-img">
+                    <img src="../../assets/insta.svg" alt="instagramm" class="social-links-img">
+                    <img src="../../assets/twitter.svg" alt="twitter" class="social-links-img">
                 </div>
             </div>
         </div>
@@ -109,11 +109,14 @@ export default {
     },
     methods: {
         computedCategory() {
-            if (this.all) {
-                return this.getCategoryList
-            } else {
-                return this.getCategoryList.slice(0,4)
-            }
+            setTimeout(() => {
+                if (this.all) {
+                    return this.getCategoryList
+                } else {
+                    // return this.getCategoryList.slice(0, 4)
+                    return this.getCategoryList
+                }
+            }, 100);
         },
         showAllCategory() {
             this.all = !this.all
