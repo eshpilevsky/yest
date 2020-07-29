@@ -61,19 +61,21 @@
                                                     <div>
                                                       <ul>
                                                         <li v-for="branch in restuarant.branch">
-                                                          {branch.address}}
+                                                          {{branch.address}}
                                                         </li>
                                                       </ul>
                                                     </div>
                                                     <div>
                                                       <span v-for="tag in restuarant.tags">
-                                                          {tag.name}}
+                                                          {{tag.name}}
                                                       </span>
                                                     </div>
-                                                    <p>
+                                                    <div>
                                                         Исполнитель (продавец): {{restuarant.legal_info.business_firm_name}}, {{restuarant.legal_info.business_address}}, УНП {{restuarant.legal_info.business_unp}}.
-                                                        Режим работы ресторана: с 09:00 до 21:00
-                                                    </p>
+                                                    </div>
+                                                    <div>
+                                                      Режим работы ресторана: с 09:00 до 21:00
+                                                    </div>
                                                 </div>
                                             </v-card>
                                         </div>
