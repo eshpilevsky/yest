@@ -579,7 +579,7 @@ export default {
 }
 
 .right-my-order {
-    height: 84vh;
+    height: calc(100vh - 145px);
     width: 100%;
     display: flex;
     flex-direction: column;
