@@ -311,7 +311,7 @@
                             </div>
                             <div class="d-flex flex-row justify-space-between">
                                 <div class="dish-bottom-name">
-                                    {{selectedDish.name}} 
+                                    {{selectedDish.name}}
                                 </div>
                                 <div class="dish-bottom-price">
                                     <!-- {{selectedDish.sizes[0].price}} BYN -->
@@ -463,7 +463,7 @@ export default {
             // if (entries[0].isIntersecting) {
             // 	this.tab = entries[0].target.id
             // 	console.log(this.tab);
-            // } 
+            // }
         }
     },
 }
@@ -604,7 +604,7 @@ export default {
 }
 
 .left {
-    width: 75%;
+    width: calc(100% - 320px);
 }
 
 .counter-component {
@@ -919,6 +919,7 @@ export default {
     padding-bottom: 1rem;
     margin: auto;
     max-width: 1420px;
+    width: 100%;
 }
 
 @media screen and (max-width: 450px) {
