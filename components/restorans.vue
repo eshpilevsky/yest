@@ -350,7 +350,7 @@ export default {
 .notFoundDescription {
     color: rgba(0, 0, 0, 0.5);
     font-size: 16px;
-    max-width: 450px;
+    max-width: 992px;
     text-align: center;
     margin: auto;
 }
