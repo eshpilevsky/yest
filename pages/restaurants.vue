@@ -87,7 +87,7 @@
                 </div>
                 <div class="catalog">
                     <v-tabs v-model="tab" class="catalog-tabs" center-active>
-                        <v-tab v-for="(category) in restuarant.menu" :key="category.cat_id" @click="scroll(`category${category.cat_id}`)" >
+                        <v-tab height="70px" v-for="(category) in restuarant.menu" :key="category.cat_id" @click="scroll(`category${category.cat_id}`)" >
                             {{category.name}}
                         </v-tab>
                     </v-tabs>
@@ -479,7 +479,7 @@ export default {
 </script>
 
 <style>
-  .catalog-tabs .v-tab{
+  .v-tabs-bar{
     height: 70px!important;
   }
 .v-application p {
