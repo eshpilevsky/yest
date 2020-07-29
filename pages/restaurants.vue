@@ -65,7 +65,7 @@
                                                         ПирогиЗдоровая едаДесертыЛанчиДетское меню₽
                                                     </span>
                                                     <p>
-                                                        Исполнитель (продавец): {{restaurant.legal_info.business_firm_name}}, {{restaurant.legal_info.business_address}}, УНП {{restaurant.legal_info.business_unp}}.
+                                                        Исполнитель (продавец): {{restuarant.legal_info.business_firm_name}}, {{restuarant.legal_info.business_address}}, УНП {{restuarant.legal_info.business_unp}}.
                                                         Режим работы ресторана: с 09:00 до 21:00
                                                     </p>
                                                 </div>
