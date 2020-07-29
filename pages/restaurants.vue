@@ -300,14 +300,16 @@
                                     <h3 class="dish-name">
                                         {{item.name}}
                                     </h3>
-                                    <div class="info-weight">
-                                        {{item.sizes[0].weight}}
-                                    </div>
+
                                     <div class="dish-info">
-                                        <div class="info-price">
-                                            {{item.sizes[0].price}} BYN
-                                        </div>
+                                      <div class="info-weight">
+                                        {{item.sizes[0].weight}}
+                                      </div>
+
                                     </div>
+                                  <div class="info-price">
+                                    {{item.sizes[0].price}} BYN
+                                  </div>
                                 </div>
                             </v-card>
                         </div>
