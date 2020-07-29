@@ -113,7 +113,7 @@
                                 delete_forever
                             </v-icon>
                         </div>
-                        <div v-if="this.getSelectedDishs.length > 0">
+                        <div v-if="this.getSelectedDishs.length > 0" class="my-order-dishes-desktop">
                             <div v-for="order in this.getSelectedDishs" :key="order.id" class="order-item">
                                 <div class="d-flex flex-column order-item-info">
                                     <div class="item-name">
@@ -474,6 +474,12 @@ export default {
     margin-bottom: 0 !important;
 }
 </style><style scoped>
+.my-order-top{
+  display: contents;
+}
+.my-order-dishes-desktop{
+  overflow: scroll;
+}
 .desctop_btn_confirm_order{
   width: 100%;
   font-weight: 900;
