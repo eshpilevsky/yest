@@ -292,20 +292,21 @@
                         <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" class="dishs-list-mobile-item" @click="showSelectedDish(item)">
                             <v-card class="dish-card">
                                 <div class="card-dish-top">
-                                    <v-img cover :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="item.name" class="dish-img-mobile" />
+                                    <v-img :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="item.name" class="dish-img-mobile" />
                                 </div>
                                 <div class="card-dish-bottom">
                                     <h3 class="dish-name">
                                         {{item.name}}
                                     </h3>
                                     <div class="dish-info">
-                                        <div class="info-price">
-                                            {{item.sizes[0].price}} BYN
-                                        </div>
+
                                         <div class="info-weight">
-                                            {{item.sizes[0].weight}} г
+                                            {{item.sizes[0].weight}}
                                         </div>
                                     </div>
+                                  <div class="info-price">
+                                    {{item.sizes[0].price}} BYN
+                                  </div>
                                 </div>
                             </v-card>
                         </div>
@@ -683,14 +684,19 @@ export default {
 }
 
 .dish-name {
-    padding: 12px;
-	color: #3f3f3f;
-    overflow: hidden;
-    font-size: 15px;
-    word-break: break-word;
-    max-height: 55px;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
+  color: #3f3f3f;
+  overflow: hidden;
+  font-size: 15px;
+  word-break: break-word;
+  max-height: 55px;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  height: 38px;
+  margin: 8px 0 2px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .dish-info {
@@ -703,14 +709,26 @@ export default {
 }
 
 .info-price {
-    color: #3F3F3F;
-    font-size: 14px;
-    white-space: nowrap;
+  color: #3f3f3f;
+  font-size: 14px;
+  font-weight: 600;
+  height: 48px;
+  display: flex;
+  transition: opacity, background-color 100ms;
+  align-items: center;
+  border-radius: 16px;
+  align-content: center;
+  justify-content: center;
+  background-color: #F1F0ED;
+  margin: 0 9px 8px;
 }
 
 .info-weight {
-    color: #e0e0e0;
-    font-size: 12px;
+  color: #c2c0be;
+  font-size: 13px;
+  text-align: center;
+  display: block;
+  margin: auto;
 }
 
 .dish-card {
