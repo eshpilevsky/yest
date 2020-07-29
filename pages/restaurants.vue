@@ -900,8 +900,12 @@ export default {
 }
 
 .left-top {
-    background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("https://eda.yandex/images/1387779/4f8c9613c25d940949b9e45825d4f1ca-1100x825.jpeg");
+    background-image: url("https://eda.yandex/images/1387779/4f8c9613c25d940949b9e45825d4f1ca-1100x825.jpeg");
+    background-blend-mode: multiply;
+    background-repeat: no-repeat;
+    background-color: rgba(0, 0, 0, .3);
     background-position: center;
+    background-size: cover;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
 }
