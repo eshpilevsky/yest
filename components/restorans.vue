@@ -290,6 +290,7 @@ export default {
 
 .time-title {
     font-weight: bold;
+	white-space: nowrap;
 }
 
 .delivery-time-desktop {

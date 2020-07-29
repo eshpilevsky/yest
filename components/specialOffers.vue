@@ -187,6 +187,7 @@ export default {
 .specialOffer-container {
     width: 100%;
     max-width: 1420px;
+	max-height: 175px;
     margin: auto;
     border-left: 1px solid rgba(0, 0, 0, .1);
     border-right: 1px solid rgba(0, 0, 0, .1);

@@ -78,14 +78,15 @@ export default {
             name: 'Все',
             id: 0,
             alias: 'all'
-        }]
+		}]
+		
         let currentCategory = categoriesListData.find((category) => {
             if (category.alias == params.alias) {
                 return category
             }
         })
         if (currentCategory === undefined) {
-            currentCategory = categoriesListData[0]
+            currentCategory = categoryAll[0]
         }
 
         let categoryInfo = await axios.post('https://yestapi.xyz/categories/info', {
@@ -266,6 +267,10 @@ export default {
 </script>
 
 <style>
+html{
+	overflow-x:hidden!important;
+}
+
 .home-container {
     position: relative;
     z-index: 1;

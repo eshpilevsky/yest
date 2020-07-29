@@ -4,7 +4,6 @@
         <div class="rest-cotainer">
             <div xl8 class="left">
                 <div class="left-top" :style="{backgroundImage:'url(https://img.eatmealby.com/resize/restaurant/900/'+restuarant.background_image+')'}">
-                    <!--<v-img cover :src="'https://img.eatmealby.com/resize/restaurant/900/'+restuarant.background_image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg'></v-img>-->
                     <div class="top-wrapper">
                         <div class="rating">
                             <v-chip color="primary">
@@ -29,7 +28,7 @@
                                             Доставка Yest.by
                                         </div>
                                         <div class="description-price ">
-                                            Доставка 29–99 ₽. Бесплатно при заказе от 1500 ₽
+                                            Доставка {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].deliveryFee}}-{{restuarant.delivery.fee[1].deliveryFee}}. Бесплатно при заказе от {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].min}} BYN
                                         </div>
                                     </div>
                                 </v-col>
@@ -38,7 +37,7 @@
                                         Заказ от
                                     </p>
                                     <p>
-                                        1500 ₽
+                                        {{restuarant.delivery.fee[0].min}}
                                     </p>
                                 </v-col>
                                 <v-col :md='3' class="white--text">
@@ -59,22 +58,22 @@
                                                         {{restuarant.name}}
                                                     </h3>
                                                     <div>
-                                                      <ul>
-                                                        <li v-for="branch in restuarant.branch">
-                                                          {{branch.address}}
-                                                        </li>
-                                                      </ul>
+                                                        <ul>
+                                                            <li v-for="branch in restuarant.branch">
+                                                                {{branch.address}}
+                                                            </li>
+                                                        </ul>
                                                     </div>
                                                     <div>
-                                                      <span v-for="tag in restuarant.tags">
-                                                          {{tag.name}}
-                                                      </span>
+                                                        <span v-for="tag in restuarant.tags">
+                                                            {{tag.name}}
+                                                        </span>
                                                     </div>
                                                     <div>
                                                         Исполнитель (продавец): {{restuarant.legal_info.business_firm_name}}, {{restuarant.legal_info.business_address}}, УНП {{restuarant.legal_info.business_unp}}.
                                                     </div>
                                                     <div>
-                                                      Режим работы ресторана: с 09:00 до 21:00
+                                                        Режим работы ресторана: с 09:00 до 21:00
                                                     </div>
                                                 </div>
                                             </v-card>
@@ -87,7 +86,7 @@
                 </div>
                 <div class="catalog">
                     <v-tabs v-model="tab" class="catalog-tabs" center-active>
-                        <v-tab height="70px" v-for="(category) in restuarant.menu" :key="category.cat_id" @click="scroll(`category${category.cat_id}`)" >
+                        <v-tab height="70px" v-for="(category) in restuarant.menu" :key="category.cat_id" @click="scroll(`category${category.cat_id}`)">
                             {{category.name}}
                         </v-tab>
                     </v-tabs>
@@ -191,7 +190,6 @@
                             <div class="multi-title">
                                 ДОПОЛНИТЕЛЬНЫЕ ИНГРЕДИЕНТЫ
                             </div>
-                            <!-- {{this.selectedDish.options}} -->
                             <div v-for="option in this.selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
                                 <div>
                                     {{option.title}}
@@ -224,7 +222,7 @@
     </div>
     <div class="mobile-mode">
         <div class="mobile-mode_header">
-            <v-icon @click="this.$router.go(-1)">arrow_back</v-icon>
+            <v-icon @click="goBack()">arrow_back</v-icon>
             <v-icon>search</v-icon>
         </div>
         <div class="mobile-rest-info">
@@ -254,7 +252,7 @@
                             <v-icon>close</v-icon>
                         </div>
                         <div class="rating-info-bottom">
-                            {{restuarant.rating}}
+                            {{restuarant.rating ? restuarant.rating : 'Мало оценок'}}
                         </div>
                     </v-sheet>
                 </v-bottom-sheet>
@@ -268,8 +266,12 @@
                             <v-icon>
                                 directions_walk
                             </v-icon>
-                            <div>1 BYN</div>
-                            <div>на заказ от 10 BYN</div>
+							<div>
+                            	Доставка {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].deliveryFee}}-{{restuarant.delivery.fee[1].deliveryFee}} BYN. Бесплатно при заказе от {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].min}} BYN
+							</div>
+							<div>
+								Заказ от: {{restuarant.delivery.fee[0].min}} BYN
+							</div>
                         </div>
                     </v-sheet>
                 </v-bottom-sheet>
@@ -298,21 +300,20 @@
                                     <h3 class="dish-name">
                                         {{item.name}}
                                     </h3>
+                                    <div class="info-weight">
+                                        {{item.sizes[0].weight}}
+                                    </div>
                                     <div class="dish-info">
-
-                                        <div class="info-weight">
-                                            {{item.sizes[0].weight}}
+                                        <div class="info-price">
+                                            {{item.sizes[0].price}} BYN
                                         </div>
                                     </div>
-                                  <div class="info-price">
-                                    {{item.sizes[0].price}} BYN
-                                  </div>
                                 </div>
                             </v-card>
                         </div>
                     </div>
                     <v-bottom-sheet v-model="showDish" z-index='999'>
-                        <v-sheet >
+                        <v-sheet>
                             <div class="selected-dish-top">
                                 <v-img :src="'https://img.eatmealby.com/resize/dish/400/'+selectedDish.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="selectedDish.name" class="dish-img-mobile" />
                             </div>
@@ -327,14 +328,14 @@
                                     <!-- {{selectedDish.sizes[0].price}} BYN -->
                                 </div>
                             </div>
-                            <div class="d-flex flex-row justify-space-between m-5">
+                            <div class="d-flex flex-row justify-space-between m-5 pa-5">
                                 <div class="d-flex flex-row counter-component">
                                     <v-icon @click="selectedDish.counter--">
-                                    <!-- <v-icon > -->
+                                        <!-- <v-icon > -->
                                         remove
                                     </v-icon>
                                     {{selectedDish.counter}}
-									<!-- 1 -->
+                                    <!-- 1 -->
                                     <v-icon @click="selectedDish.counter++">
                                     <!-- <v-icon> -->
                                         add
@@ -399,8 +400,7 @@ export default {
             dishCounter: 1,
             showOptionsmenu: false,
             sizesRadioBtn: '',
-			selected: [],
-			prevPb: null,
+            selected: [],
         }
     },
     computed: {
@@ -415,7 +415,6 @@ export default {
     },
     watch: {
         getSelectedDishs(newValue) {
-            console.log('getSelectedDishs -> newValue', newValue)
             return newValue
         },
         getTotalPrice(newValue) {
@@ -427,11 +426,17 @@ export default {
         tab(newValue) {
             return newValue
         },
+        '$route.params.region': function () {
+            this.$router.push(`/${this.getSelectedZone.alias}`)
+        }
     },
     methods: {
-		addToBasketMobile(){
-			this.showDish = false
+		goBack(){
+			this.$router.go(-1)
 		},
+        addToBasketMobile() {
+            this.showDish = false
+        },
         closeOptionMenu() {
             this.showOptionsmenu = false
         },
@@ -446,8 +451,8 @@ export default {
         },
         addToBasket(dish) {
             console.log('addToBasket -> dish', dish)
-			this.selectedDish = dish
-			dish.counter = 1
+            this.selectedDish = dish
+            dish.counter = 1
             if (dish.sizes.length > 1 || dish.options.length > 1) {
                 this.showOptionsmenu = true
                 this.sizesRadioBtn = dish.sizes[0].id
@@ -457,14 +462,15 @@ export default {
             }
         },
         showSelectedDish(dish) {
-			console.log('showSelectedDish -> dish', dish)
-			dish.counter = 1
+            console.log('showSelectedDish -> dish', dish)
+            dish.counter = 1
             this.selectedDish = dish
             setTimeout(() => {
                 this.showDish = true
             }, 100);
         },
         scroll(id) {
+            console.log('scroll -> document.getElementById(id)', document.getElementById(id))
             document.getElementById(id).scrollIntoView({
                 block: 'start',
                 behavior: 'smooth'
@@ -472,48 +478,47 @@ export default {
             this.tab = id
         },
         categoryNameIntersect(entries, observer) {
-			console.log('categoryNameIntersect -> entries', entries[0].target)
-			this.tab = parseInt(entries[0].target.id, 10)
-            console.log('categoryNameIntersect -> this.tab ', this.tab )
-
-// let target = entries[0].target
-            // if (entries[0].isIntersecting) {
-            // 	this.tab = entries[0].target.id
-            // 	console.log(this.tab);
-            // }
+            this.tab = parseInt(entries[0].target.id, 10)
         }
-    },
+    }
 }
 </script>
 
 <style>
-  .v-tabs-bar{
-    height: 70px!important;
-  }
+.v-tabs-bar {
+    height: 70px !important;
+}
+
 .v-application p {
     margin-bottom: 0 !important;
 }
 </style><style scoped>
-  .right-my-order .my-order{
-    flex: auto;
-  }
+.catalog-tabs {
+    z-index: 0;
+}
 
-.my-order-top{
-  display: contents;
+.right-my-order .my-order {
+    flex: auto;
 }
-.my-order-dishes-desktop{
-  overflow: scroll;
-  flex: auto;
+
+.my-order-top {
+    display: contents;
 }
-.desctop_btn_confirm_order{
-  width: 100%;
-  font-weight: 900;
-  letter-spacing: inherit;
+
+.my-order-dishes-desktop {
+    flex: auto;
 }
-.dish-bottom-name{
+
+.desctop_btn_confirm_order {
+    width: 100%;
+    font-weight: 900;
+    letter-spacing: inherit;
+}
+
+.dish-bottom-name {
     color: #000000;
     line-height: 1.25;
-	padding: 20px;
+    padding: 20px;
 }
 
 .options-list {
@@ -670,8 +675,8 @@ export default {
 .dish-img-mobile {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-	min-width: 150px;
-	min-height: 150px;
+    min-width: 150px;
+    min-height: 150px;
 }
 
 .rest-info-center {
@@ -700,9 +705,7 @@ export default {
 }
 
 .dish-info {
-    width: 100%;
     height: 34px;
-    padding: 0 12px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -786,17 +789,20 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
     padding: 0 16px;
 }
 
 .mobile-mode_header {
+	position: sticky;
+	top: 0;
+	z-index: 100;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-	padding: 15px 15px 0 15px;
+    padding: 15px 15px 0 15px;
 }
 
 .desktop-mode {
@@ -858,7 +864,7 @@ export default {
 
 .dishs-list-mobile-item {
     margin: 10px;
-    max-width: calc(50% - 20px);
+    max-width: 150px;
 }
 @media screen and (min-width: 500px){
   .dishs-list-mobile-item {
@@ -1028,7 +1034,10 @@ export default {
     .mobile-mode {
         display: flex;
         flex-direction: column;
-	    	margin-top: -3rem;
+        margin-top: -3rem;
+		z-index: 10;
+    	background: white;
+		position: relative;
     }
 }
 </style>
