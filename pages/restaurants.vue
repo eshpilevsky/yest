@@ -11,7 +11,7 @@
                                 <div>{{restuarant.rating ? restuarant.rating: 'Мало оценок'}}</div>
                             </v-chip>
                             <div class="info-delivery white--text">
-                                Доставка еды • Санкт-Петербург
+                                Доставка еды • {{this.getSelectedZone.name}}
                             </div>
                             <h1 class="restuarant-name white--text pb-3">
                                 {{restuarant.name}}
@@ -139,7 +139,7 @@
                                     </div>
                                 </div>
                                 <div class="pl-4">
-                                    {{order.sizes[0].price}} руб
+                                    {{order.sizes[0].price}} BYN
                                 </div>
                             </div>
                         </div>
@@ -153,17 +153,69 @@
 
                         <div class="total-price">
                             <p class="total-title">Итого</p>
-                            <p class="price">{{this.getTotalPrice}} руб</p>
+                            <p class="price">{{this.getTotalPrice}} BYN</p>
                         </div>
                     </div>
                 </div>
                 <v-btn :disabled="this.getTotalPrice <= 0" color="primary">Оформить заказ</v-btn>
             </div>
+            <v-overlay z-index="999" v-model="showOptionsmenu">
+                <v-card width="50vw" class="select-option-card">
+                    <div class="d-flex flex-row justify-space-between">
+                        <div class="select-option-title" color="secondary">
+                            Выберите опции
+                        </div>
+                        <div class="close-select-option" @click="closeOptionMenu()">
+                            <v-icon color="#000">close</v-icon>
+                        </div>
+                    </div>
+                    <div class="options-list">
+                        <div class="sizes">
+                            <div class="multi-title">
+                                РАЗМЕР НА ВЫБОР
+                            </div>
+                            <v-radio-group v-model="sizesRadioBtn" :mandatory="false" class="d-flex flex-row">
+                                <v-radio v-for="size in this.selectedDish.sizes" :key="size.id" :label="size.name" :value="size.id" color="primary"></v-radio>
+                            </v-radio-group>
+                        </div>
+                        <div class="options">
+                            <div class="multi-title">
+                                ДОПОЛНИТЕЛЬНЫЕ ИНГРЕДИЕНТЫ
+                            </div>
+                            <!-- {{this.selectedDish.options}} -->
+                            <div v-for="option in this.selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
+                                <div>
+                                    {{option.title}}
+                                </div>
+                                <div class="d-flex flex-row justify-start align-center">
+                                    <v-checkbox v-for="option in option.variants" :key="option.id" v-model="selected" :label="option.name" :value="option.dish_option_id" color="primary"></v-checkbox>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <v-btn color="primary">Добавить</v-btn>
+                        </div>
+                        <div>
+                            <div>
+                                <v-icon>
+                                    add
+                                </v-icon>
+                                {{this.selectedDish.counter}}
+                                <v-icon>
+                                    remove
+                                </v-icon>
+                            </div>
+                        </div>
+                    </div>
+                </v-card>
+            </v-overlay>
         </div>
     </div>
     <div class="mobile-mode">
         <div class="mobile-mode_header">
-            <v-icon>arrow_back</v-icon>
+            <v-icon @click="this.$router.go(-1)">arrow_back</v-icon>
             <v-icon>search</v-icon>
         </div>
         <div class="mobile-rest-info">
@@ -176,15 +228,15 @@
             <div class="rest-info-center">
                 <v-chip @click="showRatingSheet = !showRatingSheet" :color="showRatingSheet == true ? 'primary': null">
                     <v-icon>star</v-icon>
-                    {{restInfo.rating}}
+                    {{restuarant.rating ? restuarant.rating: 'Мало оценок'}}
                 </v-chip>
                 <!-- add to next line v-if="this.getCurrentCoords.length > 0"-->
-                <v-chip>
+                <!-- <v-chip>
                     {{restInfo.deliveryTime.min}} - {{restInfo.deliveryTime.max}} мин
-                </v-chip>
+                </v-chip> -->
                 <!-- add to next line v-if="this.getCurrentCoords.length > 0"-->
                 <v-chip @click="showDeliveryOption = !showDeliveryOption" :color="showDeliveryOption == true ? 'primary': null">
-                    Доставка {{restInfo.deliveryPrice.min}} - {{restInfo.deliveryPrice.max}} Р
+                    Доставка 10 - 20
                 </v-chip>
                 <v-bottom-sheet v-model="showRatingSheet">
                     <v-sheet>
@@ -193,7 +245,7 @@
                             <v-icon>close</v-icon>
                         </div>
                         <div class="rating-info-bottom">
-                            {{restInfo.rating}}
+                            {{restuarant.rating}}
                         </div>
                     </v-sheet>
                 </v-bottom-sheet>
@@ -207,15 +259,15 @@
                             <v-icon>
                                 directions_walk
                             </v-icon>
-                            <div>1 руб</div>
-                            <div>на заказ от 10 руб</div>
+                            <div>1 BYN</div>
+                            <div>на заказ от 10 BYN</div>
                         </div>
                     </v-sheet>
                 </v-bottom-sheet>
             </div>
             <div class="rest-info-bottom">
                 <v-tabs v-model="tab" class="catalog-tabs">
-                    <v-tab v-for="category in restCategory" :key="category.id" @click="scroll(`category${category.id}`)">
+                    <v-tab v-for="category in restuarant.menu" :key="category.id" @click="scroll(`category${category.id}`)">
                         <v-chip>
                             {{category.name}}
                         </v-chip>
@@ -239,10 +291,10 @@
                                     </h3>
                                     <div class="dish-info">
                                         <div class="info-price">
-                                            {{item.sizes[0].price}} руб
+                                            <!-- {{item.sizes[0].price}} BYN -->
                                         </div>
                                         <div class="info-weight">
-                                            {{item.sizes[0].weight}} г
+                                            <!-- {{item.sizes[0].weight}} г -->
                                         </div>
                                     </div>
                                 </div>
@@ -252,31 +304,34 @@
                     <v-bottom-sheet v-model="showDish">
                         <v-sheet>
                             <div class="selected-dish-top">
-                                <v-img :src="selectedDish.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="selectedDish.name" class="dish-img-mobile" />
+                                <v-img :src="'https://img.eatmealby.com/resize/dish/400/'+selectedDish.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="selectedDish.name" class="dish-img-mobile" />
                             </div>
                             <div class="selected-dish-composition">
                                 {{selectedDish.description}}
                             </div>
                             <div class="d-flex flex-row justify-space-between">
                                 <div class="dish-bottom-name">
-                                    {{selectedDish.name}}
+                                    {{selectedDish.name}} 
                                 </div>
                                 <div class="dish-bottom-price">
-                                    <!-- {{selectedDish.sizes[0].price}} руб -->
+                                    <!-- {{selectedDish.sizes[0].price}} BYN -->
                                 </div>
                             </div>
-                            <div class="d-flex flex-row justify-space-between ">
+                            <div class="d-flex flex-row justify-space-between m-5">
                                 <div class="d-flex flex-row counter-component">
-                                    <v-icon @click="increment()">
-                                        plus_one
+                                    <v-icon @click="selectedDish.counter--">
+                                    <!-- <v-icon > -->
+                                        remove
                                     </v-icon>
-                                    {{this.getSelectedDishs.counter}}
-                                    <v-icon @click="decrement()">
-                                        plus_one
+                                    {{selectedDish.counter}}
+									<!-- 1 -->
+                                    <v-icon @click="selectedDish.counter++">
+                                    <!-- <v-icon> -->
+                                        add
                                     </v-icon>
                                 </div>
                                 <div class="add-btn">
-                                    <v-btn @click="addToBasket()">Добавить</v-btn>
+                                    <v-btn color="primary" @click="addToBasket()">Добавить</v-btn>
                                 </div>
                             </div>
                         </v-sheet>
@@ -324,54 +379,17 @@ export default {
     },
     data() {
         return {
-            restInfo: {
-                name: 'Slurp Ramen Bar',
-                rating: 4.9,
-                deliveryTime: {
-                    min: 20,
-                    max: 50,
-                },
-                deliveryPrice: {
-                    min: 0,
-                    max: 15,
-                }
-            },
-            dish: {
-                name: 'Салат Цезарь с цыпленком',
-                description: 'Капуста пекинская, томаты черри, филе куриное, сыр пармезан, сухарики пшеничные, соль, перец, паприка красная, соус',
-                price: 15,
-                image: "https://eda.yandex/images/1387779/a3e887932dd0fb6d0f716d34c6b6afd7-450x300.jpeg",
-                weight: 230,
-                composition: 'Куриная грудка, соленые огурцы, помидоры, зеленый горошек, майонез, яйцо, куриная грудка, листья салата'
-            },
-            restCategory: [{
-                    name: 'Популярные блюда',
-                    id: 1,
-                },
-                {
-                    name: 'Добавки в блины',
-                    id: 2,
-                },
-                {
-                    name: 'Блины сладкие',
-                    id: 3,
-                },
-                {
-                    name: 'Блины сытные',
-                    id: 4,
-                },
-                {
-                    name: 'Напитки',
-                    id: 5,
-                },
-            ],
             tab: null,
             showRatingSheet: false,
             showDeliveryOption: false,
-            selectedDish: {},
+            selectedDish: {
+                sizes: [],
+            },
             showDish: false,
             dishCounter: 1,
             showOptionsmenu: false,
+            sizesRadioBtn: '',
+            selected: [],
         }
     },
     computed: {
@@ -386,6 +404,7 @@ export default {
     },
     watch: {
         getSelectedDishs(newValue) {
+            console.log('getSelectedDishs -> newValue', newValue)
             return newValue
         },
         getTotalPrice(newValue) {
@@ -399,6 +418,9 @@ export default {
         },
     },
     methods: {
+        closeOptionMenu() {
+            this.showOptionsmenu = false
+        },
         decrement(id) {
             this.$store.dispatch('basket/decrementDishCounter', id);
         },
@@ -410,15 +432,19 @@ export default {
         },
         addToBasket(dish) {
             console.log('addToBasket -> dish', dish)
-            if (dish.options.length > 0) {
+			this.selectedDish = dish
+			dish.counter = 1
+            if (dish.sizes.length > 1 || dish.options.length > 1) {
                 this.showOptionsmenu = true
+                this.sizesRadioBtn = dish.sizes[0].id
             } else {
                 this.showDish = false
                 this.$store.dispatch('basket/addToBasket', dish);
             }
         },
         showSelectedDish(dish) {
-            console.log('showSelectedDish -> dish', dish)
+			console.log('showSelectedDish -> dish', dish)
+			dish.counter = 1
             this.selectedDish = dish
             setTimeout(() => {
                 this.showDish = true
@@ -432,7 +458,7 @@ export default {
             this.tab = id
         },
         categoryNameIntersect(entries, observer) {
-            // console.log('categoryNameIntersect -> entries', entries[0].target.innerText)
+            console.log('categoryNameIntersect -> entries', entries[0].target.innerText)
             // let target = entries[0].target
             // if (entries[0].isIntersecting) {
             // 	this.tab = entries[0].target.id
@@ -449,18 +475,52 @@ export default {
 }
 </style><style scoped>
 
-.counter-count{
-	display: flex;
-	align-items: center;
-	justify-content: center;
+.dish-bottom-name{
+	flex: 0 1 auto;
+    color: #000000;
+    line-height: 1.25;
+    margin-right: auto;
+}
+
+.options-list {
+    background: #fafafa;
+    padding: 0 20px;
+    margin: 0 -20px;
+}
+
+.select-option-card {
+    background: #f5f5f5 !important;
+    color: #000 !important;
+    padding: 20px;
+}
+
+.multi-title {
+    color: #b0b0b0;
+    font-size: 14px;
+}
+
+.close-select-option {
+    cursor: pointer;
+}
+
+.select-option-title {
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 36px;
+}
+
+.counter-count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .my-counter:hover .counter-count,
 .my-counter:hover .counter-plus,
 .my-counter:hover .counter-minus {
     display: flex;
-	border: .5px solid rgb(176, 176, 176);
-	background: #f2f2f2;
+    border: .5px solid rgb(176, 176, 176);
+    background: #f2f2f2;
 }
 
 .counter-plus,
@@ -566,7 +626,7 @@ export default {
 
 .rest-info-bottom {
     position: sticky;
-    top: 65px;
+    top: 0px;
     z-index: 999;
 }
 
@@ -610,7 +670,7 @@ export default {
 
 .dish-card {
     border-radius: 10px !important;
-	width: 90%;
+    width: 90%;
 }
 
 .delivery-info div {
@@ -667,6 +727,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+	padding: 15px 15px 0 15px;
 }
 
 .desktop-mode {
@@ -721,13 +782,13 @@ export default {
 .dishs-list-mobile {
     display: flex;
     flex-wrap: wrap;
-	justify-content: flex-start;
-	align-items: flex-start;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
 
 .dishs-list-mobile-item {
     margin: 10px;
-	max-width: 166px;
+    max-width: 166px;
 }
 
 .dishs-list {
@@ -869,6 +930,7 @@ export default {
     .mobile-mode {
         display: flex;
         flex-direction: column;
+		margin-top: -3rem;
     }
 }
 </style>

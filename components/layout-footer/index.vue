@@ -29,16 +29,16 @@
                         <div class="bottom-title">
                             Блюда и кухни
                         </div>
-                      <div class="category-list">
-                        <div v-for="category in computedCategory" :key="category.id + 'fotCompCat'" class="bottom-items">
-                          <div @click="goToCategory(category)">
-                            {{ category.name }}
-                          </div>
+                        <div class="category-list">
+                            <div v-for="category in computedCategory()" :key="category.id + 'fotCompCat'" class="bottom-items">
+                                <div @click="goToCategory(category)">
+                                    {{ category.name }}
+                                </div>
+                            </div>
+                            <div v-show="!all" class="bottom-items" @click="showAllCategory()">
+                                Показать все >
+                            </div>
                         </div>
-                        <div v-show="!all" class="bottom-items" @click="showAllCategory()">
-                          Показать все >
-                        </div>
-                      </div>
                     </div>
                 </div>
                 <div class="footer-center-column">
@@ -97,7 +97,6 @@ export default {
     name: 'layout-footer',
     data() {
         return {
-            categoryList: this.$store.state.user.data.categoryList,
             all: false,
             limit: 5,
         }
@@ -106,30 +105,27 @@ export default {
         ...mapGetters({
             getCategoryList: 'user/getCategoryList',
             getSelectedZone: 'zone/getSelectedZone'
-
         }),
-        computedCategory() {
-            if (this.all) {
-                return this.categoryList
-            } else {
-				let result = this.categoryList.slice(0, 4);
-				// let result = this.categoryList
-                return result
-            }
-        }
     },
     methods: {
+        computedCategory() {
+            if (this.all) {
+                return this.getCategoryList
+            } else {
+                return this.getCategoryList.slice(0,4)
+            }
+        },
         showAllCategory() {
             this.all = !this.all
-		},
-		goToCategory(category){
-			this.$store.dispatch('user/selectCategory', category)
-			this.$router.push(`/${this.getSelectedZone.alias}/restaurants/category/${category.alias}`)
-		},
-		goToRegion(region){
+        },
+        goToCategory(category) {
+            this.$store.dispatch('user/selectCategory', category)
+            this.$router.push(`/${this.getSelectedZone.alias}/restaurants/category/${category.alias}`)
+        },
+        goToRegion(region) {
             this.$store.dispatch('zone/setSelectedZone', region.id)
-			this.$router.push(`/${region.alias}`)
-		}
+            this.$router.push(`/${region.alias}`)
+        }
     },
 }
 </script>
@@ -138,7 +134,6 @@ export default {
 .footer-top-right {
     display: flex;
     align-items: center;
-    /* padding-right: 30px; */
 }
 
 .footer-top-left {
@@ -247,7 +242,7 @@ export default {
 .footer-top-img {
     padding: 10px 0px 10px 10px;
     max-height: 60px;
-	max-width: 140px;
+    max-width: 140px;
 }
 
 .footer-top {
@@ -304,7 +299,7 @@ export default {
     .bottom-block,
     .top-block {
         max-width: 900px;
-		width: 100%;
+        width: 100%;
         padding: 0;
     }
 }
@@ -319,10 +314,10 @@ export default {
 
 @media screen and (max-width: 450px) {
 
-	.footer-top-right{
-		display: flex;
-		flex-direction: column;
-	}
+    .footer-top-right {
+        display: flex;
+        flex-direction: column;
+    }
 
     .footer-bottom {
         padding: 15px 0px;
@@ -343,7 +338,7 @@ export default {
 
     .top-block {
         padding: 20px 20px;
-		flex-direction: column;
+        flex-direction: column;
     }
 
     .footer-top {

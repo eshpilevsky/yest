@@ -76,7 +76,6 @@ export default {
             limit: 20,
             itemCounter: 0,
             params: {},
-            rubel: require("../assets/rubel.png"),
             notFindImg: require("../assets/logo.svg"),
             swiperOptions: {
                 slidesPerView: 3,
@@ -610,11 +609,11 @@ export default {
     }
 
     .tags-list-item {
-        max-width: 3200px;
+        max-width: 320px;
     }
 
     .bottom-tags-list {
-        max-width: 70%;
+        max-width: 100%;
     }
 
     .restorane-list-item-name {

@@ -1,6 +1,7 @@
 <template>
-<v-app>
-	<layout-header v-show="!isMapVisible"/>
+<v-app dark>
+	<layout-header v-show="this.$router.currentRoute.name !== 'restik'"/>
+	<!-- !isMapVisible -->
     <v-content v-show="!isMapVisible">
         <v-container class="main_cont">
             <nuxt />
@@ -33,7 +34,11 @@ export default {
             canDisplayMap: 'device/isMobile',
             isMapVisible: 'map/isMapVisible'
         })
-    }
+	},
+	mounted () {
+		this.$vuetify.theme.dark = false;
+		console.log(this.$router.currentRoute.name)
+	},
 }
 </script>
 

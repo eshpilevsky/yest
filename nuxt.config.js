@@ -104,7 +104,8 @@ module.exports = {
    */
   vuetify: {
     theme: {
-      dark: false,
+	//   dark: false,
+		light:true,
       themes: {
         light: {
           primary: '#00a646',
