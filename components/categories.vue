@@ -252,7 +252,7 @@ export default {
                             this.$store.dispatch('user/setSelectedCategoryTitle', response.data.header + ' в ' + response.data.city)
                             var bg = response.data.background
 
-                            if (window.innerWidth > 450) {
+                            if (window.innerWidth > 992) {
                                 if (this.oldCategoryImg != null) {
                                     this.oldCategoryImg.setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + bg + '");')
                                     // this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.bg + '");'
@@ -274,10 +274,10 @@ export default {
                     console.error(error)
                 })
             } else {
-                if (window.innerWidth < 500) {
+                if (window.innerWidth < 992) {
                     if (this.oldCategoryImg != null) {
                         // this.oldCategoryImg.style.backgroundImage = 'url("https://menu-menu.by/images/category_icons/new/4529d57df6bc970d11c1f3496296d99b-200x200.jpg");'
-                        this.oldCategoryImg.setAttribute('style', 'background-image: url("https://menu-menu.by/images/category_icons/new/4529d57df6bc970d11c1f3496296d99b-200x200.jpg");')
+                        this.oldCategoryImg.setAttribute('style', 'background-image: url("https://menu-menu.by/images/category_background/mobile/pizza.jpg");')
                     }
                 } else {
                     if (this.oldCategoryImg != null) {

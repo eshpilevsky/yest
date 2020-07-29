@@ -193,13 +193,13 @@ export default {
     padding-top: 1rem;
 }
 
-@media screen and (max-width: 768px) {
-    .specialOfferImg {
-        width: 80%;
-    }
-}
+/*@media screen and (max-width: 768px) {*/
+    /*.specialOfferImg {*/
+        /*width: 80%;*/
+    /*}*/
+/*}*/
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 992px) {
 
     .specialOfferImg {
         width: 95%;
