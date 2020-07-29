@@ -629,6 +629,7 @@ export default {
 
 .left {
     width: calc(100% - 320px);
+    border: 1px solid #d5d5d5;
 }
 
 .counter-component {
@@ -827,7 +828,7 @@ export default {
 }
 
 .catalog-list {
-    border: solid 1px #eeeeee;
+    /*border: solid 1px #eeeeee;*/
     padding: 25px 80px;
     background: #f2f2f2;
     border-top: none;
