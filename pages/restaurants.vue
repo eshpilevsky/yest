@@ -292,7 +292,7 @@
                         <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" class="dishs-list-mobile-item" @click="showSelectedDish(item)">
                             <v-card class="dish-card">
                                 <div class="card-dish-top">
-                                    <v-img :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="item.name" class="dish-img-mobile" />
+                                    <v-img cover :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="item.name" class="dish-img-mobile" />
                                 </div>
                                 <div class="card-dish-bottom">
                                     <h3 class="dish-name">
@@ -714,7 +714,14 @@ export default {
 }
 
 .dish-card {
-    border-radius: 10px !important;
+  flex: 0 1 calc(50% - 11px * 1.5);
+  height: 296px;
+  display: block;
+  position: relative;
+  overflow: hidden;
+  transform: translate3d(0, 0, 0);
+  box-shadow: 0px 8px 20px rgba(117, 115, 111, 0.2);
+  border-radius: 24px!important;
 }
 
 .delivery-info div {
