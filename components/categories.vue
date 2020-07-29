@@ -351,7 +351,7 @@ export default {
     margin-bottom: 0;
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 992px) {
     .v-input__prepend-inner {
         margin-top: 13px !important;
     }
@@ -510,13 +510,13 @@ export default {
     display: none;
 }
 
-@media screen and (max-width: 768px) {
-    .searchDesktop {
-        margin: 10px 20px 0px 20px !important;
-    }
-}
+/*@media screen and (max-width: 768px) {*/
+    /*.searchDesktop {*/
+        /*margin: 10px 20px 0px 20px !important;*/
+    /*}*/
+/*}*/
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 992px) {
 
     .divider {
         display: none;
@@ -570,7 +570,7 @@ export default {
         flex-direction: row;
         align-items: flex-start;
         justify-items: flex-start;
-        max-width: 450px;
+        max-width: 992px;
         overflow: hidden;
         overflow-x: auto;
         padding: 10px 0;
