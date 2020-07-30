@@ -740,7 +740,7 @@ export default {
 
 .dish-card {
   flex: 0 1 calc(50% - 11px * 1.5);
-  height: 296px;
+  /*height: 296px;*/
   display: block;
   position: relative;
   overflow: hidden;
