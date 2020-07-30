@@ -229,56 +229,60 @@
             <v-icon>search</v-icon>
         </div>
         <div class="mobile-rest-info">
+
+          <div class="rest-info-content">
             <div class="rest-info-top">
-                <h1 class="info-top-title">
-                    {{restuarant.name}}
-                </h1>
-                <v-icon>info</v-icon>
+              <h1 class="info-top-title">
+                {{restuarant.name}}
+              </h1>
+              <v-icon>info</v-icon>
             </div>
             <div class="rest-info-center">
-                <v-chip @click="showRatingSheet = !showRatingSheet" :color="showRatingSheet == true ? 'primary': null">
-                    <v-icon>star</v-icon>
-                    {{restuarant.rating ? restuarant.rating: 'Мало оценок'}}
-                </v-chip>
-                <!-- add to next line v-if="this.getCurrentCoords.length > 0"-->
-                <!-- <v-chip>
-                    {{restInfo.deliveryTime.min}} - {{restInfo.deliveryTime.max}} мин
-                </v-chip> -->
-                <!-- add to next line v-if="this.getCurrentCoords.length > 0"-->
-                <v-chip @click="showDeliveryOption = !showDeliveryOption" :color="showDeliveryOption == true ? 'primary': null">
-                    Доставка 10 - 20
-                </v-chip>
-                <v-bottom-sheet v-model="showRatingSheet">
-                    <v-sheet>
-                        <div class="sheet-top">
-                            <h2 class="sheet-top-title">Рейтинг</h2>
-                            <v-icon>close</v-icon>
-                        </div>
-                        <div class="rating-info-bottom">
-                            {{restuarant.rating ? restuarant.rating : 'Мало оценок'}}
-                        </div>
-                    </v-sheet>
-                </v-bottom-sheet>
-                <v-bottom-sheet v-model="showDeliveryOption">
-                    <v-sheet>
-                        <div class="sheet-top">
-                            <h2 class="sheet-top-title">Условия доставки</h2>
-                            <v-icon>close</v-icon>
-                        </div>
-                        <div class="delivery-info">
-                            <v-icon>
-                                directions_walk
-                            </v-icon>
-							<div>
-                            	Доставка {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].deliveryFee}}-{{restuarant.delivery.fee[1].deliveryFee}} BYN. Бесплатно при заказе от {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].min}} BYN
-							</div>
-							<div>
-								Заказ от: {{restuarant.delivery.fee[0].min}} BYN
-							</div>
-                        </div>
-                    </v-sheet>
-                </v-bottom-sheet>
+              <v-chip @click="showRatingSheet = !showRatingSheet" :color="showRatingSheet == true ? 'primary': null">
+                <v-icon>star</v-icon>
+                {{restuarant.rating ? restuarant.rating: 'Мало оценок'}}
+              </v-chip>
+              <!-- add to next line v-if="this.getCurrentCoords.length > 0"-->
+              <!-- <v-chip>
+                  {{restInfo.deliveryTime.min}} - {{restInfo.deliveryTime.max}} мин
+              </v-chip> -->
+              <!-- add to next line v-if="this.getCurrentCoords.length > 0"-->
+              <v-chip @click="showDeliveryOption = !showDeliveryOption" :color="showDeliveryOption == true ? 'primary': null">
+                Доставка 10 - 20
+              </v-chip>
+              <v-bottom-sheet v-model="showRatingSheet">
+                <v-sheet>
+                  <div class="sheet-top">
+                    <h2 class="sheet-top-title">Рейтинг</h2>
+                    <v-icon>close</v-icon>
+                  </div>
+                  <div class="rating-info-bottom">
+                    {{restuarant.rating ? restuarant.rating : 'Мало оценок'}}
+                  </div>
+                </v-sheet>
+              </v-bottom-sheet>
+              <v-bottom-sheet v-model="showDeliveryOption">
+                <v-sheet>
+                  <div class="sheet-top">
+                    <h2 class="sheet-top-title">Условия доставки</h2>
+                    <v-icon>close</v-icon>
+                  </div>
+                  <div class="delivery-info">
+                    <v-icon>
+                      directions_walk
+                    </v-icon>
+                    <div>
+                      Доставка {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].deliveryFee}}-{{restuarant.delivery.fee[1].deliveryFee}} BYN. Бесплатно при заказе от {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].min}} BYN
+                    </div>
+                    <div>
+                      Заказ от: {{restuarant.delivery.fee[0].min}} BYN
+                    </div>
+                  </div>
+                </v-sheet>
+              </v-bottom-sheet>
             </div>
+          </div>
+
             <div class="rest-info-bottom">
                 <v-tabs v-model="tab" class="catalog-tabs">
                     <v-tab v-for="(category, index) in restuarant.menu" :key="category.id" @click="scroll(`${index}`)">
@@ -799,14 +803,18 @@ export default {
 }
 
 .mobile-mode_header {
-	position: sticky;
-	top: 0;
-	z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 15px 15px 0 15px;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  z-index: 5;
+  background: #ffffff;
+  padding-top: 8px;
+  display: flex;
+  padding: 0 8px;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .desktop-mode {
