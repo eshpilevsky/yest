@@ -910,7 +910,7 @@ export default {
     flex-wrap: wrap;
     justify-content: flex-start;
     align-items: flex-start;
-	  /*padding-left: 10px;*/
+	  padding-left: 10px;
 }
 
 .dishs-list-mobile-item {
