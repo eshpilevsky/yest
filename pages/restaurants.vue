@@ -124,11 +124,11 @@
                         <div v-if="this.getSelectedDishs.length > 0" class="my-order-dishes-desktop">
                             <div v-for="order in this.getSelectedDishs" :key="order.id" class="order-item">
                                 <div class="d-flex flex-column order-item-info">
-                                    <div class="dish-name-container">
+
                                         <div class="item-name">
                                         {{order.name}}
                                         </div>
-                                    </div>
+
 
                                     <div class="order-item-weight">
                                         {{order.sizes[0].weight}}
@@ -302,9 +302,11 @@
                                 <v-img cover :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="item.name" class="dish-img-mobile" />
                               </div>
                                 <div class="card-dish-bottom">
+                                  <div class="dish-name-container">
                                     <h3 class="dish-name">
                                         {{item.name}}
                                     </h3>
+                                  </div>
 
                                     <div class="dish-info">
                                       <div class="info-weight">
