@@ -293,9 +293,11 @@
                     <div class="dishs-list-mobile">
                         <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" class="dishs-list-mobile-item" @click="showSelectedDish(item)">
                             <v-card class="dish-card">
-                                <div class="card-dish-top">
-                                    <v-img :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="item.name" class="dish-img-mobile" />
-                                </div>
+
+
+                              <div class="card-dish-top">
+                                <v-img cover :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="item.name" class="dish-img-mobile" />
+                              </div>
                                 <div class="card-dish-bottom">
                                     <h3 class="dish-name">
                                         {{item.name}}
@@ -676,10 +678,8 @@ export default {
 }
 
 .dish-img-mobile {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    min-width: 150px;
-    min-height: 150px;
+    width: 100%;
+    height: 167px;
 }
 
 .rest-info-center {
@@ -1043,4 +1043,8 @@ export default {
 		position: relative;
     }
 }
+
+  .dishs-list-mobile .card-dish-top{
+
+  }
 </style>
