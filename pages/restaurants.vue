@@ -229,56 +229,60 @@
             <v-icon>search</v-icon>
         </div>
         <div class="mobile-rest-info">
+
+          <div class="rest-info-content">
             <div class="rest-info-top">
-                <h1 class="info-top-title">
-                    {{restuarant.name}}
-                </h1>
-                <v-icon>info</v-icon>
+              <h1 class="info-top-title">
+                {{restuarant.name}}
+              </h1>
+              <v-icon>info</v-icon>
             </div>
             <div class="rest-info-center">
-                <v-chip @click="showRatingSheet = !showRatingSheet" :color="showRatingSheet == true ? 'primary': null">
-                    <v-icon>star</v-icon>
-                    {{restuarant.rating ? restuarant.rating: 'Мало оценок'}}
-                </v-chip>
-                <!-- add to next line v-if="this.getCurrentCoords.length > 0"-->
-                <!-- <v-chip>
-                    {{restInfo.deliveryTime.min}} - {{restInfo.deliveryTime.max}} мин
-                </v-chip> -->
-                <!-- add to next line v-if="this.getCurrentCoords.length > 0"-->
-                <v-chip @click="showDeliveryOption = !showDeliveryOption" :color="showDeliveryOption == true ? 'primary': null">
-                    Доставка 10 - 20
-                </v-chip>
-                <v-bottom-sheet v-model="showRatingSheet">
-                    <v-sheet>
-                        <div class="sheet-top">
-                            <h2 class="sheet-top-title">Рейтинг</h2>
-                            <v-icon>close</v-icon>
-                        </div>
-                        <div class="rating-info-bottom">
-                            {{restuarant.rating ? restuarant.rating : 'Мало оценок'}}
-                        </div>
-                    </v-sheet>
-                </v-bottom-sheet>
-                <v-bottom-sheet v-model="showDeliveryOption">
-                    <v-sheet>
-                        <div class="sheet-top">
-                            <h2 class="sheet-top-title">Условия доставки</h2>
-                            <v-icon>close</v-icon>
-                        </div>
-                        <div class="delivery-info">
-                            <v-icon>
-                                directions_walk
-                            </v-icon>
-							<div>
-                            	Доставка {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].deliveryFee}}-{{restuarant.delivery.fee[1].deliveryFee}} BYN. Бесплатно при заказе от {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].min}} BYN
-							</div>
-							<div>
-								Заказ от: {{restuarant.delivery.fee[0].min}} BYN
-							</div>
-                        </div>
-                    </v-sheet>
-                </v-bottom-sheet>
+              <v-chip @click="showRatingSheet = !showRatingSheet" :color="showRatingSheet == true ? 'primary': null" class="rest-info-center-block-tag">
+                <v-icon>star</v-icon>
+                {{restuarant.rating ? restuarant.rating: 'Мало оценок'}}
+              </v-chip>
+              <!-- add to next line v-if="this.getCurrentCoords.length > 0"-->
+              <!-- <v-chip>
+                  {{restInfo.deliveryTime.min}} - {{restInfo.deliveryTime.max}} мин
+              </v-chip> -->
+              <!-- add to next line v-if="this.getCurrentCoords.length > 0"-->
+              <v-chip @click="showDeliveryOption = !showDeliveryOption" :color="showDeliveryOption == true ? 'primary': null" class="rest-info-center-block-tag">
+                Доставка 10 - 20
+              </v-chip>
+              <v-bottom-sheet v-model="showRatingSheet">
+                <v-sheet>
+                  <div class="sheet-top">
+                    <h2 class="sheet-top-title">Рейтинг</h2>
+                    <v-icon>close</v-icon>
+                  </div>
+                  <div class="rating-info-bottom">
+                    {{restuarant.rating ? restuarant.rating : 'Мало оценок'}}
+                  </div>
+                </v-sheet>
+              </v-bottom-sheet>
+              <v-bottom-sheet v-model="showDeliveryOption">
+                <v-sheet>
+                  <div class="sheet-top">
+                    <h2 class="sheet-top-title">Условия доставки</h2>
+                    <v-icon>close</v-icon>
+                  </div>
+                  <div class="delivery-info">
+                    <v-icon>
+                      directions_walk
+                    </v-icon>
+                    <div>
+                      Доставка {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].deliveryFee}}-{{restuarant.delivery.fee[1].deliveryFee}} BYN. Бесплатно при заказе от {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].min}} BYN
+                    </div>
+                    <div>
+                      Заказ от: {{restuarant.delivery.fee[0].min}} BYN
+                    </div>
+                  </div>
+                </v-sheet>
+              </v-bottom-sheet>
             </div>
+          </div>
+
             <div class="rest-info-bottom">
                 <v-tabs v-model="tab" class="catalog-tabs">
                     <v-tab v-for="(category, index) in restuarant.menu" :key="category.id" @click="scroll(`${index}`)">
@@ -504,9 +508,14 @@ export default {
     margin-bottom: 0 !important;
 }
 </style><style scoped>
-.catalog-tabs {
+  .rest-info-content{
+    padding:  0 16px 16px 16px;
+    background: #fff;
+    border-bottom: 10px solid #fafafa;
+  }
+  .catalog-tabs {
     z-index: 0;
-}
+  }
 
 .right-my-order .my-order {
     flex: auto;
@@ -688,9 +697,7 @@ export default {
     height: 167px;
 }
 
-.rest-info-center {
-    padding: 0 16px;
-}
+
 
 .card-dish-bottom {
     display: flex;
@@ -741,7 +748,7 @@ export default {
 
 .dish-card {
   flex: 0 1 calc(50% - 11px * 1.5);
-  height: 296px;
+  /*height: 296px;*/
   display: block;
   position: relative;
   overflow: hidden;
@@ -796,18 +803,21 @@ export default {
     width: 100%;
     border-top-right-radius: 30px;
     border-top-left-radius: 30px;
-    padding: 0 16px;
 }
 
 .mobile-mode_header {
-	position: sticky;
-	top: 0;
-	z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 15px 15px 0 15px;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  z-index: 5;
+  background: #ffffff;
+  padding-top: 8px;
+  display: flex;
+  padding: 0 8px;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .desktop-mode {
@@ -1056,5 +1066,25 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+  .rest-info-center-block-tag{
+    height: 36px;
+    display: inline-flex;
+    padding: 9px 13px;
+    box-shadow: 0 2px 16px 0px rgba(0, 0, 0, 0.07);
+    align-items: center;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    border-radius: 18px;
+    flex-direction: row;
+    justify-content: center;
+    background: #fff!important;
+  }
+  .info-top-title{
+    color: #3f3f3f;
+    font-size: 24px;
+    line-height: 28px;
+    font-weight: bold;
+    padding-bottom: 12px;
   }
 </style>
