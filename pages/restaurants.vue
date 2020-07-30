@@ -124,14 +124,11 @@
                         <div v-if="this.getSelectedDishs.length > 0" class="my-order-dishes-desktop">
                             <div v-for="order in this.getSelectedDishs" :key="order.id" class="order-item">
                                 <div class="d-flex flex-column order-item-info">
-
-                                        <div class="item-name">
+                                    <div class="item-name">
                                         {{order.name}}
-                                        </div>
-
-
+                                    </div>
                                     <div class="order-item-weight">
-                                        {{order.sizes[0].weight}}
+                                        {{order.weigth}}
                                     </div>
                                 </div>
                                 <div class="d-flex flex-column my-counter">
@@ -150,7 +147,7 @@
                                     </div>
                                 </div>
                                 <div class="pl-4">
-                                    {{order.sizes[0].price}} BYN
+                                    x {{order.price}} BYN
                                 </div>
                             </div>
                         </div>
@@ -161,7 +158,6 @@
                         </div>
                     </div>
                     <div class="my-order-bottom">
-
                         <div class="total-price">
                             <p class="total-title">Итого</p>
                             <p class="price">{{this.getTotalPrice}} BYN</p>
@@ -172,7 +168,7 @@
             </div>
             <v-overlay z-index="999" v-model="showOptionsmenu">
                 <v-card width="50vw" class="select-option-card">
-                    <div class="d-flex flex-row justify-space-between">
+                    <div class="d-flex flex-row justify-space-between pb-3">
                         <div class="select-option-title" color="secondary">
                             Выберите опции
                         </div>
@@ -180,18 +176,20 @@
                             <v-icon color="#000">close</v-icon>
                         </div>
                     </div>
-                    <div class="options-list">
-                        <div class="sizes">
+                    <div class="options-list" >
+						 <!-- v-if="selectedDish.sizes[0]" -->
+                        <div class="sizes" >
                             <div class="multi-title">
                                 РАЗМЕР НА ВЫБОР
                             </div>
-                            <v-radio-group v-model="sizesRadioBtn" :mandatory="false" class="d-flex flex-row">
-                                <v-radio v-for="size in this.selectedDish.sizes" :key="size.id" :label="size.name" :value="size.id" color="primary"></v-radio>
+                            <v-radio-group v-model="sizesRadioBtn" :mandatory="false" class="d-flex flex-row" >
+                                <v-radio v-for="size in this.selectedDish.sizes" :key="size.id" :label="size.name" :value="size" color="primary" ></v-radio>
                             </v-radio-group>
                         </div>
                         <div class="options">
+							 <!-- v-if="selectedDish.sizes[0]" -->
                             <div class="multi-title">
-                                ДОПОЛНИТЕЛЬНЫЕ ИНГРЕДИЕНТЫ
+                                ДОПОЛНИТЕЛЬНЫЕ ИНГРЕДИЕНТЫ {{selectedDish.options}}
                             </div>
                             <div v-for="option in this.selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
                                 <div>
@@ -203,19 +201,27 @@
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <div>
-                            <v-btn color="primary">Добавить</v-btn>
-                        </div>
-                        <div>
+                    <div class='options-actions'>
+                        <div class="d-flex flex-row">
                             <div>
-                                <v-icon>
-                                    add
-                                </v-icon>
-                                {{this.selectedDish.counter}}
-                                <v-icon>
+                                <v-btn color="primary" @click="addCraftDish(sizesRadioBtn)">Добавить</v-btn>
+                            </div>
+                            <div class="dish-counter">
+                                <v-icon @click="mobileDecrementSelectedDisn()" color="black">
                                     remove
                                 </v-icon>
+                                {{this.selectedDishCounter}}
+                                <v-icon @click="mobileIncrementSelectedDisn()" color="black">
+                                    add
+                                </v-icon>
+                            </div>
+                        </div>
+                        <div class="total-price-calc">
+                            <div class="price-calc-sum">
+                                Сумма
+                            </div>
+                            <div>
+                                {{(sizesRadioBtn.price * selectedDishCounter).toFixed(1)}} BYN
                             </div>
                         </div>
                     </div>
@@ -230,58 +236,58 @@
         </div>
         <div class="mobile-rest-info">
 
-          <div class="rest-info-content">
-            <div class="rest-info-top">
-              <h1 class="info-top-title">
-                {{restuarant.name}}
-              </h1>
-              <v-icon>info</v-icon>
-            </div>
-            <div class="rest-info-center">
-              <v-chip @click="showRatingSheet = !showRatingSheet" :color="showRatingSheet == true ? 'primary': null" class="rest-info-center-block-tag">
-                <v-icon>star</v-icon>
-                {{restuarant.rating ? restuarant.rating: 'Мало оценок'}}
-              </v-chip>
-              <!-- add to next line v-if="this.getCurrentCoords.length > 0"-->
-              <!-- <v-chip>
+            <div class="rest-info-content">
+                <div class="rest-info-top">
+                    <h1 class="info-top-title">
+                        {{restuarant.name}}
+                    </h1>
+                    <v-icon>info</v-icon>
+                </div>
+                <div class="rest-info-center">
+                    <v-chip @click="showRatingSheet = !showRatingSheet" :color="showRatingSheet == true ? 'primary': null" class="rest-info-center-block-tag">
+                        <v-icon>star</v-icon>
+                        {{restuarant.rating ? restuarant.rating: 'Мало оценок'}}
+                    </v-chip>
+                    <!-- add to next line v-if="this.getCurrentCoords.length > 0"-->
+                    <!-- <v-chip>
                   {{restInfo.deliveryTime.min}} - {{restInfo.deliveryTime.max}} мин
               </v-chip> -->
-              <!-- add to next line v-if="this.getCurrentCoords.length > 0"-->
-              <v-chip @click="showDeliveryOption = !showDeliveryOption" :color="showDeliveryOption == true ? 'primary': null" class="rest-info-center-block-tag">
-                Доставка 10 - 20 мин.
-              </v-chip>
-              <v-bottom-sheet v-model="showRatingSheet">
-                <v-sheet>
-                  <div class="sheet-top">
-                    <h2 class="sheet-top-title">Рейтинг</h2>
-                    <v-icon>close</v-icon>
-                  </div>
-                  <div class="rating-info-bottom">
-                    {{restuarant.rating ? restuarant.rating : 'Мало оценок'}}
-                  </div>
-                </v-sheet>
-              </v-bottom-sheet>
-              <v-bottom-sheet v-model="showDeliveryOption">
-                <v-sheet>
-                  <div class="sheet-top">
-                    <h2 class="sheet-top-title">Условия доставки</h2>
-                    <v-icon>close</v-icon>
-                  </div>
-                  <div class="delivery-info">
-                    <v-icon>
-                      directions_walk
-                    </v-icon>
-                    <div>
-                      Доставка {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].deliveryFee}}-{{restuarant.delivery.fee[1].deliveryFee}} BYN. Бесплатно при заказе от {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].min}} BYN
-                    </div>
-                    <div>
-                      Заказ от: {{restuarant.delivery.fee[0].min}} BYN
-                    </div>
-                  </div>
-                </v-sheet>
-              </v-bottom-sheet>
+                    <!-- add to next line v-if="this.getCurrentCoords.length > 0"-->
+                    <v-chip @click="showDeliveryOption = !showDeliveryOption" :color="showDeliveryOption == true ? 'primary': null" class="rest-info-center-block-tag">
+                        Доставка 10 - 20 мин.
+                    </v-chip>
+                    <v-bottom-sheet v-model="showRatingSheet">
+                        <v-sheet>
+                            <div class="sheet-top">
+                                <h2 class="sheet-top-title">Рейтинг</h2>
+                                <v-icon>close</v-icon>
+                            </div>
+                            <div class="rating-info-bottom">
+                                {{restuarant.rating ? restuarant.rating : 'Мало оценок'}}
+                            </div>
+                        </v-sheet>
+                    </v-bottom-sheet>
+                    <v-bottom-sheet v-model="showDeliveryOption">
+                        <v-sheet>
+                            <div class="sheet-top">
+                                <h2 class="sheet-top-title">Условия доставки</h2>
+                                <v-icon>close</v-icon>
+                            </div>
+                            <div class="delivery-info">
+                                <v-icon>
+                                    directions_walk
+                                </v-icon>
+                                <div>
+                                    Доставка {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].deliveryFee}}-{{restuarant.delivery.fee[1].deliveryFee}} BYN. Бесплатно при заказе от {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].min}} BYN
+                                </div>
+                                <div>
+                                    Заказ от: {{restuarant.delivery.fee[0].min}} BYN
+                                </div>
+                            </div>
+                        </v-sheet>
+                    </v-bottom-sheet>
+                </div>
             </div>
-          </div>
 
             <div class="rest-info-bottom">
                 <v-tabs v-model="tab" class="catalog-tabs catalog-tabs-mobile">
@@ -300,27 +306,24 @@
                     <div class="dishs-list-mobile">
                         <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" class="dishs-list-mobile-item" @click="showSelectedDish(item)">
                             <v-card class="dish-card">
-
-
-                              <div class="card-dish-top">
-                                <v-img cover :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="item.name" class="dish-img-mobile" />
-                              </div>
+                                <div class="card-dish-top">
+                                    <v-img cover :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="item.name" class="dish-img-mobile" />
+                                </div>
                                 <div class="card-dish-bottom">
-                                  <div class="dish-name-container">
-                                    <h3 class="dish-name">
-                                        {{item.name}}
-                                    </h3>
-                                  </div>
+                                    <div class="dish-name-container">
+                                        <h3 class="dish-name">
+                                            {{item.name}}
+                                        </h3>
+                                    </div>
 
                                     <div class="dish-info">
-                                      <div class="info-weight">
-                                        {{item.sizes[0].weight}}
-                                      </div>
-
+                                        <div class="info-weight">
+                                            {{item.sizes[0] ? item.sizes[0].weight : '404'}}
+                                        </div>
                                     </div>
-                                  <div class="info-price">
-                                    {{item.sizes[0].price}} BYN
-                                  </div>
+                                    <div class="info-price">
+                                        {{item.sizes[0] ? item.sizes[0].price.toFixed(1) : '404'}} BYN
+                                    </div>
                                 </div>
                             </v-card>
 
@@ -351,7 +354,7 @@
                                     {{selectedDish.counter}}
                                     <!-- 1 -->
                                     <v-icon @click="selectedDish.counter++">
-                                    <!-- <v-icon> -->
+                                        <!-- <v-icon> -->
                                         add
                                     </v-icon>
                                 </div>
@@ -415,6 +418,8 @@ export default {
             showOptionsmenu: false,
             sizesRadioBtn: '',
             selected: [],
+			selectedDishCounter: 1,
+			countTotalPices: {}
         }
     },
     computed: {
@@ -440,14 +445,33 @@ export default {
         tab(newValue) {
             return newValue
         },
+        selectedDishCounter(newValue) {
+            return newValue
+        },
         '$route.params.region': function () {
             this.$router.push(`/${this.getSelectedZone.alias}`)
         }
     },
     methods: {
-		goBack(){
-			this.$router.go(-1)
-		},
+        addCraftDish(dish) {
+			this.countTotalPices = dish
+			dish.counter = this.selectedDishCounter
+			dish.name = `${this.selectedDish.name} (${dish.name})`
+            this.$store.dispatch('basket/addToBasket', this.countTotalPices);
+			this.showOptionsmenu = false
+			this.selectedDishCounter = 1
+        },
+        mobileDecrementSelectedDisn() {
+            if (this.selectedDishCounter > 1) {
+                this.selectedDishCounter--
+            }
+        },
+        mobileIncrementSelectedDisn() {
+            this.selectedDishCounter++
+        },
+        goBack() {
+            this.$router.go(-1)
+        },
         addToBasketMobile() {
             this.showDish = false
         },
@@ -464,90 +488,138 @@ export default {
             this.$store.dispatch('basket/dropBasket');
         },
         addToBasket(dish) {
-            console.log('addToBasket -> dish', dish)
-            this.selectedDish = dish
-            dish.counter = 1
-            if (dish.sizes.length > 1 || dish.options.length > 1) {
+			if (dish.sizes.length > 1 || dish.options.length > 1) {
+				this.selectedDish = dish
+				this.selectedDishCounter = 1
                 this.showOptionsmenu = true
-                this.sizesRadioBtn = dish.sizes[0].id
+                this.sizesRadioBtn = dish.sizes[0]
             } else {
-                this.showDish = false
                 this.$store.dispatch('basket/addToBasket', dish);
             }
         },
         showSelectedDish(dish) {
-            console.log('showSelectedDish -> dish', dish)
-            dish.counter = 1
             this.selectedDish = dish
+            this.selectedDishCounter = 1
             setTimeout(() => {
                 this.showDish = true
             }, 100);
         },
         scroll(id) {
-            console.log('scroll -> document.getElementById(id)', document.getElementById(id))
             document.getElementById(id).scrollIntoView({
                 block: 'start',
                 behavior: 'smooth'
             });
             this.tab = id
-            console.log('scroll -> this.tab', this.tab)
         },
         categoryNameIntersect(entries, observer) {
-            this.tab = parseInt(entries[0].target.id, 10)
+            // this.tab = parseInt(entries[0].target.id, 10)
         }
-    }
+	},
+	mounted () {
+		window.scrollTo(0,0);
+	},
 }
 </script>
 
 <style>
-  @media screen and (min-width: 992px){
+
+.v-input--selection-controls__input .v-icon {
+    background-color: rgba(211, 211, 211, 0.4) !important;
+    border-radius: 50%!important;
+}
+
+@media screen and (min-width: 992px) {
     .v-tabs-bar {
-      height: 70px !important;
+        height: 70px !important;
     }
-  }
-  @media screen and (max-width: 992px){
-    .v-slide-group__prev, .v-slide-group__next{
-      display: none!important;
+}
+
+@media screen and (max-width: 992px) {
+
+    .v-slide-group__prev,
+    .v-slide-group__next {
+        display: none !important;
     }
-    .catalog-tab-mobile-container{
-      color: #21201F;
-      height: 36px;
-      opacity: 0.4;
-      padding: 0 14px;
-      display: flex;
-      font-size: 15px;
-      max-width: 80vw;
-      box-sizing: border-box;
-      line-height: 36px;
-      white-space: nowrap;
-      align-items: center;
-      transition-property: opacity;
-      transition-duration: 200ms;
-      background: #ffffff;
+
+    .catalog-tab-mobile-container {
+        color: #21201F;
+        height: 36px;
+        opacity: 0.4;
+        padding: 0 14px;
+        display: flex;
+        font-size: 15px;
+        max-width: 80vw;
+        box-sizing: border-box;
+        line-height: 36px;
+        white-space: nowrap;
+        align-items: center;
+        transition-property: opacity;
+        transition-duration: 200ms;
+        background: #ffffff;
     }
-    .v-tab--active.catalog-tab-mobile-container{
-      opacity: 1;
-      height: 36px;
-      position: absolute;
-      border-radius: 16px;
-      background-color: #F1F0ED;
-      transition-property: width;
-      transition-duration: 200ms;
+
+    .v-tab--active.catalog-tab-mobile-container {
+        opacity: 1;
+        height: 36px;
+        position: absolute;
+        border-radius: 16px;
+        background-color: #F1F0ED;
+        transition-property: width;
+        transition-duration: 200ms;
     }
-  }
+}
 
 .v-application p {
     margin-bottom: 0 !important;
 }
 </style><style scoped>
-  .rest-info-content{
-    padding:  0 16px 16px 16px;
+
+.price-calc-sum{
+	color: #b0b0b0;
+    font-size: 12px;
+    margin-bottom: 3px;
+}
+
+.total-price-calc {
+    display: flex;
+	flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.dish-counter i {
+    margin: 0 5px;
+}
+
+.dish-counter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: .1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
+    padding: 0 10px;
+    margin: 0 10px;
+}
+
+.options-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    max-height: 48px;
+	padding-top: 20px;
+}
+
+.rest-info-content {
+    padding: 0 16px 16px 16px;
     background: #fff;
     border-bottom: 10px solid #fafafa;
-  }
-  .catalog-tabs {
+}
+
+.catalog-tabs {
     z-index: 0;
-  }
+}
 
 .right-my-order .my-order {
     flex: auto;
@@ -588,6 +660,7 @@ export default {
 .multi-title {
     color: #b0b0b0;
     font-size: 14px;
+	padding-top: 20px;
 }
 
 .close-select-option {
@@ -729,23 +802,21 @@ export default {
     height: 167px;
 }
 
-
-
 .card-dish-bottom {
     display: flex;
     flex-direction: column;
 }
 
 .dish-name {
-  color: #21201F;
-  display: -webkit-box;
-  overflow: hidden;
-  font-size: 16px;
-  text-align: center;
-  word-break: break-word;
-  line-height: 19px;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+    color: #21201F;
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 16px;
+    text-align: center;
+    word-break: break-word;
+    line-height: 19px;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
 .dish-info {
@@ -756,37 +827,37 @@ export default {
 }
 
 .info-price {
-  color: #3f3f3f;
-  font-size: 14px;
-  font-weight: 600;
-  height: 48px;
-  display: flex;
-  transition: opacity, background-color 100ms;
-  align-items: center;
-  border-radius: 16px;
-  align-content: center;
-  justify-content: center;
-  background-color: #F1F0ED;
-  margin: 0 9px 8px;
+    color: #3f3f3f;
+    font-size: 14px;
+    font-weight: 600;
+    height: 48px;
+    display: flex;
+    transition: opacity, background-color 100ms;
+    align-items: center;
+    border-radius: 16px;
+    align-content: center;
+    justify-content: center;
+    background-color: #F1F0ED;
+    margin: 0 9px 8px;
 }
 
 .info-weight {
-  color: #c2c0be;
-  font-size: 13px;
-  text-align: center;
-  display: block;
-  margin: auto;
+    color: #c2c0be;
+    font-size: 13px;
+    text-align: center;
+    display: block;
+    margin: auto;
 }
 
 .dish-card {
-  flex: 0 1 calc(50% - 11px * 1.5);
-  /*height: 296px;*/
-  display: block;
-  position: relative;
-  overflow: hidden;
-  transform: translate3d(0, 0, 0);
-  box-shadow: 0px 8px 20px rgba(117, 115, 111, 0.2);
-  border-radius: 24px!important;
+    flex: 0 1 calc(50% - 11px * 1.5);
+    /*height: 296px;*/
+    display: block;
+    position: relative;
+    overflow: hidden;
+    transform: translate3d(0, 0, 0);
+    box-shadow: 0px 8px 20px rgba(117, 115, 111, 0.2);
+    border-radius: 24px !important;
 }
 
 .delivery-info div {
@@ -838,18 +909,18 @@ export default {
 }
 
 .mobile-mode_header {
-  position: sticky;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  z-index: 5;
-  background: #ffffff;
-  padding-top: 8px;
-  display: flex;
-  padding: 0 8px;
-  align-items: center;
-  justify-content: space-between;
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    z-index: 5;
+    background: #ffffff;
+    padding-top: 8px;
+    display: flex;
+    padding: 0 8px;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .desktop-mode {
@@ -875,17 +946,17 @@ export default {
 }
 
 .category-title {
-  color: #3F3F3F;
-  font-size: 28px;
-  line-height: 33px;
-  font-weight: bold;
-  display: flex;
-  position: relative;
-  padding-top: 27px;
-  align-items: center;
-  padding-left: 24px;
-  padding-right: 24px;
-  flex-direction: row;
+    color: #3F3F3F;
+    font-size: 28px;
+    line-height: 33px;
+    font-weight: bold;
+    display: flex;
+    position: relative;
+    padding-top: 27px;
+    align-items: center;
+    padding-left: 24px;
+    padding-right: 24px;
+    flex-direction: row;
 }
 
 .treangle {
@@ -910,36 +981,37 @@ export default {
     flex-wrap: wrap;
     justify-content: flex-start;
     align-items: flex-start;
-	  padding-left: 10px;
+    padding-left: 10px;
 }
 
 .dishs-list-mobile-item {
     margin: 5px;
     max-width: calc((100% - 20px)/2);
 }
-@media screen and (min-width: 500px){
-  .dishs-list-mobile-item {
-  max-width: calc((100% - 30px)/3);
-  }
+
+@media screen and (min-width: 500px) {
+    .dishs-list-mobile-item {
+        max-width: calc((100% - 30px)/3);
+    }
 }
 
-  @media screen and (min-width: 620px){
+@media screen and (min-width: 620px) {
     .dishs-list-mobile-item {
-    max-width: calc((100% - 40px)/4);
+        max-width: calc((100% - 40px)/4);
     }
-  }
+}
 
-  @media screen and (min-width: 850px){
+@media screen and (min-width: 850px) {
     .dishs-list-mobile-item {
-    max-width: calc((100% - 50px)/5);
+        max-width: calc((100% - 50px)/5);
     }
-  }
+}
 
-  @media screen and (min-width: 992px) {
+@media screen and (min-width: 992px) {
     .dishs-list-mobile-item {
-    max-width: calc((100% - 60px) / 6);
+        max-width: calc((100% - 60px) / 6);
     }
-  }
+}
 
 .dishs-list {
     display: flex;
@@ -1086,20 +1158,22 @@ export default {
         display: flex;
         flex-direction: column;
         margin-top: -3rem;
-		z-index: 10;
-    	background: white;
-		position: relative;
+        z-index: 10;
+        background: white;
+        position: relative;
     }
 }
-  .dish-name-container{
+
+.dish-name-container {
     height: 38px;
     margin: 8px 0 2px;
     padding: 0 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  .rest-info-center-block-tag{
+}
+
+.rest-info-center-block-tag {
     height: 36px;
     display: inline-flex;
     padding: 9px 13px;
@@ -1110,13 +1184,14 @@ export default {
     border-radius: 18px;
     flex-direction: row;
     justify-content: center;
-    background: #fff!important;
-  }
-  .info-top-title{
+    background: #fff !important;
+}
+
+.info-top-title {
     color: #3f3f3f;
     font-size: 24px;
     line-height: 28px;
     font-weight: bold;
     padding-bottom: 12px;
-  }
+}
 </style>

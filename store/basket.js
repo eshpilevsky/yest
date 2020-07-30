@@ -9,7 +9,6 @@ export const state = () => ({
 export const mutations = {
   SAVE_TO_BASKET(state, payload) {
     state.status = '200'
-    payload.counter = 1
     state.data.dishs.push(payload)
   },
   DROP_BASKET(state) {
@@ -79,7 +78,11 @@ export const getters = {
     let dl = state.data.dishs
     let totalPrice = 0
     dl.forEach(element => {
-      totalPrice += element.sizes[0].price * element.counter
+		if (element.hasOwnProperty('sizes')) {
+			totalPrice += element.sizes[0].price * element.counter
+		} else {
+			totalPrice += element.price * element.counter
+		}
     });
     return totalPrice.toFixed(1)
     // return state.data.totalPrice
