@@ -42,8 +42,8 @@ export default {
             showSpecialOffer: false,
             rest: [],
             ymaps: null,
-			categoryInfoData: null,
-			currentZone: null,
+            categoryInfoData: null,
+            currentZone: null,
         }
     },
     async asyncData({
@@ -64,8 +64,8 @@ export default {
 
         if (currentZone == undefined) {
             currentZone = zoneListData[0]
-		}
-		app.currentZone = currentZone
+        }
+        app.currentZone = currentZone
 
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
             zone_id: currentZone.id
@@ -78,30 +78,36 @@ export default {
             name: 'Все',
             id: 0,
             alias: 'all'
-		}]
-		
+        }]
+
         let currentCategory = categoriesListData.find((category) => {
             if (category.alias == params.alias) {
                 return category
             }
         })
+
+        let categoryInfo;
+        let categoryInfoData;
         if (currentCategory === undefined) {
             currentCategory = categoryAll[0]
-        }
-
-        let categoryInfo = await axios.post('https://yestapi.xyz/categories/info', {
-            zone_id: currentZone.id,
-            category_id: currentCategory.id
-        })
-
-        let categoryInfoData;
-        if (categoryInfo.status != 404) {
-            categoryInfoData = categoryInfo.data
-            app.categoryInfoData = categoryInfoData
-        } else {
             categoryInfoData = {
                 head: 'Быстрая и бесплатная доставка',
                 city: currentZone.name
+            }
+        } else {
+            categoryInfo = await axios.post('https://yestapi.xyz/categories/info', {
+                zone_id: currentZone.id,
+                category_id: currentCategory.id
+            })
+
+            if (categoryInfo.status != 404) {
+                categoryInfoData = categoryInfo.data
+                app.categoryInfoData = categoryInfoData
+            } else {
+                categoryInfoData = {
+                    head: 'Быстрая и бесплатная доставка',
+                    city: currentZone.name
+                }
             }
         }
 
@@ -229,8 +235,8 @@ export default {
             ...settings,
             debug: true
         });
-		this.ymaps = ymaps
-		await this.$store.dispatch('zone/setSelectedZone', this.currentZone.id)
+        this.ymaps = ymaps
+        await this.$store.dispatch('zone/setSelectedZone', this.currentZone.id)
         console.error('created -> this.currentZone.id', this.currentZone.id)
     },
     mounted() {
@@ -267,8 +273,8 @@ export default {
 </script>
 
 <style>
-html{
-	overflow-x:hidden!important;
+html {
+    overflow-x: hidden !important;
 }
 
 .home-container {

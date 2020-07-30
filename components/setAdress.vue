@@ -2,7 +2,10 @@
 <div class='setAdressContaine containerr' id='bgImg'>
     <div class="setAdressContaine-info">
         <span class="info-pre-title">
-            Yest.by • {{this.currentZone.name}} • {{this.currentCategory.name}}
+            Yest.by • {{this.currentZone.name}}
+			<span class="pre-title">
+			 • {{this.currentCategory.name}}
+			</span>
         </span>
         <h1 class="info-title">
             {{this.categoryInfoData.header }} <br /> в {{ this.categoryInfoData.city }}
@@ -196,6 +199,11 @@ export default {
 </script>
 
 <style scoped>
+
+.pre-title{
+	display: none;
+}
+
 .itemAdress-sub {
     color: #aaa !important;
 }
@@ -315,6 +323,11 @@ export default {
 /*}*/
 
 @media screen and (max-width: 992px) {
+
+	.pre-title{
+		display: flex;
+	}
+
     .map-btn {
         visibility: visible;
     }
