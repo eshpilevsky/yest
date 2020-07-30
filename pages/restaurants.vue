@@ -238,7 +238,7 @@
               <v-icon>info</v-icon>
             </div>
             <div class="rest-info-center">
-              <v-chip @click="showRatingSheet = !showRatingSheet" :color="showRatingSheet == true ? 'primary': null">
+              <v-chip @click="showRatingSheet = !showRatingSheet" :color="showRatingSheet == true ? 'primary': null" class="rest-info-center-block-tag">
                 <v-icon>star</v-icon>
                 {{restuarant.rating ? restuarant.rating: 'Мало оценок'}}
               </v-chip>
@@ -247,7 +247,7 @@
                   {{restInfo.deliveryTime.min}} - {{restInfo.deliveryTime.max}} мин
               </v-chip> -->
               <!-- add to next line v-if="this.getCurrentCoords.length > 0"-->
-              <v-chip @click="showDeliveryOption = !showDeliveryOption" :color="showDeliveryOption == true ? 'primary': null">
+              <v-chip @click="showDeliveryOption = !showDeliveryOption" :color="showDeliveryOption == true ? 'primary': null" class="rest-info-center-block-tag">
                 Доставка 10 - 20
               </v-chip>
               <v-bottom-sheet v-model="showRatingSheet">
@@ -507,9 +507,14 @@ export default {
     margin-bottom: 0 !important;
 }
 </style><style scoped>
-.catalog-tabs {
+  .rest-info-content{
+    padding:  0 16px 16px 16px;
+    background: #fff;
+    border-bottom: 10px solid #fafafa;
+  }
+  .catalog-tabs {
     z-index: 0;
-}
+  }
 
 .right-my-order .my-order {
     flex: auto;
@@ -691,9 +696,7 @@ export default {
     height: 167px;
 }
 
-.rest-info-center {
-    padding: 0 16px;
-}
+
 
 .card-dish-bottom {
     display: flex;
@@ -799,7 +802,6 @@ export default {
     width: 100%;
     border-top-right-radius: 30px;
     border-top-left-radius: 30px;
-    padding: 0 16px;
 }
 
 .mobile-mode_header {
@@ -1063,5 +1065,18 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+  .rest-info-center-block-tag{
+    height: 36px;
+    display: inline-flex;
+    padding: 9px 13px;
+    box-shadow: 0 2px 16px 0px rgba(0, 0, 0, 0.07);
+    align-items: center;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    border-radius: 18px;
+    flex-direction: row;
+    justify-content: center;
+    background: #fff;
   }
 </style>
