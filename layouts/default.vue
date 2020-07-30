@@ -1,5 +1,5 @@
 <template>
-<v-app dark>
+<v-app>
     <layout-header v-show="!isMapVisible" />
     <v-content v-show="!isMapVisible">
         <v-container class="main_cont">

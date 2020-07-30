@@ -1,5 +1,6 @@
 export const state = () => ({
   data: {
+	restuarantUrl: null,
     dishs: [],
     totalPrice: 0,
   },
@@ -7,6 +8,10 @@ export const state = () => ({
 })
 
 export const mutations = {
+  SAVE_RESTRUARNT_URL(state, url) {
+    state.status = '200'
+    state.data.restuarantUrl = url
+  },
   SAVE_TO_BASKET(state, payload) {
     state.status = '200'
     state.data.dishs.push(payload)
@@ -68,9 +73,15 @@ export const actions = {
   removeFromBasket(context, id) {
     context.commit('REMOVE_FROM_BASKET', id)
   },
+  saveRestuarantUrl(context, url) {
+    context.commit('SAVE_RESTRUARNT_URL', url)
+  },
 };
 
 export const getters = {
+	getRestuarantUrl(state) {
+	  return state.data.restuarantUrl
+	},
   getSelectedDishs(state) {
     return state.data.dishs
   },
@@ -85,6 +96,5 @@ export const getters = {
 		}
     });
     return totalPrice.toFixed(1)
-    // return state.data.totalPrice
   },
 };

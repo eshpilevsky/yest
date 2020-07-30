@@ -147,7 +147,7 @@
                                     </div>
                                 </div>
                                 <div class="pl-4">
-                                    x {{order.price}} BYN
+                                    x {{order.price ? order.price : order.sizes[0].price }} BYN
                                 </div>
                             </div>
                         </div>
@@ -460,6 +460,7 @@ export default {
             this.$store.dispatch('basket/addToBasket', this.countTotalPices);
 			this.showOptionsmenu = false
 			this.selectedDishCounter = 1
+			this.$store.dispatch('basket/saveRestuarantUrl', this.$router.currentRoute.params);
         },
         mobileDecrementSelectedDisn() {
             if (this.selectedDishCounter > 1) {
@@ -494,7 +495,9 @@ export default {
                 this.showOptionsmenu = true
                 this.sizesRadioBtn = dish.sizes[0]
             } else {
-                this.$store.dispatch('basket/addToBasket', dish);
+				dish.counter = 1
+				this.$store.dispatch('basket/addToBasket', dish);
+				this.$store.dispatch('basket/saveRestuarantUrl', this.$router.currentRoute.params);
             }
         },
         showSelectedDish(dish) {
@@ -517,6 +520,7 @@ export default {
 	},
 	mounted () {
 		window.scrollTo(0,0);
+		
 	},
 }
 </script>
