@@ -1077,6 +1077,13 @@ export default {
     border-radius: 18px;
     flex-direction: row;
     justify-content: center;
-    background: #fff;
+    background: #fff!important;
+  }
+  .info-top-title{
+    color: #3f3f3f;
+    font-size: 24px;
+    line-height: 28px;
+    font-weight: bold;
+    padding-bottom: 12px;
   }
 </style>
