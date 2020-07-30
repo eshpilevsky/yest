@@ -124,9 +124,12 @@
                         <div v-if="this.getSelectedDishs.length > 0" class="my-order-dishes-desktop">
                             <div v-for="order in this.getSelectedDishs" :key="order.id" class="order-item">
                                 <div class="d-flex flex-column order-item-info">
-                                    <div class="item-name">
+                                    <div class="dish-name-container">
+                                        <div class="item-name">
                                         {{order.name}}
+                                        </div>
                                     </div>
+
                                     <div class="order-item-weight">
                                         {{order.sizes[0].weight}}
                                     </div>
@@ -692,19 +695,15 @@ export default {
 }
 
 .dish-name {
-  color: #3f3f3f;
+  color: #21201F;
+  display: -webkit-box;
   overflow: hidden;
-  font-size: 15px;
+  font-size: 16px;
+  text-align: center;
   word-break: break-word;
-  max-height: 55px;
-  -webkit-line-clamp: 3;
+  line-height: 19px;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  height: 38px;
-  margin: 8px 0 2px;
-  padding: 0 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .dish-info {
@@ -831,13 +830,17 @@ export default {
 }
 
 .category-title {
-    font-weight: bold;
-    font-size: 24px;
-    margin-left: 10px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-right: 12px;
+  color: #3F3F3F;
+  font-size: 28px;
+  line-height: 33px;
+  font-weight: bold;
+  display: flex;
+  position: relative;
+  padding-top: 27px;
+  align-items: center;
+  padding-left: 24px;
+  padding-right: 24px;
+  flex-direction: row;
 }
 
 .treangle {
@@ -1043,8 +1046,12 @@ export default {
 		position: relative;
     }
 }
-
-  .dishs-list-mobile .card-dish-top{
-
+  .dish-name-container{
+    height: 38px;
+    margin: 8px 0 2px;
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 </style>
