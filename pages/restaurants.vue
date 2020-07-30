@@ -914,30 +914,30 @@ export default {
 }
 
 .dishs-list-mobile-item {
-    margin: 10px;
-    max-width: calc((100% - 40px)/2);
+    margin: 5px;
+    max-width: calc((100% - 20px)/2);
 }
 @media screen and (min-width: 500px){
   .dishs-list-mobile-item {
-  max-width: calc((100% - 60px)/3);
+  max-width: calc((100% - 30px)/3);
   }
 }
 
   @media screen and (min-width: 620px){
     .dishs-list-mobile-item {
-    max-width: calc((100% - 80px)/4);
+    max-width: calc((100% - 40px)/4);
     }
   }
 
   @media screen and (min-width: 850px){
     .dishs-list-mobile-item {
-    max-width: calc((100% - 100px)/5);
+    max-width: calc((100% - 50px)/5);
     }
   }
 
   @media screen and (min-width: 992px) {
     .dishs-list-mobile-item {
-    max-width: calc((100% - 120px) / 6);
+    max-width: calc((100% - 60px) / 6);
     }
   }
 
