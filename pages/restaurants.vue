@@ -535,6 +535,7 @@ export default {
       transition-duration: 200ms;
     }
   }
+
 .v-application p {
     margin-bottom: 0 !important;
 }
