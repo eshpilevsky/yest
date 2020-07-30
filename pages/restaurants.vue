@@ -28,7 +28,7 @@
                                             Доставка Yest.by
                                         </div>
                                         <div class="description-price ">
-                                            Доставка {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].deliveryFee}}-{{restuarant.delivery.fee[1].deliveryFee}}. Бесплатно при заказе от {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].min}} BYN
+                                            Доставка {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].deliveryFee}}-{{restuarant.delivery.fee[1].deliveryFee}} BYN. Бесплатно при заказе от {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].min}} BYN
                                         </div>
                                     </div>
                                 </v-col>
@@ -248,7 +248,7 @@
               </v-chip> -->
               <!-- add to next line v-if="this.getCurrentCoords.length > 0"-->
               <v-chip @click="showDeliveryOption = !showDeliveryOption" :color="showDeliveryOption == true ? 'primary': null" class="rest-info-center-block-tag">
-                Доставка 10 - 20
+                Доставка 10 - 20 мин.
               </v-chip>
               <v-bottom-sheet v-model="showRatingSheet">
                 <v-sheet>
@@ -284,8 +284,8 @@
           </div>
 
             <div class="rest-info-bottom">
-                <v-tabs v-model="tab" class="catalog-tabs">
-                    <v-tab v-for="(category, index) in restuarant.menu" :key="category.id" @click="scroll(`${index}`)">
+                <v-tabs v-model="tab" class="catalog-tabs catalog-tabs-mobile">
+                    <v-tab v-for="(category, index) in restuarant.menu" :key="category.id" @click="scroll(`${index}`)" class="catalog-tab-mobile-container">
                         <v-chip>
                             {{category.name}}
                         </v-chip>
@@ -499,10 +499,41 @@ export default {
 </script>
 
 <style>
-.v-tabs-bar {
-    height: 70px !important;
-}
-
+  @media screen and (min-width: 992px){
+    .v-tabs-bar {
+      height: 70px !important;
+    }
+  }
+  @media screen and (max-width: 992px){
+    .v-slide-group__prev, .v-slide-group__next{
+      display: none!important;
+    }
+    .catalog-tab-mobile-container{
+      color: #21201F;
+      height: 36px;
+      opacity: 0.4;
+      padding: 0 14px;
+      display: flex;
+      font-size: 15px;
+      max-width: 80vw;
+      box-sizing: border-box;
+      line-height: 36px;
+      white-space: nowrap;
+      align-items: center;
+      transition-property: opacity;
+      transition-duration: 200ms;
+      background: #ffffff;
+    }
+    .v-tab--active.catalog-tab-mobile-container{
+      opacity: 1;
+      height: 36px;
+      position: absolute;
+      border-radius: 16px;
+      background-color: #F1F0ED;
+      transition-property: width;
+      transition-duration: 200ms;
+    }
+  }
 .v-application p {
     margin-bottom: 0 !important;
 }
