@@ -28,7 +28,7 @@
                                             Доставка Yest.by
                                         </div>
                                         <div class="description-price ">
-                                            Доставка {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].deliveryFee}}-{{restuarant.delivery.fee[1].deliveryFee}}. Бесплатно при заказе от {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].min}} BYN
+                                            Доставка {{restuarant.delivery.fee[restuarant.delivery.fee.length - 1].deliveryFee}}-{{restuarant.delivery.fee[1].deliveryFee}}. Бесплатно при заказе от {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].min}} BYN
                                         </div>
                                     </div>
                                 </v-col>
@@ -86,7 +86,7 @@
                 </div>
                 <div class="catalog">
                     <v-tabs v-model="tab" class="catalog-tabs" center-active>
-                        <v-tab height="70px" v-for="(category) in restuarant.menu" :key="category.cat_id" @click="scroll(`category${category.cat_id}`)">
+                        <v-tab height="70px" v-for="(category, index) in restuarant.menu" :key="category.cat_id" @click="scroll(`${index}`)">
                             {{category.name}}
                         </v-tab>
                     </v-tabs>
@@ -290,7 +290,7 @@
             </div>
             <div class="mobile-catalog">
                 <div v-for="(category, index) in restuarant.menu" :key="category.id">
-                    <h2 v-intersect="categoryNameIntersect" :id='index' class="category-title">
+                    <h2 v-intersect="categoryNameIntersect" :id="`${index}`" class="category-title">
                         {{category.name}}
                     </h2>
                     <div class="dishs-list-mobile">
@@ -486,6 +486,7 @@ export default {
                 behavior: 'smooth'
             });
             this.tab = id
+            console.log('scroll -> this.tab', this.tab)
         },
         categoryNameIntersect(entries, observer) {
             this.tab = parseInt(entries[0].target.id, 10)

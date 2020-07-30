@@ -1,7 +1,6 @@
 <template>
 <v-app dark>
-    <layout-header v-show="this.$router.currentRoute.name !== 'restik'" />
-    <!-- !isMapVisible -->
+    <layout-header v-show="isMapVisible" />
     <v-content v-show="!isMapVisible">
         <v-container class="main_cont">
             <nuxt />
