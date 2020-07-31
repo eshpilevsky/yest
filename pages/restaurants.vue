@@ -561,7 +561,8 @@ export default {
                     this.showWarning = true
                     this.selectedDish = dish
                 } else {
-                    console.error("ELSE ELSE ");
+					console.error("ELSE ELSE ");
+					dish.counter = 1
                     this.$store.dispatch('basket/addToBasket', dish);
                     this.$store.dispatch('basket/saveRestuarantUrl', {
                         params: this.$router.currentRoute.params,
