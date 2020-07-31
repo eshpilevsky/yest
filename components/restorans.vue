@@ -109,7 +109,6 @@ export default {
             this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
         },
         getSelectedZone(newValue, oldValue) {
-            console.log('getSelectedZone -> newValue RESTORANS', newValue)
             this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
         },
     },
@@ -171,7 +170,6 @@ export default {
                         this.restaurants = [];
                         // this.restaurants = rest;
                         this.restaurants = this.computedOpenTime(rest)
-                        console.log('getRestaurants -> this.restaurants', this.restaurants)
                         this.notFound = false;
                     } else if (resp.status === 404) {
                         this.restaurants = [];
@@ -249,7 +247,6 @@ export default {
                 }
             });
             // this.restaurants = openRestorants.concat(closeRestorants)
-            console.error('computedOpenTime -> this.counterRest ', this.counterRest)
             return openRestorants.concat(closeRestorants).slice(0, this.limit);
         }
     },

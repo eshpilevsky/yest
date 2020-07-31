@@ -2,7 +2,7 @@
 <v-card class="card-dish" :class="{selected: isSelected}">
     <div class="dish-info-top">
         <div class="dish-price">
-            {{this.counter > 0 ? `${this.counter}`: ''}} {{this.computedPrice}} BYN
+            {{this.counter > 0 ? `${this.counter} x`: ''}} {{this.computedPrice}} BYN
         </div>
         <h3 class="dish-card-title">
             {{this.name}}
@@ -32,13 +32,13 @@ export default {
         description: String,
         dishinfo: Array,
         img: String,
-	},
-	data() {
-		return {
-			isSelected: false,
-			counter: 0,
-		}
-	},
+    },
+    data() {
+        return {
+            isSelected: false,
+            counter: 0,
+        }
+    },
     computed: {
         computedPrice() {
             if (this.dishinfo.length > 1) {
@@ -50,23 +50,28 @@ export default {
         ...mapGetters({
             getSelectedDishs: "basket/getSelectedDishs",
         }),
-	},
-	mounted () {
-		this.isSelected = this.getSelectedDishs.find((dish) =>{
-			if (dish.description == this.description) {
-				this.counter = dish.counter
-				return true
-			}
-		});
-	},
+    },
+    mounted() {
+		console.log('mounted -> this.getSelectedDishs', this.getSelectedDishs)
+		
+        // let test = this.getSelectedDishs.find((dish) => {
+        //     if (dish.description == this.description) {
+        //         this.counter = dish.counter
+        //         return true
+        //     }
+		// });
+		// if (test == undefined) {
+			
+		// }
+        // console.error('mounted -> test', test)
+    },
 
 }
 </script>
 
 <style scoped>
-
-.selected{
-	border-left: 5px solid #00a646;
+.selected {
+    border-left: 5px solid #00a646;
 }
 
 .dish-info-top {

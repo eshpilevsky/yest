@@ -41,7 +41,7 @@
                                     </p>
                                 </v-col>
                                 <v-col :md='3' class="white--text">
-                                    <v-menu bottom origin="center center" transition="scale-transition" nudge-left='100' nudge-bottom='60'>
+                                    <v-menu bottom origin="center center" z-index="999" transition="scale-transition" nudge-left='100' nudge-bottom='50'>
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-btn color="primary" large v-bind="attrs" v-on="on">
                                                 <p class="info-btn-text">
@@ -121,6 +121,7 @@
                                 delete_forever
                             </v-icon>
                         </div>
+                        <!-- <div v-if="this.getSelectedDishs.length > 0 " class="my-order-dishes-desktop"> -->
                         <div v-if="this.getSelectedDishs.length > 0 && this.getLatetestRestInfoWithOrder.params.resName == this.$router.currentRoute.params.resName" class="my-order-dishes-desktop">
                             <div v-for="order in this.getSelectedDishs" :key="order.id" class="order-item">
                                 <div class="d-flex flex-column order-item-info">
@@ -1040,22 +1041,22 @@ export default {
 
 .category-title {
     color: #3F3F3F;
-    font-size: 28px;
     line-height: 33px;
     font-weight: bold;
     display: flex;
     position: relative;
     padding-top: 27px;
     align-items: center;
-    padding-left: 24px;
-    padding-right: 24px;
+    padding-left: 10px;	
     flex-direction: row;
 }
 
 .treangle {
-    border-left: 5px solid transparent;
-    border-right: 155px solid transparent;
-    border-bottom: 50px solid white;
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    border-bottom: 17px solid #fff;
+    width: 10%;
+    margin: auto;
 }
 
 .catalog {

@@ -91,7 +91,7 @@ export default {
         if (currentCategory === undefined) {
             currentCategory = categoryAll[0]
             categoryInfoData = {
-                head: 'Быстрая и бесплатная доставка',
+                headr: 'Быстрая и бесплатная доставка',
                 city: currentZone.name
             }
         } else {
@@ -105,7 +105,7 @@ export default {
                 app.categoryInfoData = categoryInfoData
             } else {
                 categoryInfoData = {
-                    head: 'Быстрая и бесплатная доставка',
+                    headr: 'Быстрая и бесплатная доставка',
                     city: currentZone.name
                 }
             }
@@ -199,7 +199,8 @@ export default {
             });
             return openRestorants.concat(closeRestorants);
         }
-        var filtByTime = await computedOpenTime()
+		var filtByTime = await computedOpenTime()
+		console.log('categoryInfoData', categoryInfoData);
         return {
             restaurantsList: filtByTime,
             categoriesList: categoryAll.concat(categoriesList.data),
@@ -237,7 +238,6 @@ export default {
         });
         this.ymaps = ymaps
         await this.$store.dispatch('zone/setSelectedZone', this.currentZone.id)
-        console.error('created -> this.currentZone.id', this.currentZone.id)
     },
     mounted() {
         // setTimeout(() => {

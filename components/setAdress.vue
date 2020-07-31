@@ -102,6 +102,9 @@ export default {
 			this.currentZone.name = newValue.name
 			this.currentCategory.name = this.getSelectedCategory.name
         },
+        categoryInfoData(newValue) {
+			return newValue
+        },
     },
     methods: {
         ...mapMutations({
@@ -186,14 +189,11 @@ export default {
         },
     },
     async beforeMount() {
-        this.ww = window.innerWidth;
+		this.ww = window.innerWidth;
+		console.error('this.categoryInfoData', this.categoryInfoData);
     },
     mounted() {
       this.searchAddress = this.getCurrentAddress
-      setTimeout(() => {
-        console.log(this.categoryInfoData);
-              console.log('mounted -> this.categoryInfoData.background', this.categoryInfoData.background)
-      }, 200);
     }
 }
 </script>
