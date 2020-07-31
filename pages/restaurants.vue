@@ -121,7 +121,7 @@
                                 delete_forever
                             </v-icon>
                         </div>
-                        <div v-if="this.getSelectedDishs.length > 0" class="my-order-dishes-desktop">
+                        <div v-if="this.getSelectedDishs.length > 0 && this.getLatetestRestInfoWithOrder.params.resName == this.$router.currentRoute.params.resName" class="my-order-dishes-desktop">
                             <div v-for="order in this.getSelectedDishs" :key="order.id" class="order-item">
                                 <div class="d-flex flex-column order-item-info">
                                     <div class="item-name">
@@ -176,27 +176,33 @@
                             <v-icon color="#000">close</v-icon>
                         </div>
                     </div>
-                    <div class="options-list" >
-						 <!-- v-if="selectedDish.sizes[0]" -->
-                        <div class="sizes" >
+                    <div class="options-list">
+                        <!-- v-if="selectedDish.sizes[0]" -->
+                        <div class="sizes">
                             <div class="multi-title">
                                 РАЗМЕР НА ВЫБОР
                             </div>
-                            <v-radio-group v-model="sizesRadioBtn" :mandatory="false" class="d-flex flex-row" >
-                                <v-radio v-for="size in this.selectedDish.sizes" :key="size.id" :label="size.name" :value="size" color="primary" ></v-radio>
+                            <v-radio-group v-model="sizesRadioBtn" :mandatory="false" class="d-flex flex-row">
+                                <v-radio v-for="size in this.selectedDish.sizes" :key="size.id" :label="size.name" :value="size" color="primary"></v-radio>
                             </v-radio-group>
                         </div>
                         <div class="options">
-							 <!-- v-if="selectedDish.sizes[0]" -->
+                            <!-- v-if="selectedDish.sizes[0]" -->
                             <div class="multi-title">
-                                ДОПОЛНИТЕЛЬНЫЕ ИНГРЕДИЕНТЫ {{selectedDish.options}}
+                                ДОПОЛНИТЕЛЬНЫЕ ИНГРЕДИЕНТЫ
                             </div>
                             <div v-for="option in this.selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
                                 <div>
                                     {{option.title}}
                                 </div>
-                                <div class="d-flex flex-row justify-start align-center">
-                                    <v-checkbox v-for="option in option.variants" :key="option.id" v-model="selected" :label="option.name" :value="option.dish_option_id" color="primary"></v-checkbox>
+                                <div class="d-flex flex-row justify-start">
+                                    <!-- <div v-for="option in option.variants" :key="option.id">
+                                        <v-checkbox v-model="selected" :label="option.name" :value="option.dish_option_id" color="primary"></v-checkbox>
+                                    </div> -->
+                                    <v-radio-group v-model="selected" :mandatory="false" class="d-flex flex-row">
+                                        {{option}}
+                                        <v-radio v-for="option in option.variants" :key="option.id" :label="`${option.name} +${option.price !==null ? option.price.price: 0}BYN`" :value="option" color="primary"></v-radio>
+                                    </v-radio-group>
                                 </div>
                             </div>
                         </div>
@@ -224,6 +230,29 @@
                                 {{(sizesRadioBtn.price * selectedDishCounter).toFixed(1)}} BYN
                             </div>
                         </div>
+                    </div>
+                </v-card>
+            </v-overlay>
+            <v-overlay z-index="999" v-model="showWarning">
+                <v-card width="50vw" height="20vh" class="d-flex flex-column justify-space-between select-option-card">
+                    <div class="d-flex flex-row justify-space-between">
+                        <div class="warning-title" color="secondary">
+                            Оформить заказ из ресторана {{this.restuarant.name}}
+                        </div>
+                        <div>
+                            <v-icon @click="cancelDeleteBasket()" color="black">close</v-icon>
+                        </div>
+                    </div>
+                    <div class="warning-info" color="secondary">
+                        Все ранее добавленные блюда из ресторана {{this.getLatetestRestInfoWithOrder == null ? '404' : this.getLatetestRestInfoWithOrder.restName}} будут удалены из корзины
+                    </div>
+                    <div class="d-flex flex-row">
+                        <v-btn color="primary" @click="coontinue()">
+                            Продолжить
+                        </v-btn>
+                        <v-btn @click="cancelDeleteBasket()" class="mx-3" outlined>
+                            Отменить
+                        </v-btn>
                     </div>
                 </v-card>
             </v-overlay>
@@ -418,8 +447,10 @@ export default {
             showOptionsmenu: false,
             sizesRadioBtn: '',
             selected: [],
-			selectedDishCounter: 1,
-			countTotalPices: {}
+            selectedDishCounter: 1,
+            countTotalPices: {},
+            selectedListDish: [],
+            showWarning: false,
         }
     },
     computed: {
@@ -430,6 +461,7 @@ export default {
             getUserLocation: "user/getUserLocation",
             getSelectedDishs: "basket/getSelectedDishs",
             getTotalPrice: "basket/getTotalPrice",
+            getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
         }),
     },
     watch: {
@@ -453,14 +485,35 @@ export default {
         }
     },
     methods: {
+        cancelDeleteBasket() {
+            this.showWarning = false
+        },
+        coontinue() {
+            this.dropBasket()
+            this.$store.dispatch('basket/addToBasket', this.selectedDish);
+            this.$store.dispatch('basket/saveRestuarantUrl', {
+                params: this.$router.currentRoute.params,
+                restName: this.restuarant.name,
+            });
+            this.showWarning = false
+        },
         addCraftDish(dish) {
-			this.countTotalPices = dish
-			dish.counter = this.selectedDishCounter
-			dish.name = `${this.selectedDish.name} (${dish.name})`
-            this.$store.dispatch('basket/addToBasket', this.countTotalPices);
-			this.showOptionsmenu = false
-			this.selectedDishCounter = 1
-			this.$store.dispatch('basket/saveRestuarantUrl', this.$router.currentRoute.params);
+            console.log('addCraftDish -> this.$router', this.$router)
+            if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
+				this.showWarning = true
+				this.selectedDish = dish
+            } else {
+                this.countTotalPices = dish
+                dish.counter = this.selectedDishCounter
+                dish.name = `${this.selectedDish.name} (${dish.name})`
+                this.$store.dispatch('basket/addToBasket', this.countTotalPices);
+                this.showOptionsmenu = false
+                this.selectedDishCounter = 1
+                this.$store.dispatch('basket/saveRestuarantUrl', {
+                    params: this.$router.currentRoute.params,
+                    restName: this.restuarant.name,
+                });
+            }
         },
         mobileDecrementSelectedDisn() {
             if (this.selectedDishCounter > 1) {
@@ -489,15 +542,33 @@ export default {
             this.$store.dispatch('basket/dropBasket');
         },
         addToBasket(dish) {
-			if (dish.sizes.length > 1 || dish.options.length > 1) {
-				this.selectedDish = dish
-				this.selectedDishCounter = 1
+            if (dish.sizes.length > 1 || dish.options.length > 1) {
+                this.selectedDish = dish
+                this.selectedDishCounter = 1
                 this.showOptionsmenu = true
                 this.sizesRadioBtn = dish.sizes[0]
             } else {
-				dish.counter = 1
-				this.$store.dispatch('basket/addToBasket', dish);
-				this.$store.dispatch('basket/saveRestuarantUrl', this.$router.currentRoute.params);
+                if (this.getLatetestRestInfoWithOrder == null) {
+                    console.log('addToBasket -> this.getLatetestRestInfoWithOrder.resName == null')
+                    dish.counter = 1
+                    this.$store.dispatch('basket/addToBasket', dish);
+                    this.$store.dispatch('basket/saveRestuarantUrl', {
+                        params: this.$router.currentRoute.params,
+                        restName: this.restuarant.name,
+                    });
+                } else if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
+                    console.log('addToBasket -> this.getLatetestRestInfoWithOrder.resName !== this.$router.currentRoute.params.resName')
+                    this.showWarning = true
+                    this.selectedDish = dish
+                } else {
+                    console.error("ELSE ELSE ");
+                    this.$store.dispatch('basket/addToBasket', dish);
+                    this.$store.dispatch('basket/saveRestuarantUrl', {
+                        params: this.$router.currentRoute.params,
+                        restName: this.restuarant.name,
+                    });
+                }
+
             }
         },
         showSelectedDish(dish) {
@@ -517,19 +588,22 @@ export default {
         categoryNameIntersect(entries, observer) {
             // this.tab = parseInt(entries[0].target.id, 10)
         }
-	},
-	mounted () {
-		window.scrollTo(0,0);
-		
-	},
+    },
+    mounted() {
+        window.scrollTo(0, 0);
+        if (this.getLatetestRestInfoWithOrder.resName == this.$router.currentRoute.params.resName) {
+            this.selectedListDish = this.getSelectedDishs
+        } else {
+            this.selectedListDish = []
+        }
+    },
 }
 </script>
 
 <style>
-
 .v-input--selection-controls__input .v-icon {
     background-color: rgba(211, 211, 211, 0.4) !important;
-    border-radius: 50%!important;
+    border-radius: 50% !important;
 }
 
 @media screen and (min-width: 992px) {
@@ -577,16 +651,30 @@ export default {
     margin-bottom: 0 !important;
 }
 </style><style scoped>
+.warning-title {
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 36px;
+    padding-bottom: 10px;
+}
 
-.price-calc-sum{
-	color: #b0b0b0;
+.warning-info {
+    border-top: solid 1px #f5f5f5;
+    border-bottom: solid 1px #f5f5f5;
+    background: #fafafa;
+    margin: 0 -20px;
+    padding: 16px 20px;
+}
+
+.price-calc-sum {
+    color: #b0b0b0;
     font-size: 12px;
     margin-bottom: 3px;
 }
 
 .total-price-calc {
     display: flex;
-	flex-direction: column;
+    flex-direction: column;
     justify-content: flex-end;
     align-items: center;
 }
@@ -612,7 +700,7 @@ export default {
     justify-content: space-between;
     padding: 0 10px;
     max-height: 48px;
-	padding-top: 20px;
+    padding-top: 20px;
 }
 
 .rest-info-content {
@@ -664,7 +752,7 @@ export default {
 .multi-title {
     color: #b0b0b0;
     font-size: 14px;
-	padding-top: 20px;
+    padding-top: 20px;
 }
 
 .close-select-option {

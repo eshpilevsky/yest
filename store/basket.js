@@ -79,7 +79,7 @@ export const actions = {
 };
 
 export const getters = {
-	getRestuarantUrl(state) {
+	getLatetestRestInfoWithOrder(state) {
 	  return state.data.restuarantUrl
 	},
   getSelectedDishs(state) {

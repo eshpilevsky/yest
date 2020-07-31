@@ -1,8 +1,8 @@
 <template>
-<v-card class="card-dish">
+<v-card class="card-dish" :class="{selected: isSelected}">
     <div class="dish-info-top">
         <div class="dish-price">
-			{{this.computedPrice}} BYN
+            {{this.counter > 0 ? `${this.counter}`: ''}} {{this.computedPrice}} BYN
         </div>
         <h3 class="dish-card-title">
             {{this.name}}
@@ -21,6 +21,10 @@
 </template>
 
 <script>
+import {
+    mapGetters
+} from "vuex"
+
 export default {
     name: 'cardDish',
     props: {
@@ -28,15 +32,32 @@ export default {
         description: String,
         dishinfo: Array,
         img: String,
-    },
-	computed: {
-		computedPrice() {
-			if (this.dishinfo.length > 1) {
-				return `От ${this.dishinfo[0].price}`
-			} else {
-				return `${this.dishinfo[0].price}`
-			}
+	},
+	data() {
+		return {
+			isSelected: false,
+			counter: 0,
 		}
+	},
+    computed: {
+        computedPrice() {
+            if (this.dishinfo.length > 1) {
+                return `От ${this.dishinfo[0].price}`
+            } else {
+                return `${this.dishinfo[0].price}`
+            }
+        },
+        ...mapGetters({
+            getSelectedDishs: "basket/getSelectedDishs",
+        }),
+	},
+	mounted () {
+		this.isSelected = this.getSelectedDishs.find((dish) =>{
+			if (dish.description == this.description) {
+				this.counter = dish.counter
+				return true
+			}
+		});
 	},
 
 }
@@ -44,7 +65,11 @@ export default {
 
 <style scoped>
 
-.dish-info-top{
+.selected{
+	border-left: 5px solid #00a646;
+}
+
+.dish-info-top {
     flex: 1 0 auto;
 }
 
@@ -69,7 +94,7 @@ export default {
 .dish-img {
     max-height: 210px;
     border-radius: 5px;
-	background-repeat: no-repeat;
+    background-repeat: no-repeat;
     background-position: center;
 }
 
