@@ -30,7 +30,7 @@
                             Блюда и кухни
                         </div>
                         <div class="category-list">
-                            <div v-for="category in this.getCategoryList.slice(0, this.limit)" :key="category.id + 'fotCompCat'" class="bottom-items">
+                            <div v-for="category in computedCategory" :key="category.id + 'fotCompCat'" class="bottom-items">
                                 <div @click="goToCategory(category)">
                                     {{ category.name }}
                                 </div>
@@ -106,13 +106,14 @@ export default {
             getCategoryList: 'user/getCategoryList',
             getSelectedZone: 'zone/getSelectedZone'
 		}),
-		// computedCategory() {
-        //     if (this.all) {
-        //         return this.getCategoryList
-        //     } else {
-        //         return this.getCategoryList.slice(0, 4)
-        //     }
-        // },
+		computedCategory() {
+            if (this.all) {
+                return this.getCategoryList
+            } else {
+                return this.getCategoryList
+                // return this.getCategoryList.slice(0, 4)
+            }
+        },
     },
     methods: {
 

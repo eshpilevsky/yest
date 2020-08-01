@@ -28,7 +28,7 @@
                                             Доставка Yest.by
                                         </div>
                                         <div class="description-price ">
-                                            Доставка {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].deliveryFee}}-{{restuarant.delivery.fee[1].deliveryFee}} BYN. Бесплатно при заказе от {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].min}} BYN
+                                            Доставка {{this.sortDeliverFee()[this.sortDeliverFee().length-1].deliveryFee}}-{{this.sortDeliverFee()[0].delivery}} BYN. Бесплатно при заказе от {{this.sortDeliverFee()[this.sortDeliverFee().length-1].min}} BYN
                                         </div>
                                     </div>
                                 </v-col>
@@ -37,7 +37,7 @@
                                         Заказ от
                                     </p>
                                     <p>
-                                        {{restuarant.delivery.fee[0].min}}
+										{{this.sortDeliverFee()[0].min}}
                                     </p>
                                 </v-col>
                                 <v-col :md='3' class="white--text">
@@ -453,6 +453,13 @@ export default {
         }
     },
     methods: {
+		sortDeliverFee() {
+			let listt = this.restuarant.delivery.fee
+			let sorted = listt.sort((a,b)=> {
+				return a.delivery ? a.delivery : a.deliveryFee > b.deliveryFee
+			})
+			return sorted
+        },
         addCraftDish(dish) {
 			this.countTotalPices = dish
 			dish.counter = this.selectedDishCounter
