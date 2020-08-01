@@ -4,11 +4,11 @@
         <div class="footer-top">
             <div class="top-block">
                 <div class="footer-top-left">
-                    <img src="../../assets/logo.svg" class="footer-logo" alt="logo">
+                    <img src="~/assets/logo.svg" class="footer-logo" alt="logo">
                 </div>
                 <div class="footer-top-right">
-                    <img src="../../assets/googlePlay.svg" class="footer-top-img" />
-                    <img src="../../assets/appStore.svg" class="footer-top-img" />
+                    <img src="~/assets/googlePlay.svg" class="footer-top-img" />
+                    <img src="~/assets/appStore.svg" class="footer-top-img" />
                 </div>
             </div>
         </div>
@@ -30,7 +30,7 @@
                             Блюда и кухни
                         </div>
                         <div class="category-list">
-                            <div v-for="category in computedCategory()" :key="category.id + 'fotCompCat'" class="bottom-items">
+                            <div v-for="category in this.getCategoryList.slice(0, this.limit)" :key="category.id + 'fotCompCat'" class="bottom-items">
                                 <div @click="goToCategory(category)">
                                     {{ category.name }}
                                 </div>
@@ -77,10 +77,10 @@
                     ООО "Фудтех системс"
                 </div>
                 <div class="social-links">
-                    <img src="../../assets/fb.svg" alt="facebook" class="social-links-img">
-                    <img src="../../assets/vk.svg" alt="vk" class="social-links-img">
-                    <img src="../../assets/insta.svg" alt="instagramm" class="social-links-img">
-                    <img src="../../assets/twitter.svg" alt="twitter" class="social-links-img">
+                    <img src="~/assets/fb.svg" alt="facebook" class="social-links-img">
+                    <img src="~/assets/vk.svg" alt="vk" class="social-links-img">
+                    <img src="~/assets/insta.svg" alt="instagramm" class="social-links-img">
+                    <img src="~/assets/twitter.svg" alt="twitter" class="social-links-img">
                 </div>
             </div>
         </div>
@@ -98,28 +98,27 @@ export default {
     data() {
         return {
             all: false,
-            limit: 5,
+            limit: 4,
         }
     },
     computed: {
         ...mapGetters({
             getCategoryList: 'user/getCategoryList',
             getSelectedZone: 'zone/getSelectedZone'
-        }),
+		}),
+		// computedCategory() {
+        //     if (this.all) {
+        //         return this.getCategoryList
+        //     } else {
+        //         return this.getCategoryList.slice(0, 4)
+        //     }
+        // },
     },
     methods: {
-        computedCategory() {
-            setTimeout(() => {
-                if (this.all) {
-                    return this.getCategoryList
-                } else {
-                    // return this.getCategoryList.slice(0, 4)
-                    return this.getCategoryList
-                }
-            }, 100);
-        },
+
         showAllCategory() {
-            this.all = !this.all
+			this.all = !this.all
+			this.limit =  this.getCategoryList.length
         },
         goToCategory(category) {
             this.$store.dispatch('user/selectCategory', category)

@@ -55,7 +55,8 @@ export default {
         console.log('START ASYNC DATA');
         let getCurrentCoords = store.getters['map/getCurrentCoords']
         let zoneList = await axios.get('https://yestapi.xyz/get-zones')
-        const zoneListData = zoneList.data
+		const zoneListData = zoneList.data
+		await store.dispatch('zone/setZone', zoneListData)
         let currentZone = zoneListData.find((zones) => {
             if (zones.alias == params.region) {
                 return zones
@@ -237,9 +238,9 @@ export default {
         });
         this.ymaps = ymaps
         await this.$store.dispatch('zone/setSelectedZone', this.currentZone.id)
-        console.error('created -> this.currentZone.id', this.currentZone.id)
     },
     mounted() {
+		
         // setTimeout(() => {
         //   if (window.innerWidth < 992) {
         //     // document.getElementById('bgImg').setAttribute('style', 'background: #fff;')

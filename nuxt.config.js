@@ -97,7 +97,11 @@ module.exports = {
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  axios: {
+	baseURL: 'https://yestapi.xyz',
+	retry: { retries: 3 },
+	debug: true,
+  },
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module

@@ -10,7 +10,11 @@ export const state = () => ({
 
 export const mutations = {
   SET_ZONE(state, payload) {
-    state.status = '200'
+	state.status = '200'
+	console.log(state.data.selectedZoneId);
+	if (state.data.selectedZoneId == null) {
+		state.data.selectedZoneId = payload[0]
+	}
     state.data.zone = payload
   },
   SET_SELECTED_ZONE(state, payload) {
@@ -20,19 +24,6 @@ export const mutations = {
 };
 
 export const actions = {
-
-  queryZones(context) {
-    setTimeout(() => {
-      ApiService.get(`/get-zones`).then((response) => {
-        context.commit('SET_ZONE', response.data)
-        if (context.getters.getSelectedZone == null) {
-          context.commit('SET_SELECTED_ZONE', response.data[0].id)
-        }
-      }).catch((error) => {
-        console.error(error)
-      })
-    }, 1000)
-  },
   setZone(context, payload) {
     context.commit('SET_ZONE', payload)
   },

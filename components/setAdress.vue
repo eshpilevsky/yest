@@ -190,10 +190,6 @@ export default {
     },
     mounted() {
       this.searchAddress = this.getCurrentAddress
-      setTimeout(() => {
-        console.log(this.categoryInfoData);
-              console.log('mounted -> this.categoryInfoData.background', this.categoryInfoData.background)
-      }, 200);
     }
 }
 </script>

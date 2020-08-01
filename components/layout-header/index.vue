@@ -113,10 +113,10 @@
                 <span class="zone-btn-address">
                     {{this.getCurrentAddress}}
                 </span>
-                    <v-btn color="primary" @click='goToLatestReset()'>
-						{{this.getTotalPrice}} BYN
-                        <v-icon>shopping_cart</v-icon>
-                    </v-btn>
+            </v-btn>
+            <v-btn color="primary" v-if="this.getTotalPrice > 0" @click='goToLatestReset()'>
+                {{this.getTotalPrice}} BYN
+                <v-icon>shopping_cart</v-icon>
             </v-btn>
             <v-overlay :value="burgerOverlay" :opacity=".5">
                 <MapDesktop @closeMap='closeDesktopMap()'></MapDesktop>
@@ -186,10 +186,10 @@ export default {
     methods: {
         ...mapMutations({
             setCurrentCoords: 'map/SET_CURRENT_COORDS',
-		}),
-		goToLatestReset(){
-			this.$router.push(`/${this.getRestuarantUrl.region}/restaurant/${this.getRestuarantUrl.resName}`)
-		},
+        }),
+        goToLatestReset() {
+            this.$router.push(`/${this.getRestuarantUrl.region}/restaurant/${this.getRestuarantUrl.resName}`)
+        },
         onClick(e) {
             this.coords = e.get('coords')
             this.setCurrentCoords(this.coords)
@@ -235,17 +235,16 @@ export default {
             canDisplayMap: 'device/isMobile',
             getCurrentAddress: 'map/getCurrentAddress',
             isInputAddressMode: 'map/isInputAddressMode',
-			getZoneList: 'zone/getZoneList',
-			getTotalPrice: "basket/getTotalPrice",
-			getRestuarantUrl: "basket/getRestuarantUrl",
-			
+            getZoneList: 'zone/getZoneList',
+            getTotalPrice: "basket/getTotalPrice",
+            getRestuarantUrl: "basket/getRestuarantUrl",
+
         }),
         checkAddress() {
             return this.getCurrentAddress > 0 ? true : false
         },
     },
     mounted() {
-        this.$store.dispatch('zone/queryZones')
         if (this.getCurrentAddress.length > 0) {
             this.showSetAdressBtn = true
         }
