@@ -117,12 +117,12 @@
                             <p>
                                 Мой заказ
                             </p>
-                            <v-icon v-show="this.getSelectedDishs.length > 0" @click="dropBasket()">
+                            <v-icon v-show="this.test.length > 0" @click="dropBasket()">
                                 delete_forever
                             </v-icon>
                         </div>
-                        <div v-if="this.getSelectedDishs.length > 0" class="my-order-dishes-desktop">
-                            <div v-for="order in this.getSelectedDishs" :key="order.id" class="order-item">
+                        <div v-if="this.test.length > 0" class="my-order-dishes-desktop">
+                            <div v-for="order in this.test" :key="order.id" class="order-item">
                                 <div class="d-flex flex-column order-item-info">
                                     <div class="item-name">
                                         {{order.name}}
@@ -419,7 +419,8 @@ export default {
             sizesRadioBtn: '',
             selected: [],
 			selectedDishCounter: 1,
-			countTotalPices: {}
+			countTotalPices: {},
+			test: [],
         }
     },
     computed: {
@@ -434,7 +435,7 @@ export default {
     },
     watch: {
         getSelectedDishs(newValue) {
-            return newValue
+            this.test = newValue
         },
         getTotalPrice(newValue) {
             return newValue
@@ -520,7 +521,7 @@ export default {
 	},
 	mounted () {
 		window.scrollTo(0,0);
-		
+		this.test = this.getSelectedDishs
 	},
 }
 </script>

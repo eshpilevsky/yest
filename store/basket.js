@@ -53,13 +53,13 @@ export const actions = {
   async addToBasket(context, payload) {
     let list = context.state.data.dishs
     let findDish = list.find((dish) => {
-      if (dish.id == payload.id) {
-        return dish
-      }
+      return dish.id == payload.id
     })
     if (findDish == undefined) {
       context.commit('SAVE_TO_BASKET', payload)
-    }
+    } else {
+		context.commit('INCREMENT_DISH', payload.id)
+	}
   },
   dropBasket(context) {
     context.commit('DROP_BASKET')
