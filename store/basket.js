@@ -92,7 +92,7 @@ export const getters = {
     let totalPrice = 0
     dl.forEach(element => {
       if (element.hasOwnProperty('sizes')) {
-        totalPrice += element.sizes[0].price * element.counter
+        totalPrice += element.selectSize.price * element.counter
       } else {
         totalPrice += element.price * element.counter
       }

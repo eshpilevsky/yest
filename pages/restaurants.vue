@@ -198,19 +198,19 @@
                             </div>
                         </div>
                         <div class="options-list">
-                            <div class="sizes">
+                            <div class="sizes" >
                                 <div class="multi-title">
                                     Размер на выбор
                                 </div>
                                 <v-radio-group v-model="sizesRadioBtn" :mandatory="false" class="d-flex flex-row">
-                                    <v-radio v-for="size in this.selectedDish.sizes" :key="size.id" :label="size.name" :value="size" color="primary"></v-radio>
+                                    <v-radio v-for="size in selectedDish.sizes" :key="size.id" :label="size.name" :value="size" color="primary"></v-radio>
                                 </v-radio-group>
                             </div>
-                            <div class="options">
+                            <div class="options" >
                                 <div class="multi-title">
                                     Дополнительниые ингреденеты
                                 </div>
-                                <div v-for="option in this.selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
+                                <div v-for="option in selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
                                     <div>
                                         {{option.title}}
                                     </div>
@@ -231,7 +231,7 @@
                                     <v-icon @click="mobileDecrementSelectedDisn()" color="black">
                                         remove
                                     </v-icon>
-                                    {{this.selectedDishCounter}}
+                                    {{selectedDishCounter}}
                                     <v-icon @click="mobileIncrementSelectedDisn()" color="black">
                                         add
                                     </v-icon>
@@ -284,7 +284,7 @@
             <div class="rest-info-content">
                 <div class="rest-info-top">
                     <h1 class="info-top-title">
-                        {{restuarant.name}}
+                        {{restuarant.name}} {{getTotalPrice}}
                     </h1>
                     <v-icon>info</v-icon>
                 </div>
@@ -369,40 +369,83 @@
 
                         </div>
                     </div>
-                    <v-bottom-sheet v-model="showDish" z-index='999'>
+                    <v-bottom-sheet v-model="showDish" scrollable persistent no-click-animation  z-index='999'>
                         <v-sheet>
-                            <div class="selected-dish-top">
-                                <v-img :src="'https://img.eatmealby.com/resize/dish/400/'+selectedDish.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="selectedDish.name" class="dish-img-mobile" />
-                            </div>
-                            <div class="selected-dish-composition">
-                                {{selectedDish.description}}
-                            </div>
-                            <div class="d-flex flex-row justify-space-between">
-                                <div class="dish-bottom-name">
-                                    {{selectedDish.name}}
+                            <v-card>
+                                <div class="selected-dish-top">
+                                    <v-img :src="'https://img.eatmealby.com/resize/dish/400/'+selectedDish.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="selectedDish.name" class="dish-img-mobile" />
                                 </div>
-                                <div class="dish-bottom-price">
-                                    0 BYN
+                                <div class="selected-dish-composition">
+                                    {{selectedDish.description}}
                                 </div>
-                            </div>
-                            <div class="d-flex flex-row justify-space-between m-5 pa-5">
-                                <div class="d-flex flex-row counter-component">
-                                    <v-icon @click="selectedDish.counter--">
-                                        remove
-                                    </v-icon>
-                                    {{selectedDish.counter}}
-                                    <v-icon @click="selectedDish.counter++">
-                                        add
-                                    </v-icon>
+                                <div>
+                                    <div class="sizes px-3">
+                                        <div class="multi-title">
+                                            Размер на выбор
+                                        </div>
+                                        <v-radio-group v-model="sizesRadioBtn" :mandatory="false" class="d-flex flex-row">
+                                            <v-radio v-for="size in selectedDish.sizes" :key="size.id" :label="size.name" :value="size" color="primary"></v-radio>
+                                        </v-radio-group>
+                                    </div>
+                                    <div class="options px-3">
+                                        <div class="multi-title">
+                                            Дополнительниые ингреденеты
+                                        </div>
+                                        <div v-for="option in selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
+                                            <div>
+                                                {{option.title}}
+                                            </div>
+                                            <div class="d-flex flex-row justify-start">
+                                                <v-radio-group v-model="selectOption" :mandatory="false" class="d-flex flex-row">
+                                                    <v-radio v-for="optionV in option.variants" :key="optionV.id" :label="`${optionV.name} +${optionV.price[0] != undefined ? optionV.price[0].price : 0} BYN`" :value="optionV" color="primary"></v-radio>
+                                                </v-radio-group>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="add-btn">
-                                    <v-btn color="primary" @click="addToBasketMobile()">Добавить</v-btn>
+                                <div class="d-flex flex-row justify-space-between px-3">
+                                    <div class="dish-bottom-name">
+                                        {{selectedDish.name}}
+                                    </div>
+                                    <div class="d-flex align-center">
+                                        {{sizesRadioBtn.price}} BYN
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="d-flex flex-row justify-space-between align-center m-5 pa-3">
+                                    <div class="d-flex flex-row counter-component">
+                                        <v-icon @click="mobileDecrementSelectedDisn()">
+                                            remove
+                                        </v-icon>
+                                        {{selectedDishCounter}}
+                                        <v-icon @click="mobileIncrementSelectedDisn()">
+                                            add
+                                        </v-icon>
+                                    </div>
+                                    <div class="add-btn">
+                                        <v-btn color="primary" @click="addToBasketMobile()">Добавить</v-btn>
+                                    </div>
+                                </div>
+                            </v-card>
                         </v-sheet>
                     </v-bottom-sheet>
                 </div>
             </div>
+			<div class="basket-btn-block" v-show="this.getTotalPrice > 0">
+				<div>
+					<v-btn height="56px" block color="primary" class="basket-btn" @click="goToBasketPage()">
+						<span class="btn-sub-text">
+							10-20 мин
+						</span>
+						<span class="pr-5">
+							Корзина
+						</span>
+						<span class="btn-sub-text">
+							{{getTotalPrice}}
+						</span>
+					</v-btn>
+
+				</div>
+			</div>
         </div>
     </div>
 </div>
@@ -509,6 +552,9 @@ export default {
         }
     },
     methods: {
+        goToBasketPage() {
+            this.$router.push(`/cart`)
+        },
         cancelDeleteBasket() {
             this.showWarning = false
         },
@@ -549,9 +595,6 @@ export default {
         },
         goBack() {
             this.$router.go(-1)
-        },
-        addToBasketMobile() {
-            this.showDish = false
         },
         closeOptionMenu() {
             this.showOptionsmenu = false
@@ -598,10 +641,22 @@ export default {
         },
         showSelectedDish(dish) {
             this.selectedDish = dish
+            console.log('showSelectedDish -> this.selectedDish', this.selectedDish)
             this.selectedDishCounter = 1
-            setTimeout(() => {
-                this.showDish = true
-            }, 100);
+            this.sizesRadioBtn = dish.sizes[0]
+            console.log('showSelectedDish -> this.sizesRadioBtn', this.sizesRadioBtn)
+            this.showDish = true
+        },
+        addToBasketMobile() {
+            this.selectedDish.selectOption = this.selectOption
+			this.selectedDish.selectSize = this.sizesRadioBtn
+			this.selectedDish.counter = this.selectedDishCounter
+            this.$store.dispatch('basket/addToBasket', this.selectedDish);
+            this.$store.dispatch('basket/saveRestuarantUrl', {
+                params: this.$router.currentRoute.params,
+                restName: this.restuarant.name,
+            });
+            this.showDish = false
         },
         scroll(id) {
             document.getElementById(id).scrollIntoView({
@@ -681,6 +736,33 @@ export default {
     margin-bottom: 0 !important;
 }
 </style><style scoped>
+
+.basket-btn{
+	border-radius:16px !important;
+	display: flex;
+	justify-content: space-between;
+}
+
+.btn-sub-text{
+	flex: 0 0 auto;
+    padding: 7px 0px;
+    font-size: 14px;
+    border-radius: 3px;
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.basket-btn-block{
+	position: fixed;
+	bottom: 0px;
+	width: 100%;
+    padding: 8px;
+    overflow: hidden;
+    box-shadow: 0 -4px 8px 0 rgba(0, 0, 0, 0.05);
+    transition: all 200ms ease-in;
+    background-color: #ffffff;
+	margin: auto;
+}
+
 .warning-title {
     font-size: 24px;
     font-weight: bold;
