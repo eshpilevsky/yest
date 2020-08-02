@@ -1,15 +1,19 @@
 <template>
-	<div>
-		card
-	</div>
+<div>
+    cart
+</div>
 </template>
 
 <script>
-	export default {
-		
-	}
+export default {
+    data() {
+        return {
+            restaurantsList: []
+        }
+    },
+}
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style>

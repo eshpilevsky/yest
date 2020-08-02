@@ -117,13 +117,12 @@
                             <p>
                                 Мой заказ
                             </p>
-                            <v-icon v-show="this.getSelectedDishs.length > 0" @click="dropBasket()">
+                            <v-icon v-show="this.orderList.length > 0" @click="dropBasket()">
                                 delete_forever
                             </v-icon>
                         </div>
-                        <!-- <div v-if="this.getSelectedDishs.length > 0 " class="my-order-dishes-desktop"> -->
-                        <div v-if="this.getSelectedDishs.length > 0 && this.getLatetestRestInfoWithOrder.params.resName == this.$router.currentRoute.params.resName" class="my-order-dishes-desktop">
-                            <div v-for="order in this.getSelectedDishs" :key="order.id" class="order-item">
+                        <div v-if="this.orderList.length > 0 " class="my-order-dishes-desktop">
+                            <div v-for="order in this.orderList" :key="order.id" class="order-item">
                                 <div class="d-flex flex-column order-item-info">
                                     <div class="item-name">
                                         {{order.name}}
@@ -161,11 +160,11 @@
                     <div class="my-order-bottom">
                         <div class="total-price">
                             <p class="total-title">Итого</p>
-                            <p class="price">{{this.getTotalPrice}} BYN</p>
+                            <p class="price">{{this.totalPrice}} BYN</p>
                         </div>
                     </div>
                 </div>
-                <v-btn :disabled="this.getTotalPrice <= 0" color="primary" class="desctop_btn_confirm_order">Оформить заказ</v-btn>
+                <v-btn :disabled="this.totalPrice <= 0" color="primary" class="desctop_btn_confirm_order">Оформить заказ</v-btn>
             </div>
             <v-overlay z-index="999" v-model="showOptionsmenu">
                 <v-card width="50vw" class="select-option-card">
@@ -178,7 +177,6 @@
                         </div>
                     </div>
                     <div class="options-list">
-                        <!-- v-if="selectedDish.sizes[0]" -->
                         <div class="sizes">
                             <div class="multi-title">
                                 РАЗМЕР НА ВЫБОР
@@ -188,7 +186,6 @@
                             </v-radio-group>
                         </div>
                         <div class="options">
-                            <!-- v-if="selectedDish.sizes[0]" -->
                             <div class="multi-title">
                                 ДОПОЛНИТЕЛЬНЫЕ ИНГРЕДИЕНТЫ
                             </div>
@@ -197,12 +194,9 @@
                                     {{option.title}}
                                 </div>
                                 <div class="d-flex flex-row justify-start">
-                                    <!-- <div v-for="option in option.variants" :key="option.id">
-                                        <v-checkbox v-model="selected" :label="option.name" :value="option.dish_option_id" color="primary"></v-checkbox>
-                                    </div> -->
                                     <v-radio-group v-model="selected" :mandatory="false" class="d-flex flex-row">
                                         {{option}}
-                                        <v-radio v-for="option in option.variants" :key="option.id" :label="`${option.name} +${option.price !==null ? option.price.price: 0}BYN`" :value="option" color="primary"></v-radio>
+                                        <v-radio v-for="option in option.variants" :key="option.id" :label="`${option.name} +${option.price	.price !==null ? option.price.price: 0}BYN`" :value="option" color="primary"></v-radio>
                                     </v-radio-group>
                                 </div>
                             </div>
@@ -245,7 +239,7 @@
                         </div>
                     </div>
                     <div class="warning-info" color="secondary">
-                        Все ранее добавленные блюда из ресторана {{this.getLatetestRestInfoWithOrder == null ? '404' : this.getLatetestRestInfoWithOrder.restName}} будут удалены из корзины
+                        Все ранее добавленные блюда из ресторана "{{this.getLatetestRestInfoWithOrder == null ? '404' : this.getLatetestRestInfoWithOrder.restName}}" будут удалены из корзины
                     </div>
                     <div class="d-flex flex-row">
                         <v-btn color="primary" @click="coontinue()">
@@ -259,13 +253,12 @@
             </v-overlay>
         </div>
     </div>
-    <div class="mobile-mode">
+    <!-- <div class="mobile-mode">
         <div class="mobile-mode_header">
             <v-icon @click="goBack()">arrow_back</v-icon>
             <v-icon>search</v-icon>
         </div>
         <div class="mobile-rest-info">
-
             <div class="rest-info-content">
                 <div class="rest-info-top">
                     <h1 class="info-top-title">
@@ -278,11 +271,6 @@
                         <v-icon>star</v-icon>
                         {{restuarant.rating ? restuarant.rating: 'Мало оценок'}}
                     </v-chip>
-                    <!-- add to next line v-if="this.getCurrentCoords.length > 0"-->
-                    <!-- <v-chip>
-                  {{restInfo.deliveryTime.min}} - {{restInfo.deliveryTime.max}} мин
-              </v-chip> -->
-                    <!-- add to next line v-if="this.getCurrentCoords.length > 0"-->
                     <v-chip @click="showDeliveryOption = !showDeliveryOption" :color="showDeliveryOption == true ? 'primary': null" class="rest-info-center-block-tag">
                         Доставка 10 - 20 мин.
                     </v-chip>
@@ -372,19 +360,16 @@
                                     {{selectedDish.name}}
                                 </div>
                                 <div class="dish-bottom-price">
-                                    <!-- {{selectedDish.sizes[0].price}} BYN -->
+                                    0 BYN
                                 </div>
                             </div>
                             <div class="d-flex flex-row justify-space-between m-5 pa-5">
                                 <div class="d-flex flex-row counter-component">
                                     <v-icon @click="selectedDish.counter--">
-                                        <!-- <v-icon > -->
                                         remove
                                     </v-icon>
                                     {{selectedDish.counter}}
-                                    <!-- 1 -->
                                     <v-icon @click="selectedDish.counter++">
-                                        <!-- <v-icon> -->
                                         add
                                     </v-icon>
                                 </div>
@@ -397,7 +382,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
 </template>
 
@@ -426,13 +411,20 @@ export default {
         let restParams = params.resName
         let id = restParams.split('-')
         var currentZone = store.getters['zone/getSelectedZone']
+        var lastRest = store.getters['basket/getLatetestRestInfoWithOrder']
+        var orderList = store.getters['basket/getSelectedDishs']
+		var totalPrice = store.getters['basket/getTotalPrice']
+		
+		app.lastRest = lastRest
+		app.orderList = orderList
+		app.totalPrice = totalPrice
         let restuarant = await axios.post(`https://yestapi.xyz/restaurant/${id[0]}`, {
             zone_id: currentZone.id,
         })
         console.log('restuarant', restuarant.data)
 
         return {
-            restuarant: restuarant.data
+			restuarant: restuarant.data,
         }
     },
     data() {
@@ -451,7 +443,10 @@ export default {
             selectedDishCounter: 1,
             countTotalPices: {},
             selectedListDish: [],
-            showWarning: false,
+			showWarning: false,
+			lastRest:{},
+			totalPrice: 0,
+			orderList:[],
         }
     },
     computed: {
@@ -467,9 +462,15 @@ export default {
     },
     watch: {
         getSelectedDishs(newValue) {
+			this.orderList = newValue
+            return newValue
+        },
+        getLatetestRestInfoWithOrder(newValue) {
+			this.lastRest = newValue
             return newValue
         },
         getTotalPrice(newValue) {
+			this.totalPrice = newValue
             return newValue
         },
         dishCounter(newValue) {
@@ -592,12 +593,17 @@ export default {
         }
     },
     mounted() {
-        window.scrollTo(0, 0);
-        if (this.getLatetestRestInfoWithOrder.resName == this.$router.currentRoute.params.resName) {
-            this.selectedListDish = this.getSelectedDishs
-        } else {
-            this.selectedListDish = []
-        }
+		window.scrollTo(0, 0);
+		this.orderList = this.getSelectedDishs
+		// if (this.getLatetestRestInfoWithOrder !== null) {
+		// 	if (this.getLatetestRestInfoWithOrder.params.resName == this.$router.currentRoute.params.resName) {
+		// 		this.selectedListDish = this.getSelectedDishs
+		// 	} else {
+		// 		this.selectedListDish = []
+		// 	}
+		// } else {
+		// 		this.selectedListDish = []
+		// }
     },
 }
 </script>

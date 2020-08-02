@@ -2,7 +2,10 @@
 <v-card class="card-dish" :class="{selected: isSelected}">
     <div class="dish-info-top">
         <div class="dish-price">
-            {{this.counter > 0 ? `${this.counter} x`: ''}} {{this.computedPrice}} BYN
+			<span>
+            	{{this.counter > 0 ? `${this.counter} х`: ''}} 
+			</span>
+			{{this.computedPrice}} BYN
         </div>
         <h3 class="dish-card-title">
             {{this.name}}
@@ -24,7 +27,6 @@
 import {
     mapGetters
 } from "vuex"
-
 export default {
     name: 'cardDish',
     props: {
@@ -50,38 +52,38 @@ export default {
         ...mapGetters({
             getSelectedDishs: "basket/getSelectedDishs",
         }),
-    },
+	},
+	watch: {
+		getSelectedDishs(newValue) {
+			return newValue
+		}
+	},
     mounted() {
-		console.log('mounted -> this.getSelectedDishs', this.getSelectedDishs)
-		
-        // let test = this.getSelectedDishs.find((dish) => {
-        //     if (dish.description == this.description) {
-        //         this.counter = dish.counter
-        //         return true
-        //     }
-		// });
-		// if (test == undefined) {
-			
-		// }
-        // console.error('mounted -> test', test)
+        let searchDish = this.getSelectedDishs.find((dish) => {
+			if (dish.description == this.description) {
+				this.counter = dish.counter
+                return true
+            }
+		});
+		if (searchDish == undefined) {
+			this.isSelected = false
+		} else {
+			this.isSelected = true
+		}
     },
-
 }
 </script>
 
 <style scoped>
-.selected {
-    border-left: 5px solid #00a646;
+.selected{
+	border-left: 3px solid #00a646 !important;
 }
-
 .dish-info-top {
     flex: 1 0 auto;
 }
-
 .dash-info-bottom {
     margin-top: 24px;
 }
-
 .card-dish {
     flex: 1 1 auto;
     width: 100%;
@@ -95,14 +97,12 @@ export default {
     border-radius: 5px;
     box-shadow: none;
 }
-
 .dish-img {
     max-height: 210px;
     border-radius: 5px;
     background-repeat: no-repeat;
     background-position: center;
 }
-
 .dish-description {
     color: #b0b0b0;
     width: 100%;
@@ -112,7 +112,6 @@ export default {
     line-height: 1.33;
     overflow-wrap: break-word;
 }
-
 .dish-price {
     float: right;
     min-width: 80px;
@@ -120,13 +119,11 @@ export default {
     margin-left: 10px;
     font-weight: bold;
 }
-
 .dish-weight {
     color: #999999;
     line-height: 1.39;
     white-space: nowrap;
 }
-
 .dish-card-title {
     display: inline;
     font-size: 18px;

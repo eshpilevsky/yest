@@ -114,10 +114,12 @@
                     {{this.getCurrentAddress}}
                 </span>
             </v-btn>
-            <v-btn v-if="this.getTotalPrice > 0" color="primary" @click='goToLatestReset()'>
-                {{this.getTotalPrice}} BYN
-                <v-icon>shopping_cart</v-icon>
-            </v-btn>
+			<client-only>
+				<v-btn v-if="this.getTotalPrice > 0" color="primary" @click='goToLatestReset()'>
+					{{this.getTotalPrice}} BYN
+					<v-icon>shopping_cart</v-icon>
+				</v-btn>
+			</client-only>
             <v-overlay :value="burgerOverlay" :opacity=".5">
                 <MapDesktop @closeMap='closeDesktopMap()'></MapDesktop>
             </v-overlay>
@@ -128,7 +130,7 @@
                     </v-btn>
                 </template>
                 <v-list>
-                    <v-list-item v-for="(item, index) in this.$store.state.zone.data.zone" :key="index" class="zone-list-item" @click="changeRegion(item)">
+                    <v-list-item v-for="(item, index) in this.getSelectedZone" :key="index" class="zone-list-item" @click="changeRegion(item)">
                         <v-list-item-title>{{ item.name }}</v-list-item-title>
                     </v-list-item>
                 </v-list>
@@ -245,33 +247,32 @@ export default {
         },
     },
     mounted() {
-        this.$store.dispatch('zone/queryZones')
         if (this.getCurrentAddress.length > 0) {
             this.showSetAdressBtn = true
         }
-        let lastScrollTop = 0
-        if (window.innerWidth < 450) {
-            if (this.getUserLocation.length > 0) {
-                window.addEventListener('scroll', () => {
-                    const st = window.pageYOffset || document.documentElement.scrollTop
-                    if (st > lastScrollTop) {
-                        // downscroll code
-                        if (st > 330) {
-                            this.showSetAdressBtn = true
-                        } else {
-                            this.showSetAdressBtn = false
-                        }
-                    } else if (st < 330) {
-                        this.showSetAdressBtn = false
-                    } else {
-                        this.showSetAdressBtn = true
-                    }
-                    lastScrollTop = st <= 0 ? 0 : st
-                })
-            } else {
-                this.showSetAdressBtn = true
-            }
-        }
+        // let lastScrollTop = 0
+        // if (window.innerWidth < 450) {
+        //     if (this.getUserLocation.length > 0) {
+        //         window.addEventListener('scroll', () => {
+        //             const st = window.pageYOffset || document.documentElement.scrollTop
+        //             if (st > lastScrollTop) {
+        //                 // downscroll code
+        //                 if (st > 330) {
+        //                     this.showSetAdressBtn = true
+        //                 } else {
+        //                     this.showSetAdressBtn = false
+        //                 }
+        //             } else if (st < 330) {
+        //                 this.showSetAdressBtn = false
+        //             } else {
+        //                 this.showSetAdressBtn = true
+        //             }
+        //             lastScrollTop = st <= 0 ? 0 : st
+        //         })
+        //     } else {
+        //         this.showSetAdressBtn = true
+        //     }
+        // }
     }
 }
 </script>

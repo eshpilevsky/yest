@@ -20,19 +20,6 @@ export const mutations = {
 };
 
 export const actions = {
-
-  queryZones(context) {
-    setTimeout(() => {
-      ApiService.get(`/get-zones`).then((response) => {
-        context.commit('SET_ZONE', response.data)
-        if (context.getters.getSelectedZone == null) {
-          context.commit('SET_SELECTED_ZONE', response.data[0].id)
-        }
-      }).catch((error) => {
-        console.error(error)
-      })
-    }, 1000)
-  },
   setZone(context, payload) {
     context.commit('SET_ZONE', payload)
   },
