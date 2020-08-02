@@ -2,7 +2,7 @@
 <div>
     <div class="desktop-mode">
         <div class="rest-cotainer">
-            <div xl8 class="left">
+            <div class="left">
                 <div class="left-top" :style="{backgroundImage:'url(https://img.eatmealby.com/resize/restaurant/900/'+restuarant.background_image+')'}">
                     <div class="top-wrapper">
                         <div class="rating">
@@ -17,8 +17,8 @@
                                 {{restuarant.name}}
                             </h1>
                             <v-divider dark />
-                            <v-row cols12>
-                                <v-col :md='6' class="white--text info-left">
+                            <div class="d-flex flex-row justify-space-between">
+                                <div class="white--text info-left">
                                     <div class="moped-block">
                                         <div class="moped"></div>
                                         <div class="treangule"></div>
@@ -31,16 +31,16 @@
                                             Доставка {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].deliveryFee}}-{{restuarant.delivery.fee[1].deliveryFee}} BYN. Бесплатно при заказе от {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].min}} BYN
                                         </div>
                                     </div>
-                                </v-col>
-                                <v-col :md='3' class="white--text">
+                                </div>
+                                <div class="white--text">
                                     <p>
                                         Заказ от
                                     </p>
                                     <p>
                                         {{restuarant.delivery.fee[0].min}}
                                     </p>
-                                </v-col>
-                                <v-col :md='3' class="white--text">
+                                </div>
+                                <div class="white--text">
                                     <v-menu bottom origin="center center" z-index="999" transition="scale-transition" nudge-left='100' nudge-bottom='50'>
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-btn color="primary" large v-bind="attrs" v-on="on">
@@ -79,8 +79,8 @@
                                             </v-card>
                                         </div>
                                     </v-menu>
-                                </v-col>
-                            </v-row>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -123,13 +123,33 @@
                         </div>
                         <div v-if="this.orderList.length > 0 " class="my-order-dishes-desktop">
                             <div v-for="order in this.orderList" :key="order.id" class="order-item">
-                                <div class="d-flex flex-column order-item-info">
-                                    <div class="item-name">
-                                        {{order.name}}
+                                <div class="d-flex flex-column">
+                                    <div class="d-flex flex-column order-item-info">
+                                        <div class="item-name">
+                                            {{order.name}}
+                                            <span class="order-item-subbtitle">
+                                                {{order.weigth ? order.weigth : order.selectSize.weight}}
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div class="order-item-weight">
-                                        {{order.weigth}}
+                                    <div v-if="order.selectSize.length > 1">
+                                        <div v-for="size in order.selectSize" :key="`selectSize${size.id}`" class="order-item-subbtitle">
+                                            {{size.name}}
+                                        </div>
                                     </div>
+                                    <div v-else class="order-item-subbtitle">
+                                        {{order.selectSize.name}}
+                                    </div>
+
+                                    <div v-if="order.selectOption.length > 1">
+                                        <div v-for="option in order.selectOption" :key="`selectOption${option.id}`" class="order-item-subbtitle">
+                                            {{option.name}}
+                                        </div>
+                                    </div>
+                                    <div v-else class="order-item-subbtitle">
+                                        {{order.selectOption.name}}
+                                    </div>
+
                                 </div>
                                 <div class="d-flex flex-column my-counter">
                                     <div class="counter-plus" @click="increment(order.id)">
@@ -166,94 +186,96 @@
                 </div>
                 <v-btn :disabled="this.totalPrice <= 0" color="primary" class="desctop_btn_confirm_order">Оформить заказ</v-btn>
             </div>
-            <v-overlay z-index="999" v-model="showOptionsmenu">
-                <v-card width="50vw" class="select-option-card">
-                    <div class="d-flex flex-row justify-space-between pb-3">
-                        <div class="select-option-title" color="secondary">
-                            Выберите опции
-                        </div>
-                        <div class="close-select-option" @click="closeOptionMenu()">
-                            <v-icon color="#000">close</v-icon>
-                        </div>
-                    </div>
-                    <div class="options-list">
-                        <div class="sizes">
-                            <div class="multi-title">
-                                РАЗМЕР НА ВЫБОР
+            <client-only>
+                <v-overlay z-index="999" v-model="showOptionsmenu">
+                    <v-card width="50vw" class="select-option-card">
+                        <div class="d-flex flex-row justify-space-between pb-3">
+                            <div class="select-option-title" color="secondary">
+                                Выберите опции
                             </div>
-                            <v-radio-group v-model="sizesRadioBtn" :mandatory="false" class="d-flex flex-row">
-                                <v-radio v-for="size in this.selectedDish.sizes" :key="size.id" :label="size.name" :value="size" color="primary"></v-radio>
-                            </v-radio-group>
-                        </div>
-                        <div class="options">
-                            <div class="multi-title">
-                                ДОПОЛНИТЕЛЬНЫЕ ИНГРЕДИЕНТЫ
+                            <div class="close-select-option" @click="closeOptionMenu()">
+                                <v-icon color="#000">close</v-icon>
                             </div>
-                            <div v-for="option in this.selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
+                        </div>
+                        <div class="options-list">
+                            <div class="sizes">
+                                <div class="multi-title">
+                                    Размер на выбор
+                                </div>
+                                <v-radio-group v-model="sizesRadioBtn" :mandatory="false" class="d-flex flex-row">
+                                    <v-radio v-for="size in this.selectedDish.sizes" :key="size.id" :label="size.name" :value="size" color="primary"></v-radio>
+                                </v-radio-group>
+                            </div>
+                            <div class="options">
+                                <div class="multi-title">
+                                    Дополнительниые ингреденеты
+                                </div>
+                                <div v-for="option in this.selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
+                                    <div>
+                                        {{option.title}}
+                                    </div>
+                                    <div class="d-flex flex-row justify-start">
+                                        <v-radio-group v-model="selectOption" :mandatory="false" class="d-flex flex-row">
+                                            <v-radio v-for="optionV in option.variants" :key="optionV.id" :label="`${optionV.name} +${optionV.price[0] != undefined ? optionV.price[0].price : 0} BYN`" :value="optionV" color="primary"></v-radio>
+                                        </v-radio-group>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='options-actions'>
+                            <div class="d-flex flex-row">
                                 <div>
-                                    {{option.title}}
+                                    <v-btn color="primary" @click="addCraftDish()">Добавить</v-btn>
                                 </div>
-                                <div class="d-flex flex-row justify-start">
-                                    <v-radio-group v-model="selected" :mandatory="false" class="d-flex flex-row">
-                                        {{option}}
-                                        <v-radio v-for="option in option.variants" :key="option.id" :label="`${option.name} +${option.price	.price !==null ? option.price.price: 0}BYN`" :value="option" color="primary"></v-radio>
-                                    </v-radio-group>
+                                <div class="dish-counter">
+                                    <v-icon @click="mobileDecrementSelectedDisn()" color="black">
+                                        remove
+                                    </v-icon>
+                                    {{this.selectedDishCounter}}
+                                    <v-icon @click="mobileIncrementSelectedDisn()" color="black">
+                                        add
+                                    </v-icon>
+                                </div>
+                            </div>
+                            <div class="total-price-calc">
+                                <div class="price-calc-sum">
+                                    Сумма
+                                </div>
+                                <div>
+                                    {{this.sizesRadioBtn}}
+                                    <!-- {{(this.sizesRadioBtn.price * selectedDishCounter).toFixed(1)}} BYN +{{this.sizesRadioBtn.selectOption.price}} -->
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class='options-actions'>
+                    </v-card>
+                </v-overlay>
+                <v-overlay z-index="999" v-model="showWarning">
+                    <v-card width="50vw" height="20vh" class="d-flex flex-column justify-space-between select-option-card">
+                        <div class="d-flex flex-row justify-space-between">
+                            <div class="warning-title" color="secondary">
+                                Оформить заказ из ресторана {{this.restuarant.name}}
+                            </div>
+                            <div>
+                                <v-icon @click="cancelDeleteBasket()" color="black">close</v-icon>
+                            </div>
+                        </div>
+                        <div class="warning-info" color="secondary">
+                            Все ранее добавленные блюда из ресторана "{{this.getLatetestRestInfoWithOrder == null ? '404' : this.getLatetestRestInfoWithOrder.restName}}" будут удалены из корзины
+                        </div>
                         <div class="d-flex flex-row">
-                            <div>
-                                <v-btn color="primary" @click="addCraftDish(sizesRadioBtn)">Добавить</v-btn>
-                            </div>
-                            <div class="dish-counter">
-                                <v-icon @click="mobileDecrementSelectedDisn()" color="black">
-                                    remove
-                                </v-icon>
-                                {{this.selectedDishCounter}}
-                                <v-icon @click="mobileIncrementSelectedDisn()" color="black">
-                                    add
-                                </v-icon>
-                            </div>
+                            <v-btn color="primary" @click="coontinue()">
+                                Продолжить
+                            </v-btn>
+                            <v-btn @click="cancelDeleteBasket()" class="mx-3" outlined>
+                                Отменить
+                            </v-btn>
                         </div>
-                        <div class="total-price-calc">
-                            <div class="price-calc-sum">
-                                Сумма
-                            </div>
-                            <div>
-                                {{(sizesRadioBtn.price * selectedDishCounter).toFixed(1)}} BYN
-                            </div>
-                        </div>
-                    </div>
-                </v-card>
-            </v-overlay>
-            <v-overlay z-index="999" v-model="showWarning">
-                <v-card width="50vw" height="20vh" class="d-flex flex-column justify-space-between select-option-card">
-                    <div class="d-flex flex-row justify-space-between">
-                        <div class="warning-title" color="secondary">
-                            Оформить заказ из ресторана {{this.restuarant.name}}
-                        </div>
-                        <div>
-                            <v-icon @click="cancelDeleteBasket()" color="black">close</v-icon>
-                        </div>
-                    </div>
-                    <div class="warning-info" color="secondary">
-                        Все ранее добавленные блюда из ресторана "{{this.getLatetestRestInfoWithOrder == null ? '404' : this.getLatetestRestInfoWithOrder.restName}}" будут удалены из корзины
-                    </div>
-                    <div class="d-flex flex-row">
-                        <v-btn color="primary" @click="coontinue()">
-                            Продолжить
-                        </v-btn>
-                        <v-btn @click="cancelDeleteBasket()" class="mx-3" outlined>
-                            Отменить
-                        </v-btn>
-                    </div>
-                </v-card>
-            </v-overlay>
+                    </v-card>
+                </v-overlay>
+            </client-only>
         </div>
     </div>
-    <!-- <div class="mobile-mode">
+    <div class="mobile-mode">
         <div class="mobile-mode_header">
             <v-icon @click="goBack()">arrow_back</v-icon>
             <v-icon>search</v-icon>
@@ -382,7 +404,7 @@
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 </div>
 </template>
 
@@ -413,18 +435,18 @@ export default {
         var currentZone = store.getters['zone/getSelectedZone']
         var lastRest = store.getters['basket/getLatetestRestInfoWithOrder']
         var orderList = store.getters['basket/getSelectedDishs']
-		var totalPrice = store.getters['basket/getTotalPrice']
-		
-		app.lastRest = lastRest
-		app.orderList = orderList
-		app.totalPrice = totalPrice
+        var totalPrice = store.getters['basket/getTotalPrice']
+
+        app.lastRest = lastRest
+        app.orderList = orderList
+        app.totalPrice = totalPrice
         let restuarant = await axios.post(`https://yestapi.xyz/restaurant/${id[0]}`, {
             zone_id: currentZone.id,
         })
         console.log('restuarant', restuarant.data)
 
         return {
-			restuarant: restuarant.data,
+            restuarant: restuarant.data,
         }
     },
     data() {
@@ -439,14 +461,14 @@ export default {
             dishCounter: 1,
             showOptionsmenu: false,
             sizesRadioBtn: '',
-            selected: [],
+            selectOption: [],
             selectedDishCounter: 1,
             countTotalPices: {},
             selectedListDish: [],
-			showWarning: false,
-			lastRest:{},
-			totalPrice: 0,
-			orderList:[],
+            showWarning: false,
+            lastRest: {},
+            totalPrice: 0,
+            orderList: [],
         }
     },
     computed: {
@@ -462,15 +484,15 @@ export default {
     },
     watch: {
         getSelectedDishs(newValue) {
-			this.orderList = newValue
+            this.orderList = newValue
             return newValue
         },
         getLatetestRestInfoWithOrder(newValue) {
-			this.lastRest = newValue
+            this.lastRest = newValue
             return newValue
         },
         getTotalPrice(newValue) {
-			this.totalPrice = newValue
+            this.totalPrice = newValue
             return newValue
         },
         dishCounter(newValue) {
@@ -499,16 +521,16 @@ export default {
             });
             this.showWarning = false
         },
-        addCraftDish(dish) {
-            console.log('addCraftDish -> this.$router', this.$router)
+        addCraftDish() {
             if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
-				this.showWarning = true
-				this.selectedDish = dish
+                this.showWarning = true
+                // this.selectedDish = dish
             } else {
-                this.countTotalPices = dish
-                dish.counter = this.selectedDishCounter
-                dish.name = `${this.selectedDish.name} (${dish.name})`
-                this.$store.dispatch('basket/addToBasket', this.countTotalPices);
+                this.selectedDish.counter = this.selectedDishCounter
+                this.selectedDish.selectOption = this.selectOption
+                this.selectedDish.selectSize = this.sizesRadioBtn
+                console.log('addCraftDish -> dish', this.selectedDish)
+                this.$store.dispatch('basket/addToBasket', this.selectedDish);
                 this.showOptionsmenu = false
                 this.selectedDishCounter = 1
                 this.$store.dispatch('basket/saveRestuarantUrl', {
@@ -563,8 +585,8 @@ export default {
                     this.showWarning = true
                     this.selectedDish = dish
                 } else {
-					console.error("ELSE ELSE ");
-					dish.counter = 1
+                    console.error("ELSE ELSE ");
+                    dish.counter = 1
                     this.$store.dispatch('basket/addToBasket', dish);
                     this.$store.dispatch('basket/saveRestuarantUrl', {
                         params: this.$router.currentRoute.params,
@@ -593,17 +615,17 @@ export default {
         }
     },
     mounted() {
-		window.scrollTo(0, 0);
-		this.orderList = this.getSelectedDishs
-		// if (this.getLatetestRestInfoWithOrder !== null) {
-		// 	if (this.getLatetestRestInfoWithOrder.params.resName == this.$router.currentRoute.params.resName) {
-		// 		this.selectedListDish = this.getSelectedDishs
-		// 	} else {
-		// 		this.selectedListDish = []
-		// 	}
-		// } else {
-		// 		this.selectedListDish = []
-		// }
+        window.scrollTo(0, 0);
+        this.orderList = this.getSelectedDishs
+        // if (this.getLatetestRestInfoWithOrder !== null) {
+        // 	if (this.getLatetestRestInfoWithOrder.params.resName == this.$router.currentRoute.params.resName) {
+        // 		this.selectedListDish = this.getSelectedDishs
+        // 	} else {
+        // 		this.selectedListDish = []
+        // 	}
+        // } else {
+        // 		this.selectedListDish = []
+        // }
     },
 }
 </script>
@@ -761,6 +783,7 @@ export default {
     color: #b0b0b0;
     font-size: 14px;
     padding-top: 20px;
+    text-transform: uppercase;
 }
 
 .close-select-option {
@@ -797,7 +820,7 @@ export default {
     flex: 1 1 60%;
 }
 
-.order-item-weight {
+.order-item-subbtitle {
     color: #b0b0b0;
     font-size: 12px;
     white-space: nowrap;
@@ -868,7 +891,7 @@ export default {
 }
 
 .left {
-    width: calc(100% - 320px);
+    width: 70%;
     border: 1px solid #d5d5d5;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
@@ -1053,7 +1076,7 @@ export default {
     position: relative;
     padding-top: 27px;
     align-items: center;
-    padding-left: 10px;	
+    padding-left: 10px;
     flex-direction: row;
 }
 
@@ -1246,6 +1269,16 @@ export default {
     margin: auto;
     max-width: 1420px;
     width: 100%;
+}
+
+@media screen and (max-width: 1265px) {
+    .top-wrapper {
+        margin: 0 40px;
+    }
+
+    .rest-cotainer {
+        max-width: 900px;
+    }
 }
 
 @media screen and (max-width: 992px) {
