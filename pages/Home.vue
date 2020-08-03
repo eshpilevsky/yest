@@ -50,9 +50,10 @@ export default {
         app,
         context,
         store,
-        params
+		params,
     }) {
-        console.log('START ASYNC DATA');
+		console.log('START ASYNC DATA');
+        console.log('params', params)
         let getCurrentCoords = store.getters['map/getCurrentCoords']
         let zoneList = await axios.get('https://yestapi.xyz/get-zones')
 		const zoneListData = zoneList.data

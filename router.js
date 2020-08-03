@@ -11,12 +11,19 @@ Vue.use(Router)
 export function createRouter() {
   return new Router({
     mode: 'history',
-    routes: [{
+    routes: [
+		{
+			path: '/cart',
+			name:'cart',
+			component: cart,
+		  },
+		{
         path: '/',
         component: Home,
         redirect: '/minsk',
         children: [{
-          path: ':region',
+		  path: '/:region',
+		  component: Home,
           children: [{
             path: 'restaurants',
             children: [{
@@ -37,11 +44,7 @@ export function createRouter() {
 		name:'restik',
         component: restaurants,
       },
-      {
-		path: '/cart',
-		name:'cart',
-        component: cart,
-      },
+
     ]
   })
 }
