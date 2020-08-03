@@ -104,13 +104,13 @@ module.exports = {
    */
   vuetify: {
     theme: {
-	//   dark: false,
-		light:true,
+	dark: false,
+	light:true,
       themes: {
         light: {
           primary: '#00a646',
           secondary: colors.black,
-          info: colors.teal.lighten1,
+          white: colors.white,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
           black: '#000',
