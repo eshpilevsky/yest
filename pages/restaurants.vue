@@ -85,7 +85,7 @@
                     </div>
                 </div>
                 <div class="catalog">
-                    <v-tabs v-model="tab" class="catalog-tabs" center-active>
+                    <v-tabs hide-slider v-model="tab" class="catalog-tabs" center-active>
                         <v-tab height="70px" v-for="(category, index) in restuarant.menu" :key="category.cat_id" @click="scroll(`${index}`)">
                             {{category.name}}
                         </v-tab>
@@ -199,7 +199,7 @@
                             </div>
                         </div>
                         <div class="options-list">
-                            <div class="sizes" >
+                            <div class="sizes">
                                 <div class="multi-title">
                                     Размер на выбор
                                 </div>
@@ -207,7 +207,7 @@
                                     <v-radio v-for="size in selectedDish.sizes" :key="size.id" :label="size.name" :value="size" color="primary"></v-radio>
                                 </v-radio-group>
                             </div>
-                            <div class="options" >
+                            <div class="options">
                                 <div class="multi-title">
                                     Дополнительниые ингреденеты
                                 </div>
@@ -273,9 +273,9 @@
                         </div>
                     </v-card>
                 </v-overlay>
-				<v-overlay z-index="999" v-model="showOrderCard">
-					<orderCard @closeCheckout='checkout'/>
-				</v-overlay>
+                <v-overlay z-index="999" v-model="showOrderCard">
+                    <orderCard @closeCheckout='checkout' />
+                </v-overlay>
             </client-only>
         </div>
     </div>
@@ -288,7 +288,7 @@
             <div class="rest-info-content">
                 <div class="rest-info-top">
                     <h1 class="info-top-title">
-                        {{restuarant.name}} {{getTotalPrice}}
+                        {{restuarant.name}}
                     </h1>
                     <v-icon>info</v-icon>
                 </div>
@@ -334,7 +334,7 @@
             </div>
 
             <div class="rest-info-bottom">
-                <v-tabs v-model="tab" class="catalog-tabs catalog-tabs-mobile">
+                <v-tabs hide-slider z-index='1' v-model="tab" class="catalog-tabs catalog-tabs-mobile">
                     <v-tab v-for="(category, index) in restuarant.menu" :key="category.id" @click="scroll(`${index}`)" class="catalog-tab-mobile-container">
                         <v-chip>
                             {{category.name}}
@@ -373,7 +373,7 @@
 
                         </div>
                     </div>
-                    <v-bottom-sheet v-model="showDish" scrollable persistent no-click-animation  z-index='999'>
+                    <v-bottom-sheet v-model="showDish" scrollable persistent no-click-animation z-index='999'>
                         <v-sheet>
                             <v-card>
                                 <div class="selected-dish-top">
@@ -434,22 +434,22 @@
                     </v-bottom-sheet>
                 </div>
             </div>
-			<div class="basket-btn-block" v-show="this.getTotalPrice > 0">
-				<div>
-					<v-btn height="56px" block color="primary" class="basket-btn" @click="goToBasketPage()">
-						<span class="btn-sub-text">
-							10-20 мин
-						</span>
-						<span class="pr-5">
-							Корзина
-						</span>
-						<span class="btn-sub-text">
-							{{getTotalPrice}}
-						</span>
-					</v-btn>
+            <div class="basket-btn-block" v-show="this.getTotalPrice > 0">
+                <div>
+                    <v-btn height="56px" block color="primary" class="basket-btn" @click="goToBasketPage()">
+                        <span class="btn-sub-text">
+                            10-20 мин
+                        </span>
+                        <span class="pr-5">
+                            Корзина
+                        </span>
+                        <span class="btn-sub-text">
+                            {{getTotalPrice}}
+                        </span>
+                    </v-btn>
 
-				</div>
-			</div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -469,8 +469,8 @@ export default {
     name: 'restaurants',
     components: {
         MapBtn,
-		cardDish,
-		orderCard,
+        cardDish,
+        orderCard,
     },
     async asyncData({
         app,
@@ -560,9 +560,9 @@ export default {
         }
     },
     methods: {
-		checkout(){
-			this.showOrderCard = !this.showOrderCard
-		},
+        checkout() {
+            this.showOrderCard = !this.showOrderCard
+        },
         goToBasketPage() {
             this.$router.push(`/cart`)
         },
@@ -628,9 +628,9 @@ export default {
             } else {
                 if (this.getLatetestRestInfoWithOrder == null) {
                     console.log('addToBasket -> this.getLatetestRestInfoWithOrder.resName == null')
-					dish.count = 1
-					this.sizesRadioBtn = dish.sizes[0]
-					dish.selectSize = this.sizesRadioBtn
+                    dish.count = 1
+                    this.sizesRadioBtn = dish.sizes[0]
+                    dish.selectSize = this.sizesRadioBtn
                     this.$store.dispatch('basket/addToBasket', dish);
                     this.$store.dispatch('basket/saveRestuarantUrl', {
                         params: this.$router.currentRoute.params,
@@ -642,8 +642,8 @@ export default {
                     this.selectedDish = dish
                 } else {
                     console.error("addToBasket -> this.getLatetestRestInfoWithOrder.resName == this.$router.currentRoute.params.resName ");
-					this.sizesRadioBtn = dish.sizes[0]
-					dish.selectSize = this.sizesRadioBtn
+                    this.sizesRadioBtn = dish.sizes[0]
+                    dish.selectSize = this.sizesRadioBtn
                     this.$store.dispatch('basket/addToBasket', dish);
                     this.$store.dispatch('basket/saveRestuarantUrl', {
                         params: this.$router.currentRoute.params,
@@ -663,8 +663,8 @@ export default {
         },
         addToBasketMobile() {
             this.selectedDish.selectOption = this.selectOption
-			this.selectedDish.selectSize = this.sizesRadioBtn
-			this.selectedDish.count = this.selectedDishCounter
+            this.selectedDish.selectSize = this.sizesRadioBtn
+            this.selectedDish.count = this.selectedDishCounter
             this.$store.dispatch('basket/addToBasket', this.selectedDish);
             this.$store.dispatch('basket/saveRestuarantUrl', {
                 params: this.$router.currentRoute.params,
@@ -705,44 +705,9 @@ export default {
     border-radius: 50% !important;
 }
 
-@media screen and (min-width: 992px) {
-    .v-tabs-bar {
-        height: 70px !important;
-    }
-}
-
 @media screen and (max-width: 992px) {
-
-    .v-slide-group__prev,
-    .v-slide-group__next {
-        display: none !important;
-    }
-
-    .catalog-tab-mobile-container {
-        color: #21201F;
-        height: 36px;
-        opacity: 0.4;
-        padding: 0 14px;
-        display: flex;
-        font-size: 15px;
-        max-width: 80vw;
-        box-sizing: border-box;
-        line-height: 36px;
-        white-space: nowrap;
-        align-items: center;
-        transition-property: opacity;
-        transition-duration: 200ms;
-        background: #ffffff;
-    }
-
-    .v-tab--active.catalog-tab-mobile-container {
-        opacity: 1;
-        height: 36px;
-        position: absolute;
-        border-radius: 16px;
-        background-color: #F1F0ED;
-        transition-property: width;
-        transition-duration: 200ms;
+    .v-slide-group__wrapper {
+        margin-left: -48px !important;
     }
 }
 
@@ -750,31 +715,30 @@ export default {
     margin-bottom: 0 !important;
 }
 </style><style scoped>
-
-.basket-btn{
-	border-radius:16px !important;
-	display: flex;
-	justify-content: space-between;
+.basket-btn {
+    border-radius: 16px !important;
+    display: flex;
+    justify-content: space-between;
 }
 
-.btn-sub-text{
-	flex: 0 0 auto;
+.btn-sub-text {
+    flex: 0 0 auto;
     padding: 7px 0px;
     font-size: 14px;
     border-radius: 3px;
     background-color: rgba(0, 0, 0, 0.03);
 }
 
-.basket-btn-block{
-	position: fixed;
-	bottom: 0px;
-	width: 100%;
+.basket-btn-block {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
     padding: 8px;
     overflow: hidden;
     box-shadow: 0 -4px 8px 0 rgba(0, 0, 0, 0.05);
     transition: all 200ms ease-in;
     background-color: #ffffff;
-	margin: auto;
+    margin: auto;
 }
 
 .warning-title {
