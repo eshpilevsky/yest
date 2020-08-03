@@ -17,9 +17,9 @@ export const actions = {
     })
     if (findDish == undefined) {
       context.commit('SAVE_TO_BASKET', payload)
-    } else{
-		context.commit('INCREMENT_DISH', payload.id)
-	}
+    } else {
+      context.commit('INCREMENT_DISH', payload.id)
+    }
   },
   dropBasket(context) {
     context.commit('DROP_BASKET')
@@ -39,46 +39,47 @@ export const actions = {
 };
 
 export const mutations = {
-	SAVE_RESTRUARNT_URL(state, url) {
-	  state.status = '200'
-	  state.data.restuarantUrl = url
-	},
-	SAVE_TO_BASKET(state, payload) {
-	  state.status = '200'
-	  state.data.dishs.push(payload)
-	},
-	DROP_BASKET(state) {
-	  state.status = '200'
-	  state.data.dishs = []
-	},
-	INCREMENT_DISH(state, payload) {
-	  state.status = '200'
-	  let dishList = state.data.dishs
-	  dishList.find((dish, index) => {
-		if (dish.id == payload) {
-		  state.data.dishs[index].counter++
-		}
-	  })
-	},
-	DECREMENT_DISH(state, payload) {
-	  state.status = '200'
-	  let dishList = state.data.dishs
-	  dishList.find((dish, index) => {
-		if (dish.id == payload) {
-		  state.data.dishs[index].counter--
-		  if (state.data.dishs[index].counter == 0) {
-			state.data.dishs.splice(index, 1)
-		  }
-		}
-	  })
-	},
-	REMOVE_FROM_BASKET(state, id) {
-	  state.status = '200'
-	  state.data.dishs.filter(dish => {
-		return dish !== id
-	  })
-	},
-  };
+  SAVE_RESTRUARNT_URL(state, url) {
+    state.status = '200'
+    state.data.restuarantUrl = url
+  },
+  SAVE_TO_BASKET(state, payload) {
+	state.status = '200'
+	payload.count = 1
+    state.data.dishs.push(payload)
+  },
+  DROP_BASKET(state) {
+    state.status = '200'
+    state.data.dishs = []
+  },
+  INCREMENT_DISH(state, payload) {
+    state.status = '200'
+    let dishList = state.data.dishs
+    let index = dishList.findIndex((dish) => {
+      return dish.id == payload
+    })
+    state.data.dishs[index].count++
+
+  },
+  DECREMENT_DISH(state, payload) {
+    state.status = '200'
+    let dishList = state.data.dishs
+    dishList.find((dish, index) => {
+      if (dish.id == payload) {
+        state.data.dishs[index].count--
+        if (state.data.dishs[index].count == 0) {
+          state.data.dishs.splice(index, 1)
+        }
+      }
+    })
+  },
+  REMOVE_FROM_BASKET(state, id) {
+    state.status = '200'
+    state.data.dishs.filter(dish => {
+      return dish !== id
+    })
+  },
+};
 
 export const getters = {
   getLatetestRestInfoWithOrder(state) {
@@ -92,9 +93,9 @@ export const getters = {
     let totalPrice = 0
     dl.forEach(element => {
       if (element.hasOwnProperty('selectSize')) {
-        totalPrice += element.selectSize.price * element.counter
+        totalPrice += element.selectSize.price * element.count
       } else {
-        totalPrice += element.price * element.counter
+        totalPrice += element.price * element.count
       }
     });
     return totalPrice.toFixed(1)

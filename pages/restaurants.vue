@@ -104,7 +104,7 @@
                         </div>
                         <div class="dishs-list">
                             <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" class="dishs-list-item" @click="addToBasket(item)">
-                                <cardDish :name='item.name' :description='item.description' :img='item.image' :dishinfo='item.sizes' />
+                                <cardDish :id='item.id' :count='item.count' :name='item.name' :description='item.description' :img='item.image' :dishinfo='item.sizes' />
                             </div>
                         </div>
                     </div>
@@ -159,7 +159,7 @@
                                         </v-icon>
                                     </div>
                                     <div class="counter-count">
-                                        {{order.counter}}
+                                        {{order.count}}
                                     </div>
                                     <div class="counter-minus" @click="decrement(order.id)">
                                         <v-icon>
@@ -528,6 +528,7 @@ export default {
     },
     watch: {
         getSelectedDishs(newValue) {
+            console.log('getSelectedDishs -> newValue', newValue)
             this.orderList = newValue
             return newValue
         },
@@ -573,7 +574,7 @@ export default {
                 this.showWarning = true
                 // this.selectedDish = dish
             } else {
-                this.selectedDish.counter = this.selectedDishCounter
+                this.selectedDish.count = this.selectedDishCounter
                 this.selectedDish.selectOption = this.selectOption
                 this.selectedDish.selectSize = this.sizesRadioBtn
                 console.log('addCraftDish -> dish', this.selectedDish)
@@ -618,7 +619,7 @@ export default {
             } else {
                 if (this.getLatetestRestInfoWithOrder == null) {
                     console.log('addToBasket -> this.getLatetestRestInfoWithOrder.resName == null')
-					dish.counter = 1
+					dish.count = 1
 					this.sizesRadioBtn = dish.sizes[0]
 					dish.selectSize = this.sizesRadioBtn
                     this.$store.dispatch('basket/addToBasket', dish);
@@ -631,8 +632,7 @@ export default {
                     this.showWarning = true
                     this.selectedDish = dish
                 } else {
-                    console.error("ELSE ELSE ");
-					dish.counter = 1
+                    console.error("addToBasket -> this.getLatetestRestInfoWithOrder.resName == this.$router.currentRoute.params.resName ");
 					this.sizesRadioBtn = dish.sizes[0]
 					dish.selectSize = this.sizesRadioBtn
                     this.$store.dispatch('basket/addToBasket', dish);
@@ -655,7 +655,7 @@ export default {
         addToBasketMobile() {
             this.selectedDish.selectOption = this.selectOption
 			this.selectedDish.selectSize = this.sizesRadioBtn
-			this.selectedDish.counter = this.selectedDishCounter
+			this.selectedDish.count = this.selectedDishCounter
             this.$store.dispatch('basket/addToBasket', this.selectedDish);
             this.$store.dispatch('basket/saveRestuarantUrl', {
                 params: this.$router.currentRoute.params,
