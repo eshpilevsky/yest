@@ -128,7 +128,8 @@
                                         <div class="item-name">
                                             {{order.name}}
                                             <span class="order-item-subbtitle">
-                                                {{order.weigth ? order.weigth : order.selectSize.weight}}
+                                                <!-- {{order.weigth ? order.weigth : order.selectSize.weight}} -->
+                                                {{order.selectSize.weight}}
                                             </span>
                                         </div>
                                     </div>
@@ -141,14 +142,14 @@
                                         {{order.selectSize.name}}
                                     </div>
 
-                                    <div v-if="order.selectOption.length > 1">
+                                    <!-- <div v-if="order.selectOption.length > 1">
                                         <div v-for="option in order.selectOption" :key="`selectOption${option.id}`" class="order-item-subbtitle">
                                             {{option.name}}
                                         </div>
                                     </div>
                                     <div v-else class="order-item-subbtitle">
                                         {{order.selectOption.name}}
-                                    </div>
+                                    </div> -->
 
                                 </div>
                                 <div class="d-flex flex-column my-counter">
@@ -617,7 +618,9 @@ export default {
             } else {
                 if (this.getLatetestRestInfoWithOrder == null) {
                     console.log('addToBasket -> this.getLatetestRestInfoWithOrder.resName == null')
-                    dish.counter = 1
+					dish.counter = 1
+					this.sizesRadioBtn = dish.sizes[0]
+					dish.selectSize = this.sizesRadioBtn
                     this.$store.dispatch('basket/addToBasket', dish);
                     this.$store.dispatch('basket/saveRestuarantUrl', {
                         params: this.$router.currentRoute.params,
@@ -629,7 +632,9 @@ export default {
                     this.selectedDish = dish
                 } else {
                     console.error("ELSE ELSE ");
-                    dish.counter = 1
+					dish.counter = 1
+					this.sizesRadioBtn = dish.sizes[0]
+					dish.selectSize = this.sizesRadioBtn
                     this.$store.dispatch('basket/addToBasket', dish);
                     this.$store.dispatch('basket/saveRestuarantUrl', {
                         params: this.$router.currentRoute.params,

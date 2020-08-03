@@ -91,7 +91,7 @@ export const getters = {
     let dl = state.data.dishs
     let totalPrice = 0
     dl.forEach(element => {
-      if (element.hasOwnProperty('sizes')) {
+      if (element.hasOwnProperty('selectSize')) {
         totalPrice += element.selectSize.price * element.counter
       } else {
         totalPrice += element.price * element.counter
