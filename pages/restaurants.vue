@@ -16,7 +16,7 @@
                             <h1 class="restuarant-name white--text pb-3">
                                 {{restuarant.name}}
                             </h1>
-                            <v-divider dark />
+                            <v-divider />
                             <div class="d-flex flex-row justify-space-between">
                                 <div class="white--text info-left">
                                     <div class="moped-block">
@@ -185,7 +185,7 @@
                         </div>
                     </div>
                 </div>
-                <v-btn :disabled="this.totalPrice <= 0" color="primary" class="desctop_btn_confirm_order">Оформить заказ</v-btn>
+                <v-btn :disabled="this.totalPrice <= 0" color="primary" class="desctop_btn_confirm_order" @click="checkout()">Оформить заказ</v-btn>
             </div>
             <client-only>
                 <v-overlay z-index="999" v-model="showOptionsmenu">
@@ -273,6 +273,9 @@
                         </div>
                     </v-card>
                 </v-overlay>
+				<v-overlay z-index="999" v-model="showOrderCard">
+					<orderCard @closeCheckout='checkout'/>
+				</v-overlay>
             </client-only>
         </div>
     </div>
@@ -455,6 +458,7 @@
 <script>
 import ApiService from "../common/api.service";
 import MapBtn from '@/components/map-btn'
+import orderCard from '@/components/orderCard'
 import cardDish from '@/components/cardDish'
 import axios from 'axios'
 
@@ -465,7 +469,8 @@ export default {
     name: 'restaurants',
     components: {
         MapBtn,
-        cardDish,
+		cardDish,
+		orderCard,
     },
     async asyncData({
         app,
@@ -513,6 +518,7 @@ export default {
             lastRest: {},
             totalPrice: 0,
             orderList: [],
+            showOrderCard: false,
         }
     },
     computed: {
@@ -554,6 +560,9 @@ export default {
         }
     },
     methods: {
+		checkout(){
+			this.showOrderCard = !this.showOrderCard
+		},
         goToBasketPage() {
             this.$router.push(`/cart`)
         },

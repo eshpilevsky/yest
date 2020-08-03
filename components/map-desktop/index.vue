@@ -15,7 +15,7 @@
                     <v-icon>near_me</v-icon>
                     Определить
                 </v-btn>
-                <v-text-field @focus="focusInput" @blur="blurInput" height='40' dense placeholder="Укажите адрес доставки..." v-model="address" dark filled outlined clearable background-color="primary" class="address-input btnFz"></v-text-field>
+                <v-text-field @focus="focusInput" @blur="blurInput" height='40' dense placeholder="Укажите адрес доставки..." v-model="address" filled outlined clearable background-color="primary" class="address-input btnFz"></v-text-field>
                 <v-btn height='40' color="primary" class="ml-2" @click="confirmPosition()">
                     Ok
                 </v-btn>
