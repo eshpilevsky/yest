@@ -128,8 +128,8 @@
                                         <div class="item-name">
                                             {{order.name}}
                                             <span class="order-item-subbtitle">
-                                                <!-- {{order.weigth ? order.weigth : order.selectSize.weight}} -->
-                                                {{order.selectSize.weight}}
+                                                {{order.weigth ? order.weigth : order.selectSize.weight}}
+                                                <!-- {{order.selectSize.weight}} -->
                                             </span>
                                         </div>
                                     </div>
@@ -244,7 +244,7 @@
                                 </div>
                                 <div>
                                     <!-- {{this.sizesRadioBtn}} -->
-                                    <!-- {{(this.sizesRadioBtn.price * selectedDishCounter).toFixed(1)}} BYN  -->
+                                    {{(this.sizesRadioBtn.price * selectedDishCounter).toFixed(1)}} BYN
                                 </div>
                             </div>
                         </div>
@@ -273,9 +273,9 @@
                         </div>
                     </v-card>
                 </v-overlay>
-				<v-overlay dark='false' z-index="999" v-model="showOrderCard">
-					<orderCard @closeCheckout='checkout'/>
-				</v-overlay>
+                <v-overlay dark='false' z-index="999" v-model="showOrderCard">
+                    <orderCard @closeCheckout='checkout' />
+                </v-overlay>
             </client-only>
         </div>
     </div>
@@ -579,10 +579,26 @@ export default {
             this.showWarning = false
         },
         addCraftDish() {
-            if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
-                this.showWarning = true
-                // this.selectedDish = dish
+            if (this.getLatetestRestInfoWithOrder !== null) {
+                if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
+                    this.showWarning = true
+                    // this.selectedDish = dish
+                } else {
+                    this.selectOption = this.selectedDish.options[0]
+                    this.selectedDish.count = this.selectedDishCounter
+                    this.selectedDish.selectOption = this.selectOption
+                    this.selectedDish.selectSize = this.sizesRadioBtn
+                    console.log('addCraftDish -> dish', this.selectedDish)
+                    this.$store.dispatch('basket/addToBasket', this.selectedDish);
+                    this.showOptionsmenu = false
+                    this.selectedDishCounter = 1
+                    this.$store.dispatch('basket/saveRestuarantUrl', {
+                        params: this.$router.currentRoute.params,
+                        restName: this.restuarant.name,
+                    });
+                }
             } else {
+                this.selectOption = this.selectedDish.options[0]
                 this.selectedDish.count = this.selectedDishCounter
                 this.selectedDish.selectOption = this.selectOption
                 this.selectedDish.selectSize = this.sizesRadioBtn
