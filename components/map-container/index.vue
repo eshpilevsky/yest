@@ -1,5 +1,5 @@
 <template>
-    <v-overlay :value="isMapVisible">
+    <v-overlay dark=false :value="isMapVisible">
         <div v-if="this.getMapLoading" class="map-loading">
             <v-progress-circular indeterminate size="40" color="grey"></v-progress-circular>
         </div>

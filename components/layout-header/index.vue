@@ -120,7 +120,7 @@
 					<v-icon>shopping_cart</v-icon>
 				</v-btn>
 			</client-only>
-            <v-overlay :value="burgerOverlay" :opacity=".5">
+            <v-overlay dark=false :value="burgerOverlay" :opacity=".5">
                 <MapDesktop @closeMap='closeDesktopMap()'></MapDesktop>
             </v-overlay>
             <v-menu offset-y>

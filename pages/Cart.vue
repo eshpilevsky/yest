@@ -5,7 +5,7 @@
         <client-only>
             <v-icon @click="dropBasket()" v-show="getSelectedDishs.length > 0">delete_forever</v-icon>
         </client-only>
-        <v-overlay v-model="dropBasketForm">
+        <v-overlay dark=false v-model="dropBasketForm">
             <v-card>
                 <v-card-title>
                     Очистить корзину?

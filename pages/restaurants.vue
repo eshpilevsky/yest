@@ -188,7 +188,7 @@
                 <v-btn :disabled="this.totalPrice <= 0" color="primary" class="desctop_btn_confirm_order" @click="checkout()">Оформить заказ</v-btn>
             </div>
             <client-only>
-                <v-overlay z-index="999" v-model="showOptionsmenu">
+                <v-overlay dark=false z-index="999" v-model="showOptionsmenu">
                     <v-card width="50vw" class="select-option-card">
                         <div class="d-flex flex-row justify-space-between pb-3">
                             <div class="select-option-title" color="secondary">
@@ -243,14 +243,14 @@
                                     Сумма
                                 </div>
                                 <div>
-                                    {{this.sizesRadioBtn}}
-                                    <!-- {{(this.sizesRadioBtn.price * selectedDishCounter).toFixed(1)}} BYN +{{this.sizesRadioBtn.selectOption.price}} -->
+                                    <!-- {{this.sizesRadioBtn}} -->
+                                    <!-- {{(this.sizesRadioBtn.price * selectedDishCounter).toFixed(1)}} BYN  -->
                                 </div>
                             </div>
                         </div>
                     </v-card>
                 </v-overlay>
-                <v-overlay z-index="999" v-model="showWarning">
+                <v-overlay dark=false z-index="999" v-model="showWarning">
                     <v-card width="50vw" height="20vh" class="d-flex flex-column justify-space-between select-option-card">
                         <div class="d-flex flex-row justify-space-between">
                             <div class="warning-title" color="secondary">
@@ -273,7 +273,7 @@
                         </div>
                     </v-card>
                 </v-overlay>
-				<v-overlay z-index="999" v-model="showOrderCard">
+				<v-overlay dark=false z-index="999" v-model="showOrderCard">
 					<orderCard @closeCheckout='checkout'/>
 				</v-overlay>
             </client-only>
