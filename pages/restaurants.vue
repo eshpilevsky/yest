@@ -121,7 +121,7 @@
                                 delete_forever
                             </v-icon>
                         </div>
-                        <div v-if="this.orderList.length > 0 " class="my-order-dishes-desktop">
+                        <div v-if="this.orderList.length > 0 && this.getLatetestRestInfoWithOrder.params.resName == this.$router.currentRoute.params.resName" class="my-order-dishes-desktop">
                             <div v-for="order in this.orderList" :key="order.id" class="order-item">
                                 <div class="d-flex flex-column">
                                     <div class="d-flex flex-column order-item-info">
@@ -251,8 +251,8 @@
                     </v-card>
                 </v-overlay>
                 <v-overlay dark=false z-index="999" v-model="showWarning">
-                    <v-card width="50vw" height="20vh" class="d-flex flex-column justify-space-between select-option-card">
-                        <div class="d-flex flex-row justify-space-between">
+                    <v-card width="50vw" height="210px" class="d-flex flex-column justify-space-between select-option-card">
+                        <div class="d-flex flex-row justify-space-between align-center pb-2">
                             <div class="warning-title" color="secondary">
                                 Оформить заказ из ресторана {{this.restuarant.name}}
                             </div>
@@ -263,14 +263,14 @@
                         <div class="warning-info" color="secondary">
                             Все ранее добавленные блюда из ресторана "{{this.getLatetestRestInfoWithOrder == null ? '404' : this.getLatetestRestInfoWithOrder.restName}}" будут удалены из корзины
                         </div>
-                        <div class="d-flex flex-row">
+                        <v-card-actions class="d-flex flex-row">
                             <v-btn color="primary" @click="coontinue()">
                                 Продолжить
                             </v-btn>
                             <v-btn @click="cancelDeleteBasket()" class="mx-3" outlined>
                                 Отменить
                             </v-btn>
-                        </div>
+                        </v-card-actions>
                     </v-card>
                 </v-overlay>
                 <v-overlay dark='false' z-index="999" v-model="showOrderCard">
@@ -570,7 +570,8 @@ export default {
             this.showWarning = false
         },
         coontinue() {
-            this.dropBasket()
+			this.dropBasket()
+			this.selectedDish.selectSize = this.selectedDish.sizes[0]
             this.$store.dispatch('basket/addToBasket', this.selectedDish);
             this.$store.dispatch('basket/saveRestuarantUrl', {
                 params: this.$router.currentRoute.params,
@@ -761,7 +762,6 @@ export default {
     font-size: 24px;
     font-weight: bold;
     line-height: 36px;
-    padding-bottom: 10px;
 }
 
 .warning-info {
