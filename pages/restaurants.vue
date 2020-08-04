@@ -181,11 +181,11 @@
                     <div class="my-order-bottom">
                         <div class="total-price">
                             <p class="total-title">Итого</p>
-                            <p class="price">{{this.totalPrice}} BYN</p>
+                            <p class="price">{{this.getTotalPrice}} BYN</p>
                         </div>
                     </div>
                 </div>
-                <v-btn :disabled="this.totalPrice <= 0" color="primary" class="desctop_btn_confirm_order" @click="checkout()">Оформить заказ</v-btn>
+                <v-btn :disabled="this.getTotalPrice <= 0" color="primary" class="desctop_btn_confirm_order" @click="checkout()">Оформить заказ</v-btn>
             </div>
             <client-only>
                 <v-overlay :dark='false' z-index="999" v-model="showOptionsmenu">
