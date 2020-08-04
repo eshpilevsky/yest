@@ -120,7 +120,7 @@
 					<v-icon>shopping_cart</v-icon>
 				</v-btn>
 			</client-only>
-            <v-overlay dark=false :value="burgerOverlay" :opacity=".5">
+            <v-overlay :dark='false' :value="burgerOverlay" :opacity=".5">
                 <MapDesktop @closeMap='closeDesktopMap()'></MapDesktop>
             </v-overlay>
             <v-menu offset-y>
@@ -190,7 +190,9 @@ export default {
             setCurrentCoords: 'map/SET_CURRENT_COORDS',
         }),
         goToLatestReset() {
-            this.$router.push(`/${this.getLatetestRestInfoWithOrder.parms.region}/restaurant/${this.getLatetestRestInfoWithOrder.params.resName}`)
+			setTimeout(() => {
+				this.$router.push(`/${this.getLatetestRestInfoWithOrder.params.region}/restaurant/${this.getLatetestRestInfoWithOrder.params.resName}`)
+			}, 100);
         },
         onClick(e) {
             this.coords = e.get('coords')

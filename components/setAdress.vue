@@ -30,7 +30,7 @@
         </div>
         <map-btn v-show="this.canDisplayMap" class="map-btn" />
     </div>
-    <v-overlay dark=false :value="showDesktopMap" :opacity=".5">
+    <v-overlay :dark='false' :value="showDesktopMap" :opacity=".5">
         <MapDesktop @closeMap='closeDesktopMap()'></MapDesktop>
     </v-overlay>
 </div>

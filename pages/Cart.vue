@@ -1,81 +1,83 @@
 <template>
-<div class="cart">
-    <div class="mobile-mode_header">
-        <v-icon @click="goBack()">arrow_back</v-icon>
-        <client-only>
-            <v-icon @click="dropBasket()" v-show="getSelectedDishs.length > 0">delete_forever</v-icon>
-        </client-only>
-        <v-overlay dark=false v-model="dropBasketForm">
-            <v-card>
-                <v-card-title>
-                    Очистить корзину?
-                </v-card-title>
-                <v-card-actions>
-                    <v-btn color="primary">
-                        Ок
-                    </v-btn>
-                    <v-btn>
-                        Отмена
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-overlay>
-    </div>
-    <div class="px-2" v-show="getSelectedDishs.length > 0">
-        <h1>Заказ </h1>
-        <div class="order-list">
-            <client-only>
-                <div v-for="order in getSelectedDishs" :key="`${order.id}`" class="list-item">
-                    <div class='item-left'>
-                        <v-img cover :src="'https://img.eatmealby.com/resize/dish/400/'+order.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="order.name"></v-img>
-                    </div>
-                    <div class="dish-info">
-                        <div class="d-flex flex-row align-center justify-space-between ">
-                            <span class="dish-info-text">
-                                {{order.name}}
-                            </span>
-                            <span class="dish-info-text">
-                                {{order.selectSize.price}} BYN
-                            </span>
+<div>
+    <div class="cart" v-show="!showForm">
+        <div class="mobile-mode_header">
+            <v-icon @click="goBack()">arrow_back</v-icon>
+            <v-icon @click="dropBasketForm = true" v-show="getSelectedDishs.length > 0">delete_forever</v-icon>
+            <v-overlay :dark='false' v-model="dropBasketForm">
+                <v-card>
+                    <v-card-title>
+                        Очистить корзину?
+                    </v-card-title>
+                    <v-card-actions>
+                        <v-btn color="primary" @click="this.dropBasket()">
+                            Ок
+                        </v-btn>
+                        <v-btn @click="dropBasketForm = false">
+                            Отмена
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-overlay>
+        </div>
+        <div class="px-2" v-show="getSelectedDishs.length > 0">
+            <h1>Заказ </h1>
+            <div class="order-list">
+                <client-only>
+                    <div v-for="order in getSelectedDishs" :key="`${order.id}`" class="list-item">
+                        <div class='item-left'>
+                            <v-img cover :src="'https://img.eatmealby.com/resize/dish/400/'+order.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="order.name"></v-img>
                         </div>
-                        <div class="d-flex flex-row align-center">
-                            <v-btn icon @click="decrement(order.id)" class="rounded-xl">
-                                <v-icon>remove</v-icon>
-                            </v-btn>
-                            <div>
-                                {{order.counter}}
+                        <div class="dish-info">
+                            <div class="d-flex flex-row align-center justify-space-between ">
+                                <span class="dish-info-text">
+                                    {{order.name}}
+                                </span>
+                                <span class="dish-info-text">
+                                    {{order.selectSize.price}} BYN
+                                </span>
                             </div>
-                            <v-btn icon @click="increment(order.id)" class="rounded-xl">
-                                <v-icon>add</v-icon>
-                            </v-btn>
+                            <div class="d-flex flex-row align-center">
+                                <v-btn icon @click="decrement(order.id)" class="rounded-xl">
+                                    <v-icon>remove</v-icon>
+                                </v-btn>
+                                <div>
+                                    {{order.count}}
+                                </div>
+                                <v-btn icon @click="increment(order.id)" class="rounded-xl">
+                                    <v-icon>add</v-icon>
+                                </v-btn>
+                            </div>
                         </div>
                     </div>
+                </client-only>
+            </div>
+            <div class="confirm-order" v-show="getSelectedDishs.length > 0">
+                <div class="total-info-block">
+                    <p class="total-price">
+                        {{this.totalPrice}} BYN
+                    </p>
+                    <p class="delivery-time">
+                        10-20 мин
+                    </p>
                 </div>
-            </client-only>
+                <div class="next-btn-block">
+                    <v-btn block color="primary" @click="goToForm()">Далее</v-btn>
+                </div>
+            </div>
         </div>
-        <div class="confirm-order" v-show="getSelectedDishs.length > 0">
-            <div class="total-info-block">
-                <p class="total-price">
-                    {{this.totalPrice}} BYN
-                </p>
-                <p class="delivery-time">
-                    10-20 мин
-                </p>
+        <div v-show="getSelectedDishs.length == 0" class="empty">
+            <div class="empty-basket-img"></div>
+            <div class="empty-basket-title">
+                Корзина пуста
             </div>
-            <div class="next-btn-block">
-                <v-btn block color="primary">Далее</v-btn>
+            <div class="empty-basket-subtitle">
+                Перейдите к списку мест, чтобы оформить заказ заново
             </div>
-
         </div>
     </div>
-    <div v-show="getSelectedDishs.length == 0" class="empty">
-        <div class="empty-basket-img"></div>
-        <div class="empty-basket-title">
-            Корзина пуста
-        </div>
-        <div class="empty-basket-subtitle">
-            Перейдите к списку мест, чтобы оформить заказ заново
-        </div>
+    <div class="form" v-show="showForm">
+		<orderCard @closeCheckout='showForm = true'/>
     </div>
 </div>
 </template>
@@ -84,7 +86,12 @@
 import {
     mapGetters
 } from "vuex";
+import orderCard from '@/components/orderCard'
+
 export default {
+	components: {
+		orderCard,
+	},
     async asyncData({
         app,
         store,
@@ -106,9 +113,25 @@ export default {
             totalPrice: 0,
             selectedDishCounter: 1,
             dropBasketForm: false,
+            showForm: false,
         }
     },
+    watch: {
+        getTotalPrice(newValue, ) {
+            return newValue
+        }
+    },
+    computed: {
+        ...mapGetters({
+            getSelectedDishs: "basket/getSelectedDishs",
+            getTotalPrice: "basket/getTotalPrice",
+            getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
+        }),
+    },
     methods: {
+        goToForm() {
+            this.showForm = true
+        },
         goBack() {
             this.$router.go(-1)
         },
@@ -119,20 +142,6 @@ export default {
             this.$store.dispatch('basket/dropBasket');
             this.dropBasketForm = false
         },
-	},
-	watch: {
-		getTotalPrice(newValue,) {
-			return newValue
-		}
-	},
-    computed: {
-        ...mapGetters({
-            getSelectedDishs: "basket/getSelectedDishs",
-            getTotalPrice: "basket/getTotalPrice",
-            getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
-        }),
-    },
-    methods: {
         decrementSelectedDish() {
             if (this.selectedDishCounter > 1) {
                 this.selectedDishCounter--
@@ -158,7 +167,11 @@ export default {
 
 <style scoped>
 
-.empty-basket-subtitle{
+.form{
+	margin-top: -3rem;
+}
+
+.empty-basket-subtitle {
     flex: 0 0 100%;
     color: #b0b0b0;
     font-size: 12px;
@@ -166,7 +179,8 @@ export default {
     margin-top: 12px;
     line-height: 1.67;
 }
-.empty-basket-title{
+
+.empty-basket-title {
     flex: 0 0 100%;
     font-size: 20px;
     text-align: center;
@@ -174,17 +188,17 @@ export default {
     font-weight: bold;
 }
 
-.empty{
-	height: 100%;
+.empty {
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-top: 50%;
 }
 
-.total-info-block{
-	margin: 5px;
-	display: flex;
+.total-info-block {
+    margin: 5px;
+    display: flex;
     flex-direction: column;
     align-items: center;
 }
@@ -205,15 +219,15 @@ export default {
 .next-btn-block {
     width: 90%;
     margin: 20px;
-	margin-left: 10px!important;
+    margin-left: 10px !important;
 }
 
 .cart {
     margin-top: -3rem;
 }
 
-.confirm-order div{
-	text-align: center;
+.confirm-order div {
+    text-align: center;
 }
 
 .confirm-order {
