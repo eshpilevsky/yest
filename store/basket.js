@@ -21,7 +21,7 @@ export const actions = {
       context.commit('INCREMENT_DISH', payload.id)
     }
   },
-  dropBasket() {
+  dropBasket(context) {
     context.commit('DROP_BASKET')
   },
   incrementDishCounter(context, id) {

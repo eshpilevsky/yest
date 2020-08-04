@@ -274,7 +274,7 @@
                     </v-card>
                 </v-overlay>
                 <v-overlay opacity="0.5" :dark='false' z-index="999" v-model="showOrderCard">
-                    <orderCard @closeCheckout='checkout' />
+                    <orderCard @closeCheckout='checkout()' />
                 </v-overlay>
             </client-only>
         </div>
@@ -523,7 +523,7 @@ export default {
             lastRest: {},
             totalPrice: 0,
             orderList: [],
-            showOrderCard: false,
+			showOrderCard: false,
         }
     },
     computed: {

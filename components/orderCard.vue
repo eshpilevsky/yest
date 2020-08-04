@@ -10,7 +10,6 @@
         Телефон для связи
     </v-card-subtitle>
     <form>
-
         <div>
             <v-text-field type="number" v-model="phone" placeholder="+375" required></v-text-field>
         </div>
@@ -42,9 +41,54 @@
         </div>
         <v-card-actions>
             <v-btn block color="primary" @click="sendOrder()" :disabled="phone.length<=11">Заказать</v-btn>
-            <v-btn block color="primary" @click="fillForm()">fill form for test</v-btn>
+            <v-btn block color="primary" @click="fillForm()" v-if="!isProduction">fill form for test</v-btn>
         </v-card-actions>
     </form>
+    <v-overlay :dark="false" v-model="showBilling">
+        <v-card>
+            <v-card-title class="d-flex justify-space-between">
+                Ваш заказ сформирован
+                <v-icon @click="closeConfirmOrder()">
+                    close
+                </v-icon>
+            </v-card-title>
+            <v-card-text>
+                Пожалуйста, перейдите по
+                <a :href='`${this.billingUrl}`' target="_blank">
+                    ссылке
+                </a>
+                для оплаты заказа
+            </v-card-text>
+            <v-card-actions class="d-flex justify-center">
+                <a :href='`${this.billingUrl}`' target="_blank">
+                    <v-btn :href='`${this.billingUrl}`' color="primary">
+                        Перейти
+                    </v-btn>
+                </a>
+                <v-btn @click="closeBillingOrder()" color="primary" outlined class="ml-2">
+                    Закрыть
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-overlay>
+    <v-overlay :dark="false" v-model="showWaitConfirmOrder">
+        <v-card>
+            <v-card-title class="d-flex justify-space-between">
+                Ваш заказ сформирован
+                <v-icon @click="closeConfirmOrder()">
+                    close
+                </v-icon>
+            </v-card-title>
+            <v-card-text>
+                Скоро с Вами cвяжется оператор для подтверждения заказа
+            </v-card-text>
+            <v-card-actions class="d-flex justify-center">
+                <v-btn @click="closeConfirmOrder()" color="primary" outlined>
+                    Закрыть
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-overlay>
 </v-card>
 </template>
 
@@ -70,9 +114,19 @@ export default {
             promocode: '',
             comment: '',
             order: [],
+            showBilling: false,
+            billingUrl: '',
+            showWaitConfirmOrder: true,
+            isProduction: process.env.NODE_ENV === 'production',
         }
     },
     methods: {
+        closeConfirmOrder() {
+            this.showWaitConfirmOrder = false
+        },
+        closeBillingOrder() {
+            this.showBilling = false
+        },
         fillForm() {
             this.phone = 375290000000
             this.delivery.address = 'Тестовая'
@@ -81,7 +135,7 @@ export default {
             this.delivery.enterence = '0'
             this.delivery.intercom = '0'
             this.delivery.flor = '1'
-            this.comment = 'Коммент'
+            this.comment = 'Код 110'
             this.payment_method = 0
         },
         closeCheckout() {
@@ -123,13 +177,20 @@ export default {
                     enterence: this.delivery.enterence,
                     intercom: this.delivery.intercom,
                     flor: this.delivery.flor,
-				},
-				used_bonuses: 0,
+                },
+                used_bonuses: 0,
                 payment_method: this.payment_method,
                 promocode: this.promocode,
                 order: this.order,
             }).then((response) => {
+				this.$emit('closeCheckout')
                 console.log('sendOrder -> response', response)
+                if (response.hasOwnProperty('redirect_url')) {
+                    this.showBilling = true
+					this.billingUrl = response.redirect_url
+                } else {
+					this.showWaitConfirmOrder = true
+                }
 
             }).catch((error) => {
                 console.error(error)
