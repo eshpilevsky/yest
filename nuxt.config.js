@@ -74,10 +74,6 @@ module.exports = {
       src: '@/plugins/vue-awesome-swiper',
       ssr: false
     },
-    {
-      src: '~/plugins/Vuelidate',
-      ssr: false
-    },
   ],
   /*
    ** Nuxt.js dev-modules
