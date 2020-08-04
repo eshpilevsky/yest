@@ -188,7 +188,7 @@
                 <v-btn :disabled="this.totalPrice <= 0" color="primary" class="desctop_btn_confirm_order" @click="checkout()">Оформить заказ</v-btn>
             </div>
             <client-only>
-                <v-overlay dark=false z-index="999" v-model="showOptionsmenu">
+                <v-overlay :dark='false' z-index="999" v-model="showOptionsmenu">
                     <v-card width="50vw" class="select-option-card">
                         <div class="d-flex flex-row justify-space-between pb-3">
                             <div class="select-option-title" color="secondary">
@@ -250,7 +250,7 @@
                         </div>
                     </v-card>
                 </v-overlay>
-                <v-overlay dark=false z-index="999" v-model="showWarning">
+                <v-overlay :dark='false' opacity="0.5" z-index="999" v-model="showWarning">
                     <v-card width="50vw" height="210px" class="d-flex flex-column justify-space-between select-option-card">
                         <div class="d-flex flex-row justify-space-between align-center pb-2">
                             <div class="warning-title" color="secondary">
@@ -273,7 +273,7 @@
                         </v-card-actions>
                     </v-card>
                 </v-overlay>
-                <v-overlay dark='false' z-index="999" v-model="showOrderCard">
+                <v-overlay opacity="0.5" :dark='false' z-index="999" v-model="showOrderCard">
                     <orderCard @closeCheckout='checkout' />
                 </v-overlay>
             </client-only>
@@ -293,29 +293,29 @@
                     <v-icon>info</v-icon>
                 </div>
                 <div class="rest-info-center">
-                    <v-chip @click="showRatingSheet = !showRatingSheet" :color="showRatingSheet == true ? 'primary': null" class="rest-info-center-block-tag">
+                    <v-chip @click="showRatingSheet = !showRatingSheet" :color="showRatingSheet ? 'primary': null" class="rest-info-center-block-tag">
                         <v-icon>star</v-icon>
                         {{restuarant.rating ? restuarant.rating: 'Мало оценок'}}
                     </v-chip>
-                    <v-chip @click="showDeliveryOption = !showDeliveryOption" :color="showDeliveryOption == true ? 'primary': null" class="rest-info-center-block-tag">
-                        Доставка 10 - 20 мин.
+                    <v-chip @click="showDeliveryOption = !showDeliveryOption" :color="showDeliveryOption ? 'primary': null" class="rest-info-center-block-tag">
+                        Условия доставки
                     </v-chip>
-                    <v-bottom-sheet v-model="showRatingSheet">
+                    <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showRatingSheet">
                         <v-sheet>
                             <div class="sheet-top">
                                 <h2 class="sheet-top-title">Рейтинг</h2>
-                                <v-icon>close</v-icon>
+                                <v-icon @click="closeSheetRating()">close</v-icon>
                             </div>
                             <div class="rating-info-bottom">
                                 {{restuarant.rating ? restuarant.rating : 'Мало оценок'}}
                             </div>
                         </v-sheet>
                     </v-bottom-sheet>
-                    <v-bottom-sheet v-model="showDeliveryOption">
+                    <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showDeliveryOption">
                         <v-sheet>
                             <div class="sheet-top">
                                 <h2 class="sheet-top-title">Условия доставки</h2>
-                                <v-icon>close</v-icon>
+                                <v-icon @click="closeSheetDeliveryOprion()">close</v-icon>
                             </div>
                             <div class="delivery-info">
                                 <v-icon>
@@ -335,7 +335,7 @@
 
             <div class="rest-info-bottom">
                 <v-tabs hide-slider z-index='1' v-model="tab" class="catalog-tabs catalog-tabs-mobile">
-                    <v-tab v-for="(category, index) in restuarant.menu" :key="category.id" @click="scroll(`${index}`)" class="catalog-tab-mobile-container">
+                    <v-tab v-for="(category, index) in restuarant.menu" :key="category.id" @click="scroll(`${index}`)" :color="tab == index ? 'primary': null" class="catalog-tab-mobile-container">
                         <v-chip>
                             {{category.name}}
                         </v-chip>
@@ -351,7 +351,7 @@
                         <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" class="dishs-list-mobile-item" @click="showSelectedDish(item)">
                             <v-card class="dish-card">
                                 <div class="card-dish-top">
-                                    <v-img cover :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="item.name" class="dish-img-mobile" />
+                                    <img :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" :alt="item.name" class="dish-img-mobile" />
                                 </div>
                                 <div class="card-dish-bottom">
                                     <div class="dish-name-container">
@@ -373,11 +373,16 @@
 
                         </div>
                     </div>
-                    <v-bottom-sheet v-model="showDish" scrollable persistent no-click-animation z-index='999'>
-                        <v-sheet>
+                    <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showDish" scrollable persistent no-click-animation z-index='999'>
+                        <v-sheet :light='true'>
                             <v-card>
+								<div class="close-block">
+									<v-btn icon color="white" @click="closeShowDish()">
+										<v-icon color="#fff">close</v-icon>
+									</v-btn>
+								</div>
                                 <div class="selected-dish-top">
-                                    <v-img :src="'https://img.eatmealby.com/resize/dish/400/'+selectedDish.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="selectedDish.name" class="dish-img-mobile" />
+                                    <v-img :src="'https://img.eatmealby.com/resize/dish/400/'+selectedDish.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="selectedDish.name" class="dish-img-mobile-selected" />
                                 </div>
                                 <div class="selected-dish-composition">
                                     {{selectedDish.description}}
@@ -444,7 +449,7 @@
                             Корзина
                         </span>
                         <span class="btn-sub-text">
-                            {{getTotalPrice}}
+                            {{getTotalPrice}} BYN
                         </span>
                     </v-btn>
 
@@ -533,6 +538,15 @@ export default {
         }),
     },
     watch: {
+        showRatingSheet(newValue) {
+            return newValue
+        },
+        showDeliveryOption(newValue) {
+            return newValue
+        },
+        showDeliveryOption(newValue) {
+            return newValue
+        },
         getSelectedDishs(newValue) {
             console.log('getSelectedDishs -> newValue', newValue)
             this.orderList = newValue
@@ -560,6 +574,15 @@ export default {
         }
     },
     methods: {
+		closeShowDish(){
+			this.showDish = false
+		},
+		closeSheetRating(){
+			this.showRatingSheet = false
+		},
+		closeSheetDeliveryOprion(){
+			this.showDeliveryOption = false
+		},
         checkout() {
             this.showOrderCard = !this.showOrderCard
         },
@@ -690,6 +713,8 @@ export default {
             this.showDish = false
         },
         scroll(id) {
+            console.log('scroll -> id', id)
+            console.log('scroll -> document.getElementById(id)', document.getElementById(id))
             document.getElementById(id).scrollIntoView({
                 block: 'start',
                 behavior: 'smooth'
@@ -697,21 +722,13 @@ export default {
             this.tab = id
         },
         categoryNameIntersect(entries, observer) {
-            // this.tab = parseInt(entries[0].target.id, 10)
+            console.log('categoryNameIntersect -> entries[0].target.id', entries[0].target.id)
+            this.tab = parseInt(entries[0].target.id, 10)
         }
     },
     mounted() {
         window.scrollTo(0, 0);
         this.orderList = this.getSelectedDishs
-        // if (this.getLatetestRestInfoWithOrder !== null) {
-        // 	if (this.getLatetestRestInfoWithOrder.params.resName == this.$router.currentRoute.params.resName) {
-        // 		this.selectedListDish = this.getSelectedDishs
-        // 	} else {
-        // 		this.selectedListDish = []
-        // 	}
-        // } else {
-        // 		this.selectedListDish = []
-        // }
     },
 }
 </script>
@@ -732,6 +749,16 @@ export default {
     margin-bottom: 0 !important;
 }
 </style><style scoped>
+
+.close-block{
+	position: relative;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 10px;
+    margin-bottom: -40px;
+    z-index: 999;
+}
+
 .basket-btn {
     border-radius: 16px !important;
     display: flex;
@@ -996,9 +1023,15 @@ export default {
     z-index: 999;
 }
 
+.dish-img-mobile-selected{
+	width: 100%;
+	object-fit: contain;
+}
+
 .dish-img-mobile {
     width: 100%;
     height: 167px;
+	object-fit: contain;
 }
 
 .card-dish-bottom {
@@ -1105,6 +1138,7 @@ export default {
     width: 100%;
     border-top-right-radius: 30px;
     border-top-left-radius: 30px;
+	padding-bottom: 12px;
 }
 
 .mobile-mode_header {
@@ -1401,6 +1435,5 @@ export default {
     font-size: 24px;
     line-height: 28px;
     font-weight: bold;
-    padding-bottom: 12px;
 }
 </style>
