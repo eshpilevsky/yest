@@ -60,11 +60,11 @@ export default {
             phone: Number,
             delivery: {
                 address: '',
-                room: Number,
-                flatNum: Number,
-                enterence: Number,
-                intercom: Number,
-                flor: Number,
+                room: '',
+                flatNum: '',
+                enterence: '',
+                intercom: '',
+                flor: '',
             },
             payment_method: 1,
             promocode: '',
@@ -76,11 +76,11 @@ export default {
         fillForm() {
             this.phone = 375290000000
             this.delivery.address = 'Тестовая'
-            this.delivery.room = 0
-            this.delivery.flatNum = 0
-            this.delivery.enterence = 0
-            this.delivery.intercom = 0
-            this.delivery.flor = 1
+            this.delivery.room = "Офис"
+            this.delivery.flatNum = '0'
+            this.delivery.enterence = '0'
+            this.delivery.intercom = '0'
+            this.delivery.flor = '1'
             this.comment = 'Коммент'
             this.payment_method = 0
         },
