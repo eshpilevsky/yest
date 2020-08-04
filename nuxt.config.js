@@ -74,7 +74,10 @@ module.exports = {
       src: '@/plugins/vue-awesome-swiper',
       ssr: false
     },
-
+    {
+      src: '~/plugins/Vuelidate',
+      ssr: false
+    },
   ],
   /*
    ** Nuxt.js dev-modules
@@ -104,8 +107,8 @@ module.exports = {
    */
   vuetify: {
     theme: {
-	dark: false,
-	light:true,
+      dark: false,
+      light: true,
       themes: {
         light: {
           primary: '#00a646',
@@ -134,8 +137,11 @@ module.exports = {
      ** You can extend webpack config here
      */
     extend(config, ctx) {
-		config.resolve.symlinks = false
-	}
+      config.resolve.symlinks = false
+    },
+    // vendor: [
+    //   'vuelidate'
+    // ]
   },
   vue: {
     config: {
