@@ -22,15 +22,15 @@
         </div>
         <div class="d-flex flex-row">
             <v-text-field type="number" v-model="delivery.intercom" placeholder="Код домофона" required></v-text-field>
-            <v-text-field type="number" v-model="delivery.flatNum" placeholder="Номер квартиры" required></v-text-field>
+            <v-text-field type="number" v-model="delivery.room" placeholder="Номер квартиры" required></v-text-field>
         </div>
         <v-card-subtitle color="#000">
             Выберете способ оплаты
         </v-card-subtitle>
         <div>
             <v-radio-group v-model="payment_method" :mandatory="false">
-                <v-radio label="Наличными" value=1></v-radio>
-                <v-radio label="Банковской картой на сайте" value=0></v-radio>
+                <v-radio label="Наличными" :value=0></v-radio>
+                <v-radio label="Банковской картой на сайте" :value=1></v-radio>
             </v-radio-group>
         </div>
         <v-card-subtitle color="#000">
@@ -40,7 +40,7 @@
             <v-textarea name="comment" dense max-height="50px" v-model="comment" clearable></v-textarea>
         </div>
         <v-card-actions>
-            <v-btn block color="primary" @click="sendOrder()" :disabled="phone.length<=11">Заказать</v-btn>
+            <v-btn block color="primary" @click="sendOrder()" :disabled="phone.length<=11" :loading="loading" >Заказать</v-btn>
         </v-card-actions>
     </form>
     <v-overlay :dark="false" v-model="showBilling">
@@ -100,11 +100,10 @@ import {
 export default {
     data() {
         return {
-            phone: Number,
+            phone: 375,
             delivery: {
                 address: '',
                 room: '',
-                flatNum: '',
                 enterence: '',
                 intercom: '',
                 flor: '',
@@ -116,6 +115,7 @@ export default {
             showBilling: false,
             billingUrl: '',
             showWaitConfirmOrder: false,
+            loading: false,
         }
     },
     methods: {
@@ -129,6 +129,7 @@ export default {
             this.$emit('closeCheckout')
         },
         sendOrder() {
+			this.loading = true
             console.log(this.getSelectedDishs);
             let dishId;
             let dishOption = [];
@@ -153,14 +154,14 @@ export default {
                     }
                 }
                 this.order.push(result)
-            })
+			})
+			this.phone = parseInt(this.phone,10)
 
             ApiService.post('/create/order', {
                 phone: this.phone,
                 delivery: {
                     address: this.delivery.address,
                     room: this.delivery.room,
-                    flatNum: this.delivery.flatNum,
                     enterence: this.delivery.enterence,
                     intercom: this.delivery.intercom,
                     flor: this.delivery.flor,
@@ -168,17 +169,17 @@ export default {
                 used_bonuses: 0,
                 payment_method: this.payment_method,
                 promocode: this.promocode,
+                comment: this.comment,
                 order: this.order,
             }).then((response) => {
-				console.log('sendOrder -> response', response)
-                if (response.hasOwnProperty('redirect_url')) {
+				console.log('sendOrder -> response', response.data)
+                if (response.data.hasOwnProperty('checkout')) {
 					this.showBilling = true
-					this.billingUrl = response.redirect_url
+					this.billingUrl = response.data.checkout.redirect_url
                 } else {
 					this.showWaitConfirmOrder = true
                 }
-				this.$emit('closeCheckout')
-
+				this.loading = false
             }).catch((error) => {
                 console.error(error)
             })
