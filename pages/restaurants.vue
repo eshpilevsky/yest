@@ -256,7 +256,6 @@
                             <restuarantInfo :restuarant='this.restuarant' />
                         </v-sheet>
                     </v-bottom-sheet>
-
                 </div>
                 <div class="rest-info-center">
                     <v-chip @click="showRatingSheet = !showRatingSheet" :color="showRatingSheet ? 'primary': null" class="rest-info-center-block-tag">
@@ -338,8 +337,8 @@
                         </div>
                     </div>
                     <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showDish" scrollable persistent no-click-animation z-index='999'>
-                        <v-sheet :light='true'>
-                            <v-card>
+                        <v-card>
+                            <v-card-text class="pa-0">
                                 <div class="close-block">
                                     <v-btn icon color="white" @click="closeShowDish()">
                                         <v-icon color="#fff">close</v-icon>
@@ -398,17 +397,211 @@
                                         <v-btn color="primary" @click="addToBasketMobile()">Добавить</v-btn>
                                     </div>
                                 </div>
-                            </v-card>
-                        </v-sheet>
+                            </v-card-text>
+                            <!-- <v-card-text>
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                                Vero laudantium velit aut. Expedita amet ut non sint fugiat. Reprehenderit animi dolorum. Rerum consequatur qui.
+
+                                Facere assumenda aut rem et ipsam voluptas aut temporibus. Cum consectetur quia dolorem reiciendis ab. Dolorem suscipit officia. Omnis odio aut perspiciatis eos qui dolorem soluta. Qui ut consequatur aut non et quod itaque fugit ipsa.
+
+                                Tempora vel explicabo et. Ex velit sunt dolore error ut molestias ullam voluptas. Blanditiis fugit aliquid. Dignissimos et nesciunt sit ipsum quaerat commodi eligendi ut.
+                            </v-card-text> -->
+                        </v-card>
                     </v-bottom-sheet>
                 </div>
             </div>
             <div class="basket-btn-block" v-show="this.getTotalPrice > 0">
                 <div>
                     <v-btn height="56px" block color="primary" class="basket-btn" @click="goToBasketPage()">
-                        <span class="btn-sub-text">
-                            10-20 мин
-                        </span>
                         <span class="pr-5">
                             Корзина
                         </span>
@@ -692,11 +885,21 @@ export default {
             this.showDish = true
         },
         addToBasketMobile() {
-            if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
-                console.log('addToBasket -> this.getLatetestRestInfoWithOrder.resName !== this.$router.currentRoute.params.resName')
-                this.showWarning = true
+            if (this.getLatetestRestInfoWithOrder !== null) {
+                if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
+                    this.showWarning = true
+                } else {
+                    this.selectedDish.selectOption = this.selectOption
+                    this.selectedDish.selectSize = this.sizesRadioBtn
+                    this.selectedDish.count = this.selectedDishCounter
+                    this.$store.dispatch('basket/addToBasket', this.selectedDish);
+                    this.$store.dispatch('basket/saveRestuarantUrl', {
+                        params: this.$router.currentRoute.params,
+                        restName: this.restuarant.name,
+                    });
+                    this.showDish = false
+                }
             } else {
-
                 this.selectedDish.selectOption = this.selectOption
                 this.selectedDish.selectSize = this.sizesRadioBtn
                 this.selectedDish.count = this.selectedDishCounter
@@ -750,11 +953,13 @@ export default {
 }
 
 .close-block {
-    position: relative;
+    position: fixed;
     display: flex;
     justify-content: flex-end;
     padding-right: 10px;
+    padding-top: 10px;
     margin-bottom: -40px;
+    right: 0px;
     z-index: 999;
 }
 

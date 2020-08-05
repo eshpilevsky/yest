@@ -191,6 +191,7 @@ export default {
     async beforeMount() {
 		this.ww = window.innerWidth;
 		console.error('this.categoryInfoData', this.categoryInfoData);
+		console.error('this.currentZone', this.currentZone);
     },
     mounted() {
       this.searchAddress = this.getCurrentAddress
