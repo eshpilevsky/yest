@@ -53,29 +53,7 @@
                                         <div>
                                             <div class="treangle"></div>
                                             <v-card max-width='460' class="restuarants-legal-info">
-                                                <div class="pa-3">
-                                                    <h3>
-                                                        {{restuarant.name}}
-                                                    </h3>
-                                                    <div>
-                                                        <ul>
-                                                            <li v-for="branch in restuarant.branch">
-                                                                {{branch.address}}
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                    <div>
-                                                        <span v-for="tag in restuarant.tags">
-                                                            {{tag.name}}
-                                                        </span>
-                                                    </div>
-                                                    <div>
-                                                        Исполнитель (продавец): {{restuarant.legal_info.business_firm_name}}, {{restuarant.legal_info.business_address}}, УНП {{restuarant.legal_info.business_unp}}.
-                                                    </div>
-                                                    <div>
-                                                        Режим работы ресторана: с 09:00 до 21:00
-                                                    </div>
-                                                </div>
+                                                <restuarantInfo :restuarant='this.restuarant' />
                                             </v-card>
                                         </div>
                                     </v-menu>
@@ -290,7 +268,17 @@
                     <h1 class="info-top-title">
                         {{restuarant.name}}
                     </h1>
-                    <v-icon>info</v-icon>
+                    <v-icon @click="showHideRestInfo()">info</v-icon>
+                    <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showRestInfo">
+                        <v-sheet>
+                            <div class="sheet-top">
+                                <h2 class="sheet-top-title">Информация о ресторане</h2>
+                                <v-icon @click="showHideRestInfo()">close</v-icon>
+                            </div>
+                            <restuarantInfo :restuarant='this.restuarant' />
+                        </v-sheet>
+                    </v-bottom-sheet>
+
                 </div>
                 <div class="rest-info-center">
                     <v-chip @click="showRatingSheet = !showRatingSheet" :color="showRatingSheet ? 'primary': null" class="rest-info-center-block-tag">
@@ -376,11 +364,11 @@
                     <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showDish" scrollable persistent no-click-animation z-index='999'>
                         <v-sheet :light='true'>
                             <v-card>
-								<div class="close-block">
-									<v-btn icon color="white" @click="closeShowDish()">
-										<v-icon color="#fff">close</v-icon>
-									</v-btn>
-								</div>
+                                <div class="close-block">
+                                    <v-btn icon color="white" @click="closeShowDish()">
+                                        <v-icon color="#fff">close</v-icon>
+                                    </v-btn>
+                                </div>
                                 <div class="selected-dish-top">
                                     <v-img :src="'https://img.eatmealby.com/resize/dish/400/'+selectedDish.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="selectedDish.name" class="dish-img-mobile-selected" />
                                 </div>
@@ -465,6 +453,7 @@ import ApiService from "../common/api.service";
 import MapBtn from '@/components/map-btn'
 import orderCard from '@/components/orderCard'
 import cardDish from '@/components/cardDish'
+import restuarantInfo from '@/components/restuarantInfo'
 import axios from 'axios'
 
 import {
@@ -476,6 +465,7 @@ export default {
         MapBtn,
         cardDish,
         orderCard,
+        restuarantInfo,
     },
     async asyncData({
         app,
@@ -523,7 +513,8 @@ export default {
             lastRest: {},
             totalPrice: 0,
             orderList: [],
-			showOrderCard: false,
+            showOrderCard: false,
+            showRestInfo: false,
         }
     },
     computed: {
@@ -548,7 +539,6 @@ export default {
             return newValue
         },
         getSelectedDishs(newValue) {
-            console.log('getSelectedDishs -> newValue', newValue)
             this.orderList = newValue
             return newValue
         },
@@ -574,15 +564,18 @@ export default {
         }
     },
     methods: {
-		closeShowDish(){
-			this.showDish = false
-		},
-		closeSheetRating(){
-			this.showRatingSheet = false
-		},
-		closeSheetDeliveryOprion(){
-			this.showDeliveryOption = false
-		},
+        showHideRestInfo() {
+            this.showRestInfo = !this.showRestInfo
+        },
+        closeShowDish() {
+            this.showDish = false
+        },
+        closeSheetRating() {
+            this.showRatingSheet = false
+        },
+        closeSheetDeliveryOprion() {
+            this.showDeliveryOption = false
+        },
         checkout() {
             this.showOrderCard = !this.showOrderCard
         },
@@ -593,8 +586,8 @@ export default {
             this.showWarning = false
         },
         coontinue() {
-			this.dropBasket()
-			this.selectedDish.selectSize = this.selectedDish.sizes[0]
+            this.dropBasket()
+            this.selectedDish.selectSize = this.selectedDish.sizes[0]
             this.$store.dispatch('basket/addToBasket', this.selectedDish);
             this.$store.dispatch('basket/saveRestuarantUrl', {
                 params: this.$router.currentRoute.params,
@@ -722,7 +715,6 @@ export default {
             this.tab = id
         },
         categoryNameIntersect(entries, observer) {
-            console.log('categoryNameIntersect -> entries[0].target.id', entries[0].target.id)
             this.tab = parseInt(entries[0].target.id, 10)
         }
     },
@@ -750,8 +742,13 @@ export default {
 }
 </style><style scoped>
 
-.close-block{
-	position: relative;
+.card-dish-top{
+	height: 167px;
+	width: 45vw;
+}
+
+.close-block {
+    position: relative;
     display: flex;
     justify-content: flex-end;
     padding-right: 10px;
@@ -1023,15 +1020,15 @@ export default {
     z-index: 999;
 }
 
-.dish-img-mobile-selected{
-	width: 100%;
-	object-fit: contain;
+.dish-img-mobile-selected {
+    width: 100%;
+    object-fit: contain;
 }
 
 .dish-img-mobile {
     width: 100%;
     height: 167px;
-	object-fit: contain;
+    object-fit: cover;
 }
 
 .card-dish-bottom {
@@ -1138,7 +1135,7 @@ export default {
     width: 100%;
     border-top-right-radius: 30px;
     border-top-left-radius: 30px;
-	padding-bottom: 12px;
+    padding-bottom: 12px;
 }
 
 .mobile-mode_header {

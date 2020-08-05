@@ -1,5 +1,5 @@
 <template>
-<v-card width="20vw" class="pa-3" color="#f5f5f5">
+<v-card class="pa-3" color="#f5f5f5">
     <v-card-title class="card-title">
         Ваш заказ
         <v-icon @click="closeCheckout()" color="#000">
@@ -116,7 +116,7 @@ export default {
             order: [],
             showBilling: false,
             billingUrl: '',
-            showWaitConfirmOrder: true,
+            showWaitConfirmOrder: false,
             isProduction: process.env.NODE_ENV === 'production',
         }
     },

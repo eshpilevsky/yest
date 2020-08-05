@@ -26,7 +26,7 @@
                 <client-only>
                     <div v-for="order in getSelectedDishs" :key="`${order.id}`" class="list-item">
                         <div class='item-left'>
-                            <v-img cover :src="'https://img.eatmealby.com/resize/dish/400/'+order.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="order.name"></v-img>
+                            <v-img cover :src="'https://img.eatmealby.com/resize/dish/400/'+order.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="order.name" class="order-img"></v-img>
                         </div>
                         <div class="dish-info">
                             <div class="d-flex flex-row align-center justify-space-between ">
@@ -57,9 +57,6 @@
                     <p class="total-price">
                         {{this.totalPrice}} BYN
                     </p>
-                    <p class="delivery-time">
-                        10-20 мин
-                    </p>
                 </div>
                 <div class="next-btn-block">
                     <v-btn block color="primary" @click="goToForm()">Далее</v-btn>
@@ -77,7 +74,7 @@
         </div>
     </div>
     <div class="form" v-show="showForm">
-		<orderCard @closeCheckout='showForm = true'/>
+		<orderCard @closeCheckout='closeOrderForm()'/>
     </div>
 </div>
 </template>
@@ -129,6 +126,9 @@ export default {
         }),
     },
     methods: {
+		closeOrderForm(){
+			this.showForm = false
+		},
         goToForm() {
             this.showForm = true
         },
@@ -167,6 +167,10 @@ export default {
 
 <style scoped>
 
+.order-img{
+	border-radius: 3px;
+}
+
 .form{
 	margin-top: -3rem;
 }
@@ -201,6 +205,8 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    padding-bottom: 8px;
 }
 
 .delivery-time {
@@ -263,6 +269,7 @@ export default {
 .list-item {
     display: flex;
     flex-direction: row;
+	padding-bottom: 10px;
 }
 
 .empty-basket-img {
