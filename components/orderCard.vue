@@ -11,7 +11,7 @@
     </v-card-subtitle>
     <form>
         <div>
-            <v-text-field type="number" v-model="phone" placeholder="+375" required></v-text-field>
+            <v-text-field type="number" counter v-model="phone" placeholder="+375" required></v-text-field>
         </div>
         <div>
             <v-text-field v-model="delivery.address" placeholder="Адресс" required></v-text-field>
