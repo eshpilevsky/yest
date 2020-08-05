@@ -93,7 +93,7 @@ export default {
         if (currentCategory === undefined) {
             currentCategory = categoryAll[0]
             categoryInfoData = {
-                headr: 'Быстрая и бесплатная доставка',
+                header: 'Быстрая и бесплатная доставка',
                 city: currentZone.name
             }
         } else {
@@ -107,7 +107,7 @@ export default {
                 app.categoryInfoData = categoryInfoData
             } else {
                 categoryInfoData = {
-                    headr: 'Быстрая и бесплатная доставка',
+                    header: 'Быстрая и бесплатная доставка',
                     city: currentZone.name
                 }
             }
