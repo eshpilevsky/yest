@@ -340,8 +340,8 @@
                         <v-card>
                             <v-card-text class="pa-0">
                                 <div class="close-block">
-                                    <v-btn icon color="white" @click="closeShowDish()">
-                                        <v-icon color="primary">close</v-icon>
+                                    <v-btn icon color="white" @click="showDish = false">
+                                        <v-icon color="black">close</v-icon>
                                     </v-btn>
                                 </div>
                                 <div class="selected-dish-top">
@@ -563,6 +563,9 @@ export default {
             this.showRestInfo = !this.showRestInfo
         },
         closeShowDish() {
+			this.selectedDish = {}
+			this.sizesRadioBtn = ''
+			this.selectOption = []
             this.showDish = false
         },
         closeSheetRating() {
@@ -685,7 +688,7 @@ export default {
         showSelectedDish(dish) {
             this.selectedDish = dish
             this.selectedDishCounter = 1
-            this.sizesRadioBtn = dish.sizes[0]
+            // this.sizesRadioBtn = dish.sizes[0]
             this.showDish = true
         },
         addToBasketMobile() {
