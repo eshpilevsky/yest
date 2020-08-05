@@ -106,17 +106,11 @@
                                         <div class="item-name">
                                             {{order.name}}
                                             <span class="order-item-subbtitle">
-                                                {{order.weigth ? order.weigth : order.selectSize.weight}}
-                                                <!-- {{order.selectSize.weight}} -->
+                                                {{order.selectSize.weight}}
                                             </span>
                                         </div>
                                     </div>
-                                    <div v-if="order.selectSize.length > 1">
-                                        <div v-for="size in order.selectSize" :key="`selectSize${size.id}`" class="order-item-subbtitle">
-                                            {{size.name}}
-                                        </div>
-                                    </div>
-                                    <div v-else class="order-item-subbtitle">
+                                    <div class="order-item-subbtitle">
                                         {{order.selectSize.name}}
                                     </div>
 
@@ -131,22 +125,22 @@
 
                                 </div>
                                 <div class="d-flex flex-column my-counter">
-                                    <div class="counter-plus" @click="increment(order.id)">
+                                    <div class="counter-plus" @click="increment(order)">
                                         <v-icon>
                                             add
                                         </v-icon>
                                     </div>
                                     <div class="counter-count">
-                                        {{order.count}}
+                                        {{order.selectSize.count}}
                                     </div>
-                                    <div class="counter-minus" @click="decrement(order.id)">
+                                    <div class="counter-minus" @click="decrement(order)">
                                         <v-icon>
                                             remove
                                         </v-icon>
                                     </div>
                                 </div>
                                 <div class="pl-4">
-                                    x {{order.price ? order.price : order.sizes[0].price }} BYN
+                                    x {{order.selectSize.price }} BYN
                                 </div>
                             </div>
                         </div>
@@ -598,35 +592,26 @@ export default {
             if (this.getLatetestRestInfoWithOrder !== null) {
                 if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
                     this.showWarning = true
-                    // this.selectedDish = dish
                 } else {
-                    this.selectOption = this.selectedDish.options[0]
-                    this.selectedDish.count = this.selectedDishCounter
-                    this.selectedDish.selectOption = this.selectOption
-                    this.selectedDish.selectSize = this.sizesRadioBtn
-                    console.log('addCraftDish -> dish', this.selectedDish)
-                    this.$store.dispatch('basket/addToBasket', this.selectedDish);
-                    this.showOptionsmenu = false
-                    this.selectedDishCounter = 1
-                    this.$store.dispatch('basket/saveRestuarantUrl', {
-                        params: this.$router.currentRoute.params,
-                        restName: this.restuarant.name,
-                    });
+                    this.saveBasket()
                 }
             } else {
-                this.selectOption = this.selectedDish.options[0]
-                this.selectedDish.count = this.selectedDishCounter
-                this.selectedDish.selectOption = this.selectOption
-                this.selectedDish.selectSize = this.sizesRadioBtn
-                console.log('addCraftDish -> dish', this.selectedDish)
-                this.$store.dispatch('basket/addToBasket', this.selectedDish);
-                this.showOptionsmenu = false
-                this.selectedDishCounter = 1
-                this.$store.dispatch('basket/saveRestuarantUrl', {
-                    params: this.$router.currentRoute.params,
-                    restName: this.restuarant.name,
-                });
+                this.saveBasket()
             }
+        },
+        saveBasket() {
+            this.selectOption = this.selectedDish.options[0]
+            this.selectedDish.selectOption = this.selectOption
+            this.sizesRadioBtn.count = this.selectedDishCounter
+            this.selectedDish.selectSize = []
+            this.selectedDish.selectSize.push(this.sizesRadioBtn)
+
+            this.$store.dispatch('basket/addToBasket', this.selectedDish);
+            this.$store.dispatch('basket/saveRestuarantUrl', {
+                params: this.$router.currentRoute.params,
+                restName: this.restuarant.name,
+            });
+            this.showOptionsmenu = false
         },
         dencrementSelectedDish() {
             if (this.selectedDishCounter > 1) {
@@ -642,11 +627,11 @@ export default {
         closeOptionMenu() {
             this.showOptionsmenu = false
         },
-        decrement(id) {
-            this.$store.dispatch('basket/decrementDishCounter', id);
+        decrement(dish) {
+            this.$store.dispatch('basket/decrementDishCounter', dish);
         },
-        increment(id) {
-            this.$store.dispatch('basket/incrementDishCounter', id);
+        increment(dish) {
+            this.$store.dispatch('basket/incrementDishCounter', dish);
         },
         dropBasket() {
             this.$store.dispatch('basket/dropBasket');
@@ -659,30 +644,13 @@ export default {
                 this.sizesRadioBtn = dish.sizes[0]
             } else {
                 if (this.getLatetestRestInfoWithOrder == null) {
-                    console.log('addToBasket -> this.getLatetestRestInfoWithOrder.resName == null')
-                    dish.count = 1
-                    this.sizesRadioBtn = dish.sizes[0]
-                    dish.selectSize = this.sizesRadioBtn
-                    this.$store.dispatch('basket/addToBasket', dish);
-                    this.$store.dispatch('basket/saveRestuarantUrl', {
-                        params: this.$router.currentRoute.params,
-                        restName: this.restuarant.name,
-                    });
+					this.saveBasket()
                 } else if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
                     console.log('addToBasket -> this.getLatetestRestInfoWithOrder.resName !== this.$router.currentRoute.params.resName')
                     this.showWarning = true
-                    this.selectedDish = dish
                 } else {
-                    console.error("addToBasket -> this.getLatetestRestInfoWithOrder.resName == this.$router.currentRoute.params.resName ");
-                    this.sizesRadioBtn = dish.sizes[0]
-                    dish.selectSize = this.sizesRadioBtn
-                    this.$store.dispatch('basket/addToBasket', dish);
-                    this.$store.dispatch('basket/saveRestuarantUrl', {
-                        params: this.$router.currentRoute.params,
-                        restName: this.restuarant.name,
-                    });
+					this.saveBasket()
                 }
-
             }
         },
         showSelectedDish(dish) {
@@ -698,7 +666,7 @@ export default {
                 } else {
                     this.selectedDish.selectOption = this.selectOption
                     this.selectedDish.selectSize = this.sizesRadioBtn
-                    this.selectedDish.count = this.selectedDishCounter
+                    this.selectedDish.selectSize.count = this.selectedDishCounter
                     this.$store.dispatch('basket/addToBasket', this.selectedDish);
                     this.$store.dispatch('basket/saveRestuarantUrl', {
                         params: this.$router.currentRoute.params,
@@ -709,7 +677,7 @@ export default {
             } else {
                 this.selectedDish.selectOption = this.selectOption
                 this.selectedDish.selectSize = this.sizesRadioBtn
-                this.selectedDish.count = this.selectedDishCounter
+                this.selectedDish.selectSize.count = this.selectedDishCounter
                 this.$store.dispatch('basket/addToBasket', this.selectedDish);
                 this.$store.dispatch('basket/saveRestuarantUrl', {
                     params: this.$router.currentRoute.params,

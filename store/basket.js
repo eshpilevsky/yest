@@ -10,15 +10,31 @@ export const state = () => ({
 export const actions = {
   async addToBasket(context, payload) {
     let list = context.state.data.dishs
+    let dishSizes;
     let findDish = list.find((dish) => {
-      if (dish.id == payload.id) {
-        return dish
-      }
+      return dish.id == payload.id
     })
+
     if (findDish == undefined) {
       context.commit('SAVE_TO_BASKET', payload)
     } else {
-      context.commit('INCREMENT_DISH', payload.id)
+
+      dishSizes = findDish.selectSize
+      console.log('addToBasket -> dishSizes', dishSizes)
+      console.log('addToBasket -> payload.selectSize', payload.selectSize)
+
+      let findSize = dishSizes.find((size) => {
+        return size.id == payload.selectSize[0].id
+      })
+
+      console.log('addToBasket -> findSize', findSize)
+      if (findSize == undefined) {
+        console.log('save size');
+        context.commit('SAVE_TO_BASKET', payload)
+      } else {
+        console.log('increment', findSize);
+        context.commit('INCREMENT_DISH', payload)
+      }
     }
   },
   dropBasket(context) {
@@ -39,27 +55,40 @@ export const actions = {
 };
 
 export const mutations = {
+  INCREMENT_DISH(state, payload) {
+    state.status = '200'
+    let dishList = state.data.dishs
+    let findDish = dishList.findIndex((dish) => {
+      return dish.id == payload.id
+    })
+    let dishSizes;
+    if (findDish !== undefined) {
+
+      dishSizes = state.data.dishs[findDish].selectSize
+      console.log('INCREMENT_DISH -> dishSizes', dishSizes)
+      console.log('INCREMENT_DISH -> payload.selectSize', payload.selectSize)
+
+      let findSize = dishSizes.findIndex((size) => {
+        return size.id == payload.selectSize[0].id
+      })
+
+      console.log('INCREMENT_DISH -> findSize', findSize)
+      if (findSize !== undefined) {
+        state.data.dishs[findDish].selectSize[findSize].count++
+      }
+    }
+  },
   SAVE_RESTRUARNT_URL(state, url) {
     state.status = '200'
     state.data.restuarantUrl = url
   },
   SAVE_TO_BASKET(state, payload) {
-	state.status = '200'
-	payload.count = 1
+    state.status = '200'
     state.data.dishs.push(payload)
   },
   DROP_BASKET(state) {
     state.status = '200'
     state.data.dishs = []
-  },
-  INCREMENT_DISH(state, payload) {
-    state.status = '200'
-    let dishList = state.data.dishs
-    let index = dishList.findIndex((dish) => {
-      return dish.id == payload
-    })
-    state.data.dishs[index].count++
-
   },
   DECREMENT_DISH(state, payload) {
     state.status = '200'
@@ -93,10 +122,11 @@ export const getters = {
     let totalPrice = 0
     dl.forEach(element => {
       if (element.hasOwnProperty('selectSize')) {
-        totalPrice += element.selectSize.price * element.count
-      } else {
-        totalPrice += element.price * element.count
+        totalPrice += element.selectSize.price * element.selectSize.count
       }
+      //   else {
+      //     totalPrice += element.price * element.count
+      //   }
     });
     return totalPrice.toFixed(1)
   },
