@@ -3,17 +3,17 @@
     <div class="cart" v-show="!showForm">
         <div class="mobile-mode_header">
             <v-icon @click="goBack()">arrow_back</v-icon>
-            <v-icon @click="dropBasketForm = true" v-show="getSelectedDishs.length > 0">delete_forever</v-icon>
+            <v-icon @click="showDropBasketForm()" v-show="getSelectedDishs.length > 0">delete_forever</v-icon>
             <v-overlay :dark='false' v-model="dropBasketForm">
                 <v-card>
                     <v-card-title>
                         Очистить корзину?
                     </v-card-title>
-                    <v-card-actions>
-                        <v-btn color="primary" @click="this.dropBasket()">
+                    <v-card-actions class="d-flex justify-center">
+                        <v-btn color="primary" @click="dropBasket()">
                             Ок
                         </v-btn>
-                        <v-btn @click="dropBasketForm = false">
+                        <v-btn @click="showDropBasketForm()">
                             Отмена
                         </v-btn>
                     </v-card-actions>
@@ -207,6 +207,7 @@ export default {
     align-items: center;
     justify-content: center;
     padding-bottom: 8px;
+
 }
 
 .delivery-time {

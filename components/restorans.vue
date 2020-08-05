@@ -39,7 +39,7 @@
             </div>
         </v-flex>
     </v-flex>
-    <div v-show="notFound == true" class="notFound">
+    <div v-show="notFound" class="notFound">
         <div class="notfoundTitle">Нас тут ещё нет :(</div>
         <div class="notFoundDescription pa-4">Но мы подключаем десятки новых мест каждую неделю. Может быит, и здесь окажемся! Если оставите свою почту, сразу вам сообщим. Обещаем не спамить.</div>
         <div class="d-flex justify-center align-center pb-4">
