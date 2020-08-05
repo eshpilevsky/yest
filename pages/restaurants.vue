@@ -228,29 +228,7 @@
                         </div>
                     </v-card>
                 </v-overlay>
-                <v-overlay :dark='false' opacity="0.5" z-index="999" v-model="showWarning">
-                    <v-card width="50vw" height="210px" class="d-flex flex-column justify-space-between select-option-card">
-                        <div class="d-flex flex-row justify-space-between align-center pb-2">
-                            <div class="warning-title" color="secondary">
-                                Оформить заказ из ресторана {{this.restuarant.name}}
-                            </div>
-                            <div>
-                                <v-icon @click="cancelDeleteBasket()" color="black">close</v-icon>
-                            </div>
-                        </div>
-                        <div class="warning-info" color="secondary">
-                            Все ранее добавленные блюда из ресторана "{{this.getLatetestRestInfoWithOrder == null ? '404' : this.getLatetestRestInfoWithOrder.restName}}" будут удалены из корзины
-                        </div>
-                        <v-card-actions class="d-flex flex-row">
-                            <v-btn color="primary" @click="coontinue()">
-                                Продолжить
-                            </v-btn>
-                            <v-btn @click="cancelDeleteBasket()" class="mx-3" outlined>
-                                Отменить
-                            </v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-overlay>
+
                 <v-overlay opacity="0.5" :dark='false' z-index="999" v-model="showOrderCard">
                     <orderCard @closeCheckout='checkout()' />
                 </v-overlay>
@@ -347,7 +325,6 @@
                                             {{item.name}}
                                         </h3>
                                     </div>
-
                                     <div class="dish-info">
                                         <div class="info-weight">
                                             {{item.sizes[0] ? item.sizes[0].weight : '404'}}
@@ -358,7 +335,6 @@
                                     </div>
                                 </div>
                             </v-card>
-
                         </div>
                     </div>
                     <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showDish" scrollable persistent no-click-animation z-index='999'>
@@ -445,6 +421,29 @@
             </div>
         </div>
     </div>
+    <v-overlay :dark='false' opacity="0.5" z-index="999" v-model="showWarning">
+        <v-card class="d-flex flex-column justify-space-between select-option-card">
+            <div class="d-flex flex-row justify-space-between align-center pb-2">
+                <div class="warning-title" color="secondary">
+                    Оформить заказ из ресторана {{this.restuarant.name}}
+                </div>
+                <div>
+                    <v-icon @click="cancelDeleteBasket()" color="black">close</v-icon>
+                </div>
+            </div>
+            <div class="warning-info" color="secondary">
+                Все ранее добавленные блюда из ресторана "{{this.getLatetestRestInfoWithOrder == null ? '404' : this.getLatetestRestInfoWithOrder.restName}}" будут удалены из корзины
+            </div>
+            <v-card-actions class="d-flex flex-row">
+                <v-btn color="primary" @click="coontinue()">
+                    Продолжить
+                </v-btn>
+                <v-btn @click="cancelDeleteBasket()" class="mx-3" outlined>
+                    Отменить
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-overlay>
 </div>
 </template>
 
@@ -688,22 +687,26 @@ export default {
         },
         showSelectedDish(dish) {
             this.selectedDish = dish
-            console.log('showSelectedDish -> this.selectedDish', this.selectedDish)
             this.selectedDishCounter = 1
             this.sizesRadioBtn = dish.sizes[0]
-            console.log('showSelectedDish -> this.sizesRadioBtn', this.sizesRadioBtn)
             this.showDish = true
         },
         addToBasketMobile() {
-            this.selectedDish.selectOption = this.selectOption
-            this.selectedDish.selectSize = this.sizesRadioBtn
-            this.selectedDish.count = this.selectedDishCounter
-            this.$store.dispatch('basket/addToBasket', this.selectedDish);
-            this.$store.dispatch('basket/saveRestuarantUrl', {
-                params: this.$router.currentRoute.params,
-                restName: this.restuarant.name,
-            });
-            this.showDish = false
+            if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
+                console.log('addToBasket -> this.getLatetestRestInfoWithOrder.resName !== this.$router.currentRoute.params.resName')
+                this.showWarning = true
+            } else {
+
+                this.selectedDish.selectOption = this.selectOption
+                this.selectedDish.selectSize = this.sizesRadioBtn
+                this.selectedDish.count = this.selectedDishCounter
+                this.$store.dispatch('basket/addToBasket', this.selectedDish);
+                this.$store.dispatch('basket/saveRestuarantUrl', {
+                    params: this.$router.currentRoute.params,
+                    restName: this.restuarant.name,
+                });
+                this.showDish = false
+            }
         },
         scroll(id) {
             console.log('scroll -> id', id)
@@ -741,10 +744,9 @@ export default {
     margin-bottom: 0 !important;
 }
 </style><style scoped>
-
-.card-dish-top{
-	height: 167px;
-	width: 45vw;
+.card-dish-top {
+    height: 167px;
+    width: 45vw;
 }
 
 .close-block {
