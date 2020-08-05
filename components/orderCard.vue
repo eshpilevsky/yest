@@ -41,7 +41,6 @@
         </div>
         <v-card-actions>
             <v-btn block color="primary" @click="sendOrder()" :disabled="phone.length<=11">Заказать</v-btn>
-            <v-btn block color="primary" @click="fillForm()" v-if="!isProduction">fill form for test</v-btn>
         </v-card-actions>
     </form>
     <v-overlay :dark="false" v-model="showBilling">
@@ -117,7 +116,6 @@ export default {
             showBilling: false,
             billingUrl: '',
             showWaitConfirmOrder: false,
-            isProduction: process.env.NODE_ENV === 'production',
         }
     },
     methods: {
@@ -126,17 +124,6 @@ export default {
         },
         closeBillingOrder() {
             this.showBilling = false
-        },
-        fillForm() {
-            this.phone = 375290000000
-            this.delivery.address = 'Тестовая'
-            this.delivery.room = "Офис"
-            this.delivery.flatNum = '0'
-            this.delivery.enterence = '0'
-            this.delivery.intercom = '0'
-            this.delivery.flor = '1'
-            this.comment = 'Код 110'
-            this.payment_method = 0
         },
         closeCheckout() {
             this.$emit('closeCheckout')
@@ -183,14 +170,14 @@ export default {
                 promocode: this.promocode,
                 order: this.order,
             }).then((response) => {
-				this.$emit('closeCheckout')
-                console.log('sendOrder -> response', response)
+				console.log('sendOrder -> response', response)
                 if (response.hasOwnProperty('redirect_url')) {
-                    this.showBilling = true
+					this.showBilling = true
 					this.billingUrl = response.redirect_url
                 } else {
 					this.showWaitConfirmOrder = true
                 }
+				this.$emit('closeCheckout')
 
             }).catch((error) => {
                 console.error(error)
