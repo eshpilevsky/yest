@@ -62,23 +62,23 @@
                                     </span>
                                 </div>
                                 <div class="contact-item">
-                                    <img src="../../assets/contactUs-mail.svg" alt="Электорнная почта">
+                                    <img src="@/assets/contactUs-mail.svg" alt="Электорнная почта">
                                     Электронная почта
                                 </div>
                                 <div class="contact-item">
-                                    <img src="../../assets/contactUs-phone.svg" alt="Позвонить нам">
+                                    <img src="@/assets/contactUs-phone.svg" alt="Позвонить нам">
                                     Позвонить нам
                                 </div>
                                 <div class="contact-item">
-                                    <img src="../../assets/contactUs-vk.svg" alt="Вконтакте">
+                                    <img src="@/assets/contactUs-vk.svg" alt="Вконтакте">
                                     Вконтакте
                                 </div>
                                 <div class="contact-item">
-                                    <img src="../../assets/contactUs-facebook.svg" alt="Facebook">
+                                    <img src="@/assets/contactUs-facebook.svg" alt="Facebook">
                                     Facebook
                                 </div>
                                 <div class="contact-item">
-                                    <img src="../../assets/contactUs-telegram.svg" alt="Telegram">
+                                    <img src="@/assets/contactUs-telegram.svg" alt="Telegram">
                                     Telegram
                                 </div>
                             </v-sheet>

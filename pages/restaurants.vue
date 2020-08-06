@@ -153,7 +153,8 @@
                     <div class="my-order-bottom">
                         <div class="total-price">
                             <p class="total-title">Итого</p>
-                            <p class="price">{{this.getTotalPrice}} BYN</p>
+                            <p v-if="this.orderList.length > 0 && this.getLatetestRestInfoWithOrder.params.resName == this.$router.currentRoute.params.resName" class="price">{{this.getTotalPrice}} BYN</p>
+							<p v-else class="price">0.0 BYN</p>
                         </div>
                     </div>
                 </div>
@@ -579,12 +580,7 @@ export default {
         coontinue() {
             this.showDish = false
             this.dropBasket()
-            this.selectedDish.selectSize = this.selectedDish.sizes[0]
-            this.$store.dispatch('basket/addToBasket', this.selectedDish);
-            this.$store.dispatch('basket/saveRestuarantUrl', {
-                params: this.$router.currentRoute.params,
-                restName: this.restuarant.name,
-            });
+            this.saveBasket()
             this.showWarning = false
         },
         addCraftDish() {
@@ -647,11 +643,18 @@ export default {
             } else {
                 if (this.getLatetestRestInfoWithOrder == null) {
                     this.selectedDish = dish
+                    this.selectedDishCounter = 1
+                    this.sizesRadioBtn = dish.sizes[0]
                     this.saveBasket()
                 } else if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
                     this.showWarning = true
-                } else {
                     this.selectedDish = dish
+                    this.selectedDishCounter = 1
+                    this.sizesRadioBtn = dish.sizes[0]
+                } else {
+					this.selectedDish = dish
+                    this.selectedDishCounter = 1
+                    this.sizesRadioBtn = dish.sizes[0]
                     this.saveBasket()
                 }
             }
