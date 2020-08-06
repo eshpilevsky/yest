@@ -28,8 +28,9 @@
                                             Доставка Yest.by
                                         </div>
                                         <div class="description-price ">
-                                            Доставка {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].deliveryFee}}-{{restuarant.delivery.fee[1].deliveryFee}} BYN. Бесплатно при заказе от {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].min}} BYN
-                                        </div>
+                                            <!-- Доставка {{this.sortDeliverFee()[this.sortDeliverFee().length-2].deliveryFee}}-{{this.sortDeliverFee()[0].delivery}} BYN. Бесплатно при заказе от {{this.sortDeliverFee()[this.sortDeliverFee().length-1].min}} BYN -->
+											Доставка {{this.sortDeliverFee[this.sortDeliverFee.length-2].deliveryFee}} - {{this.sortDeliverFee[0].delivery}} BYN. Бесплатно при заказе от {{this.sortDeliverFee[this.sortDeliverFee.length-1].min}} BYN
+										</div>
                                     </div>
                                 </div>
                                 <div class="white--text">
@@ -37,7 +38,7 @@
                                         Заказ от
                                     </p>
                                     <p>
-                                        {{restuarant.delivery.fee[0].min}}
+                                        <!-- {{this.sortDeliverFee()[0].min}} -->
                                     </p>
                                 </div>
                                 <div class="white--text">
@@ -154,7 +155,7 @@
                         <div class="total-price">
                             <p class="total-title">Итого</p>
                             <p v-if="this.orderList.length > 0 && this.getLatetestRestInfoWithOrder.params.resName == this.$router.currentRoute.params.resName" class="price">{{this.getTotalPrice}} BYN</p>
-							<p v-else class="price">0.0 BYN</p>
+                            <p v-else class="price">0.0 BYN</p>
                         </div>
                     </div>
                 </div>
@@ -506,52 +507,6 @@ export default {
             showRestInfo: false,
         }
     },
-    computed: {
-        ...mapGetters({
-            getSelectedZone: "zone/getSelectedZone",
-            getSelectedCategory: "user/getSelectedCategory",
-            getCurrentCoords: "map/getCurrentCoords",
-            getUserLocation: "user/getUserLocation",
-            getSelectedDishs: "basket/getSelectedDishs",
-            getTotalPrice: "basket/getTotalPrice",
-            getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
-        }),
-    },
-    watch: {
-        showRatingSheet(newValue) {
-            return newValue
-        },
-        showDeliveryOption(newValue) {
-            return newValue
-        },
-        showDeliveryOption(newValue) {
-            return newValue
-        },
-        getSelectedDishs(newValue) {
-            this.orderList = newValue
-            return newValue
-        },
-        getLatetestRestInfoWithOrder(newValue) {
-            this.lastRest = newValue
-            return newValue
-        },
-        getTotalPrice(newValue) {
-            this.totalPrice = newValue
-            return newValue
-        },
-        dishCounter(newValue) {
-            return newValue
-        },
-        tab(newValue) {
-            return newValue
-        },
-        selectedDishCounter(newValue) {
-            return newValue
-        },
-        '$route.params.region': function () {
-            this.$router.push(`/${this.getSelectedZone.alias}`)
-        }
-    },
     methods: {
         showHideRestInfo() {
             this.showRestInfo = !this.showRestInfo
@@ -652,7 +607,7 @@ export default {
                     this.selectedDishCounter = 1
                     this.sizesRadioBtn = dish.sizes[0]
                 } else {
-					this.selectedDish = dish
+                    this.selectedDish = dish
                     this.selectedDishCounter = 1
                     this.sizesRadioBtn = dish.sizes[0]
                     this.saveBasket()
@@ -703,6 +658,60 @@ export default {
         },
         categoryNameIntersect(entries, observer) {
             this.tab = parseInt(entries[0].target.id, 10)
+        }
+    },
+
+    computed: {
+        ...mapGetters({
+            getSelectedZone: "zone/getSelectedZone",
+            getSelectedCategory: "user/getSelectedCategory",
+            getCurrentCoords: "map/getCurrentCoords",
+            getUserLocation: "user/getUserLocation",
+            getSelectedDishs: "basket/getSelectedDishs",
+            getTotalPrice: "basket/getTotalPrice",
+            getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
+		}),
+		sortDeliverFee() {
+            let listt = this.restuarant.delivery.fee
+            let sorted = listt.sort((a, b) => {
+                return a.delivery ? a.delivery : a.deliveryFee > b.deliveryFee
+            })
+            return sorted
+        },
+    },
+    watch: {
+        showRatingSheet(newValue) {
+            return newValue
+        },
+        showDeliveryOption(newValue) {
+            return newValue
+        },
+        showDeliveryOption(newValue) {
+            return newValue
+        },
+        getSelectedDishs(newValue) {
+            this.orderList = newValue
+            return newValue
+        },
+        getLatetestRestInfoWithOrder(newValue) {
+            this.lastRest = newValue
+            return newValue
+        },
+        getTotalPrice(newValue) {
+            this.totalPrice = newValue
+            return newValue
+        },
+        dishCounter(newValue) {
+            return newValue
+        },
+        tab(newValue) {
+            return newValue
+        },
+        selectedDishCounter(newValue) {
+            return newValue
+        },
+        '$route.params.region': function () {
+            this.$router.push(`/${this.getSelectedZone.alias}`)
         }
     },
     mounted() {
