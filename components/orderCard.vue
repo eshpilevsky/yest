@@ -43,33 +43,6 @@
             <v-btn block color="primary" @click="sendOrder()" :disabled="phone.length<=11" :loading="loading" >Заказать</v-btn>
         </v-card-actions>
     </form>
-    <v-overlay :dark="false" v-model="showBilling">
-        <v-card>
-            <v-card-title class="d-flex justify-space-between">
-                Ваш заказ сформирован
-                <v-icon @click="closeConfirmOrder()">
-                    close
-                </v-icon>
-            </v-card-title>
-            <v-card-text>
-                Пожалуйста, перейдите по
-                <a :href='`${this.billingUrl}`' target="_blank">
-                    ссылке
-                </a>
-                для оплаты заказа
-            </v-card-text>
-            <v-card-actions class="d-flex justify-center">
-                <a :href='`${this.billingUrl}`' target="_blank">
-                    <v-btn :href='`${this.billingUrl}`' color="primary">
-                        Перейти
-                    </v-btn>
-                </a>
-                <v-btn @click="closeBillingOrder()" color="primary" outlined class="ml-2">
-                    Закрыть
-                </v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-overlay>
     <v-overlay :dark="false" v-model="showWaitConfirmOrder">
         <v-card>
             <v-card-title class="d-flex justify-space-between">
@@ -112,7 +85,6 @@ export default {
             promocode: '',
             comment: '',
             order: [],
-            showBilling: false,
             billingUrl: '',
             showWaitConfirmOrder: false,
             loading: false,
@@ -121,9 +93,6 @@ export default {
     methods: {
         closeConfirmOrder() {
             this.showWaitConfirmOrder = false
-        },
-        closeBillingOrder() {
-            this.showBilling = false
         },
         closeCheckout() {
             this.$emit('closeCheckout')
@@ -174,8 +143,7 @@ export default {
             }).then((response) => {
 				console.log('sendOrder -> response', response.data)
                 if (response.data.hasOwnProperty('checkout')) {
-					this.showBilling = true
-					this.billingUrl = response.data.checkout.redirect_url
+					window.location = response.data.checkout.redirect_url
                 } else {
 					this.showWaitConfirmOrder = true
                 }

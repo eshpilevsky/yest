@@ -23,7 +23,11 @@ module.exports = {
       {
         'http-equiv': 'ScreenOrientation',
         content: 'autoRotate:disabled',
-      }
+      },
+      {
+        name: 'robots',
+        content: 'noindex',
+      },
     ],
     link: [{
         rel: 'icon',
