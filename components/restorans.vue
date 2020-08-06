@@ -186,8 +186,57 @@ export default {
             const closeTime = mass[today].close_time;
             return `${openTime.slice(0, 5)} - ${closeTime.slice(0, 5)}`;
         },
+        translite(str) {
+            var ru = {
+                    'а': 'a',
+                    'б': 'b',
+                    'в': 'v',
+                    'г': 'g',
+                    'д': 'd',
+                    'е': 'e',
+                    'ё': 'e',
+                    'ж': 'j',
+                    'з': 'z',
+                    'и': 'i',
+                    'к': 'k',
+                    'л': 'l',
+                    'м': 'm',
+                    'н': 'n',
+                    'о': 'o',
+                    'п': 'p',
+                    'р': 'r',
+                    'с': 's',
+                    'т': 't',
+                    'у': 'u',
+                    'ф': 'f',
+                    'х': 'h',
+                    'ц': 'c',
+                    'ч': 'ch',
+                    'ш': 'sh',
+                    'щ': 'shch',
+                    'ы': 'y',
+                    'э': 'e',
+                    'ю': 'u',
+                    'я': 'ya'
+                },
+                n_str = [];
+
+            str = str.replace(/[ъь]+/g, '').replace(/й/g, 'i');
+            for (var i = 0; i < str.length; ++i) {
+                n_str.push(
+                    ru[str[i]] ||
+                    ru[str[i].toLowerCase()] == undefined && str[i] ||
+                    ru[str[i].toLowerCase()].replace(/^(.)/, function (match) {
+                        return match.toUpperCase()
+                    })
+                );
+            }
+
+            return n_str.join('');
+        },
         goToRes(info) {
-            let name = info.name
+			let name = this.translite(info.name)
+            console.log('goToRes -> name', name)
             let modifName = name.replace(' ', '-')
             this.$router.push(`/${this.getSelectedZone.alias}/restaurant/${info.restaurant_id}-${modifName.toLowerCase()}`)
         },
@@ -287,7 +336,7 @@ export default {
 
 .time-title {
     font-weight: bold;
-	white-space: nowrap;
+    white-space: nowrap;
 }
 
 .delivery-time-desktop {
@@ -629,7 +678,7 @@ export default {
 
     .restorane-title {
         padding: 10px 30px;
-		padding-bottom: 0;
+        padding-bottom: 0;
         font-size: 20px;
     }
 

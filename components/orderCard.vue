@@ -11,10 +11,10 @@
     </v-card-subtitle>
     <form>
         <div>
-            <v-text-field type="number" counter v-model="phone" placeholder="+375" required></v-text-field>
+            <v-text-field v-model="phone" v-mask="mask" required></v-text-field>
         </div>
         <div>
-            <v-text-field v-model="delivery.address" placeholder="Адресс" required></v-text-field>
+            <v-text-field v-model="delivery.address" placeholder="Адрес" required></v-text-field>
         </div>
         <div class="d-flex flex-row">
             <v-text-field type="number" v-model="delivery.enterence" placeholder="Подъезд" required></v-text-field>
@@ -43,24 +43,6 @@
             <v-btn block color="primary" @click="sendOrder()" :disabled="phone.length<=11" :loading="loading" >Заказать</v-btn>
         </v-card-actions>
     </form>
-    <v-overlay :dark="false" v-model="showWaitConfirmOrder">
-        <v-card>
-            <v-card-title class="d-flex justify-space-between">
-                Ваш заказ сформирован
-                <v-icon @click="closeConfirmOrder()">
-                    close
-                </v-icon>
-            </v-card-title>
-            <v-card-text>
-                Скоро с Вами cвяжется оператор для подтверждения заказа
-            </v-card-text>
-            <v-card-actions class="d-flex justify-center">
-                <v-btn @click="closeConfirmOrder()" color="primary" outlined>
-                    Закрыть
-                </v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-overlay>
 </v-card>
 </template>
 
@@ -73,7 +55,7 @@ import {
 export default {
     data() {
         return {
-            phone: 375,
+            phone: Number,
             delivery: {
                 address: '',
                 room: '',
@@ -81,25 +63,21 @@ export default {
                 intercom: '',
                 flor: '',
             },
-            payment_method: 1,
+            payment_method: 0,
             promocode: '',
             comment: '',
             order: [],
             billingUrl: '',
-            showWaitConfirmOrder: false,
-            loading: false,
+			loading: false,
+			mask: ['+(375)',/\d/,/\d/,'-',/\d/, /\d/,/\d/,'-', /\d/, /\d/,'-', /\d/, /\d/,],
         }
     },
     methods: {
-        closeConfirmOrder() {
-            this.showWaitConfirmOrder = false
-        },
         closeCheckout() {
             this.$emit('closeCheckout')
         },
         sendOrder() {
 			this.loading = true
-            console.log(this.getSelectedDishs);
             let dishId;
             let dishOption = [];
             this.getSelectedDishs.forEach((dish) => {
@@ -144,9 +122,9 @@ export default {
 				console.log('sendOrder -> response', response.data)
                 if (response.data.hasOwnProperty('checkout')) {
 					window.location = response.data.checkout.redirect_url
-                } else {
-					this.showWaitConfirmOrder = true
                 }
+				this.$store.dispatch('basket/dropBasket');
+				this.$router.push('/order/onliner_payment/success')
 				this.loading = false
             }).catch((error) => {
                 console.error(error)

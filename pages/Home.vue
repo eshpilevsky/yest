@@ -53,7 +53,6 @@ export default {
 		params,
     }) {
 		console.log('START ASYNC DATA');
-        console.log('params', params)
         let getCurrentCoords = store.getters['map/getCurrentCoords']
         let zoneList = await axios.get('https://yestapi.xyz/get-zones')
 		const zoneListData = zoneList.data
@@ -93,7 +92,7 @@ export default {
         if (currentCategory === undefined) {
             currentCategory = categoryAll[0]
             categoryInfoData = {
-                header: 'Быстрая и бесплатная доставка',
+                header: 'Быстрая доставка',
                 city: currentZone.name
             }
         } else {
@@ -107,7 +106,7 @@ export default {
                 app.categoryInfoData = categoryInfoData
             } else {
                 categoryInfoData = {
-                    header: 'Быстрая и бесплатная доставка',
+                    header: 'Быстрая доставка',
                     city: currentZone.name
                 }
             }

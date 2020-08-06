@@ -28,7 +28,6 @@
                                             Доставка Yest.by
                                         </div>
                                         <div class="description-price ">
-                                            <!-- Доставка {{this.sortDeliverFee()[this.sortDeliverFee().length-2].deliveryFee}}-{{this.sortDeliverFee()[0].delivery}} BYN. Бесплатно при заказе от {{this.sortDeliverFee()[this.sortDeliverFee().length-1].min}} BYN -->
 											Доставка {{this.sortDeliverFee[this.sortDeliverFee.length-2].deliveryFee}} - {{this.sortDeliverFee[0].delivery}} BYN. Бесплатно при заказе от {{this.sortDeliverFee[this.sortDeliverFee.length-1].min}} BYN
 										</div>
                                     </div>
@@ -38,7 +37,7 @@
                                         Заказ от
                                     </p>
                                     <p>
-                                        <!-- {{this.sortDeliverFee()[0].min}} -->
+                                        {{this.sortDeliverFee[0].min}}
                                     </p>
                                 </div>
                                 <div class="white--text">
@@ -82,7 +81,7 @@
                             </span>
                         </div>
                         <div class="dishs-list">
-                            <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" class="dishs-list-item" @click="addToBasket(item)">
+                            <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" v-show="item.status" class="dishs-list-item" @click="addToBasket(item)">
                                 <cardDish :id='item.id' :count='item.count' :name='item.name' :description='item.description' :img='item.image' :dishinfo='item.sizes' />
                             </div>
                         </div>
@@ -680,6 +679,9 @@ export default {
         },
     },
     watch: {
+		getSelectedZone(newValue){
+			this.dropBasket()
+		},
         showRatingSheet(newValue) {
             return newValue
         },

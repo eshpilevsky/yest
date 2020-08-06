@@ -78,6 +78,10 @@ module.exports = {
       src: '@/plugins/vue-awesome-swiper',
       ssr: false
     },
+    {
+      src: '@/plugins/mask',
+      ssr: false
+    },
   ],
   /*
    ** Nuxt.js dev-modules

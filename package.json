@@ -21,6 +21,7 @@
     "nuxt": "^2.13.3",
     "swiper": "^6.0.1",
     "v-click-outside": "^3.0.1",
+    "v-mask": "^2.2.3",
     "vue-awesome-swiper": "^4.1.1",
     "vue-yandex-maps": "^0.10.8",
     "vuex-class-component": "^2.3.4",
@@ -36,7 +37,7 @@
     "eslint": "^6.1.0",
     "eslint-plugin-nuxt": ">=0.4.2",
     "material-design-icons-iconfont": "^5.0.1",
-    "nodemon": "^1.18.9"
+    "nodemon": "^2.0.4"
   },
   "main": ".eslintrc.js",
   "repository": {
