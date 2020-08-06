@@ -18,16 +18,11 @@ export const actions = {
     if (findDish == undefined) {
       context.commit('SAVE_TO_BASKET', payload)
     } else {
-
       dishSizes = findDish.selectSize
-      console.log('addToBasket -> dishSizes', dishSizes)
-      console.log('addToBasket -> payload.selectSize', payload.selectSize)
-
       let findSize = dishSizes.find((size) => {
         return size.id == payload.selectSize[0].id
       })
-
-      console.log('addToBasket -> findSize', findSize)
+      console.log('payload.selectSize[0].name', payload.selectSize[0].name)
       if (findSize == undefined) {
         console.log('save size');
         context.commit('SAVE_TO_BASKET', payload)
@@ -84,6 +79,7 @@ export const mutations = {
   },
   SAVE_TO_BASKET(state, payload) {
     state.status = '200'
+    console.log('SAVE_TO_BASKET -> payload', payload)
     state.data.dishs.push(payload)
   },
   DROP_BASKET(state) {
@@ -121,12 +117,7 @@ export const getters = {
     let dl = state.data.dishs
     let totalPrice = 0
     dl.forEach(element => {
-      if (element.hasOwnProperty('selectSize')) {
-        totalPrice += element.selectSize.price * element.selectSize.count
-      }
-      //   else {
-      //     totalPrice += element.price * element.count
-      //   }
+      totalPrice += element.selectSize[0].price * element.selectSize[0].count
     });
     return totalPrice.toFixed(1)
   },

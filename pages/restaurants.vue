@@ -100,18 +100,18 @@
                             </v-icon>
                         </div>
                         <div v-if="this.orderList.length > 0 && this.getLatetestRestInfoWithOrder.params.resName == this.$router.currentRoute.params.resName" class="my-order-dishes-desktop">
-                            <div v-for="order in this.orderList" :key="order.id" class="order-item">
+                            <div v-for="order in this.orderList" :key="order.selectSize[0].id" class="order-item">
                                 <div class="d-flex flex-column">
                                     <div class="d-flex flex-column order-item-info">
                                         <div class="item-name">
                                             {{order.name}}
                                             <span class="order-item-subbtitle">
-                                                {{order.selectSize.weight}}
+                                                {{order.selectSize[0].weight}}
                                             </span>
                                         </div>
                                     </div>
                                     <div class="order-item-subbtitle">
-                                        {{order.selectSize.name}}
+                                        {{order.selectSize[0].name}}
                                     </div>
 
                                     <!-- <div v-if="order.selectOption.length > 1">
@@ -131,7 +131,7 @@
                                         </v-icon>
                                     </div>
                                     <div class="counter-count">
-                                        {{order.selectSize.count}}
+                                        {{order.selectSize[0].count}}
                                     </div>
                                     <div class="counter-minus" @click="decrement(order)">
                                         <v-icon>
@@ -140,7 +140,7 @@
                                     </div>
                                 </div>
                                 <div class="pl-4">
-                                    x {{order.selectSize.price }} BYN
+                                    x {{order.selectSize[0].price }} BYN
                                 </div>
                             </div>
                         </div>
@@ -222,7 +222,6 @@
                         </div>
                     </v-card>
                 </v-overlay>
-
                 <v-overlay opacity="0.5" :dark='false' z-index="999" v-model="showOrderCard">
                     <orderCard @closeCheckout='checkout()' />
                 </v-overlay>
@@ -558,7 +557,7 @@ export default {
         },
         closeShowDish() {
             this.selectedDish = {}
-            this.sizesRadioBtn = ''
+            this.sizesRadioBtn = {}
             this.selectOption = []
             this.showDish = false
         },
@@ -600,9 +599,12 @@ export default {
             }
         },
         saveBasket() {
-            this.selectOption = this.selectedDish.options[0]
-            this.selectedDish.selectOption = this.selectOption
+            this.selectOption = this.selectedDish.options ? this.selectedDish.options[0] : []
+            // sizesRadioBtn
             this.sizesRadioBtn.count = this.selectedDishCounter
+            this.selectedDish.sizes[0] = this.sizesRadioBtn
+            // this.selectedDish.selectOption = this.selectOption
+            this.selectedDishCounter = 1
             this.selectedDish.selectSize = []
             this.selectedDish.selectSize.push(this.sizesRadioBtn)
 
@@ -644,12 +646,13 @@ export default {
                 this.sizesRadioBtn = dish.sizes[0]
             } else {
                 if (this.getLatetestRestInfoWithOrder == null) {
-					this.saveBasket()
+                    this.selectedDish = dish
+                    this.saveBasket()
                 } else if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
-                    console.log('addToBasket -> this.getLatetestRestInfoWithOrder.resName !== this.$router.currentRoute.params.resName')
                     this.showWarning = true
                 } else {
-					this.saveBasket()
+                    this.selectedDish = dish
+                    this.saveBasket()
                 }
             }
         },
