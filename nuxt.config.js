@@ -79,8 +79,7 @@ module.exports = {
       ssr: false
     },
     {
-      src: '@/plugins/mask',
-      ssr: false
+      src: '@/plugins/mask'
     },
   ],
   /*

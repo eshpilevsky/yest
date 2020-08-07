@@ -69,7 +69,7 @@ export default {
             order: [],
             billingUrl: '',
 			loading: false,
-			mask: ['+(375)',/\d/,/\d/,'-',/\d/, /\d/,/\d/,'-', /\d/, /\d/,'-', /\d/, /\d/,],
+			mask: ['+375','(',/\d/,/\d/,')',/\d/,/\d/,/\d/,'-', /\d/,/\d/,'-', /\d/,/\d/,],
         }
     },
     methods: {
