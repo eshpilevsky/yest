@@ -127,33 +127,23 @@ export default {
                 limit: 100,
                 start: 0,
             }
-        }
-        let restaurantsList = await axios.post('https://yestapi.xyz/restaurants', sortByCoord)
+		}
+		let restaurantsList;
+		if (currentCategory.id == 1) {
+			restaurantsList = await axios.post('https://yestapi.xyz/restaurants', sortByCoord)
+		} else {
+			restaurantsList = await axios.post(`https://yestapi.xyz/restaurants/category/${currentCategory.id}`, sortByCoord)
+		}
         let restaurantsListData = restaurantsList.data.restaurants
-
-        function filterByTag(restList) {
-            if (currentCategory.id == 0) {
-                return restList
-            } else {
-                let selcatmass = [];
-                restList.forEach((item, i, arr) => {
-                    item.tags.find((tag, i, arr) => {
-                        if (tag.id === currentCategory.id) {
-                            selcatmass.push(item);
-                        }
-                    });
-                });
-                return selcatmass;
-            }
-        }
-        var filtredRest = await filterByTag(restaurantsListData)
+        console.log('currentCategory.id', currentCategory.id)
+        console.log('restaurantsList', restaurantsList.data)
 
         function computedOpenTime() {
             const openRestorants = [];
             const closeRestorants = [];
             const currentDay = new Date().getDay();
             const currentTime = new Date().getTime();
-            filtredRest.forEach((item, i, arr) => {
+            restaurantsListData.forEach((item, i, arr) => {
                 const op = item.operation_time;
 				const buffer = [];
 				if (item.operation_time.length > 6) {
@@ -204,7 +194,7 @@ export default {
         var filtByTime = await computedOpenTime()
         console.log('categoryInfoData', categoryInfoData);
         return {
-            restaurantsList: filtByTime,
+            restaurantsList: restaurantsListData,
             categoriesList: categoryAll.concat(categoriesList.data),
             currentCategory: currentCategory,
             categoryInfoData: categoryInfoData,

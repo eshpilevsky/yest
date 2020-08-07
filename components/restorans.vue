@@ -124,25 +124,6 @@ export default {
             const result = resMass.join(" • ");
             return result;
         },
-        filterByCategory(restList) {
-            if (this.getSelectedCategory.id == 0) {
-                this.itemCounter = restList.length
-                this.counterRest = restList.length
-                return restList.slice(0, this.limit)
-            } else {
-                const selcatmass = [];
-                this.selcatmass = selcatmass;
-                restList.forEach((item, i, arr) => {
-                    item.tags.find((tag, i, arr) => {
-                        if (tag.id === this.getSelectedCategory.id) {
-                            selcatmass.push(item);
-                        }
-                    });
-                });
-                this.itemCounter = selcatmass.length
-                return selcatmass
-            }
-        },
         getRestaurants(latitude, longitude) {
             this.notFound = false;
             if (latitude !== 0 && longitude !== 0) {
@@ -236,7 +217,6 @@ export default {
         },
         goToRes(info) {
 			let name = this.translite(info.name)
-            console.log('goToRes -> name', name)
             let modifName = name.replace(' ', '-')
             this.$router.push(`/${this.getSelectedZone.alias}/restaurant/${info.restaurant_id}-${modifName.toLowerCase()}`)
         },
@@ -245,12 +225,11 @@ export default {
             this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
         },
         computedOpenTime(res) {
-            let cu = this.filterByCategory(res)
             const openRestorants = [];
             const closeRestorants = [];
             const currentDay = new Date().getDay();
             const currentTime = new Date().getTime();
-            cu.forEach((item, i, arr) => {
+            res.forEach((item, i, arr) => {
                 const op = item.operation_time;
                 const buffer = [];
                 op.forEach((optime, index, operationTimeArr) => {
@@ -259,6 +238,7 @@ export default {
                     }
                 });
 
+                console.log('computedOpenTime -> closeTime', closeTime)
                 const closeTime = buffer[0].close_time;
                 const openTime =
                     buffer.length > 1 ? buffer[1].open_time : buffer[0].open_time;
@@ -296,13 +276,13 @@ export default {
                 }
             });
             // this.restaurants = openRestorants.concat(closeRestorants)
-            return openRestorants.concat(closeRestorants).slice(0, this.limit);
+            return openRestorants.concat(closeRestorants);
         }
     },
 
     created() {
         this.restaurants = this.restaurantsList
-        this.restaurants.slice(0, this.limit)
+        // this.restaurants.slice(0, this.limit)
     }
 };
 </script>
