@@ -87,6 +87,7 @@ export default {
             },
             restList: null,
             counterRest: 0,
+            urlStr: '',
         };
     },
     computed: {
@@ -106,6 +107,7 @@ export default {
     },
     watch: {
         getSelectedCategory(newValue, oldValue) {
+            console.log('getSelectedCategory -> newValue', newValue)
             this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
         },
         getSelectedZone(newValue, oldValue) {
@@ -142,8 +144,13 @@ export default {
                     start: 0,
                     limit: 100
                 };
-            }
-            ApiService.post("/restaurants", this.params)
+			}
+			if (this.getSelectedCategory.id == 0) {
+				this.urlStr = `/restaurants`
+			} else {
+				this.urlStr = `/restaurants/category/${this.getSelectedCategory.id}`
+			}
+            ApiService.post(this.urlStr, this.params)
                 .then(response => {
                     const resp = response.data;
                     const rest = resp.restaurants;
@@ -151,6 +158,7 @@ export default {
                         this.restaurants = [];
                         // this.restaurants = rest;
                         this.restaurants = this.computedOpenTime(rest)
+                        console.log('getRestaurants -> this.restaurants', this.restaurants[0])
                         this.notFound = false;
                     } else if (resp.status === 404) {
                         this.restaurants = [];
@@ -260,7 +268,7 @@ export default {
                     openTimeTimestamp.setSeconds(openTimeSec);
 
                     item.today_close_time = closeTimeTimestamp.getTime();
-					console.log(`#${i} - ${arr.length}, ${item.name} -closeTime- ${closeTime}`);
+					// console.log(`#${i} - ${arr.length}, ${item.name} -closeTime- ${closeTime}`);
                     item.today_open_time = openTimeTimestamp.getTime();
 
                     if (buffer.length !== 1) {
