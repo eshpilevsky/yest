@@ -148,7 +148,6 @@ export default {
             const closeRestorants = [];
             const currentDay = new Date().getDay();
             const currentTime = new Date().getTime();
-            console.log('computedOpenTime -> restaurantsListData', restaurantsListData[0])
             restaurantsListData.forEach((item, i, arr) => {
                 const op = item.operation_time;
                 const buffer = [];
@@ -180,6 +179,7 @@ export default {
                     openTimeTimestamp.setSeconds(openTimeSec);
 
                     item.today_close_time = closeTimeTimestamp.getTime();
+					console.log(`#${i} - ${arr.length}, ${item.name} -closeTime- ${closeTime}`);
                     item.today_open_time = openTimeTimestamp.getTime();
 
                     if (buffer.length !== 1) {
