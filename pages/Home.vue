@@ -1,6 +1,6 @@
 <template>
 <div style="padding-bottom: 0px">
-    <setAdress :currentZone='currentZone' :currentCategory='currentCategory' :categoryInfoData='categoryInfoData' :ymaps='ymaps' :class="{hide: showSetAdress == false}" />
+    <setAdress :currentZone='currentZone' :currentCategory='currentCategory' :categoryInfoData='categoryInfoData' :class="{hide: showSetAdress == false}" />
     <specialOffers v-show="getCurrentAddress.length > 0" />
     <categories :categoriesList='categoriesList' :currentCategory='currentCategory' />
     <mobileSearch v-show="showSearch" />
@@ -16,12 +16,7 @@ import restorans from '~/components/restorans.vue'
 import mobileSearch from '~/components/mobileSearch.vue'
 import ApiService from "~/common/api.service";
 import axios from 'axios'
-import {
-    settings
-} from '@/plugins/ymapPlugin'
-import {
-    loadYmap
-} from 'vue-yandex-maps'
+
 import {
     mapGetters
 } from 'vuex'
@@ -41,7 +36,6 @@ export default {
             showSetAdress: true,
             showSpecialOffer: false,
             rest: [],
-            ymaps: null,
             categoryInfoData: null,
             currentZone: null,
         }
@@ -229,11 +223,6 @@ export default {
         })
     },
     async created() {
-        await loadYmap({
-            ...settings,
-            debug: true
-        });
-        this.ymaps = ymaps
         await this.$store.dispatch('zone/setSelectedZone', this.currentZone.id)
     },
     mounted() {

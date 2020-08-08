@@ -3,9 +3,9 @@
     <div class="setAdressContaine-info">
         <span class="info-pre-title">
             Yest.by • {{this.currentZone.name}}
-			<span class="pre-title" v-show="this.currentCategory.id !== 0">
-			 • {{this.currentCategory.name}}
-			</span>
+            <span class="pre-title" v-show="this.currentCategory.id !== 0">
+                • {{this.currentCategory.name}}
+            </span>
         </span>
         <h1 class="info-title">
             {{this.categoryInfoData.header }} <br /> в {{ this.categoryInfoData.city }}
@@ -44,6 +44,13 @@ import {
 import MapBtn from '@/components/map-btn'
 import MapDesktop from '@/components/map-desktop'
 
+import {
+    settings
+} from '@/plugins/ymapPlugin'
+import {
+    loadYmap
+} from 'vue-yandex-maps'
+
 export default {
     name: 'setAdress',
     components: {
@@ -51,7 +58,6 @@ export default {
         MapDesktop,
     },
     props: {
-        ymaps: Object,
         categoryInfoData: Object,
         currentCategory: Object,
         currentZone: Object,
@@ -67,6 +73,7 @@ export default {
             loadingSuggest: false,
             coords: [],
             showDesktopMap: false,
+            ymaps: null,
         }
     },
     computed: {
@@ -98,12 +105,12 @@ export default {
         },
         getSelectedZone(newValue) {
             this.setCurrentCoords(null)
-			this.setCurrentAddress('')
-			this.currentZone.name = newValue.name
-			this.currentCategory.name = this.getSelectedCategory.name
+            this.setCurrentAddress('')
+            this.currentZone.name = newValue.name
+            this.currentCategory.name = this.getSelectedCategory.name
         },
         categoryInfoData(newValue) {
-			return newValue
+            return newValue
         },
     },
     methods: {
@@ -112,10 +119,10 @@ export default {
             setCurrentCoords: 'map/SET_CURRENT_COORDS',
         }),
         openMap() {
-			this.showDesktopMap = true
+            this.showDesktopMap = true
         },
         closeDesktopMap() {
-			this.showDesktopMap = false
+            this.showDesktopMap = false
         },
         computedTitle(str) {
             let b = str.split(' в ')
@@ -189,20 +196,22 @@ export default {
         },
     },
     async beforeMount() {
-		this.ww = window.innerWidth;
-		console.error('this.categoryInfoData', this.categoryInfoData);
-		console.error('this.currentZone', this.currentZone);
+        // await loadYmap({
+        //     ...settings,
+        //     debug: true
+        // });
+        // this.ymaps = ymaps
+        this.ww = window.innerWidth;
     },
     mounted() {
-      this.searchAddress = this.getCurrentAddress
+        this.searchAddress = this.getCurrentAddress
     }
 }
 </script>
 
 <style scoped>
-
-.pre-title{
-	display: none;
+.pre-title {
+    display: none;
 }
 
 .itemAdress-sub {
@@ -313,21 +322,21 @@ export default {
 }
 
 /*@media screen and (max-width: 768px) {*/
-    /*.setAdressContaine-info {*/
-        /*padding: 40px 0;*/
-    /*}*/
+/*.setAdressContaine-info {*/
+/*padding: 40px 0;*/
+/*}*/
 
-    /*.info-title {*/
-        /*font-size: 40px;*/
-    /*}*/
+/*.info-title {*/
+/*font-size: 40px;*/
+/*}*/
 
 /*}*/
 
 @media screen and (max-width: 992px) {
 
-	.pre-title{
-		display: flex;
-	}
+    .pre-title {
+        display: flex;
+    }
 
     .map-btn {
         visibility: visible;
@@ -346,7 +355,7 @@ export default {
         background-size: auto 250px;
         background-repeat: no-repeat;
         background-position: top right;
-         margin-top: 16px;
+        margin-top: 16px;
     }
 
     .info-pre-title {

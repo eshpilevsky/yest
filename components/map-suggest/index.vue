@@ -41,11 +41,11 @@ export default {
         places: []
     }),
     async mounted() {
-        await loadYmap({
-            ...settings,
-            debug: true
-		});
-		this.ymaps = ymaps
+        // await loadYmap({
+        //     ...settings,
+        //     debug: true
+		// });
+		// this.ymaps = ymaps
     },
     watch: {
         searchString(newValue, oldValue) {
