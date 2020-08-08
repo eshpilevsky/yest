@@ -3,7 +3,7 @@
     <div class="setAdressContaine-info">
         <span class="info-pre-title">
             Yest.by • {{this.currentZone.name}}
-			<span class="pre-title">
+			<span class="pre-title" v-show="this.currentCategory.id !== 0">
 			 • {{this.currentCategory.name}}
 			</span>
         </span>
