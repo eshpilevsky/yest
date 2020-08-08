@@ -276,16 +276,19 @@
                                 <h2 class="sheet-top-title">Условия доставки</h2>
                                 <v-icon @click="closeSheetDeliveryOprion()">close</v-icon>
                             </div>
-                            <div class="delivery-info">
-                                <v-icon>
-                                    directions_walk
-                                </v-icon>
-                                <div>
-                                    Доставка {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].deliveryFee}}-{{restuarant.delivery.fee[1].deliveryFee}} BYN. Бесплатно при заказе от {{restuarant.delivery.fee[restuarant.delivery.fee.length -1].min}} BYN
-                                </div>
-                                <div>
-                                    Заказ от: {{restuarant.delivery.fee[0].min}} BYN
-                                </div>
+                            <div v-for="fee in this.sortDeliverFee" :key="`deliveryFee${fee.min}`" class="d-flex flex-column" >
+								<div class="delivery-info">
+									<v-icon>
+										directions_run
+									</v-icon>
+									<div>
+										{{fee.delivery ? fee.delivery : fee.deliveryFee }} BYN
+										<span>
+											На заказ от {{fee.min}} BYN
+										</span>
+									</div>
+								</div>
+								<v-divider width='90%' class="mx-auto" />
                             </div>
                         </v-sheet>
                     </v-bottom-sheet>
@@ -1138,16 +1141,20 @@ export default {
     border-radius: 24px !important;
 }
 
-.delivery-info div {
+.delivery-info div  {
     padding-left: 10px;
+	width: 100%;
+	font-size: 14px;
+	margin: 9px 0;
 }
+
 
 .delivery-info {
     display: flex;
     flex-direction: row;
     width: 100%;
     justify-content: flex-start;
-    padding: 20px;
+    padding: 10px 20px;
 }
 
 .rating-info-bottom {
