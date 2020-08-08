@@ -17,12 +17,12 @@
             <v-text-field v-model="delivery.address" placeholder="Адрес" required></v-text-field>
         </div>
         <div class="d-flex flex-row">
-            <v-text-field type="number" v-model="delivery.enterence" placeholder="Подъезд" required></v-text-field>
-            <v-text-field type="number" v-model="delivery.flor" placeholder="Этаж" required></v-text-field>
+            <v-text-field type="srting" v-model="delivery.enterence" placeholder="Подъезд" required></v-text-field>
+            <v-text-field type="srting" v-model="delivery.flor" placeholder="Этаж" required></v-text-field>
         </div>
         <div class="d-flex flex-row">
-            <v-text-field type="number" v-model="delivery.intercom" placeholder="Код домофона" required></v-text-field>
-            <v-text-field type="number" v-model="delivery.room" placeholder="Номер квартиры" required></v-text-field>
+            <v-text-field type="srting" v-model="delivery.intercom" placeholder="Код домофона" required></v-text-field>
+            <v-text-field type="srting" v-model="delivery.room" placeholder="Номер квартиры" required></v-text-field>
         </div>
         <v-card-subtitle color="#000">
             Выберете способ оплаты
