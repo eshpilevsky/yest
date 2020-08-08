@@ -199,7 +199,7 @@ export default {
 		}
 		
         return {
-            restaurantsList: filtByTime,
+            restaurantsList: restaurantsListData,
             categoriesList: categoryAll.concat(categoriesList.data),
             currentCategory: currentCategory,
             categoryInfoData: categoryInfoData,

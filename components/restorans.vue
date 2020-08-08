@@ -284,11 +284,11 @@ export default {
 		console.log('created -> this.restaurantsList', this.restaurantsList)
 		if(this.restaurantsList !== 404){
 			this.restaurants = this.restaurantsList
+			// this.restaurants.slice(0, this.limit)
 		} else {
 			this.restaurants = [];
             this.notFound = true;
 		}
-        // this.restaurants.slice(0, this.limit)
     }
 };
 </script>
