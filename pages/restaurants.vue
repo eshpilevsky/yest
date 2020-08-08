@@ -647,8 +647,6 @@ export default {
             }
         },
         scroll(id) {
-            console.log('scroll -> id', id)
-            console.log('scroll -> document.getElementById(id)', document.getElementById(id))
             document.getElementById(id).scrollIntoView({
                 block: 'start',
                 behavior: 'smooth'

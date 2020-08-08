@@ -50,13 +50,13 @@ export default {
         app,
         context,
         store,
-		params,
+        params,
     }) {
-		console.log('START ASYNC DATA');
+        console.log('START ASYNC DATA');
         let getCurrentCoords = store.getters['map/getCurrentCoords']
         let zoneList = await axios.get('https://yestapi.xyz/get-zones')
-		const zoneListData = zoneList.data
-		store.dispatch('zone/setZone', zoneListData)
+        const zoneListData = zoneList.data
+        store.dispatch('zone/setZone', zoneListData)
         let currentZone = zoneListData.find((zones) => {
             if (zones.alias == params.region) {
                 return zones
@@ -128,81 +128,76 @@ export default {
                 start: 0,
             }
         }
-        let restaurantsList = await axios.post('https://yestapi.xyz/restaurants', sortByCoord)
+        let restaurantsList;
+        if (currentCategory.id == 0) {
+            restaurantsList = await axios.post('https://yestapi.xyz/restaurants', sortByCoord)
+        } else {
+            restaurantsList = await axios.post(`https://yestapi.xyz/restaurants/category/${currentCategory.id}`, sortByCoord)
+        }
         let restaurantsListData = restaurantsList.data.restaurants
 
-        function filterByTag(restList) {
-            if (currentCategory.id == 0) {
-                return restList
-            } else {
-                let selcatmass = [];
-                restList.forEach((item, i, arr) => {
-                    item.tags.find((tag, i, arr) => {
-                        if (tag.id === currentCategory.id) {
-                            selcatmass.push(item);
-                        }
-                    });
-                });
-                return selcatmass;
-            }
+        var filtByTime;
+        if (restaurantsList.data.status == 404) {
+            filtByTime = 404
+        } else {
+            filtByTime = await computedOpenTime()
         }
-        var filtredRest = await filterByTag(restaurantsListData)
 
         function computedOpenTime() {
             const openRestorants = [];
             const closeRestorants = [];
             const currentDay = new Date().getDay();
             const currentTime = new Date().getTime();
-            filtredRest.forEach((item, i, arr) => {
+            console.log('computedOpenTime -> restaurantsListData', restaurantsListData[0])
+            restaurantsListData.forEach((item, i, arr) => {
                 const op = item.operation_time;
-				const buffer = [];
-				if (item.operation_time.length > 6) {
-					op.forEach((optime, index, operationTimeArr) => {
-						if (optime.day === currentDay) {
-							buffer.push(optime);
-						}
-					});
-					let closeTime = buffer[0].close_time
-					const openTime =
-						buffer.length > 1 ? buffer[1].open_time : buffer[0].open_time;
-	
-					const closeTimeHour = closeTime.slice(0, 2);
-					const closeTimeMin = closeTime.slice(3, 5);
-					const closeTimeSec = closeTime.slice(6, 8);
-					const closeTimeTimestamp = new Date();
-					closeTimeTimestamp.setHours(closeTimeHour);
-					closeTimeTimestamp.setMinutes(closeTimeMin);
-					closeTimeTimestamp.setSeconds(closeTimeSec);
-	
-					const openTimeHour = openTime.slice(0, 2);
-					const openTimeMin = openTime.slice(3, 5);
-					const openTimeSec = openTime.slice(6, 8);
-					const openTimeTimestamp = new Date();
-	
-					openTimeTimestamp.setHours(openTimeHour);
-					openTimeTimestamp.setMinutes(openTimeMin);
-					openTimeTimestamp.setSeconds(openTimeSec);
-	
-					item.today_close_time = closeTimeTimestamp.getTime();
-					item.today_open_time = openTimeTimestamp.getTime();
-	
-					if (buffer.length !== 1) {
-						item.today_close_time += 86400000;
-					}
-	
-					if (currentTime < item.today_close_time) {
-						openRestorants.push(item);
-						item.is_open = true;
-					} else {
-						closeRestorants.push(item);
-						item.is_open = false;
-					}
-				}
+                const buffer = [];
+                if (item.operation_time.length > 6) {
+                    op.forEach((optime, index, operationTimeArr) => {
+                        if (optime.day === currentDay) {
+                            buffer.push(optime);
+                        }
+                    });
+                    let closeTime = buffer[0].close_time
+                    const openTime =
+                        buffer.length > 1 ? buffer[1].open_time : buffer[0].open_time;
+
+                    const closeTimeHour = closeTime.slice(0, 2);
+                    const closeTimeMin = closeTime.slice(3, 5);
+                    const closeTimeSec = closeTime.slice(6, 8);
+                    const closeTimeTimestamp = new Date();
+                    closeTimeTimestamp.setHours(closeTimeHour);
+                    closeTimeTimestamp.setMinutes(closeTimeMin);
+                    closeTimeTimestamp.setSeconds(closeTimeSec);
+
+                    const openTimeHour = openTime.slice(0, 2);
+                    const openTimeMin = openTime.slice(3, 5);
+                    const openTimeSec = openTime.slice(6, 8);
+                    const openTimeTimestamp = new Date();
+
+                    openTimeTimestamp.setHours(openTimeHour);
+                    openTimeTimestamp.setMinutes(openTimeMin);
+                    openTimeTimestamp.setSeconds(openTimeSec);
+
+                    item.today_close_time = closeTimeTimestamp.getTime();
+                    item.today_open_time = openTimeTimestamp.getTime();
+
+                    if (buffer.length !== 1) {
+                        item.today_close_time += 86400000;
+                    }
+
+                    if (currentTime < item.today_close_time) {
+                        openRestorants.push(item);
+                        item.is_open = true;
+                    } else {
+                        closeRestorants.push(item);
+                        item.is_open = false;
+                    }
+                }
             });
             return openRestorants.concat(closeRestorants);
-        }
-        var filtByTime = await computedOpenTime()
-        console.log('categoryInfoData', categoryInfoData);
+		}
+		
         return {
             restaurantsList: filtByTime,
             categoriesList: categoryAll.concat(categoriesList.data),
