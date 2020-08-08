@@ -137,6 +137,7 @@ export default {
 .footer-top-right {
     display: flex;
     align-items: center;
+    justify-content: initial;
 }
 
 .footer-top-left {
