@@ -28,8 +28,8 @@
                                             Доставка Yest.by
                                         </div>
                                         <div class="description-price ">
-											Доставка {{this.sortDeliverFee[this.sortDeliverFee.length-2].deliveryFee}} - {{this.sortDeliverFee[0].delivery}} BYN. Бесплатно при заказе от {{this.sortDeliverFee[this.sortDeliverFee.length-1].min}} BYN
-										</div>
+                                            Доставка {{this.sortDeliverFee[this.sortDeliverFee.length-2].deliveryFee}} - {{this.sortDeliverFee[0].delivery}} BYN. Бесплатно при заказе от {{this.sortDeliverFee[this.sortDeliverFee.length-1].min}} BYN
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="white--text">
@@ -307,9 +307,10 @@
                         {{category.name}}
                     </h2>
                     <div class="dishs-list-mobile">
-                        <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" class="dishs-list-mobile-item" @click="showSelectedDish(item)">
+                        <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" class="dishs-list-mobile-item">
                             <v-card class="dish-card">
-                                <div class="card-dish-top">
+								<div @click="showSelectedDish(item)">
+                                <div class="card-dish-top" >
                                     <img :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" :alt="item.name" class="dish-img-mobile" />
                                 </div>
                                 <div class="card-dish-bottom">
@@ -320,11 +321,26 @@
                                     </div>
                                     <div class="dish-info">
                                         <div class="info-weight">
-                                            {{item.sizes[0] ? item.sizes[0].weight : '404'}}
+                                            {{item.sizes[0] ? item.sizes[0].weight : ''}}
                                         </div>
                                     </div>
-                                    <div class="info-price">
-                                        {{item.sizes[0] ? item.sizes[0].price.toFixed(1) : '404'}} BYN
+                                </div>
+								</div>
+                                <div>
+                                    <div class="info-price" v-show="checkInbasket(item)">
+                                        {{item.sizes[0] ? item.sizes[0].price.toFixed(1) : ''}} BYN
+                                    </div>
+                                    <div  v-show="!checkInbasket(item)" class="dish-conter-mobile">
+                                        <v-icon class="info-price px-3" @click="decrement(item)">
+                                            remove
+                                        </v-icon>
+                                        <div class="dish-counter-mob">
+                                            <!-- {{item.selectSize ? item.selectSize.count : '0'}}-->
+											{{computedCount(item)}}
+                                        </div>
+                                        <v-icon class="info-price px-3" @click="increment(item)">
+                                            add
+                                        </v-icon>
                                     </div>
                                 </div>
                             </v-card>
@@ -507,6 +523,26 @@ export default {
         }
     },
     methods: {
+		checkInbasket(item){
+			let findItem = this.getSelectedDishs.find((dish) =>{
+				return item.id == dish.id
+			})
+			if (findItem !== undefined) {
+				return false
+			} else {
+				return true
+			}
+		},
+		computedCount(item){
+			let findItem = this.getSelectedDishs.find((dish) =>{
+				return item.id == dish.id
+			})
+			if (findItem !== undefined) {
+				return findItem.selectSize.count
+			} else {
+				return 0
+			}
+		},
         showHideRestInfo() {
             this.showRestInfo = !this.showRestInfo
         },
@@ -580,9 +616,11 @@ export default {
             this.showOptionsmenu = false
         },
         decrement(dish) {
+            this.showDish = false
             this.$store.dispatch('basket/decrementDishCounter', dish);
         },
         increment(dish) {
+            this.showDish = false
             this.$store.dispatch('basket/incrementDishCounter', dish);
         },
         dropBasket() {
@@ -667,8 +705,8 @@ export default {
             getSelectedDishs: "basket/getSelectedDishs",
             getTotalPrice: "basket/getTotalPrice",
             getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
-		}),
-		sortDeliverFee() {
+        }),
+        sortDeliverFee() {
             let listt = this.restuarant.delivery.fee
             let sorted = listt.sort((a, b) => {
                 return a.delivery ? a.delivery : a.deliveryFee > b.deliveryFee
@@ -677,9 +715,9 @@ export default {
         },
     },
     watch: {
-		getSelectedZone(newValue){
-			this.dropBasket()
-		},
+        getSelectedZone(newValue) {
+            this.dropBasket()
+        },
         showRatingSheet(newValue) {
             return newValue
         },
@@ -737,6 +775,20 @@ export default {
     margin-bottom: 0 !important;
 }
 </style><style scoped>
+.dish-conter-mobile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 999;
+}
+
+.dish-counter-mob {
+    font-size: 24px;
+    color: rgba(32, 32, 32, .5);
+    margin-bottom: 8px;
+}
+
 .card-dish-top {
     height: 167px;
     width: 45vw;
@@ -1214,6 +1266,8 @@ export default {
 .dishs-list-mobile-item {
     margin: 5px;
     max-width: calc((100% - 20px)/2);
+    position: relative;
+    z-index: 0;
 }
 
 @media screen and (min-width: 500px) {
