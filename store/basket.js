@@ -22,12 +22,9 @@ export const actions = {
       let findSize = dishSizes.find((size) => {
         return size.id == payload.selectSize[0].id
       })
-      console.log('payload.selectSize[0].name', payload.selectSize[0].name)
       if (findSize == undefined) {
-        console.log('save size');
         context.commit('SAVE_TO_BASKET', payload)
       } else {
-        console.log('increment', findSize);
         context.commit('INCREMENT_DISH', payload)
       }
     }
@@ -117,7 +114,7 @@ export const getters = {
     let dl = state.data.dishs
     let totalPrice = 0
     dl.forEach(element => {
-      totalPrice += element.selectSize[0].price * element.selectSize[0].count
+      	totalPrice += element.selectSize.price * element.selectSize.count
     });
     return totalPrice.toFixed(1)
   },

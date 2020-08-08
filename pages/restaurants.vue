@@ -100,18 +100,18 @@
                             </v-icon>
                         </div>
                         <div v-if="this.orderList.length > 0 && this.getLatetestRestInfoWithOrder.params.resName == this.$router.currentRoute.params.resName" class="my-order-dishes-desktop">
-                            <div v-for="order in this.orderList" :key="order.selectSize[0].id" class="order-item">
+                            <div v-for="order in this.orderList" :key="order.selectSize.id" class="order-item">
                                 <div class="d-flex flex-column">
                                     <div class="d-flex flex-column order-item-info">
                                         <div class="item-name">
                                             {{order.name}}
                                             <span class="order-item-subbtitle">
-                                                {{order.selectSize[0].weight}}
+                                                {{order.selectSize.weight}}
                                             </span>
                                         </div>
                                     </div>
                                     <div class="order-item-subbtitle">
-                                        {{order.selectSize[0].name}}
+                                        {{order.selectSize.name}}
                                     </div>
 
                                     <!-- <div v-if="order.selectOption.length > 1">
@@ -131,7 +131,7 @@
                                         </v-icon>
                                     </div>
                                     <div class="counter-count">
-                                        {{order.selectSize[0].count}}
+                                        {{order.selectSize.count}}
                                     </div>
                                     <div class="counter-minus" @click="decrement(order)">
                                         <v-icon>
@@ -140,7 +140,7 @@
                                     </div>
                                 </div>
                                 <div class="pl-4">
-                                    x {{order.selectSize[0].price }} BYN
+                                    x {{order.selectSize.price }} BYN
                                 </div>
                             </div>
                         </div>
