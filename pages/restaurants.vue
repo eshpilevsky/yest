@@ -276,19 +276,19 @@
                                 <h2 class="sheet-top-title">Условия доставки</h2>
                                 <v-icon @click="closeSheetDeliveryOprion()">close</v-icon>
                             </div>
-                            <div v-for="fee in this.sortDeliverFee" :key="`deliveryFee${fee.min}`" class="d-flex flex-column" >
-								<div class="delivery-info">
-									<v-icon>
-										directions_run
-									</v-icon>
-									<div>
-										{{fee.delivery ? fee.delivery : fee.deliveryFee }} BYN
-										<span>
-											На заказ от {{fee.min}} BYN
-										</span>
-									</div>
-								</div>
-								<v-divider width='90%' class="mx-auto" />
+                            <div v-for="fee in this.sortDeliverFee" :key="`deliveryFee${fee.min}`" class="d-flex flex-column">
+                                <div class="delivery-info">
+                                    <v-icon>
+                                        directions_run
+                                    </v-icon>
+                                    <div>
+                                        {{fee.delivery ? fee.delivery : fee.deliveryFee }} BYN
+                                        <span>
+                                            На заказ от {{fee.min}} BYN
+                                        </span>
+                                    </div>
+                                </div>
+                                <v-divider width='90%' class="mx-auto" />
                             </div>
                         </v-sheet>
                     </v-bottom-sheet>
@@ -312,34 +312,34 @@
                     <div class="dishs-list-mobile">
                         <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" class="dishs-list-mobile-item">
                             <v-card class="dish-card">
-								<div @click="showSelectedDish(item)">
-                                <div class="card-dish-top" >
-                                    <img :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" :alt="item.name" class="dish-img-mobile" />
-                                </div>
-                                <div class="card-dish-bottom">
-                                    <div class="dish-name-container">
-                                        <h3 class="dish-name">
-                                            {{item.name}}
-                                        </h3>
+                                <div @click="showSelectedDish(item)">
+                                    <div class="card-dish-top">
+                                        <img :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" :alt="item.name" class="dish-img-mobile" />
                                     </div>
-                                    <div class="dish-info">
-                                        <div class="info-weight">
-                                            {{item.sizes[0] ? item.sizes[0].weight : ''}}
+                                    <div class="card-dish-bottom">
+                                        <div class="dish-name-container">
+                                            <h3 class="dish-name">
+                                                {{item.name}}
+                                            </h3>
+                                        </div>
+                                        <div class="dish-info">
+                                            <div class="info-weight">
+                                                {{item.sizes[0] ? item.sizes[0].weight : ''}}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-								</div>
                                 <div>
                                     <div class="info-price" v-show="checkInbasket(item)">
                                         {{item.sizes[0] ? item.sizes[0].price.toFixed(1) : ''}} BYN
                                     </div>
-                                    <div  v-show="!checkInbasket(item)" class="dish-conter-mobile">
+                                    <div v-show="!checkInbasket(item)" class="dish-conter-mobile">
                                         <v-icon class="info-price px-3" @click="decrement(item)">
                                             remove
                                         </v-icon>
                                         <div class="dish-counter-mob">
                                             <!-- {{item.selectSize ? item.selectSize.count : '0'}}-->
-											{{computedCount(item)}}
+                                            {{computedCount(item)}}
                                         </div>
                                         <v-icon class="info-price px-3" @click="increment(item)">
                                             add
@@ -526,56 +526,6 @@ export default {
         }
     },
     methods: {
-		checkInbasket(item){
-			let findItem = this.getSelectedDishs.find((dish) =>{
-				return item.id == dish.id
-			})
-			if (findItem !== undefined) {
-				return false
-			} else {
-				return true
-			}
-		},
-		computedCount(item){
-			let findItem = this.getSelectedDishs.find((dish) =>{
-				return item.id == dish.id
-			})
-			if (findItem !== undefined) {
-				return findItem.selectSize.count
-			} else {
-				return 0
-			}
-		},
-        showHideRestInfo() {
-            this.showRestInfo = !this.showRestInfo
-        },
-        closeShowDish() {
-            this.selectedDish = {}
-            this.sizesRadioBtn = {}
-            this.selectOption = []
-            this.showDish = false
-        },
-        closeSheetRating() {
-            this.showRatingSheet = false
-        },
-        closeSheetDeliveryOprion() {
-            this.showDeliveryOption = false
-        },
-        checkout() {
-            this.showOrderCard = !this.showOrderCard
-        },
-        goToBasketPage() {
-            this.$router.push(`/cart`)
-        },
-        cancelDeleteBasket() {
-            this.showWarning = false
-        },
-        coontinue() {
-            this.showDish = false
-            this.dropBasket()
-            this.saveBasket()
-            this.showWarning = false
-        },
         addCraftDish() {
             if (this.getLatetestRestInfoWithOrder !== null) {
                 if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
@@ -588,14 +538,15 @@ export default {
             }
         },
         saveBasket() {
+            console.log('SAVE BASKET');
             this.selectOption = this.selectedDish.options ? this.selectedDish.options[0] : []
             // sizesRadioBtn
             this.sizesRadioBtn.count = this.selectedDishCounter
-            this.selectedDish.sizes[0] = this.sizesRadioBtn
+            // this.selectedDish.sizes[0] = this.sizesRadioBtn
             // this.selectedDish.selectOption = this.selectOption
             this.selectedDishCounter = 1
             this.selectedDish.selectSize = []
-            this.selectedDish.selectSize.push(this.sizesRadioBtn)
+            this.selectedDish.selectSize= this.sizesRadioBtn
 
             this.$store.dispatch('basket/addToBasket', this.selectedDish);
             this.$store.dispatch('basket/saveRestuarantUrl', {
@@ -603,31 +554,6 @@ export default {
                 restName: this.restuarant.name,
             });
             this.showOptionsmenu = false
-        },
-        dencrementSelectedDish() {
-            if (this.selectedDishCounter > 1) {
-                this.selectedDishCounter--
-            }
-        },
-        incrementSelectedDish() {
-            this.selectedDishCounter++
-        },
-        goBack() {
-            this.$router.go(-1)
-        },
-        closeOptionMenu() {
-            this.showOptionsmenu = false
-        },
-        decrement(dish) {
-            this.showDish = false
-            this.$store.dispatch('basket/decrementDishCounter', dish);
-        },
-        increment(dish) {
-            this.showDish = false
-            this.$store.dispatch('basket/incrementDishCounter', dish);
-        },
-        dropBasket() {
-            this.$store.dispatch('basket/dropBasket');
         },
         addToBasket(dish) {
             if (dish.sizes.length > 1 || dish.options.length > 1) {
@@ -687,6 +613,82 @@ export default {
                 this.showDish = false
             }
         },
+        checkInbasket(item) {
+            let findItem = this.getSelectedDishs.find((dish) => {
+                return item.id == dish.id
+            })
+            if (findItem !== undefined) {
+                return false
+            } else {
+                return true
+            }
+        },
+        computedCount(item) {
+            let findItem = this.getSelectedDishs.find((dish) => {
+                return item.id == dish.id
+            })
+            if (findItem !== undefined) {
+                return findItem.selectSize.count
+            } else {
+                return 0
+            }
+        },
+        showHideRestInfo() {
+            this.showRestInfo = !this.showRestInfo
+        },
+        closeShowDish() {
+            this.selectedDish = {}
+            this.sizesRadioBtn = {}
+            this.selectOption = []
+            this.showDish = false
+        },
+        closeSheetRating() {
+            this.showRatingSheet = false
+        },
+        closeSheetDeliveryOprion() {
+            this.showDeliveryOption = false
+        },
+        checkout() {
+            this.showOrderCard = !this.showOrderCard
+        },
+        goToBasketPage() {
+            this.$router.push(`/cart`)
+        },
+        cancelDeleteBasket() {
+            this.showWarning = false
+        },
+        coontinue() {
+            this.showDish = false
+            this.dropBasket()
+            this.saveBasket()
+            this.showWarning = false
+        },
+        dencrementSelectedDish() {
+            if (this.selectedDishCounter > 1) {
+                this.selectedDishCounter--
+            }
+        },
+        incrementSelectedDish() {
+            this.selectedDishCounter++
+        },
+        goBack() {
+            this.$router.go(-1)
+        },
+        closeOptionMenu() {
+            this.showOptionsmenu = false
+        },
+        decrement(dish) {
+            this.showDish = false
+            this.$store.dispatch('basket/decrementDishCounter', dish);
+        },
+        increment(dish) {
+            this.showDish = false
+            this.$store.dispatch('basket/incrementDishCounter', dish);
+        },
+        dropBasket() {
+            this.$store.dispatch('basket/dropBasket');
+        },
+
         scroll(id) {
             document.getElementById(id).scrollIntoView({
                 block: 'start',
@@ -1141,13 +1143,12 @@ export default {
     border-radius: 24px !important;
 }
 
-.delivery-info div  {
+.delivery-info div {
     padding-left: 10px;
-	width: 100%;
-	font-size: 14px;
-	margin: 9px 0;
+    width: 100%;
+    font-size: 14px;
+    margin: 9px 0;
 }
-
 
 .delivery-info {
     display: flex;
