@@ -310,7 +310,7 @@
                         {{category.name}}
                     </h2>
                     <div class="dishs-list-mobile">
-                        <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" class="dishs-list-mobile-item">
+                        <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" v-show="item.status" class="dishs-list-mobile-item">
                             <v-card class="dish-card">
                                 <div @click="showSelectedDish(item)">
                                     <div class="card-dish-top">
@@ -488,6 +488,27 @@ export default {
         var lastRest = store.getters['basket/getLatetestRestInfoWithOrder']
         var orderList = store.getters['basket/getSelectedDishs']
         var totalPrice = store.getters['basket/getTotalPrice']
+
+        let zoneList = await axios.get('https://yestapi.xyz/get-zones')
+        const zoneListData = zoneList.data
+        store.dispatch('zone/setZone', zoneListData)
+        let currentZoneNew = zoneListData.find((zones) => {
+            if (zones.alias == params.region) {
+                return zones
+            }
+        })
+
+        if (currentZoneNew == undefined) {
+            currentZoneNew = zoneListData[0]
+        }
+
+        let categoriesList = await axios.post('https://yestapi.xyz/categories', {
+            zone_id: currentZoneNew.id
+        })
+
+        let categoriesListData = categoriesList.data
+
+        store.dispatch('user/allCategory', categoriesListData)
 
         app.lastRest = lastRest
         app.orderList = orderList

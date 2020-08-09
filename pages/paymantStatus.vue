@@ -23,7 +23,8 @@
 <script>
 export default {
     async asyncData({
-        params
+        params,
+        store
     }) {
         let statusList= [{
                 name: 'success',
@@ -50,7 +51,6 @@ export default {
                 icon: 'cancel',
             },
 		]
-		
 		let currentStatus ={}
         let findStatus = statusList.findIndex((stat) => {
             return stat.name == params.status
@@ -61,6 +61,28 @@ export default {
         } else {
             currentStatus = statusList[findStatus]
         }
+
+        let zoneList = await axios.get('https://yestapi.xyz/get-zones')
+        const zoneListData = zoneList.data
+        store.dispatch('zone/setZone', zoneListData)
+        let currentZone = zoneListData.find((zones) => {
+            if (zones.alias == params.region) {
+                return zones
+            }
+        })
+
+        if (currentZone == undefined) {
+            currentZone = zoneListData[0]
+        }
+        app.currentZone = currentZone
+
+        let categoriesList = await axios.post('https://yestapi.xyz/categories', {
+            zone_id: currentZone.id
+        })
+
+        let categoriesListData = categoriesList.data
+
+        store.dispatch('user/allCategory', categoriesListData)
 
         return {
             currentStatus: currentStatus,
