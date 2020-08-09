@@ -143,6 +143,20 @@
                                     x {{order.selectSize.price }} BYN
                                 </div>
                             </div>
+                            <div class="delivery-options">
+                            	<v-divider />
+                                <div class="d-flex flex-row justify-space-between align-center py-2">
+									<span class="delivery-title">
+                                    	Доставка
+									</span>
+                                    <span class="delivery-count">
+                                        {{computedDeliveryCost().delivery ? computedDeliveryCost().delivery : computedDeliveryCost().deliveryFee}} BYN
+                                    </span>
+                                </div>
+                                <p v-show="computedFreeDeliveryCost() > 0" class="more-delivery">
+                                    Закажите ещё на {{computedFreeDeliveryCost()}} BYN для бесплтаной доставки
+                                </p>
+                            </div>
                         </div>
                         <div v-else class="my-order">
                             <span class="my-order-text">
@@ -216,7 +230,6 @@
                                     Сумма
                                 </div>
                                 <div>
-                                    <!-- {{this.sizesRadioBtn}} -->
                                     {{(this.sizesRadioBtn.price * selectedDishCounter).toFixed(1)}} BYN
                                 </div>
                             </div>
@@ -294,7 +307,6 @@
                     </v-bottom-sheet>
                 </div>
             </div>
-
             <div class="rest-info-bottom">
                 <v-tabs hide-slider z-index='1' v-model="tab" class="catalog-tabs catalog-tabs-mobile">
                     <v-tab v-for="(category, index) in restuarant.menu" :key="category.id" @click="scroll(`${index}`)" :color="tab == index ? 'primary': null" class="catalog-tab-mobile-container">
@@ -547,6 +559,25 @@ export default {
         }
     },
     methods: {
+		computedDeliveryCost(){
+			let deliveryMass = this.sortDeliverFee
+			let price = parseInt(this.getTotalPrice)
+			let finded = deliveryMass.find((cost) => {
+				if (cost.min <= price && price <= cost.max){
+					return cost
+				}
+			})
+			if (finded !== undefined) {
+				return finded
+			} else {
+				return deliveryMass[deliveryMass.length - 1]
+			}
+			
+		},
+		computedFreeDeliveryCost(){
+			let deliveryMass = this.sortDeliverFee[this.sortDeliverFee.length - 1]
+			return deliveryMass.min - parseInt(this.getTotalPrice)
+		},
         addCraftDish() {
             if (this.getLatetestRestInfoWithOrder !== null) {
                 if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
@@ -567,7 +598,7 @@ export default {
             // this.selectedDish.selectOption = this.selectOption
             this.selectedDishCounter = 1
             this.selectedDish.selectSize = []
-            this.selectedDish.selectSize= this.sizesRadioBtn
+            this.selectedDish.selectSize = this.sizesRadioBtn
 
             this.$store.dispatch('basket/addToBasket', this.selectedDish);
             this.$store.dispatch('basket/saveRestuarantUrl', {
@@ -754,7 +785,8 @@ export default {
             return newValue
         },
         getSelectedDishs(newValue) {
-            this.orderList = newValue
+			this.orderList = newValue
+			this.computedDeliveryCost()
             return newValue
         },
         getLatetestRestInfoWithOrder(newValue) {
@@ -801,6 +833,28 @@ export default {
     margin-bottom: 0 !important;
 }
 </style><style scoped>
+
+.delivery-title{
+font-size: 16px;
+}
+
+.delivery-count{
+font-size: 14px;
+}
+
+.more-delivery{
+	color: #000000;
+    font-size: 12px;
+}
+
+.delivery-options{
+	width: 90%;
+	margin: auto;
+	padding-top: 10px;
+	display: flex;
+	flex-direction: column;
+}
+
 .dish-conter-mobile {
     display: flex;
     justify-content: space-between;
