@@ -103,8 +103,6 @@ export const mutations = {
 	  if (findDish !== undefined) {
   
 		dishSizes = state.data.dishs[findDish].selectSize
-		console.log('INCREMENT_DISH -> dishSizes', dishSizes.id)
-		console.log('INCREMENT_DISH -> payload.selectSize', payload.selectSize.id)
   
 		  let findSize;
 		  if (dishSizes.id == payload.selectSize.id) {
@@ -113,10 +111,10 @@ export const mutations = {
 			  findSize = undefined
 		  }
   
-		console.log('INCREMENT_DISH -> findSize', findSize)
+		let wellBe = state.data.dishs[findDish].selectSize.count- 1
 		if (findSize !== undefined) {
-			if (state.data.dishs[findDish].selectSize == 0) {
-				state.data.dishs.splice(index, 1)
+			if (wellBe < 1) {
+				state.data.dishs.splice(findDish, 1)
 			} else {
 				state.data.dishs[findDish].selectSize.count--
 			}
