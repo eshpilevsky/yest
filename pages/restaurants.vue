@@ -142,6 +142,20 @@
                                     x {{order.selectSize.price }} BYN
                                 </div>
                             </div>
+                            <div class="delivery-options">
+                                <v-divider />
+                                <div class="d-flex flex-row justify-space-between align-center py-2">
+                                    <span class="delivery-title">
+                                        Доставка
+                                    </span>
+                                    <span class="delivery-count">
+                                        {{computedDeliveryCost().delivery ? computedDeliveryCost().delivery : computedDeliveryCost().deliveryFee}} BYN
+                                    </span>
+                                </div>
+                                <p class="more-delivery">
+                                   {{computedFreeDeliveryCost()}}
+                                </p>
+                            </div>
                         </div>
                         <div v-else class="my-order">
                             <span class="my-order-text">
@@ -215,7 +229,6 @@
                                     Сумма
                                 </div>
                                 <div>
-                                    <!-- {{this.sizesRadioBtn}} -->
                                     {{(this.sizesRadioBtn.price * selectedDishCounter).toFixed(1)}} BYN
                                 </div>
                             </div>
@@ -275,25 +288,24 @@
                                 <h2 class="sheet-top-title">Условия доставки</h2>
                                 <v-icon @click="closeSheetDeliveryOprion()">close</v-icon>
                             </div>
-                            <div v-for="fee in this.sortDeliverFee" :key="`deliveryFee${fee.min}`" class="d-flex flex-column" >
-								<div class="delivery-info">
-									<v-icon>
-										directions_run
-									</v-icon>
-									<div>
-										{{fee.delivery ? fee.delivery : fee.deliveryFee }} BYN
-										<span>
-											На заказ от {{fee.min}} BYN
-										</span>
-									</div>
-								</div>
-								<v-divider width='90%' class="mx-auto" />
+                            <div v-for="fee in this.sortDeliverFee" :key="`deliveryFee${fee.min}`" class="d-flex flex-column">
+                                <div class="delivery-info">
+                                    <v-icon>
+                                        directions_run
+                                    </v-icon>
+                                    <div>
+                                        {{fee.delivery ? fee.delivery : fee.deliveryFee }} BYN
+                                        <span>
+                                            На заказ от {{fee.min}} BYN
+                                        </span>
+                                    </div>
+                                </div>
+                                <v-divider width='90%' class="mx-auto" />
                             </div>
                         </v-sheet>
                     </v-bottom-sheet>
                 </div>
             </div>
-
             <div class="rest-info-bottom">
                 <v-tabs hide-slider z-index='1' v-model="tab" class="catalog-tabs catalog-tabs-mobile">
                     <v-tab v-for="(category, index) in restuarant.menu" :key="category.id" @click="scroll(`${index}`)" :color="tab == index ? 'primary': null" class="catalog-tab-mobile-container">
@@ -309,36 +321,36 @@
                         {{category.name}}
                     </h2>
                     <div class="dishs-list-mobile">
-                        <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" class="dishs-list-mobile-item">
+                        <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" v-show="item.status" class="dishs-list-mobile-item">
                             <v-card class="dish-card">
-								<div @click="showSelectedDish(item)">
-                                <div class="card-dish-top" >
-                                    <img :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" :alt="item.name" class="dish-img-mobile" />
-                                </div>
-                                <div class="card-dish-bottom">
-                                    <div class="dish-name-container">
-                                        <h3 class="dish-name">
-                                            {{item.name}}
-                                        </h3>
+                                <div @click="showSelectedDish(item)">
+                                    <div class="card-dish-top">
+                                        <img :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" :alt="item.name" class="dish-img-mobile" />
                                     </div>
-                                    <div class="dish-info">
-                                        <div class="info-weight">
-                                            {{item.sizes[0] ? item.sizes[0].weight : ''}}
+                                    <div class="card-dish-bottom">
+                                        <div class="dish-name-container">
+                                            <h3 class="dish-name">
+                                                {{item.name}}
+                                            </h3>
+                                        </div>
+                                        <div class="dish-info">
+                                            <div class="info-weight">
+                                                {{item.sizes[0] ? item.sizes[0].weight : ''}}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-								</div>
                                 <div>
                                     <div class="info-price" v-show="checkInbasket(item)">
                                         {{item.sizes[0] ? item.sizes[0].price.toFixed(1) : ''}} BYN
                                     </div>
-                                    <div  v-show="!checkInbasket(item)" class="dish-conter-mobile">
+                                    <div v-show="!checkInbasket(item)" class="dish-conter-mobile">
                                         <v-icon class="info-price px-3" @click="decrement(item)">
                                             remove
                                         </v-icon>
                                         <div class="dish-counter-mob">
                                             <!-- {{item.selectSize ? item.selectSize.count : '0'}}-->
-											{{computedCount(item)}}
+                                            {{computedCount(item)}}
                                         </div>
                                         <v-icon class="info-price px-3" @click="increment(item)">
                                             add
@@ -358,7 +370,7 @@
                                 </v-btn>
                             </div>
                             <div class="selected-dish-top">
-                                <v-img :src="'https://img.eatmealby.com/resize/dish/400/'+selectedDish.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="selectedDish.name" class="dish-img-mobile-selected" />
+                                <img :src="'https://img.eatmealby.com/resize/dish/400/'+selectedDish.image" :alt="selectedDish.name" class="dish-img-mobile-selected" />
                             </div>
                             <div class="selected-dish-composition">
                                 {{selectedDish.description}}
@@ -488,6 +500,27 @@ export default {
         var orderList = store.getters['basket/getSelectedDishs']
         var totalPrice = store.getters['basket/getTotalPrice']
 
+        let zoneList = await axios.get('https://yestapi.xyz/get-zones')
+        const zoneListData = zoneList.data
+        store.dispatch('zone/setZone', zoneListData)
+        let currentZoneNew = zoneListData.find((zones) => {
+            if (zones.alias == params.region) {
+                return zones
+            }
+        })
+
+        if (currentZoneNew == undefined) {
+            currentZoneNew = zoneListData[0]
+        }
+
+        let categoriesList = await axios.post('https://yestapi.xyz/categories', {
+            zone_id: currentZoneNew.id
+        })
+
+        let categoriesListData = categoriesList.data
+
+        store.dispatch('user/allCategory', categoriesListData)
+
         app.lastRest = lastRest
         app.orderList = orderList
         app.totalPrice = totalPrice
@@ -525,55 +558,37 @@ export default {
         }
     },
     methods: {
-		checkInbasket(item){
-			let findItem = this.getSelectedDishs.find((dish) =>{
-				return item.id == dish.id
-			})
-			if (findItem !== undefined) {
-				return false
-			} else {
-				return true
-			}
-		},
-		computedCount(item){
-			let findItem = this.getSelectedDishs.find((dish) =>{
-				return item.id == dish.id
-			})
-			if (findItem !== undefined) {
-				return findItem.selectSize.count
-			} else {
-				return 0
-			}
-		},
-        showHideRestInfo() {
-            this.showRestInfo = !this.showRestInfo
+        computedDeliveryCost() {
+            let deliveryMass = this.sortDeliverFee
+            let price = parseInt(this.getTotalPrice)
+            let finded = deliveryMass.find((cost) => {
+                if (cost.min <= price && price <= cost.max) {
+                    return cost
+                }
+            })
+            if (finded !== undefined) {
+                return finded
+            } else {
+                return deliveryMass[deliveryMass.length - 1]
+            }
+
         },
-        closeShowDish() {
-            this.selectedDish = {}
-            this.sizesRadioBtn = {}
-            this.selectOption = []
-            this.showDish = false
-        },
-        closeSheetRating() {
-            this.showRatingSheet = false
-        },
-        closeSheetDeliveryOprion() {
-            this.showDeliveryOption = false
-        },
-        checkout() {
-            this.showOrderCard = !this.showOrderCard
-        },
-        goToBasketPage() {
-            this.$router.push(`/cart`)
-        },
-        cancelDeleteBasket() {
-            this.showWarning = false
-        },
-        coontinue() {
-            this.showDish = false
-            this.dropBasket()
-            this.saveBasket()
-            this.showWarning = false
+        computedFreeDeliveryCost() {
+			let deliveryMass = this.sortDeliverFee
+			let price = parseFloat(this.getTotalPrice)
+            let finded = deliveryMass.findIndex((cost) => {
+                return cost.min <= price && price <= cost.max
+            })
+            if (finded !== undefined) {
+				if (deliveryMass[deliveryMass.length - 1].min < price) {
+					return ``
+				} else{
+					let computedNextSum = deliveryMass[finded+1].min - price
+					return `Закажите ещё на ${computedNextSum.toFixed(1)} BYN для доставки за ${deliveryMass[finded+1].delivery ? deliveryMass[finded+1].delivery : deliveryMass[finded+1].deliveryFee} BYN`
+				}
+            } else {
+                return ``
+            }
         },
         addCraftDish() {
             if (this.getLatetestRestInfoWithOrder !== null) {
@@ -587,14 +602,15 @@ export default {
             }
         },
         saveBasket() {
+            console.log('SAVE BASKET');
             this.selectOption = this.selectedDish.options ? this.selectedDish.options[0] : []
             // sizesRadioBtn
             this.sizesRadioBtn.count = this.selectedDishCounter
-            this.selectedDish.sizes[0] = this.sizesRadioBtn
+            // this.selectedDish.sizes[0] = this.sizesRadioBtn
             // this.selectedDish.selectOption = this.selectOption
             this.selectedDishCounter = 1
             this.selectedDish.selectSize = []
-            this.selectedDish.selectSize.push(this.sizesRadioBtn)
+            this.selectedDish.selectSize = this.sizesRadioBtn
 
             this.$store.dispatch('basket/addToBasket', this.selectedDish);
             this.$store.dispatch('basket/saveRestuarantUrl', {
@@ -602,31 +618,6 @@ export default {
                 restName: this.restuarant.name,
             });
             this.showOptionsmenu = false
-        },
-        dencrementSelectedDish() {
-            if (this.selectedDishCounter > 1) {
-                this.selectedDishCounter--
-            }
-        },
-        incrementSelectedDish() {
-            this.selectedDishCounter++
-        },
-        goBack() {
-            this.$router.go(-1)
-        },
-        closeOptionMenu() {
-            this.showOptionsmenu = false
-        },
-        decrement(dish) {
-            this.showDish = false
-            this.$store.dispatch('basket/decrementDishCounter', dish);
-        },
-        increment(dish) {
-            this.showDish = false
-            this.$store.dispatch('basket/incrementDishCounter', dish);
-        },
-        dropBasket() {
-            this.$store.dispatch('basket/dropBasket');
         },
         addToBasket(dish) {
             if (dish.sizes.length > 1 || dish.options.length > 1) {
@@ -686,6 +677,82 @@ export default {
                 this.showDish = false
             }
         },
+        checkInbasket(item) {
+            let findItem = this.getSelectedDishs.find((dish) => {
+                return item.id == dish.id
+            })
+            if (findItem !== undefined) {
+                return false
+            } else {
+                return true
+            }
+        },
+        computedCount(item) {
+            let findItem = this.getSelectedDishs.find((dish) => {
+                return item.id == dish.id
+            })
+            if (findItem !== undefined) {
+                return findItem.selectSize.count
+            } else {
+                return 0
+            }
+        },
+        showHideRestInfo() {
+            this.showRestInfo = !this.showRestInfo
+        },
+        closeShowDish() {
+            this.selectedDish = {}
+            this.sizesRadioBtn = {}
+            this.selectOption = []
+            this.showDish = false
+        },
+        closeSheetRating() {
+            this.showRatingSheet = false
+        },
+        closeSheetDeliveryOprion() {
+            this.showDeliveryOption = false
+        },
+        checkout() {
+            this.showOrderCard = !this.showOrderCard
+        },
+        goToBasketPage() {
+            this.$router.push(`/cart`)
+        },
+        cancelDeleteBasket() {
+            this.showWarning = false
+        },
+        coontinue() {
+            this.showDish = false
+            this.dropBasket()
+            this.saveBasket()
+            this.showWarning = false
+        },
+        dencrementSelectedDish() {
+            if (this.selectedDishCounter > 1) {
+                this.selectedDishCounter--
+            }
+        },
+        incrementSelectedDish() {
+            this.selectedDishCounter++
+        },
+        goBack() {
+            this.$router.go(-1)
+        },
+        closeOptionMenu() {
+            this.showOptionsmenu = false
+        },
+        decrement(dish) {
+            this.showDish = false
+            this.$store.dispatch('basket/decrementDishCounter', dish);
+        },
+        increment(dish) {
+            this.showDish = false
+            this.$store.dispatch('basket/incrementDishCounter', dish);
+        },
+        dropBasket() {
+            this.$store.dispatch('basket/dropBasket');
+        },
+
         scroll(id) {
             document.getElementById(id).scrollIntoView({
                 block: 'start',
@@ -731,6 +798,7 @@ export default {
         },
         getSelectedDishs(newValue) {
             this.orderList = newValue
+            this.computedDeliveryCost()
             return newValue
         },
         getLatetestRestInfoWithOrder(newValue) {
@@ -829,6 +897,7 @@ export default {
     line-height: 17px;
     margin-bottom: 0;
     margin-right: 6px;
+
 }
 
 .dish-conter-mobile {
@@ -1195,11 +1264,11 @@ export default {
     border-radius: 24px !important;
 }
 
-.delivery-info div  {
+.delivery-info div {
     padding-left: 10px;
-	width: 100%;
-	font-size: 14px;
-	margin: 9px 0;
+    width: 100%;
+    font-size: 14px;
+    margin: 9px 0;
 }
 
 .delivery-info {

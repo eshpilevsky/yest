@@ -1,6 +1,6 @@
 <template>
 <div class="restuarants-container">
-    <h2 class="restorane-title" id="restTitle">Рестораны </h2>
+    <h2 class="restorane-title" id="restTitle">Рестораны</h2>
     <v-flex cols-12 wrap class="restorane-list">
         <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in this.restaurants" :key="index" class="restorane-list-item" @click="goToRes(item)">
             <div class="list-item-block">
@@ -62,7 +62,7 @@
         </div>
     </div>
     <div class="show-btn-block">
-        <v-btn color="primary" class="showMore-btn" @click="showMore" v-show="this.counterRest > limit">Показать ещё</v-btn>
+        <v-btn color="primary" class="showMore-btn" @click="showMore()" v-show="this.totalCount > limit" :loading="loadingShowMore">Показать ещё</v-btn>
     </div>
 </div>
 </template>
@@ -88,7 +88,7 @@ export default {
             mergeMassive: [],
             loadingRest: true,
             notFound: false,
-            limit: 20,
+            limit: 24,
             itemCounter: 0,
             params: {},
             notFindImg: require("../assets/logo.svg"),
@@ -102,7 +102,8 @@ export default {
             },
             restList: null,
             counterRest: 0,
-            urlStr: '',
+			urlStr: '',
+			loadingShowMore: false,
         };
     },
     computed: {
@@ -118,16 +119,17 @@ export default {
         swiper() {
             return this.$refs.mySwiper.$swiper;
         },
-
     },
     watch: {
         getSelectedCategory(newValue, oldValue) {
-            console.log('getSelectedCategory -> newValue', newValue)
             this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
         },
         getSelectedZone(newValue, oldValue) {
             this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
-        },
+		},
+		loadingShowMore(newValue){
+			return newValue
+		}
     },
     methods: {
         compudtedTags(tags) {
@@ -171,8 +173,9 @@ export default {
                     const rest = resp.restaurants;
                     if (resp.status === 200) {
                         this.restaurants = [];
-                        // this.restaurants = rest;
-                        this.restaurants = this.computedOpenTime(rest)
+						// this.restaurants = rest;
+						this.totalCount = rest.length
+                        this.restaurants = this.computedOpenTime(rest).slice(0, this.limit)
                         console.log('getRestaurants -> this.restaurants', this.restaurants[0])
                         this.notFound = false;
                     } else if (resp.status === 404) {
@@ -243,9 +246,12 @@ export default {
             let modifName = name.replace(' ', '-')
             this.$router.push(`/${this.getSelectedZone.alias}/restaurant/${info.restaurant_id}-${modifName.toLowerCase()}`)
         },
-        showMore() {
+        async showMore() {
+			this.loadingShowMore = true
+            console.log('showMore -> this.loadingShowMore', this.loadingShowMore)
             this.limit += 24;
-            this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
+            await this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
+			this.loadingShowMore = false
         },
         computedOpenTime(res) {
             const openRestorants = [];
@@ -302,12 +308,10 @@ export default {
             return openRestorants.concat(closeRestorants);
         }
     },
-
     created() {
-		// console.log('created -> this.restaurantsList', this.restaurantsList)
 		if(this.restaurantsList !== 404){
-			this.restaurants = this.restaurantsList
-			// this.restaurants.slice(0, this.limit)
+			this.totalCount = this.restaurantsList.length
+			this.restaurants = this.restaurantsList.slice(0, this.limit)
 		} else {
 			this.restaurants = [];
             this.notFound = true;

@@ -1,32 +1,53 @@
 <template>
-  <v-container class="text-center" fill-height style="height: calc(100vh - 210px);">
+<v-container class="text-center" fill-height style="height: calc(100vh - 210px);">
     <v-row align="center">
-      <v-col>
-        <h1 class="display-2 secondary--text">
-          Упс, 404
-        </h1>
-        <p>Страница не найдна</p>
-        <v-btn :to="`/${this.getSelectedZone.alias}`" color="primary" outlined>
-          Вернуться на главную
-        </v-btn>
-      </v-col>
+        <v-col>
+            <h1 class="display-2 secondary--text">
+                Упс, 404
+            </h1>
+            <p>Страница не найдна</p>
+            <v-btn :to="`/${this.getSelectedZone.alias}`" color="primary" outlined>
+                Вернуться на главную
+            </v-btn>
+        </v-col>
     </v-row>
-  </v-container>
+</v-container>
 </template>
 
 <script>
-
 import {
-  mapGetters
+    mapGetters
 } from 'vuex'
 
 export default {
-  name: 'NotFound',
-  computed: {
-    ...mapGetters({
-      getSelectedZone: 'zone/getSelectedZone'
-    })
-  }
+    name: 'NotFound',
+    async asyncData({
+        params,
+        store
+    }) {
+        let zoneList = await axios.get('https://yestapi.xyz/get-zones')
+        const zoneListData = zoneList.data
+        store.dispatch('zone/setZone', zoneListData)
+        let currentZone = zoneListData.find((zones) => {
+            if (zones.alias == params.region) {
+                return zones
+            }
+        })
+        if (currentZone == undefined) {
+            currentZone = zoneListData[0]
+        }
+        app.currentZone = currentZone
+        let categoriesList = await axios.post('https://yestapi.xyz/categories', {
+            zone_id: currentZone.id
+        })
+        let categoriesListData = categoriesList.data
+        store.dispatch('user/allCategory', categoriesListData)
+    },
+    computed: {
+        ...mapGetters({
+            getSelectedZone: 'zone/getSelectedZone'
+        })
+    }
 }
 </script>
 

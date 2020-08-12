@@ -173,7 +173,7 @@ export default {
                     openTimeTimestamp.setSeconds(openTimeSec);
 
                     item.today_close_time = closeTimeTimestamp.getTime();
-					console.log(`#${i} - ${arr.length}, ${item.name} -closeTime- ${closeTime}`);
+					// console.log(`#${i} - ${arr.length}, ${item.name} -closeTime- ${closeTime}`);
                     item.today_open_time = openTimeTimestamp.getTime();
 
                     if (buffer.length !== 1) {
