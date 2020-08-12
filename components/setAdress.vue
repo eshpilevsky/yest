@@ -261,6 +261,7 @@ export default {
     text-transform: none !important;
     border-top-left-radius: 0px !important;
     border-bottom-left-radius: 0px !important;
+    font-size: 16px !important;
 }
 
 .info-title {
@@ -280,7 +281,6 @@ export default {
 
 .search-me {
     width: 80%;
-    height: 50px;
 }
 
 .setAdressContaine-info {

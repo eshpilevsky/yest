@@ -1,7 +1,7 @@
 <template>
 <div class="categories-containe" v-if="!hideCategory">
     <div class="category-list">
-        <div>
+        <div class="category-list__container">
             <v-chip class="category-chips" v-for="(item, index) in first" :key="'firstCategor' + index" :color="item.alias == getSelectedCategory.alias ? 'primary': 'white'" @click="selectCategory(item, false)">
                 <div class="category-name">
                     {{ item.name }}
@@ -51,6 +51,11 @@
         </v-menu> -->
     </div>
     <div class="category-list-mobile">
+        <button class="category-list-mobile-item">
+          <span class="item-name">
+            <v-icon>search</v-icon>
+          </span>
+        </button>
         <div v-for="(item, index) in allCategory" :key="'adaptiveCatList' + index" v-show="item.category_icon" class="category-list-mobile-item" @click="selectCategoryAdaptive(item, false)">
             <v-chip :class="{selected: item.id === getSelectedCategory.id}" class="item-name">
                 {{ item.name }}
@@ -59,13 +64,13 @@
     </div>
     <v-divider class="divider" />
     <v-text-field placeholder="Название, кухня или блюдо" height="46" dense clearable prepend-inner-icon="search" outlined class="searchDesktop" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch"></v-text-field>
-    <v-text-field placeholder="Найти в Еде" height="48" clearable prepend-inner-icon="search" outlined dense filled class="searchMobile" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch">
-        <!-- <template v-slot:append-outer v-show="this.getCurrentAddress.length > 0" >
-            <v-btn rounded height="40px">
-                <i class="material-icons" color='#000'>sync_alt</i>
-            </v-btn>
-        </template> -->
-    </v-text-field>
+<!--    <v-text-field placeholder="Найти в Еде" height="48" clearable prepend-inner-icon="search" outlined dense filled class="searchMobile" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch">-->
+<!--        &lt;!&ndash; <template v-slot:append-outer v-show="this.getCurrentAddress.length > 0" >-->
+<!--            <v-btn rounded height="40px">-->
+<!--                <i class="material-icons" color='#000'>sync_alt</i>-->
+<!--            </v-btn>-->
+<!--        </template> &ndash;&gt;-->
+<!--    </v-text-field>-->
 </div>
 </template>
 
@@ -442,6 +447,12 @@ export default {
     margin: auto;
 }
 
+.category-list__container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
 .categories-containe {
     width: 100%;
     max-width: 1420px;
@@ -459,17 +470,19 @@ export default {
     margin: 5px 0;
     cursor: pointer;
     line-height: 46px;
-    /* height: 46px; */
     font-weight: 400;
     font-size: 16px;
     color: #000 !important;
+    white-space: nowrap;
 }
 
 .category-chips {
-    margin-right: 10px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    height: 40px;
+  height: 46px !important;
+  padding: 0 18px;
+  display: block;
+  line-height: 46px;
+  border-radius: 22px !important;
+  margin-right: 4px;
 }
 
 .category-list-mobile-loading {
@@ -490,6 +503,7 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    outline: none;
 }
 
 .item-name {
@@ -502,7 +516,8 @@ export default {
     margin-right: 8px;
     border-radius: 16px;
     justify-content: center;
-    background-color: #F1F0ED;
+    background-color: #e0e0e0;
+    padding: 0 12px;
 }
 
 .searchMobile {

@@ -6,8 +6,8 @@
                 <div class="left-top" :style="{backgroundImage:'url(https://img.eatmealby.com/resize/restaurant/900/'+restuarant.background_image+')'}">
                     <div class="top-wrapper">
                         <div class="rating">
-                            <v-chip color="primary">
-                                <v-icon color="#FFFADF">star</v-icon>
+                            <v-chip color="primary" class="restaurant-rating">
+                                <v-icon class="restaurant-rating__icon" color="#FFFADF">star</v-icon>
                                 <div>{{restuarant.rating ? restuarant.rating: 'Мало оценок'}}</div>
                             </v-chip>
                             <div class="info-delivery white--text">
@@ -16,8 +16,7 @@
                             <h1 class="restuarant-name white--text pb-3">
                                 {{restuarant.name}}
                             </h1>
-                            <v-divider />
-                            <div class="d-flex flex-row justify-space-between">
+                            <div class="delivery-options d-flex flex-row justify-space-between">
                                 <div class="white--text info-left">
                                     <div class="moped-block">
                                         <div class="moped"></div>
@@ -32,7 +31,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="white--text">
+                                <div class="white--text price-text">
                                     <p>
                                         Заказ от
                                     </p>
@@ -43,11 +42,11 @@
                                 <div class="white--text">
                                     <v-menu bottom origin="center center" z-index="999" transition="scale-transition" nudge-left='100' nudge-bottom='50'>
                                         <template v-slot:activator="{ on, attrs }">
-                                            <v-btn color="primary" large v-bind="attrs" v-on="on">
+                                            <v-btn color="transparent" class="restaurant-info-btn" large v-bind="attrs" v-on="on">
                                                 <p class="info-btn-text">
-                                                    Информация о <br /> ресторане
+                                                    Информация <br /> о ресторане
                                                 </p>
-                                                <v-icon>info</v-icon>
+                                                <img src="../assets/restaurantInfoIcon.svg" alt="restaurant info">
                                             </v-btn>
                                         </template>
                                         <div>
@@ -64,7 +63,7 @@
                 </div>
                 <div class="catalog">
                     <v-tabs hide-slider v-model="tab" class="catalog-tabs" center-active>
-                        <v-tab height="70px" v-for="(category, index) in restuarant.menu" :key="category.cat_id" @click="scroll(`${index}`)">
+                        <v-tab class="tab-item" active-class="tab-item--active" height="70px" v-for="(category, index) in restuarant.menu" :key="category.cat_id" @click="scroll(`${index}`)">
                             {{category.name}}
                         </v-tab>
                     </v-tabs>
@@ -837,7 +836,11 @@ export default {
 }
 
 @media screen and (max-width: 992px) {
-    .v-slide-group__wrapper {
+    .catalog-tabs {
+        padding: 0 !important;
+    }
+
+    .catalog-tabs .v-slide-group__wrapper {
         margin-left: -48px !important;
     }
 }
@@ -845,26 +848,56 @@ export default {
 .v-application p {
     margin-bottom: 0 !important;
 }
-</style><style scoped>
-.delivery-title {
-    font-size: 16px;
+</style>
+<style scoped>
+.tab-item {
+    transition: none;
+    font-size: 14px !important;
+    text-transform: initial;
 }
-
-.delivery-count {
-    font-size: 14px;
+.tab-item.tab-item--active {
+    color: #000;
+    box-shadow: inset 0 -4px 0 #00a646;
 }
-
-.more-delivery {
-    color: #000000;
-    font-size: 12px;
+.restaurant-rating .restaurant-rating__icon {
+    margin-right: 6px;
+    font-size: 18px;
 }
 
 .delivery-options {
-    width: 90%;
-    margin: auto;
-    padding-top: 10px;
-    display: flex;
-    flex-direction: column;
+    padding: 19px 0 11px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    flex-wrap: wrap;
+}
+
+.price-text p:first-child {
+    font-size: 14px;
+    margin-bottom: 0 !important;
+}
+
+.price-text p:last-child {
+    font-size: 16px;
+    line-height: 21px;
+    padding-top: 6px;
+    margin-bottom: 0 !important;
+}
+
+.restaurant-info-btn {
+    background-color: transparent !important;
+    border: none;
+    box-shadow: none;
+    margin-right: -20px;
+}
+
+.restaurant-info-btn .info-btn-text {
+    text-align: left;
+    color: #fff;
+    text-transform: initial;
+    font-size: 14px;
+    line-height: 17px;
+    margin-bottom: 0;
+    margin-right: 6px;
+
 }
 
 .dish-conter-mobile {
@@ -982,6 +1015,8 @@ export default {
 
 .catalog-tabs {
     z-index: 0;
+    padding: 0 60px;
+    background-color: #fff;
 }
 
 .right-my-order .my-order {
@@ -1132,7 +1167,6 @@ export default {
 }
 
 .left {
-    width: 70%;
     border: 1px solid #d5d5d5;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
@@ -1313,6 +1347,7 @@ export default {
 .category-list-counter {
     color: #b0b0b0;
     margin-left: 10px;
+    font-size: 22px;
 }
 
 .category-title h2 {
@@ -1327,7 +1362,7 @@ export default {
     position: relative;
     padding-top: 27px;
     align-items: center;
-    padding-left: 10px;
+    padding-left: 20px;
     flex-direction: row;
 }
 
@@ -1346,8 +1381,8 @@ export default {
 }
 
 .dishs-list-item {
-    width: calc(50% - 20px);
-    margin: 10px;
+    width: calc(50% - 40px);
+    margin: 20px;
 }
 
 .dishs-list-mobile {
@@ -1402,14 +1437,10 @@ export default {
 
 .catalog-list {
     /*border: solid 1px #eeeeee;*/
-    padding: 25px 80px;
-    background: #f2f2f2;
+    /*background-image: linear-gradient(to bottom, #ffffff, #f2f2f2 480px);*/
+    padding: 25px 60px;
+    background-color: #f2f2f2;
     border-top: none;
-    background-image: linear-gradient(to bottom, #ffffff, #f2f2f2 480px);
-}
-
-.info-btn-text {
-    margin: 10px;
 }
 
 .description-who {
@@ -1426,39 +1457,38 @@ export default {
 }
 
 .moped-block {
-    width: 37px;
+    width: 28px;
     height: 42px;
     position: relative;
+    padding-left: 5px;
+    margin-right: 10px;
+    background-color: #00a646;
 }
 
 .treangule {
     top: 6px;
-    right: -7px;
+    right: -15px;
     width: 30px;
     height: 30px;
-    z-index: 1;
     position: absolute;
     transform: scaleX(0.4) rotate(45deg);
-    background-color: #fce000;
+    background-color: #00a646;
     border-top-right-radius: 4px;
 }
 
 .moped {
-    background-color: #fce000;
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
+    background-color: #00a646;
+    border-radius: 3px;
     width: 24px;
     height: 24px;
     padding: 9px 0;
-    z-index: 2;
+    z-index: 1;
     position: relative;
     box-sizing: content-box;
-    margin-left: 5px;
     background-size: 100%;
     background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0wIDBoMjB2MjBIMHoiLz48ZyBzdHJva2U9IiMwMDAiPjxwYXRoIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGQ9Ik04Ljg1NyA5LjE0M2MwIC43Ni0xLjE0MyAxLjQ1NS0xLjE0MyAyLjU0NyAwIC42Mi40OTkuODEgMS4xNDMuODFIMTBjMS4xMjYgMCA2LjA4LTQuNTQyIDUuMTQyLTYuOTkiLz48cGF0aCBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGQ9Ik0xNi4xODkgMTMuNDFhMS43MTQgMS43MTQgMCAxIDEtMy4xODkuODc1YzAtLjE4Mi4xMzItLjYxNy4zMzMtLjc5OCIvPjxwYXRoIGQ9Ik0xMy4wMTUgNC4wMDVjMi43NzQuMDM1IDQuODI1IDcuNDg5IDQuODI1IDkuMDgxIDAgLjI5Ni0uMTg4LjU3NC0uNTYzLjgzNS0uNjcyLS42MTQtLjg3My0uNTA5LTEuMTYyLS41MDltLTMuMS42OTRjLS4yODIuNDYyLTIuODI1LjM5My0zLjI1Mi4zOTRNOC42ODYgOS42MDVMNC40NSA5LjQ4N2EuNzM2LjczNiAwIDAgMS0uNzM3LS43MzZ2LS4xOTRjMC0uNDI1LjM5LTEuMTA2LjgxNC0xLjA4bDMuOTY5LjU1MWMuMzg4LjAyNS40NzcuMzguNDc3Ljc3IDAgLjQwNy4xMTkuODA3LS4yODguODA3eiIvPjxwYXRoIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgZD0iTTMuNTI1IDEyLjcyOWMtLjA5MS4wNS0uMjEyLjE0NC0uMzYuMjgyLS4xNi4xNjItLjI0OC4yNTQtLjI2My4yNzZhMS42OCAxLjY4IDAgMCAwLS4zMy45OTkgMS43MTQgMS43MTQgMCAxIDAgMy40MjggMCIvPjxwYXRoIGQ9Ik00LjI4NiA5LjE0M0M0LjI4NiAxMC4yODYgMiAxMC43OSAyIDEyLjc5OGMwIDAgLjQyOC4yOTIuOTQ2LjUybTMuMDY2Ljk3N2MuNTM4LjEyNSAxLjA2Ny4yMDUgMS41NDIuMjA1aDMuMjA1TTEzLjA0MyA0SDExIi8+PC9nPjwvZz48L3N2Zz4=);
     background-repeat: no-repeat;
     background-position: center;
-
 }
 
 .info-delivery {
@@ -1473,12 +1503,12 @@ export default {
     line-height: 1.08;
 }
 
-.rating {}
-
 .top-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 80px 28px;
     height: 100%;
-    margin: 0 80px;
-    padding-top: 13vh;
 }
 
 .left-top {
@@ -1490,16 +1520,16 @@ export default {
     background-size: cover;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
+    height: 398px;
 }
 
 .right {
     width: 320px;
-    height: 100%;
+    height: max-content;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    margin-left: 20px;
     position: sticky;
     top: 90px;
 }
@@ -1515,27 +1545,22 @@ export default {
 }
 
 .rest-cotainer {
-    display: flex;
-    flex-direction: row;
-    padding-top: 3rem;
-    padding-bottom: 1rem;
+    display: grid;
+    grid-template-columns: calc(100% - 340px) 320px;
+    grid-column-gap: 20px;
     margin: auto;
-    max-width: 1420px;
+    max-width: 1500px;
     width: 100%;
+    padding: 3rem 0 1rem;
 }
 
 @media screen and (max-width: 1265px) {
     .top-wrapper {
-        margin: 0 40px;
-    }
-
-    .rest-cotainer {
-        max-width: 900px;
+        padding: 0 40px 28px;
     }
 }
 
 @media screen and (max-width: 992px) {
-
     .desktop-mode {
         display: none;
     }

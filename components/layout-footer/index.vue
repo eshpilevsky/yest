@@ -173,9 +173,9 @@ export default {
 }
 
 .social-links-img {
-    padding-left: 10px;
-    max-width: 32px;
-    max-height: 32px;
+    margin-left: 15px;
+    max-width: 28px;
+    max-height: 28px;
     cursor: pointer;
 }
 
@@ -210,6 +210,7 @@ export default {
     margin-bottom: 15px;
     padding: 0 !important;
     text-decoration: none !important;
+    letter-spacing: 0.05rem;
 }
 
 .bottom-title {
@@ -245,9 +246,9 @@ export default {
 }
 
 .footer-top-img {
-    padding: 10px 0px 10px 10px;
-    max-height: 60px;
-    max-width: 140px;
+    margin: 10px 0 10px 10px;
+    max-height: 46px;
+    max-width: 156px;
 }
 
 .footer-top {

@@ -6,6 +6,10 @@
             <div class="list-item-block">
                 <img contain :lazy-src="notFindImg" :src="item.cover" class="restorane-logo" :class="{closeRestorane:item.is_open == false }" />
                 <div class="block-bottom">
+                    <div class="card-time">
+                      <p class="card-time__quantity">35-40</p>
+                      <p class="card-time__unit">мин</p>
+                    </div>
                     <div class="delivery-time-desktop" v-show="checkAddress">
                         <div class="time-title">
                             {{item.time.min}}-{{item.time.max}}
@@ -21,19 +25,30 @@
                             <div class="rating">{{ item.rating }}</div>
                         </v-chip>
                     </div>
-                    <div class="list-item-bottom" :class="{noLocation: !checkAddress}">
-                        <div class="bottom-left">
-                            <v-chip class="item-bottom-right" color="primary" v-show="item.rating !== 0">
-                                <v-icon color="#FFFADF">star</v-icon>
-                                <div class="rating">{{ item.rating }}</div>
-                            </v-chip>
-                            <div class="bottom-tags-list" :class="{noLocationTag: !checkAddress}">
-                                <span class="tags-list-item">{{ compudtedTags(item.tags) }}</span>
-                            </div>
-                        </div>
-                        <div class="delivery-time-mobile" v-show="checkAddress">
-                            {{item.time.min}} &mdash; {{item.time.max}} мин •&nbsp;
-                        </div>
+<!--                    <div class="list-item-bottom" :class="{noLocation: !checkAddress}">-->
+<!--                        <div class="bottom-left">-->
+<!--                            <v-chip class="item-bottom-right" color="primary" v-show="item.rating !== 0">-->
+<!--                                <v-icon color="#FFFADF">star</v-icon>-->
+<!--                                <div class="rating">{{ item.rating }}</div>-->
+<!--                            </v-chip>-->
+<!--                            <div class="bottom-tags-list" :class="{noLocationTag: !checkAddress}">-->
+<!--                                <span class="tags-list-item">{{ compudtedTags(item.tags) }}</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="delivery-time-mobile" v-show="checkAddress">-->
+<!--                            {{item.time.min}} &mdash; {{item.time.max}} мин •&nbsp;-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <div class="card-options">
+                        <img class="card-options__delivery" src="../assets/deliveryIcon.svg"/>
+                        <span class="card-options__rating">
+                          <v-icon class="rating-icon" color="#FFFADF">star</v-icon>
+                          <span>5.0</span>
+                        </span>
+                      <span class="card-options__currency">
+                        <img class="currency-icon" src="../assets/purseIcon.svg"/>
+                        BYN
+                      </span>
                     </div>
                 </div>
             </div>
@@ -306,9 +321,97 @@ export default {
 </script>
 
 <style scoped>
+.card-options {
+    display: flex;
+    align-items: center;
+}
+
+.card-options__delivery {
+    margin-right: 5px;
+}
+
+.card-options__rating {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    background-color: #00a646;
+    height: 22px;
+    padding: 2px 10px 2px 2px;
+    margin-right: 10px;
+    border-radius: 100px;
+}
+
+.card-options__rating .rating-icon {
+    font-size: 18px;
+    margin-right: 5px;
+}
+
+.card-options__currency {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.card-options__currency .currency-icon {
+    margin-right: 5px;
+}
+
+.card-time {
+  position: absolute;
+  top: -20px;
+  right: 13px;
+  background-color: #fff;
+  border-radius: 23px;
+  padding: 10px 17px;
+}
+
+.card-time .card-time__quantity {
+  text-align: center;
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: 600;
+}
+
+.card-time .card-time__unit {
+  text-align: center;
+  font-size: 12px;
+  line-height: 10px;
+  color: #646464;
+  font-weight: 600;
+}
+
+.card-time:before {
+  content: "";
+  position: absolute;
+  top: calc(100% - 35px);
+  left: -7px;
+  display: block;
+  width: 10px;
+  height: 10px;
+  background-image: url("../assets/timeLeftPath.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.card-time:after {
+  content: "";
+  position: absolute;
+  top: calc(100% - 35px);
+  right: -7px;
+  display: block;
+  width: 10px;
+  height: 10px;
+  background-image: url("../assets/timeRightPath.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .block-bottom {
     width: 100%;
     padding: 16px 20px 20px;
+    position: relative;
 }
 
 .card-title {
@@ -379,11 +482,10 @@ export default {
     justify-content: center;
     align-items: center;
     text-align: center;
-    margin: auto;
-    margin: 20px 20px 0px 20px;
+    margin: 20px;
     border-radius: 20px;
     cursor: pointer;
-    box-shadow: 0px 4px 40px rgb(230, 230, 230);
+    box-shadow: 0 4px 40px rgb(230, 230, 230);
 }
 
 .informMe-btn {
@@ -566,37 +668,27 @@ export default {
     padding-top: 12px;
 }
 
-@media screen and (max-width: 1265px) {
-    .restuarants-container {}
-}
-
 @media screen and (max-width: 1000px) {
     .list-item-block {
         min-height: 280px;
-        max-height: 280px;
-    }
-
-    .restorane-logo {
-        min-height: 150px;
+        margin: 10px 20px;
     }
 }
 
 @media screen and (max-width: 992px) {
     .restorane-list {
-        padding: 0px;
+      padding: 0px;
     }
 
     .restorane-title {
-        padding: 20px 20px 0px 20px;
+      padding: 20px 20px 0px 20px;
     }
 
     .showMore-btn {
-        width: 94% !important;
-        margin-top: 20px !important;
+      width: 94% !important;
+      margin-top: 20px !important;
     }
-}
 
-@media screen and (max-width: 992px) {
     .hidetime {
         padding-top: 0px;
     }
@@ -668,6 +760,7 @@ export default {
 
     .restuarants-container {
         margin-bottom: 0;
+        border-top: none;
     }
 
     .showMore-btn {
