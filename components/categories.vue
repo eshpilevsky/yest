@@ -51,31 +51,36 @@
         </v-menu> -->
     </div>
     <div class="category-list-mobile">
-        <button class="category-list-mobile-item">
-          <span class="item-name">
-            <v-icon>search</v-icon>
-          </span>
+        <button class="category-list-mobile-item" @click="showModalWindow()">
+            <span class="item-name">
+                <v-icon>search</v-icon>
+            </span>
         </button>
         <div v-for="(item, index) in allCategory" :key="'adaptiveCatList' + index" v-show="item.category_icon" class="category-list-mobile-item" @click="selectCategoryAdaptive(item, false)">
             <v-chip :class="{selected: item.id === getSelectedCategory.id}" class="item-name">
                 {{ item.name }}
             </v-chip>
         </div>
+        <v-overlay :value="showModalOverlay" :dark="false">
+            <searchModal @closeModalWindow='showModalWindow()'/>
+        </v-overlay>
     </div>
     <v-divider class="divider" />
     <v-text-field placeholder="Название, кухня или блюдо" height="46" dense clearable prepend-inner-icon="search" outlined class="searchDesktop" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch"></v-text-field>
-<!--    <v-text-field placeholder="Найти в Еде" height="48" clearable prepend-inner-icon="search" outlined dense filled class="searchMobile" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch">-->
-<!--        &lt;!&ndash; <template v-slot:append-outer v-show="this.getCurrentAddress.length > 0" >-->
-<!--            <v-btn rounded height="40px">-->
-<!--                <i class="material-icons" color='#000'>sync_alt</i>-->
-<!--            </v-btn>-->
-<!--        </template> &ndash;&gt;-->
-<!--    </v-text-field>-->
+    <!--    <v-text-field placeholder="Найти в Еде" height="48" clearable prepend-inner-icon="search" outlined dense filled class="searchMobile" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch">-->
+    <!--        &lt;!&ndash; <template v-slot:append-outer v-show="this.getCurrentAddress.length > 0" >-->
+    <!--            <v-btn rounded height="40px">-->
+    <!--                <i class="material-icons" color='#000'>sync_alt</i>-->
+    <!--            </v-btn>-->
+    <!--        </template> &ndash;&gt;-->
+    <!--    </v-text-field>-->
 </div>
 </template>
 
 <script>
 import ApiService from '../common/api.service'
+
+import searchModal from '@/components/search-modal';
 
 import {
     mapGetters
@@ -86,6 +91,9 @@ export default {
     props: {
         categoriesList: Array,
         currentCategory: Object,
+    },
+    components: {
+        searchModal,
     },
     data() {
         return {
@@ -134,6 +142,7 @@ export default {
             oldCategoryImg: null,
             hideCategory: false,
             selectedCategory: null,
+            showModalOverlay: false,
         }
     },
     watch: {
@@ -152,6 +161,9 @@ export default {
         })
     },
     methods: {
+		showModalWindow(){
+			this.showModalOverlay = !this.showModalOverlay
+		},
         getCategories() {
             this.hideCategory = false
             ApiService.post('/categories', {
@@ -420,7 +432,7 @@ export default {
 
 .searchDesktop {
     padding: 20px 80px !important;
-	padding-bottom: 16px!important;
+    padding-bottom: 16px !important;
     border-bottom: 4px solid rgba(245, 245, 245, 0.6);
 }
 
@@ -448,9 +460,9 @@ export default {
 }
 
 .category-list__container {
-  display: flex;
-  align-items: center;
-  width: 100%;
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
 
 .categories-containe {
@@ -477,12 +489,12 @@ export default {
 }
 
 .category-chips {
-  height: 46px !important;
-  padding: 0 18px;
-  display: block;
-  line-height: 46px;
-  border-radius: 22px !important;
-  margin-right: 4px;
+    height: 46px !important;
+    padding: 0 18px;
+    display: block;
+    line-height: 46px;
+    border-radius: 22px !important;
+    margin-right: 4px;
 }
 
 .category-list-mobile-loading {
@@ -525,9 +537,9 @@ export default {
 }
 
 /*@media screen and (max-width: 768px) {*/
-    /*.searchDesktop {*/
-        /*margin: 10px 20px 0px 20px !important;*/
-    /*}*/
+/*.searchDesktop {*/
+/*margin: 10px 20px 0px 20px !important;*/
+/*}*/
 /*}*/
 
 @media screen and (max-width: 992px) {

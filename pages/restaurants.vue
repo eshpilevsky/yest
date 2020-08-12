@@ -36,7 +36,7 @@
                                         Заказ от
                                     </p>
                                     <p>
-                                        {{this.sortDeliverFee[0].min}}
+                                        {{this.sortDeliverFee[0].min}} BYN
                                     </p>
                                 </div>
                                 <div class="white--text">
@@ -134,7 +134,7 @@
                                     </div>
                                     <div class="counter-minus" @click="decrement(order)">
                                         <v-icon>
-                                            remove
+                                            {{order.selectSize.count == 1 ? 'close' : 'remove'}}
                                         </v-icon>
                                     </div>
                                 </div>
@@ -153,7 +153,7 @@
                                     </span>
                                 </div>
                                 <p class="more-delivery">
-                                   {{computedFreeDeliveryCost()}}
+                                    {{computedFreeDeliveryCost()}}
                                 </p>
                             </div>
                         </div>
@@ -244,6 +244,9 @@
     <div class="mobile-mode">
         <div class="mobile-mode_header">
             <v-icon @click="goBack()">arrow_back</v-icon>
+            <h1 class="info-top-title" v-show="showRestName">
+                {{restuarant.name}}
+            </h1>
             <v-icon>search</v-icon>
         </div>
         <div class="mobile-rest-info">
@@ -555,6 +558,7 @@ export default {
             orderList: [],
             showOrderCard: false,
             showRestInfo: false,
+            showRestName: false,
         }
     },
     methods: {
@@ -574,18 +578,18 @@ export default {
 
         },
         computedFreeDeliveryCost() {
-			let deliveryMass = this.sortDeliverFee
-			let price = parseFloat(this.getTotalPrice)
+            let deliveryMass = this.sortDeliverFee
+            let price = parseFloat(this.getTotalPrice)
             let finded = deliveryMass.findIndex((cost) => {
                 return cost.min <= price && price <= cost.max
             })
             if (finded !== undefined) {
-				if (deliveryMass[deliveryMass.length - 1].min < price) {
-					return ``
-				} else{
-					let computedNextSum = deliveryMass[finded+1].min - price
-					return `Закажите ещё на ${computedNextSum.toFixed(1)} BYN для доставки за ${deliveryMass[finded+1].delivery ? deliveryMass[finded+1].delivery : deliveryMass[finded+1].deliveryFee} BYN`
-				}
+                if (deliveryMass[deliveryMass.length - 1].min < price) {
+                    return ``
+                } else {
+                    let computedNextSum = deliveryMass[finded + 1].min - price
+                    return `Закажите ещё на ${computedNextSum.toFixed(1)} BYN для доставки за ${deliveryMass[finded+1].delivery ? deliveryMass[finded+1].delivery : deliveryMass[finded+1].deliveryFee} BYN`
+                }
             } else {
                 return ``
             }
@@ -764,7 +768,6 @@ export default {
             this.tab = parseInt(entries[0].target.id, 10)
         }
     },
-
     computed: {
         ...mapGetters({
             getSelectedZone: "zone/getSelectedZone",
@@ -825,6 +828,23 @@ export default {
     mounted() {
         window.scrollTo(0, 0);
         this.orderList = this.getSelectedDishs
+        let lastScrollTop = 0
+        window.addEventListener('scroll', () => {
+            const st = window.pageYOffset || document.documentElement.scrollTop
+            if (st > lastScrollTop) {
+                // downscroll code
+                if (st > 30) {
+                    this.showRestName = true
+                } else {
+                    this.showRestName = false
+                }
+            } else if (st < 30) {
+                this.showRestName = false
+            } else {
+                this.showRestName = true
+            }
+            lastScrollTop = st <= 0 ? 0 : st
+        })
     },
 }
 </script>
@@ -848,17 +868,18 @@ export default {
 .v-application p {
     margin-bottom: 0 !important;
 }
-</style>
-<style scoped>
+</style><style scoped>
 .tab-item {
     transition: none;
     font-size: 14px !important;
     text-transform: initial;
 }
+
 .tab-item.tab-item--active {
     color: #000;
     box-shadow: inset 0 -4px 0 #00a646;
 }
+
 .restaurant-rating .restaurant-rating__icon {
     margin-right: 6px;
     font-size: 18px;
@@ -1084,6 +1105,7 @@ export default {
     display: flex;
     border: .5px solid rgb(176, 176, 176);
     background: #f2f2f2;
+    cursor: pointer;
 }
 
 .counter-plus,
@@ -1191,7 +1213,7 @@ export default {
 
 .rest-info-bottom {
     position: sticky;
-    top: 0px;
+    top: 60px;
     z-index: 999;
 }
 

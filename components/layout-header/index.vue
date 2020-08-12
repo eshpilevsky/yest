@@ -89,7 +89,7 @@
         </v-navigation-drawer>
         <nuxt-link v-show="!showSidebar" :to="`/${this.getSelectedZone.alias}`" class="mobileLogo">
             <img src="@/assets/logo.svg" class="burger-logo-img" :class="{hideLogo : this.getCurrentAddress.length > 0}" alt="logodesktop">
-            <map-btn v-show="this.getCurrentAddress.length > 0" class="header-map-btn" />
+            <map-btn v-show="showSetAdressBtn" class="header-map-btn" />
         </nuxt-link>
         <div v-show="showSidebar" class="logo-img">
             <map-btn v-show="canDisplayMap" />
@@ -179,10 +179,10 @@ export default {
     },
     watch: {
         getCurrentAddress(newValue, oldValue) {
-            if (newValue.length > 0) {
-                this.showSetAdressBtn = true
-            }
-            return newValue
+            // if (newValue.length > 0) {
+            //     this.showSetAdressBtn = true
+            // }
+            // return newValue
         }
     },
     methods: {
@@ -237,7 +237,6 @@ export default {
             getCurrentAddress: 'map/getCurrentAddress',
             isMapVisible: 'map/isMapVisible',
             canDisplayMap: 'device/isMobile',
-            getCurrentAddress: 'map/getCurrentAddress',
             isInputAddressMode: 'map/isInputAddressMode',
             getZoneList: 'zone/getZoneList',
             getTotalPrice: "basket/getTotalPrice",
@@ -252,29 +251,26 @@ export default {
         if (this.getCurrentAddress.length > 0) {
             this.showSetAdressBtn = true
         }
-        // let lastScrollTop = 0
-        // if (window.innerWidth < 450) {
-        //     if (this.getUserLocation.length > 0) {
-        //         window.addEventListener('scroll', () => {
-        //             const st = window.pageYOffset || document.documentElement.scrollTop
-        //             if (st > lastScrollTop) {
-        //                 // downscroll code
-        //                 if (st > 330) {
-        //                     this.showSetAdressBtn = true
-        //                 } else {
-        //                     this.showSetAdressBtn = false
-        //                 }
-        //             } else if (st < 330) {
-        //                 this.showSetAdressBtn = false
-        //             } else {
-        //                 this.showSetAdressBtn = true
-        //             }
-        //             lastScrollTop = st <= 0 ? 0 : st
-        //         })
-        //     } else {
-        //         this.showSetAdressBtn = true
-        //     }
-        // }
+        let lastScrollTop = 0
+        if (window.innerWidth < 992) {
+                window.addEventListener('scroll', () => {
+                    const st = window.pageYOffset || document.documentElement.scrollTop
+                    if (st > lastScrollTop) {
+                        // downscroll code
+                        if (st > 330) {
+                            this.showSetAdressBtn = true
+                            console.log('mounted -> this.showSetAdressBtn', this.showSetAdressBtn)
+                        } else {
+                            this.showSetAdressBtn = false
+                        }
+                    } else if (st < 330) {
+                        this.showSetAdressBtn = false
+                    } else {
+                        this.showSetAdressBtn = true
+                    }
+                    lastScrollTop = st <= 0 ? 0 : st
+                })
+        }
     }
 }
 </script>
@@ -305,7 +301,9 @@ export default {
 <style scoped>
 .header-map-btn {
     display: none;
-    margin-top: 40px;
+    margin-top: 0px;
+	position: relative;
+	z-index: 999;
 }
 
 .map {

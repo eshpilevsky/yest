@@ -57,36 +57,28 @@ export default {
     },
     watch: {
         getSelectedDishs(newValue) {
-            let searchDish = newValue.find((dish) => {
-                if (dish.description == this.description) {
-                    this.counter = dish.count
-                    return true
-                }
-            });
-            if (searchDish == undefined) {
-                this.isSelected = false
-            } else {
-                this.isSelected = true
-            }
+            this.checkInBasket(newValue)
         },
         count(newValue) {
             this.counter = newValue
             return newValue
         }
     },
-    mounted() {
-		// this.$store.dispatch('basket/computedSelected', i);		        
-		let searchDish = this.getSelectedDishs.find((dish) => {
-            if (dish.description == this.description) {
-                this.counter = dish.count
-                return true
+    methods: {
+        checkInBasket(mass) {
+            let searchDish = mass.find((dish) => {
+                return dish.id == this.id
+            });
+            if (searchDish == undefined) {
+                this.isSelected = false
+            } else {
+                this.counter = searchDish.selectSize.count
+                this.isSelected = true
             }
-        });
-        if (searchDish == undefined) {
-            this.isSelected = false
-        } else {
-            this.isSelected = true
         }
+    },
+    mounted() {
+        this.checkInBasket(this.getSelectedDishs)
     },
 }
 </script>

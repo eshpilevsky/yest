@@ -240,7 +240,7 @@ export default {
                 if (st > lastScrollTop) {
                     // downscroll code
                     this.showSearch = false
-                } else if (st > 400) {
+                } else if (st > 350) {
                     this.showSearch = true
                 } else {
                     this.showSearch = false

@@ -6,17 +6,9 @@
             <div class="list-item-block">
                 <img contain :lazy-src="notFindImg" :src="item.cover" class="restorane-logo" :class="{closeRestorane:item.is_open == false }" />
                 <div class="block-bottom">
-                    <div class="card-time">
-                      <p class="card-time__quantity">35-40</p>
+                    <div class="card-time" v-show="checkAddress">
+                      <p class="card-time__quantity">{{item.time.min}} &mdash; {{item.time.max}}</p>
                       <p class="card-time__unit">мин</p>
-                    </div>
-                    <div class="delivery-time-desktop" v-show="checkAddress">
-                        <div class="time-title">
-                            {{item.time.min}}-{{item.time.max}}
-                        </div>
-                        <div class="time-min">
-                            мин
-                        </div>
                     </div>
                     <div class="card-title">
                         <div class="restorane-list-item-name" :class="{hidetime: checkAddress}">{{ item.name }}</div>
@@ -25,25 +17,11 @@
                             <div class="rating">{{ item.rating }}</div>
                         </v-chip>
                     </div>
-<!--                    <div class="list-item-bottom" :class="{noLocation: !checkAddress}">-->
-<!--                        <div class="bottom-left">-->
-<!--                            <v-chip class="item-bottom-right" color="primary" v-show="item.rating !== 0">-->
-<!--                                <v-icon color="#FFFADF">star</v-icon>-->
-<!--                                <div class="rating">{{ item.rating }}</div>-->
-<!--                            </v-chip>-->
-<!--                            <div class="bottom-tags-list" :class="{noLocationTag: !checkAddress}">-->
-<!--                                <span class="tags-list-item">{{ compudtedTags(item.tags) }}</span>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="delivery-time-mobile" v-show="checkAddress">-->
-<!--                            {{item.time.min}} &mdash; {{item.time.max}} мин •&nbsp;-->
-<!--                        </div>-->
-<!--                    </div>-->
                     <div class="card-options">
                         <img class="card-options__delivery" src="../assets/deliveryIcon.svg"/>
                         <span class="card-options__rating">
                           <v-icon class="rating-icon" color="#FFFADF">star</v-icon>
-                          <span>5.0</span>
+                          <span>{{ item.rating }}</span>
                         </span>
                       <span class="card-options__currency">
                         <img class="currency-icon" src="../assets/purseIcon.svg"/>
@@ -132,17 +110,6 @@ export default {
 		}
     },
     methods: {
-        compudtedTags(tags) {
-            // let result = ''
-            const resMass = [];
-            tags.forEach((element, index) => {
-                if (index < 3) {
-                    resMass.push(element.name);
-                }
-            });
-            const result = resMass.join(" • ");
-            return result;
-        },
         getRestaurants(latitude, longitude) {
             this.notFound = false;
             if (latitude !== 0 && longitude !== 0) {
@@ -420,62 +387,6 @@ export default {
     flex-direction: row;
 }
 
-.bottom-left {
-    display: flex;
-    flex-direction: row;
-}
-
-.delivery-time-mobile {
-    display: none;
-}
-
-.time-min {
-    color: #b0b0b0;
-    font-size: 14px;
-    line-height: 10px;
-}
-
-.time-title {
-    font-weight: bold;
-    white-space: nowrap;
-}
-
-.delivery-time-desktop {
-    right: -65%;
-    padding: 10px 17px;
-    position: relative;
-    font-size: 16px;
-    margin-top: -35px;
-    text-align: center;
-    background: #fff;
-    border-radius: 23px 23px 0 0;
-    height: 0;
-    max-width: 80px;
-    top: 0px;
-}
-
-.delivery-time-desktop:before,
-.delivery-time-desktop:after {
-    top: 13px;
-    width: 7px;
-    height: 7px;
-    display: block;
-    content: "";
-    position: absolute;
-    background-size: 100%;
-    background-position: center;
-}
-
-.delivery-time-desktop:after {
-    right: -6px;
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNyIgaGVpZ2h0PSI3IiB2aWV3Qm94PSIwIDAgNyA3IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0yLjUwNCA0LjgyMUMxLjQ3MyAzLjg1NC42MzggMi4yNDcgMCAwdjdoN2MtMS45NjUtLjQ4NS0zLjQ2NC0xLjIxMi00LjQ5Ni0yLjE3OXoiIGZpbGw9IiNGRkYiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==);
-}
-
-.delivery-time-desktop:before {
-    left: -6px;
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNyIgaGVpZ2h0PSI3IiB2aWV3Qm94PSIwIDAgNyA3IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik00LjQ5NiA0LjgyMUM1LjUyNyAzLjg1NCA2LjM2MiAyLjI0NyA3IDB2N0gwYzEuOTY1LS40ODUgMy40NjQtMS4yMTIgNC40OTYtMi4xNzl6IiBmaWxsPSIjRkZGIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=);
-}
-
 .list-item-block {
     display: flex;
     flex-direction: column;
@@ -519,22 +430,6 @@ export default {
     filter: grayscale(100%);
 }
 
-.bottom-tags-list {
-    display: flex;
-    flex-wrap: wrap;
-    max-width: 300px;
-}
-
-.tags-list-item {
-    font-weight: normal;
-    font-size: 14px;
-    text-align: left;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    max-width: 320px;
-}
-
 .rating {
     color: #000 !important;
     margin-left: 5px;
@@ -542,24 +437,6 @@ export default {
 
 .item-bottom-right-mob {
     display: none;
-}
-
-.item-bottom-right {
-    display: flex;
-    flex-direction: row;
-    justify-self: center;
-    align-self: center;
-    max-width: 75px !important;
-    margin-right: 10px !important;
-}
-
-.list-item-bottom {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    width: 100%;
-    font-weight: bold;
 }
 
 .item-work-time {
@@ -706,30 +583,13 @@ export default {
         height: 85px;
     }
 
-    .item-bottom-right {
-        display: none;
-    }
-
     .card-title {
         width: 100%;
         height: 25px;
     }
 
-    .noLocationTag {
-        max-width: 100% !important;
-    }
-
     .noLocation {
         justify-content: flex-end !important;
-    }
-
-    .delivery-time-desktop {
-        display: none;
-    }
-
-    .delivery-time-mobile {
-        display: flex;
-        white-space: nowrap;
     }
 
     .item-bottom-right-mob {
@@ -737,20 +597,6 @@ export default {
         position: relative;
         right: 1rem;
         bottom: 3rem;
-    }
-
-    .list-item-bottom {
-        flex-direction: row-reverse;
-        justify-content: flex-end;
-        height: 30px;
-    }
-
-    .tags-list-item {
-        max-width: 320px;
-    }
-
-    .bottom-tags-list {
-        max-width: 100%;
     }
 
     .restorane-list-item-name {
