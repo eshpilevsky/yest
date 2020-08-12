@@ -471,6 +471,10 @@ export default {
     margin: auto;
     border-left: 1px solid rgba(0, 0, 0, .1);
     border-right: 1px solid rgba(0, 0, 0, .1);
+	background: #fff;
+	position: sticky;
+	top: 60px;
+	z-index: 100;
 }
 
 .divider {

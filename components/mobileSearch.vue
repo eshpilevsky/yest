@@ -28,12 +28,12 @@ export default {
     .mobileSearch {
         display: flex;
         position: fixed;
-        top: 65px;
+        top: 125px;
         background-color: white;
         width: 100%;
-		    margin: 0 0px !important;
+		margin: 0 0px !important;
         height: 70px;
-		    z-index:1;
+		z-index:1;
     }
     .mobileSearchInput{
         margin: 10px;
