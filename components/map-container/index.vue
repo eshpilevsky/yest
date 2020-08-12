@@ -245,6 +245,12 @@ ymaps .customMapBtn i.material-icons {
     align-items: center;
 }
 
+ymaps .customMapBtn.iamhere {
+    border-radius: 16px !important;
+    height: 36px !important;
+    margin-bottom: -8px !important;
+}
+
 ymaps [title="Определить ваше местоположение"] {
     border-radius: 50%;
 }
@@ -293,7 +299,7 @@ ymaps [title="Определить ваше местоположение"] {
 
 .currentAddress {
     width: 100%;
-    top: 20vh;
+    top: 14%;
     text-align: center;
     position: absolute;
     z-index: 4500;
@@ -303,7 +309,7 @@ h2.currentAddress-title {
     color: #000;
     width: 100%;
     font-size: 30px;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     text-align: center;
     padding-left: 16px;
     padding-right: 16px;
@@ -315,7 +321,8 @@ h2.currentAddress-title {
     height: 24px;
     width: 55%;
     margin: auto;
-    font-size: 14px;
+    font-size: 10px;
+    line-height: 24px;
     box-shadow: 0 2px 4px 0 rgba(96, 96, 96, 0.15);
     border-radius: 14px;
     pointer-events: auto;

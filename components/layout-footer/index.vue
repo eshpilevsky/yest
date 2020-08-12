@@ -113,7 +113,7 @@ export default {
             if (this.all) {
                 return this.getCategoryList
             } else {
-                return this.getCategoryList.slice(0, 4)
+                return this.getCategoryList
             }
         },
     },

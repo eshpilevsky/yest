@@ -1372,11 +1372,14 @@ export default {
     height: 60px;
     z-index: 5;
     background: #ffffff;
-    padding-top: 8px;
     display: flex;
-    padding: 0 8px;
+    padding: 8px 8px 0;
     align-items: center;
     justify-content: space-between;
+    box-sizing: border-box;
+    width: calc(100% - 8px);
+    overflow: hidden;
+    max-width: 100%;
 }
 
 .desktop-mode {
