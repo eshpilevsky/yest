@@ -306,7 +306,6 @@ export default {
     created() {
         this.selectedCategory = this.$route.params.alias
         this.allCategory = this.categoriesList
-        this.$store.dispatch('user/selectCategory', this.currentCategory)
         this.first = this.allCategory.slice(0, this.sliceCounter)
         this.second = this.allCategory.slice(this.sliceCounter, this.categoriesList.length)
     },

@@ -144,17 +144,17 @@
                                 </div>
                             </div>
                             <div class="delivery-options">
-                            	<v-divider />
+                                <v-divider />
                                 <div class="d-flex flex-row justify-space-between align-center py-2">
-									<span class="delivery-title">
-                                    	Доставка
-									</span>
+                                    <span class="delivery-title">
+                                        Доставка
+                                    </span>
                                     <span class="delivery-count">
                                         {{computedDeliveryCost().delivery ? computedDeliveryCost().delivery : computedDeliveryCost().deliveryFee}} BYN
                                     </span>
                                 </div>
-                                <p v-show="computedFreeDeliveryCost() > 0" class="more-delivery">
-                                    Закажите ещё на {{computedFreeDeliveryCost()}} BYN для бесплтаной доставки
+                                <p class="more-delivery">
+                                   {{computedFreeDeliveryCost()}}
                                 </p>
                             </div>
                         </div>
@@ -371,7 +371,7 @@
                                 </v-btn>
                             </div>
                             <div class="selected-dish-top">
-                                <v-img :src="'https://img.eatmealby.com/resize/dish/400/'+selectedDish.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="selectedDish.name" class="dish-img-mobile-selected" />
+                                <img :src="'https://img.eatmealby.com/resize/dish/400/'+selectedDish.image" :alt="selectedDish.name" class="dish-img-mobile-selected" />
                             </div>
                             <div class="selected-dish-composition">
                                 {{selectedDish.description}}
@@ -559,25 +559,38 @@ export default {
         }
     },
     methods: {
-		computedDeliveryCost(){
+        computedDeliveryCost() {
+            let deliveryMass = this.sortDeliverFee
+            let price = parseInt(this.getTotalPrice)
+            let finded = deliveryMass.find((cost) => {
+                if (cost.min <= price && price <= cost.max) {
+                    return cost
+                }
+            })
+            if (finded !== undefined) {
+                return finded
+            } else {
+                return deliveryMass[deliveryMass.length - 1]
+            }
+
+        },
+        computedFreeDeliveryCost() {
 			let deliveryMass = this.sortDeliverFee
-			let price = parseInt(this.getTotalPrice)
-			let finded = deliveryMass.find((cost) => {
-				if (cost.min <= price && price <= cost.max){
-					return cost
+			let price = parseFloat(this.getTotalPrice)
+            let finded = deliveryMass.findIndex((cost) => {
+                return cost.min <= price && price <= cost.max
+            })
+            if (finded !== undefined) {
+				if (deliveryMass[deliveryMass.length - 1].min < price) {
+					return ``
+				} else{
+					let computedNextSum = deliveryMass[finded+1].min - price
+					return `Закажите ещё на ${computedNextSum.toFixed(1)} BYN для доставки за ${deliveryMass[finded+1].delivery ? deliveryMass[finded+1].delivery : deliveryMass[finded+1].deliveryFee} BYN`
 				}
-			})
-			if (finded !== undefined) {
-				return finded
-			} else {
-				return deliveryMass[deliveryMass.length - 1]
-			}
-			
-		},
-		computedFreeDeliveryCost(){
-			let deliveryMass = this.sortDeliverFee[this.sortDeliverFee.length - 1]
-			return deliveryMass.min - parseInt(this.getTotalPrice)
-		},
+            } else {
+                return ``
+            }
+        },
         addCraftDish() {
             if (this.getLatetestRestInfoWithOrder !== null) {
                 if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
@@ -785,8 +798,8 @@ export default {
             return newValue
         },
         getSelectedDishs(newValue) {
-			this.orderList = newValue
-			this.computedDeliveryCost()
+            this.orderList = newValue
+            this.computedDeliveryCost()
             return newValue
         },
         getLatetestRestInfoWithOrder(newValue) {
@@ -833,26 +846,25 @@ export default {
     margin-bottom: 0 !important;
 }
 </style><style scoped>
-
-.delivery-title{
-font-size: 16px;
+.delivery-title {
+    font-size: 16px;
 }
 
-.delivery-count{
-font-size: 14px;
+.delivery-count {
+    font-size: 14px;
 }
 
-.more-delivery{
-	color: #000000;
+.more-delivery {
+    color: #000000;
     font-size: 12px;
 }
 
-.delivery-options{
-	width: 90%;
-	margin: auto;
-	padding-top: 10px;
-	display: flex;
-	flex-direction: column;
+.delivery-options {
+    width: 90%;
+    margin: auto;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
 .dish-conter-mobile {
