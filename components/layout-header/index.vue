@@ -1,6 +1,6 @@
 <template>
 <div class="header-contain" v-show="!isMapVisible" :class="{ burgerOverlaySet: showburgerOverlay == true}">
-    <div class="containe">
+    <div class="container">
         <div class="burger-log" @click="showHideSidebar()" v-show="showSidebar == false" />
         <v-navigation-drawer v-model="showSidebar" absolute left temporary burgerOverlay-opacity="0.7" class="newHeader" v-show="showSidebar">
             <v-list>
@@ -301,7 +301,8 @@ export default {
 .logo-img {
     height: 40px !important;
 }
-</style><style scoped>
+</style>
+<style scoped>
 .header-map-btn {
     display: none;
     margin-top: 40px;
@@ -444,6 +445,11 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100%;
+}
+
+.burger-logo-img {
+    height: 100%;
 }
 
 .zone-list-item {
@@ -487,6 +493,9 @@ export default {
 
 .zone-btn {
     border: .5px solid rgba(0, 0, 0, .1);
+    height: 32px;
+    min-width: 50px;
+    padding: 7px 16px;
     margin-left: 15px !important;
     font-size: 15px !important;
     text-transform: none !important;
@@ -543,21 +552,16 @@ export default {
     justify-content: center;
 }
 
-.containe {
+.container {
     margin: auto;
     width: 100%;
-    max-width: 1420px;
+    max-width: 1500px;
+    padding: 10px 40px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 80px;
     position: fixed;
-}
-
-@media screen and (max-width: 1900px) {
-    .containe {
-        max-width: 1180px;
-    }
 }
 
 @media screen and (max-width: 1265px) {
@@ -567,6 +571,9 @@ export default {
 }
 
 @media screen and (max-width: 992px) {
+    .mobileLogo {
+      margin: 0 auto;
+    }
 
     .hideLogo {
         display: none !important;
@@ -625,7 +632,7 @@ export default {
         display: none;
     }
 
-    .containe {
+    .container {
         justify-content: center;
         border-bottom: 1px solid rgba(0, 0, 0, .1);
         background: #fff;
@@ -646,7 +653,8 @@ export default {
         max-height: 40px;
     }
 }
-</style><style>
+</style>
+<style>
 .v-overlay {
     height: 100vh;
 }

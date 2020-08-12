@@ -43,9 +43,14 @@ i {
 }
 </style><style scoped>
 .container {
-    padding-top: 3rem !important;
-    padding-right: 0 !important;
-    padding-bottom: 0 !important;
-    padding-left: 0 !important;
+    max-width: 1500px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 3rem 40px 0;
 }
+  @media screen and (max-width: 960px) {
+    .container {
+      padding: 3rem 0 0;
+    }
+  }
 </style>
