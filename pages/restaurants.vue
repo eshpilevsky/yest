@@ -268,7 +268,7 @@
                 </div>
                 <div class="rest-info-center">
                     <v-chip @click="showRatingSheet = !showRatingSheet" :color="showRatingSheet ? 'primary': null" class="rest-info-center-block-tag">
-                        <v-icon>star</v-icon>
+                        <v-icon class="rest-info-center__rating-icon">star</v-icon>
                         {{restuarant.rating ? restuarant.rating: 'Мало оценок'}}
                     </v-chip>
                     <v-chip @click="showDeliveryOption = !showDeliveryOption" :color="showDeliveryOption ? 'primary': null" class="rest-info-center-block-tag">
@@ -311,7 +311,7 @@
             </div>
             <div class="rest-info-bottom">
                 <v-tabs hide-slider z-index='1' v-model="tab" class="catalog-tabs catalog-tabs-mobile">
-                    <v-tab v-for="(category, index) in restuarant.menu" :key="category.id" @click="scroll(`${index}`)" :color="tab == index ? 'primary': null" class="catalog-tab-mobile-container">
+                    <v-tab active-class="catalog-tab-mobile-container--active" v-for="(category, index) in restuarant.menu" :key="category.id" @click="scroll(`${index}`)" :color="tab == index ? 'primary': null" class="catalog-tab-mobile-container">
                         <v-chip>
                             {{category.name}}
                         </v-chip>
@@ -855,20 +855,45 @@ export default {
     border-radius: 50% !important;
 }
 
-@media screen and (max-width: 992px) {
-    .catalog-tabs {
-        padding: 0 !important;
-    }
-
-    .catalog-tabs .v-slide-group__wrapper {
-        margin-left: -48px !important;
-    }
-}
-
 .v-application p {
     margin-bottom: 0 !important;
 }
-</style><style scoped>
+
+@media screen and (max-width: 992px) {
+  .catalog-tabs {
+     padding: 0 !important;
+  }
+
+  .catalog-tabs .v-slide-group__wrapper {
+     margin-left: -42px !important;
+  }
+
+  .catalog-tabs .v-ripple__container {
+    display: none !important;
+  }
+
+  .catalog-tabs .catalog-tab-mobile-container {
+      text-transform: capitalize !important;
+      padding: 0 4px !important;
+      min-width: initial !important;
+  }
+
+  .catalog-tabs .catalog-tab-mobile-container:before {
+    background: none !important;
+  }
+
+  .catalog-tabs .catalog-tab-mobile-container span {
+      background-color: transparent !important;
+      color: #a3a3a3 !important;
+  }
+
+  .catalog-tabs .catalog-tab-mobile-container.catalog-tab-mobile-container--active span {
+      background-color: #f1f0ed !important;
+      color: #000 !important;
+  }
+}
+</style>
+<style scoped>
 .tab-item {
     transition: none;
     font-size: 14px !important;
@@ -930,8 +955,8 @@ export default {
 }
 
 .dish-counter-mob {
-    font-size: 24px;
-    color: rgba(32, 32, 32, .5);
+    font-size: 20px;
+    color: #000;
     margin-bottom: 8px;
 }
 
@@ -1240,22 +1265,24 @@ export default {
     font-size: 16px;
     text-align: center;
     word-break: break-word;
+    font-weight: 400;
     line-height: 19px;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
 }
 
 .dish-info {
-    height: 34px;
+    height: 23px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
 .info-price {
-    color: #3f3f3f;
-    font-size: 14px;
-    font-weight: 600;
+    color: #000 !important;
+    font-size: 17px;
+    font-weight: 400;
+    letter-spacing: -0.5px;
     height: 48px;
     display: flex;
     transition: opacity, background-color 100ms;
@@ -1272,7 +1299,7 @@ export default {
     font-size: 13px;
     text-align: center;
     display: block;
-    margin: auto;
+    margin: 0 auto 5px;
 }
 
 .dish-card {
@@ -1331,7 +1358,6 @@ export default {
 .rest-info-top {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     width: 100%;
     border-top-right-radius: 30px;
     border-top-left-radius: 30px;
@@ -1606,6 +1632,12 @@ export default {
     justify-content: center;
 }
 
+.rest-info-center__rating-icon {
+    font-size: 18px !important;
+    margin-right: 6px;
+    color: #000000 !important;
+}
+
 .rest-info-center-block-tag {
     height: 36px;
     display: inline-flex;
@@ -1625,5 +1657,6 @@ export default {
     font-size: 24px;
     line-height: 28px;
     font-weight: bold;
+    margin-right: 8px;
 }
 </style>
