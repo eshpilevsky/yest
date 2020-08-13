@@ -114,12 +114,12 @@
                     {{this.getCurrentAddress}}
                 </span>
             </v-btn>
-			<client-only>
-				<v-btn v-if="this.getTotalPrice > 0" color="primary" @click='goToLatestReset()'>
-					{{this.getTotalPrice}} BYN
-					<v-icon>shopping_cart</v-icon>
-				</v-btn>
-			</client-only>
+            <client-only>
+                <v-btn v-if="this.getTotalPrice > 0" color="primary" @click='goToLatestReset()'>
+                    {{this.getTotalPrice}} BYN
+                    <v-icon>shopping_cart</v-icon>
+                </v-btn>
+            </client-only>
             <v-overlay :dark='false' :value="burgerOverlay" :opacity=".5">
                 <MapDesktop @closeMap='closeDesktopMap()'></MapDesktop>
             </v-overlay>
@@ -179,10 +179,10 @@ export default {
     },
     watch: {
         getCurrentAddress(newValue, oldValue) {
-            // if (newValue.length > 0) {
-            //     this.showSetAdressBtn = true
-            // }
-            // return newValue
+            if (newValue.length > 0) {
+                this.showSetAdressBtn = true
+            }
+            return newValue
         }
     },
     methods: {
@@ -190,9 +190,9 @@ export default {
             setCurrentCoords: 'map/SET_CURRENT_COORDS',
         }),
         goToLatestReset() {
-			setTimeout(() => {
-				this.$router.push(`/${this.getLatetestRestInfoWithOrder.params.region}/restaurant/${this.getLatetestRestInfoWithOrder.params.resName}`)
-			}, 100);
+            setTimeout(() => {
+                this.$router.push(`/${this.getLatetestRestInfoWithOrder.params.region}/restaurant/${this.getLatetestRestInfoWithOrder.params.resName}`)
+            }, 100);
         },
         onClick(e) {
             this.coords = e.get('coords')
@@ -253,23 +253,30 @@ export default {
         }
         let lastScrollTop = 0
         if (window.innerWidth < 992) {
-                window.addEventListener('scroll', () => {
-                    const st = window.pageYOffset || document.documentElement.scrollTop
-                    if (st > lastScrollTop) {
-                        // downscroll code
-                        if (st > 330) {
+            window.addEventListener('scroll', () => {
+                const st = window.pageYOffset || document.documentElement.scrollTop
+                if (st > lastScrollTop) {
+                    // downscroll code
+                    if (st > 330) {
+                        this.showSetAdressBtn = true
+                    } else {
+                        if (this.getCurrentAddress.length > 0) {
                             this.showSetAdressBtn = true
-                            console.log('mounted -> this.showSetAdressBtn', this.showSetAdressBtn)
                         } else {
                             this.showSetAdressBtn = false
                         }
-                    } else if (st < 330) {
-                        this.showSetAdressBtn = false
-                    } else {
-                        this.showSetAdressBtn = true
                     }
-                    lastScrollTop = st <= 0 ? 0 : st
-                })
+                } else if (st < 330) {
+                    if (this.getCurrentAddress.length > 0) {
+                        this.showSetAdressBtn = true
+                    } else {
+                        this.showSetAdressBtn = false
+                    }
+                } else {
+                    this.showSetAdressBtn = true
+                }
+                lastScrollTop = st <= 0 ? 0 : st
+            })
         }
     }
 }
@@ -297,13 +304,12 @@ export default {
 .logo-img {
     height: 40px !important;
 }
-</style>
-<style scoped>
+</style><style scoped>
 .header-map-btn {
     display: none;
     margin-top: 0px;
-	position: relative;
-	z-index: 999;
+    position: relative;
+    z-index: 999;
 }
 
 .map {
@@ -570,7 +576,7 @@ export default {
 
 @media screen and (max-width: 992px) {
     .mobileLogo {
-      margin: 0 auto;
+        margin: 0 auto;
     }
 
     .hideLogo {
@@ -651,8 +657,7 @@ export default {
         max-height: 40px;
     }
 }
-</style>
-<style>
+</style><style>
 .v-overlay {
     height: 100vh;
 }

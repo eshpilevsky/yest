@@ -1,5 +1,5 @@
 <template>
-<div class="categories-containe" v-if="!hideCategory">
+<div class="categories-containe sticky" v-if="!hideCategory">
     <div class="category-list">
         <div class="category-list__container">
             <v-chip class="category-chips" v-for="(item, index) in first" :key="'firstCategor' + index" :color="item.alias == getSelectedCategory.alias ? 'primary': 'white'" @click="selectCategory(item, false)">
@@ -62,7 +62,7 @@
             </v-chip>
         </div>
         <v-overlay :value="showModalOverlay" :dark="false">
-            <searchModal @closeModalWindow='showModalWindow()'/>
+            <searchModal @closeModalWindow='showModalWindow()' />
         </v-overlay>
     </div>
     <v-divider class="divider" />
@@ -158,12 +158,12 @@ export default {
             getUserCoordinate: 'user/getUserCoordinate',
             getCurrentAddress: 'map/getCurrentAddress',
             getSearchNameKitchenDish: 'user/getSearchNameKitchenDish',
-        })
+        }),
     },
     methods: {
-		showModalWindow(){
-			this.showModalOverlay = !this.showModalOverlay
-		},
+        showModalWindow() {
+            this.showModalOverlay = !this.showModalOverlay
+        },
         getCategories() {
             this.hideCategory = false
             ApiService.post('/categories', {
@@ -471,10 +471,7 @@ export default {
     margin: auto;
     border-left: 1px solid rgba(0, 0, 0, .1);
     border-right: 1px solid rgba(0, 0, 0, .1);
-	background: #fff;
-	position: sticky;
-	top: 60px;
-	z-index: 100;
+    background: #fff;
 }
 
 .divider {
@@ -547,6 +544,12 @@ export default {
 /*}*/
 
 @media screen and (max-width: 992px) {
+
+    .sticky {
+        position: sticky;
+        top: 60px;
+        z-index: 1;
+    }
 
     .divider {
         display: none;
