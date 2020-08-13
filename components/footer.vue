@@ -353,12 +353,12 @@ export default {
     .category-list,
     .regions-list {
         padding: 0 20px;
+        border-bottom: 1px solid #ddd;
     }
 
     .category-list {
         column-count: 2;
         padding-bottom: 20px;
-        border-bottom: 1px solid #ddd;
     }
 
     .bottom-title {
