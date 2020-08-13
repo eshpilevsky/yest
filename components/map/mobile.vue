@@ -245,6 +245,31 @@ ymaps .customMapBtn i.material-icons {
     align-items: center;
 }
 
+ymaps .customMapBtn .close {
+  box-shadow: 0 2px 4px 0 rgba(96, 96, 96, 0.15) !important;
+}
+
+ymaps .customMapBtn {
+    width: 8vw;
+    height: 8vw;
+}
+
+ymaps .customMapBtn.plus, ymaps .customMapBtn.minus {
+    box-shadow: 0 2px 4px 0 rgba(96, 96, 96, 0.15) !important;
+}
+
+ymaps .customMapBtn.plus {
+  border-bottom: 1px solid #ddd !important;
+}
+
+ymaps .customMapBtn.minus {
+  border-top: 1px solid #ddd !important;
+}
+
+ymaps .customMapBtn.plus i, ymaps .customMapBtn.minus i {
+    font-size: 20px !important;
+}
+
 ymaps .customMapBtn.iamhere {
     border-radius: 16px !important;
     height: 36px !important;
@@ -322,7 +347,7 @@ h2.currentAddress-title {
     height: 24px;
     width: 55%;
     margin: auto;
-    font-size: 10px;
+    font-size: 14px;
     line-height: 24px;
     box-shadow: 0 2px 4px 0 rgba(96, 96, 96, 0.15);
     border-radius: 14px;

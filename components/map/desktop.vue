@@ -11,23 +11,25 @@
         </div>
         <div class="map-actions">
             <div class="map-actions-top">
-                <v-btn height='40' outlined dense small shaped color='primary' @click="getMyGeo()" class="near_me-btn">
-                    <v-icon>near_me</v-icon>
+                <v-btn height='40' outlined dense small shaped @click="getMyGeo()" class="near_me-btn">
+                    <v-icon class="near_me-btn__icon" color="black">near_me</v-icon>
                     Определить
                 </v-btn>
-                <v-text-field @focus="focusInput" @blur="blurInput" height='40' dense placeholder="Укажите адрес доставки..." v-model="address" filled outlined clearable background-color="primary" class="address-input btnFz"></v-text-field>
-                <v-btn height='40' color="primary" class="ml-2" @click="confirmPosition()">
+                <div class="map-actions-container">
+                    <v-text-field @focus="focusInput" @blur="blurInput" height='40' dense placeholder="Укажите адрес доставки..." v-model="address" filled outlined clearable background-color="primary" class="address-input btnFz"></v-text-field>
+                    <div v-show="showSuggestList" class="map-actions-bottom">
+                    <v-list class="sugList" max-width="505px">
+                      <v-list-item v-for="(item, index) in suggestList" :key="'sug'+index" class="itemAdress" @click="selectAdress(item)">
+                        <v-list-item-content>
+                          <v-list-item-title>{{item.value}}</v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list>
+                  </div>
+                </div>
+                <v-btn height='40' color="primary" class="ml-2 map-actions-ok-btn" @click="confirmPosition()">
                     Ok
                 </v-btn>
-            </div>
-            <div v-show="showSuggestList" class="map-actions-bottom">
-                <v-list class="sugList" max-width="505px">
-                    <v-list-item v-for="(item, index) in suggestList" :key="'sug'+index" class="itemAdress" @click="selectAdress(item)">
-                        <v-list-item-content>
-                            <v-list-item-title>{{item.value}}</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list>
             </div>
         </div>
         <div v-show="isMapLoading" class="map-loading-desktop">
@@ -249,17 +251,41 @@ export default {
     justify-content: space-between;
 }
 
+.map-actions-container {
+  position: relative;
+  width: 100%;
+}
+
 .map-actions-bottom {
-    margin-left: 150px;
-    margin-right: 0px;
-    position: relative;
-    bottom: 26px;
-    z-index: 9;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 10;
 }
 
 .near_me-btn {
     border-top-right-radius: 0px !important;
     border-bottom-right-radius: 0px !important;
+    border-right: none !important;
+    border-color: #4ca647 !important;
+    text-transform: capitalize !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.5px !important;
+}
+
+.near_me-btn .near_me-btn__icon {
+    margin-right: 4px;
+}
+
+.map-actions-ok-btn {
+    max-width: 100px;
+    width: 100%;
+    text-transform: uppercase !important;
+    color: #000 !important;
+    font-size: 16px !important;
 }
 
 .btnFz {
@@ -272,11 +298,19 @@ export default {
     border-bottom-left-radius: 0px !important;
 }
 
+.address-input fieldset {
+    border: none !important;
+}
+
+.address-input input {
+    line-height: 24px !important;
+}
+
 .close-icon {
-    position: relative;
-    left: 2rem;
-    bottom: 2.5rem;
-    opacity: .5;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    opacity: 0.3;
 }
 
 .map {
@@ -291,8 +325,6 @@ export default {
     align-items: center;
 }
 
-.map-actions {}
-
 .map-actions {
     display: flex;
     flex-direction: column;
@@ -300,10 +332,11 @@ export default {
     align-items: flex-start;
     width: 100%;
     max-height: 55px;
+    height: 55px;
 }
 
 .desktop-map-title {
-    margin: 0;
+    margin: 0 0 10px;
     font-size: 30px;
     line-height: 1.2;
     font-weight: 400;
