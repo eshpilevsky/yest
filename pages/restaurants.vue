@@ -561,13 +561,6 @@ export default {
             showRestName: false,
         }
     },
-    beforeRouteEnter(to, from, next) {
-        console.log('beforeRouteEnter -> from', from)
-        console.log('beforeRouteEnter -> to', to)
-        next(vm => {
-            vm.prevRoute = from
-        })
-    },
     methods: {
         computedDeliveryCost() {
             let deliveryMass = this.sortDeliverFee
