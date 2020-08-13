@@ -474,8 +474,8 @@
 import ApiService from "../common/api.service";
 import MapBtn from '@/components/map/map-btn'
 import orderForm from '@/components/order-form'
-import cardDish from '@/components/restauarant/cardDish'
-import restuarantInfo from '@/components/restauarant/restuarantInfo'
+import cardDish from '@/components/restaurant/cardDish'
+import restuarantInfo from '@/components/restaurant/restuarantInfo'
 import axios from 'axios'
 
 import {
