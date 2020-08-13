@@ -21,11 +21,10 @@
                         </div>
                         <div class="regions-list">
                             <client-only>
-                                <div class="bottom-items" v-for="(region, regindex) in this.$store.state.zone.data.zone" :key="'foot'+regindex" @click="goToRegion(region)">
+                                <div class="bottom-items" v-for="region in this.$store.state.zone.data.zone" :key="'footerRegion' + region.alias" @click="goToRegion(region)">
                                     {{ region.name }}
                                 </div>
                             </client-only>
-
                         </div>
                     </div>
                     <div class="footer-center-column">
@@ -34,11 +33,11 @@
                         </div>
                         <div class="category-list">
                             <client-only>
-                                <!-- <div v-for="category in computedCategory" :key="category.alias + 'footerCategory'" class="bottom-items">
-                                    <div @click="goToCategory(category)">
+                                <div class="bottom-items" v-for="category in computedCategory" :key="+ 'footerCategory' + category.alias "  @click="goToCategory(category)">
+                                    <div >
                                         {{ category.name }}
                                     </div>
-                                </div> -->
+                                </div>
                                 <div v-show="!all" class="bottom-items" @click="showAllCategory()">
                                     Показать все >
                                 </div>
@@ -114,9 +113,9 @@ export default {
         }),
         computedCategory() {
             if (this.all) {
-                return this.getCategoryList
+                return this.$store.state.user.data.categoryList
             } else {
-                return this.getCategoryList
+                return this.$store.state.user.data.categoryList.slice(0,4)
             }
         },
     },
