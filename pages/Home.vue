@@ -3,7 +3,6 @@
     <setAdress :currentZone='currentZone' :currentCategory='currentCategory' :categoryInfoData='categoryInfoData' :class="{hide: showSetAdress == false}" />
     <specialOffers v-show="getCurrentAddress.length > 0" />
     <categories :categoriesList='categoriesList' :currentCategory='currentCategory' />
-    <mobileSearch v-show="showSearch" />
     <restorans :restaurantsList='restaurantsList' :currentCategory='currentCategory' />
 </div>
 </template>
@@ -13,7 +12,6 @@ import setAdress from '~/components/setAdress'
 import categories from '~/components/categories.vue'
 import specialOffers from '~/components/specialOffers.vue'
 import restorans from '~/components/restorans.vue'
-import mobileSearch from '~/components/mobileSearch.vue'
 import ApiService from "~/common/api.service";
 import axios from 'axios'
 
@@ -27,12 +25,10 @@ export default {
         categories,
         specialOffers,
         restorans,
-        mobileSearch,
         setAdress
     },
     data() {
         return {
-            showSearch: false,
             showSetAdress: true,
             showSpecialOffer: false,
             rest: [],
@@ -201,9 +197,6 @@ export default {
         }
     },
     watch: {
-        showSearch(newValue, oldValue) {
-            return newValue
-        },
         getCurrentAddress(newValue, oldValue) {
             if (window.innerWidth < 450) {
                 if (newValue.length > 0) {
@@ -235,19 +228,6 @@ export default {
         //   }, 200);
         let lastScrollTop = 0
         if (window.innerWidth < 992) {
-            window.addEventListener('scroll', () => {
-                const st = window.pageYOffset || document.documentElement.scrollTop
-                if (st > lastScrollTop) {
-                    // downscroll code
-                    this.showSearch = false
-                } else if (st > 350) {
-                    this.showSearch = true
-                } else {
-                    this.showSearch = false
-                }
-                lastScrollTop = st <= 0 ? 0 : st
-            })
-
             if (this.getCurrentAddress.length > 0) {
                 this.showSetAdress = false
             } else {
