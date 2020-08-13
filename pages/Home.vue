@@ -219,6 +219,7 @@ export default {
         await this.$store.dispatch('zone/setSelectedZone', this.currentZone.id)
     },
     mounted() {
+		window.scrollTo(0, 0);
         // setTimeout(() => {
         //   if (window.innerWidth < 992) {
         //     // document.getElementById('bgImg').setAttribute('style', 'background: #fff;')
