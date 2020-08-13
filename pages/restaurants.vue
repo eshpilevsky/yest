@@ -561,6 +561,13 @@ export default {
             showRestName: false,
         }
     },
+    beforeRouteEnter(to, from, next) {
+        console.log('beforeRouteEnter -> from', from)
+        console.log('beforeRouteEnter -> to', to)
+        next(vm => {
+            vm.prevRoute = from
+        })
+    },
     methods: {
         computedDeliveryCost() {
             let deliveryMass = this.sortDeliverFee
@@ -740,7 +747,7 @@ export default {
             this.selectedDishCounter++
         },
         goBack() {
-            this.$router.go(-1)
+            this.$router.push(`/${this.getSelectedZone.alias}`)
         },
         closeOptionMenu() {
             this.showOptionsmenu = false
@@ -860,40 +867,39 @@ export default {
 }
 
 @media screen and (max-width: 992px) {
-  .catalog-tabs {
-     padding: 0 !important;
-  }
+    .catalog-tabs {
+        padding: 0 !important;
+    }
 
-  .catalog-tabs .v-slide-group__wrapper {
-     margin-left: -42px !important;
-  }
+    .catalog-tabs .v-slide-group__wrapper {
+        margin-left: -42px !important;
+    }
 
-  .catalog-tabs .v-ripple__container {
-    display: none !important;
-  }
+    .catalog-tabs .v-ripple__container {
+        display: none !important;
+    }
 
-  .catalog-tabs .catalog-tab-mobile-container {
-      text-transform: capitalize !important;
-      padding: 0 4px !important;
-      min-width: initial !important;
-  }
+    .catalog-tabs .catalog-tab-mobile-container {
+        text-transform: capitalize !important;
+        padding: 0 4px !important;
+        min-width: initial !important;
+    }
 
-  .catalog-tabs .catalog-tab-mobile-container:before {
-    background: none !important;
-  }
+    .catalog-tabs .catalog-tab-mobile-container:before {
+        background: none !important;
+    }
 
-  .catalog-tabs .catalog-tab-mobile-container span {
-      background-color: transparent !important;
-      color: #a3a3a3 !important;
-  }
+    .catalog-tabs .catalog-tab-mobile-container span {
+        background-color: transparent !important;
+        color: #a3a3a3 !important;
+    }
 
-  .catalog-tabs .catalog-tab-mobile-container.catalog-tab-mobile-container--active span {
-      background-color: #f1f0ed !important;
-      color: #000 !important;
-  }
+    .catalog-tabs .catalog-tab-mobile-container.catalog-tab-mobile-container--active span {
+        background-color: #f1f0ed !important;
+        color: #000 !important;
+    }
 }
-</style>
-<style scoped>
+</style><style scoped>
 .tab-item {
     transition: none;
     font-size: 14px !important;
