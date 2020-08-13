@@ -13,20 +13,22 @@
         <span class="info-setPlace">
             Укажите ваше местоположение, чтобы мы смогли предложить вам список доступных ресторанов
         </span>
-        <v-text-field @focus="focusInput" @blur="blurInput()" class='search-me' max-width='500px' prepend-inner-icon="near_me" @click:prepend-inner="openMap()" label="Укажите адрес доставки..." v-model='searchAddress' solo clearable @click:clear="clearAdress">
-            <template v-slot:append-outer>
-                <v-btn class="showRest-block" color='primary' @click="showRestuarants()">Показать рестораны</v-btn>
-            </template>
-        </v-text-field>
-        <div v-show="showAdressList && searchAddress.length > 3" class="adressList">
-            <v-list>
-                <v-list-item v-for="(item, index) in suggestions" :key="'adres'+index" class="itemAdress" @click="selectAdress(item)">
+        <div class="smart-search">
+            <v-text-field @focus="focusInput" @blur="blurInput()" class='search-me' max-width='500px' prepend-inner-icon="near_me" @click:prepend-inner="openMap()" label="Укажите адрес доставки..." v-model='searchAddress' solo clearable @click:clear="clearAdress">
+                <template v-slot:append-outer>
+                    <v-btn class="showRest-block" color='primary' @click="showRestuarants()">Показать рестораны</v-btn>
+                </template>
+            </v-text-field>
+            <div v-show="showAdressList && searchAddress.length > 3" class="adressList">
+                <v-list>
+                    <v-list-item v-for="(item, index) in suggestions" :key="'adres'+index" class="itemAdress" @click="selectAdress(item)">
                     <v-list-item-content>
-                        <v-list-item-title>{{item.displayName}}</v-list-item-title>
-                        <v-list-item-subtitle class="itemAdress-sub">{{item.value}}</v-list-item-subtitle>
+                      <v-list-item-title>{{item.displayName}}</v-list-item-title>
+                      <v-list-item-subtitle class="itemAdress-sub">{{item.value}}</v-list-item-subtitle>
                     </v-list-item-content>
-                </v-list-item>
-            </v-list>
+                  </v-list-item>
+                </v-list>
+            </div>
         </div>
         <map-btn v-show="this.canDisplayMap" class="map-btn" />
     </div>
@@ -197,11 +199,11 @@ export default {
         },
     },
     async beforeMount() {
-        // await loadYmap({
-        //     ...settings,
-        //     debug: true
-        // });
-        // this.ymaps = ymaps
+        await loadYmap({
+            ...settings,
+            debug: true
+        });
+        this.ymaps = ymaps
 		this.ww = window.innerWidth;
 		this.currentCategoryy = this.currentCategory
         console.log('beforeMount -> this.currentCategory', this.currentCategory)
@@ -248,11 +250,15 @@ export default {
 
 .adressList {
     background-color: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.4);
-    position: absolute;
     z-index: 100;
-    margin-top: -5px;
-    max-width: 810px;
+    position: absolute;
+    top: 46px;
+    left: 0;
+    right: 0;
+    max-width: 100%;
+    width: calc(100% - 220px);
+    box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.15);
+    border: none;
 }
 
 .showRest-block {
@@ -265,6 +271,9 @@ export default {
     border-top-left-radius: 0px !important;
     border-bottom-left-radius: 0px !important;
     font-size: 16px !important;
+    width: 220px;
+    font-size: 16px !important;
+    letter-spacing: 0.5px !important;
 }
 
 .info-title {
@@ -282,8 +291,13 @@ export default {
     opacity: 0.8;
 }
 
+.smart-search {
+  position: relative;
+  max-width: 80%;
+}
+
 .search-me {
-    width: 80%;
+    height: 50px;
 }
 
 .setAdressContaine-info {
@@ -310,18 +324,6 @@ export default {
 
 .info-setPlace {
     display: none;
-}
-
-@media screen and (max-width: 1500px) {
-    .adressList {
-        max-width: 620px;
-    }
-}
-
-@media screen and (max-width: 1300px) {
-    .adressList {
-        max-width: 395px;
-    }
 }
 
 /*@media screen and (max-width: 768px) {*/
