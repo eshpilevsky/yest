@@ -52,8 +52,8 @@ import {
 import {
     getGeo,
     getPlace,
-} from './factory'
-import MapSuggest from '@/components/map-suggest'
+} from './factory/desktop'
+import MapSuggest from '@/components/map/suggest'
 import {
     getAddresFromGeoobject,
     getAddressFromString,

@@ -30,8 +30,8 @@ import {
     getPlace,
     getZoomIn,
     getZoomOut
-} from './factory'
-import MapSuggest from '@/components/map-suggest'
+} from './factory/mobile'
+import MapSuggest from '@/components/map/suggest'
 import {
     getAddresFromGeoobject,
     getAddressFromString,

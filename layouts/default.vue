@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import LayoutHeader from '@/components/layout-header';
-import LayoutFooter from '@/components/layout-footer';
-import MapContainer from '@/components/map-container'
+import LayoutHeader from '@/components/header';
+import LayoutFooter from '@/components/footer';
+import MapContainer from '@/components/map/mobile';
 import {
     mapGetters
 } from 'vuex'

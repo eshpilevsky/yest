@@ -3,7 +3,7 @@
     <setAdress :currentZone='currentZone' :currentCategory='currentCategory' :categoryInfoData='categoryInfoData' :class="{hide: showSetAdress == false}" />
     <specialOffers v-show="getCurrentAddress.length > 0" />
     <categories :categoriesList='categoriesList' :currentCategory='currentCategory' />
-    <restorans :restaurantsList='restaurantsList' :currentCategory='currentCategory' />
+    <restuarantsList :restaurantsList='restaurantsList' :currentCategory='currentCategory' />
 </div>
 </template>
 
@@ -11,7 +11,7 @@
 import setAdress from '~/components/setAdress'
 import categories from '~/components/categories.vue'
 import specialOffers from '~/components/specialOffers.vue'
-import restorans from '~/components/restorans.vue'
+import restuarantsList from '~/components/restuarants-list.vue'
 import ApiService from "~/common/api.service";
 import axios from 'axios'
 
@@ -24,7 +24,7 @@ export default {
     components: {
         categories,
         specialOffers,
-        restorans,
+        restuarantsList,
         setAdress
     },
     data() {

@@ -145,9 +145,9 @@ import {
     mapGetters,
     mapMutations
 } from 'vuex'
-import MapBtn from '@/components/map-btn'
-import MapContainer from '@/components/map-container'
-import MapDesktop from '@/components/map-desktop'
+import MapBtn from '@/components/map/map-btn'
+import MapContainer from '@/components/map/mobile'
+import MapDesktop from '@/components/map/desktop'
 
 export default {
     name: 'layout-header',
@@ -709,7 +709,7 @@ export default {
     left: 20px;
     top: 20px !important;
     cursor: pointer;
-    background-image: url('../../assets/burgerMenu.svg');
+    background-image: url('../assets/burgerMenu.svg');
 }
 
 .bm-burger-bars {

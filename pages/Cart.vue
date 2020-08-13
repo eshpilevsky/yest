@@ -74,7 +74,7 @@
         </div>
     </div>
     <div class="form" v-show="showForm">
-		<orderCard @closeCheckout='closeOrderForm()'/>
+		<orderForm @closeCheckout='closeOrderForm()'/>
     </div>
 </div>
 </template>
@@ -83,11 +83,11 @@
 import {
     mapGetters
 } from "vuex";
-import orderCard from '@/components/orderCard'
+import orderForm from '@/components/order-form'
 
 export default {
 	components: {
-		orderCard,
+		orderForm,
 	},
     async asyncData({
         app,

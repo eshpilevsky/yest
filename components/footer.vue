@@ -20,9 +20,12 @@
                             Регионы
                         </div>
                         <div class="regions-list">
-                            <div class="bottom-items" v-for="(region, regindex) in this.$store.state.zone.data.zone" :key="'foot'+regindex" @click="goToRegion(region)">
-                                {{ region.name }}
-                            </div>
+                            <client-only>
+                                <div class="bottom-items" v-for="(region, regindex) in this.$store.state.zone.data.zone" :key="'foot'+regindex" @click="goToRegion(region)">
+                                    {{ region.name }}
+                                </div>
+                            </client-only>
+
                         </div>
                     </div>
                     <div class="footer-center-column">

@@ -235,8 +235,8 @@
                         </div>
                     </v-card>
                 </v-overlay>
-                <v-overlay opacity="0.5" :dark='false' z-index="999" v-model="showOrderCard">
-                    <orderCard @closeCheckout='checkout()' />
+                <v-overlay opacity="0.5" :dark='false' z-index="999" v-model="showorderForm">
+                    <orderForm @closeCheckout='checkout()' />
                 </v-overlay>
             </client-only>
         </div>
@@ -472,10 +472,10 @@
 
 <script>
 import ApiService from "../common/api.service";
-import MapBtn from '@/components/map-btn'
-import orderCard from '@/components/orderCard'
-import cardDish from '@/components/cardDish'
-import restuarantInfo from '@/components/restuarantInfo'
+import MapBtn from '@/components/map/map-btn'
+import orderForm from '@/components/order-form'
+import cardDish from '@/components/restauarant/cardDish'
+import restuarantInfo from '@/components/restauarant/restuarantInfo'
 import axios from 'axios'
 
 import {
@@ -486,7 +486,7 @@ export default {
     components: {
         MapBtn,
         cardDish,
-        orderCard,
+        orderForm,
         restuarantInfo,
     },
     async asyncData({
@@ -556,7 +556,7 @@ export default {
             lastRest: {},
             totalPrice: 0,
             orderList: [],
-            showOrderCard: false,
+            showorderForm: false,
             showRestInfo: false,
             showRestName: false,
         }
@@ -724,7 +724,7 @@ export default {
             this.showDeliveryOption = false
         },
         checkout() {
-            this.showOrderCard = !this.showOrderCard
+            this.showorderForm = !this.showorderForm
         },
         goToBasketPage() {
             this.$router.push(`/cart`)

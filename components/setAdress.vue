@@ -41,8 +41,8 @@ import {
     mapGetters,
     mapMutations
 } from 'vuex'
-import MapBtn from '@/components/map-btn'
-import MapDesktop from '@/components/map-desktop'
+import MapBtn from '@/components/map/map-btn'
+import MapDesktop from '@/components/map/desktop'
 
 import {
     settings
