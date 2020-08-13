@@ -1,9 +1,9 @@
 <template>
 <div style="padding-bottom: 0px">
-    <setAdress :currentZone='currentZone' :currentCategory='currentCategory' :categoryInfoData='categoryInfoData' :class="{hide: showSetAdress == false}" />
+    <setAdress :currentZone='currentZone' :currentCategory='this.currentCategory' :categoryInfoData='categoryInfoData' :class="{hide: showSetAdress == false}" />
     <specialOffers v-show="getCurrentAddress.length > 0" />
-    <categories :categoriesList='categoriesList' :currentCategory='currentCategory' />
-    <restuarantsList :restaurantsList='restaurantsList' :currentCategory='currentCategory' />
+    <categories :categoriesList='categoriesList' :currentCategory='this.currentCategory' />
+    <restuarantsList :restaurantsList='restaurantsList' :currentCategory='this.currentCategory' />
 </div>
 </template>
 

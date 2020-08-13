@@ -34,11 +34,11 @@
                         </div>
                         <div class="category-list">
                             <client-only>
-                                <div v-for="category in computedCategory" :key="category.alias + 'footerCategory'" class="bottom-items">
+                                <!-- <div v-for="category in computedCategory" :key="category.alias + 'footerCategory'" class="bottom-items">
                                     <div @click="goToCategory(category)">
                                         {{ category.name }}
                                     </div>
-                                </div>
+                                </div> -->
                                 <div v-show="!all" class="bottom-items" @click="showAllCategory()">
                                     Показать все >
                                 </div>
