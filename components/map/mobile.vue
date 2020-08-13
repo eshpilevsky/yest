@@ -248,7 +248,8 @@ ymaps .customMapBtn i.material-icons {
 ymaps .customMapBtn.iamhere {
     border-radius: 16px !important;
     height: 36px !important;
-    margin-bottom: -8px !important;
+    margin-bottom: -110px;
+    margin-top: 50px;
 }
 
 ymaps [title="Определить ваше местоположение"] {
