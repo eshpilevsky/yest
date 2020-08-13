@@ -547,7 +547,7 @@ export default {
 
     .sticky {
         position: sticky;
-        top: 60px;
+        top: 64px;
         z-index: 1;
     }
 

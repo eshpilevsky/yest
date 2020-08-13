@@ -325,7 +325,7 @@ export default {
 
     .footer-top-right {
         display: flex;
-        flex-direction: column;
+        flex-wrap: wrap;
     }
 
     .footer-bottom {
@@ -342,16 +342,12 @@ export default {
     }
 
     .footer-top-img {
-        padding: 5px;
+        margin: 10px 10px 10px 0;
     }
 
     .top-block {
-        padding: 20px 20px;
-        flex-direction: column;
-    }
-
-    .footer-top {
-        padding: 0px;
+        flex-wrap: wrap;
+        padding: 10px 20px;
     }
 
     .category-list,
@@ -361,11 +357,19 @@ export default {
 
     .category-list {
         column-count: 2;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #ddd;
     }
 
     .bottom-title {
         width: 100%;
-        padding: 0 20px 5px 20px;
+        padding: 20px 20px 5px;
+        margin-bottom: 8px;
+        color: #b0b0b0;
+        font-size: 12px;
+        font-weight: 300;
+        letter-spacing: 2px;
+        text-transform: uppercase;
     }
 
     a.bottom-items {
@@ -374,6 +378,9 @@ export default {
 
     .bottom-items {
         margin-bottom: 10px;
+        color: #6a6a6a !important;
+        display: block;
+        font-size: 12px !important;
     }
 
     .links-list .bottom-title {
@@ -389,7 +396,7 @@ export default {
     }
 
     .footer-center {
-        padding: 0px;
+        padding: 0 !important;
         flex-direction: column;
     }
 
@@ -407,7 +414,8 @@ export default {
     }
 
     .footer-logo {
-        max-height: 30px;
+        max-height: 40px;
+        margin: 10px;
     }
 
 }

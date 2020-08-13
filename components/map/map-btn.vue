@@ -42,11 +42,11 @@ export default {
 <style>
 
 .address{
-	max-width: 200px;
-	text-overflow: ellipsis;
+    max-width: 200px;
+    text-overflow: ellipsis;
     overflow: hidden;
-	direction: rtl;
-  	text-align: left;
+    direction: rtl;
+    text-align: left;
 }
 
 .set-you-address {
@@ -63,5 +63,10 @@ export default {
     text-overflow: clip;
     overflow: hidden;
     box-shadow: 0 4px 12px 0 rgba(0, 166, 70, 0.3), 0 2px 4px 0 rgba(0, 166, 70, 0.3) !important;
+}
+
+.set-you-address .near_me_icon {
+    margin-right: 6px;
+    font-size: 20px;
 }
 </style>
