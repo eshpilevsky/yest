@@ -72,7 +72,7 @@
                 <div class="catalog-list">
                     <div v-for="(category, index) in restuarant.menu" :key="category.cat_id">
                         <div class="category-title">
-                            <h2 v-intersect="categoryNameIntersect" :id='`${index}`'>
+                            <h2 :id='`${index}`'>
                                 {{category.name}}
                             </h2>
                             <span class="category-list-counter">
@@ -320,7 +320,7 @@
             </div>
             <div class="mobile-catalog">
                 <div v-for="(category, index) in restuarant.menu" :key="category.id">
-                    <h2 v-intersect="categoryNameIntersect" :id="`${index}`" class="category-title">
+                    <h2 :id="`${index}`" class="category-title">
                         {{category.name}}
                     </h2>
                     <div class="dishs-list-mobile">
@@ -758,11 +758,16 @@ export default {
         },
 
         scroll(id) {
-            document.getElementById(id).scrollIntoView({
-                block: 'start',
+            const yOffset = -140;
+            const element = document.getElementById(id);
+            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+            window.scrollTo({
+                top: y,
                 behavior: 'smooth'
-            });
-            this.tab = id
+			});
+			this.tab = id
+
         },
         categoryNameIntersect(entries, observer) {
             this.tab = parseInt(entries[0].target.id, 10)
