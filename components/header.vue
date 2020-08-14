@@ -379,6 +379,7 @@ export default {
 .technical-Btns {
     display: flex;
     flex-direction: row;
+    max-width: 40%;
 }
 
 .rounding {
@@ -508,7 +509,7 @@ export default {
     height: 32px;
     min-width: 50px;
     padding: 7px 16px;
-    margin-left: 15px !important;
+    margin-left: auto !important;
     font-size: 15px !important;
     text-transform: none !important;
     color: #000 !important;
