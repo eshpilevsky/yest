@@ -284,11 +284,15 @@ export default {
 
 <style>
 .zone-btn-address {
-    text-overflow: clip;
+    text-overflow: ellipsis;
     overflow: hidden;
+    direction: rtl;
+    text-align: left;
+    max-width: 100%;
 }
 
 .zone-btn .v-btn__content {
+    max-width: 100%;
     overflow: hidden;
     direction: rtl;
     text-align: left;
@@ -510,6 +514,7 @@ export default {
     color: #000 !important;
     text-overflow: clip;
     overflow: hidden;
+    max-width: 55%;
 }
 
 .links {
