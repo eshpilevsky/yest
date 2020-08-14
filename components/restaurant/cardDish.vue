@@ -47,9 +47,16 @@ export default {
     computed: {
         computedPrice() {
             if (this.dishinfo.length == 0) {
-				return 'Нет цены'
-			} else if (this.dishinfo.length > 1) {
-                return `От ${this.dishinfo[0].price}`
+                return 'Нет цены'
+            } else if (this.dishinfo.length > 1) {
+                let chekDiffrentPrice = this.dishinfo.find((dish, index, arr) => {
+                    return dish.price == arr[index - 1]
+                })
+                if (chekDiffrentPrice !== undefined) {
+                    return `От ${this.dishinfo[0].price}`
+                } else {
+                    return `${this.dishinfo[0].price}`
+                }
             } else {
                 return `${this.dishinfo[0].price}`
             }
@@ -115,7 +122,7 @@ export default {
 
 .dish-img {
     max-height: 210px;
-	width: 100%;
+    width: 100%;
     border-radius: 5px;
     background-repeat: no-repeat;
     background-position: center;
