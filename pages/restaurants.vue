@@ -906,10 +906,6 @@ export default {
     padding: 0 20px;
 }
 
-.my-order-dishes-desktop {
-    overflow: auto;
-}
-
 .tab-item {
     transition: none;
     font-size: 14px !important;
@@ -927,7 +923,7 @@ export default {
 }
 
 .delivery-options {
-    padding: 19px 0 11px;
+    padding: 10px 0 11px;
     border-top: 1px solid hsla(0,0%,100%,.2);
     flex-wrap: wrap;
     margin-top: auto;
@@ -1089,6 +1085,8 @@ export default {
 .my-order-top {
     display: flex;
     flex-direction: column;
+    overflow: auto;
+    max-height: calc(100% - 160px);
 }
 
 .my-order-top__total {
@@ -1096,9 +1094,8 @@ export default {
 }
 
 .my-order-dishes-desktop {
-    max-height: calc(100vh - 370px);
-    overflow: auto;
     margin-bottom: auto;
+    padding-bottom: 20px;
 }
 
 .desctop_btn_confirm_order {
