@@ -8,6 +8,15 @@ export const state = () => ({
   status: 0
 })
 
+export const actions = {
+  setZone(context, payload) {
+    context.commit('SET_ZONE', payload)
+  },
+  setSelectedZone(context, payload) {
+    context.commit('SET_SELECTED_ZONE', payload)
+  }
+};
+
 export const mutations = {
   SET_ZONE(state, payload) {
     state.status = '200'
@@ -19,18 +28,9 @@ export const mutations = {
   }
 };
 
-export const actions = {
-  setZone(context, payload) {
-    context.commit('SET_ZONE', payload)
-  },
-  setSelectedZone(context, payload) {
-    context.commit('SET_SELECTED_ZONE', payload)
-  }
-};
-
 export const getters = {
   getSelectedZone(state) {
-	const zones = state.data.zone
+    const zones = state.data.zone
     let find = {
       alias: 'minsk',
       id: 1,
@@ -43,7 +43,7 @@ export const getters = {
         }
       })
     }
-	return find
+    return find
   },
   getZoneList(state) {
     return state.data.zone

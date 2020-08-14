@@ -20,49 +20,6 @@ export const state = () => ({
   status: 0
 })
 
-export const mutations = {
-  SELECT_CATEGORY(state, payload) {
-    state.status = '200'
-    state.data.selectedCategory = payload
-  },
-
-  SET_LANGUAGE(state, payload) {
-    state.status = '200'
-    state.data.language = payload
-  },
-
-  SET_CATEGORY_TITLE(state, payload) {
-	state.status = '200'
-	if (payload == null) {
-		state.data.selectedCategoryTitle = 'Быстрая и бесплатная доставка'
-	} else {
-		state.data.selectedCategoryTitle = payload
-	}
-  },
-
-  CATEGOTY_LIST(state, payload) {
-    state.status = '200'
-    state.data.categoryList = payload
-  },
-
-  SEARCH_NAME_KITCHEN_DISH(state, payload) {
-    state.status = '200'
-    state.data.searchNameKitchenDish = payload
-  },
-  SET_USER_LOCATION(state, payload) {
-    state.status = '200'
-    state.data.userLocation.coords.latitude = payload.coords.latitude
-    state.data.userLocation.coords.longitude = payload.coords.longitude
-    state.data.userLocation.locationAdress = payload.locationAdress
-  },
-  DROP_USER_LOCATION(state) {
-    state.status = '200'
-    state.data.userLocation.coords.latitude = 0
-    state.data.userLocation.coords.longitude = 0
-    state.data.userLocation.locationAdress = null
-  }
-};
-
 export const actions = {
 
   selectCategory(context, payload) {
@@ -93,6 +50,49 @@ export const actions = {
     context.commit('DROP_USER_LOCATION')
   }
 
+};
+
+export const mutations = {
+  SELECT_CATEGORY(state, payload) {
+    state.status = '200'
+    state.data.selectedCategory = payload
+  },
+
+  SET_LANGUAGE(state, payload) {
+    state.status = '200'
+    state.data.language = payload
+  },
+
+  SET_CATEGORY_TITLE(state, payload) {
+    state.status = '200'
+    if (payload == null) {
+      state.data.selectedCategoryTitle = 'Быстрая и бесплатная доставка'
+    } else {
+      state.data.selectedCategoryTitle = payload
+    }
+  },
+
+  CATEGOTY_LIST(state, payload) {
+    state.status = '200'
+    state.data.categoryList = payload
+  },
+
+  SEARCH_NAME_KITCHEN_DISH(state, payload) {
+    state.status = '200'
+    state.data.searchNameKitchenDish = payload
+  },
+  SET_USER_LOCATION(state, payload) {
+    state.status = '200'
+    state.data.userLocation.coords.latitude = payload.coords.latitude
+    state.data.userLocation.coords.longitude = payload.coords.longitude
+    state.data.userLocation.locationAdress = payload.locationAdress
+  },
+  DROP_USER_LOCATION(state) {
+    state.status = '200'
+    state.data.userLocation.coords.latitude = 0
+    state.data.userLocation.coords.longitude = 0
+    state.data.userLocation.locationAdress = null
+  }
 };
 
 export const getters = {

@@ -15,7 +15,6 @@ export const mutations = {
   }
 };
 
-
 export const getters = {
   isMobile (state) {
     return state.data.isMobile

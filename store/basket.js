@@ -19,12 +19,12 @@ export const actions = {
       context.commit('SAVE_TO_BASKET', payload)
     } else {
       dishSizes = findDish.selectSize
-	  let findSize;
-	  if (dishSizes.id == payload.selectSize.id) {
-		  findSize = true
-	  } else {
-		  findSize = undefined
-	  }
+      let findSize;
+      if (dishSizes.id == payload.selectSize.id) {
+        findSize = true
+      } else {
+        findSize = undefined
+      }
 
       if (findSize == undefined) {
         context.commit('SAVE_TO_BASKET', payload)
@@ -64,20 +64,20 @@ export const mutations = {
       console.log('INCREMENT_DISH -> dishSizes', dishSizes.id)
       console.log('INCREMENT_DISH -> payload.selectSize', payload.selectSize.id)
 
-		let findSize;
-		if (dishSizes.id == payload.selectSize.id) {
-			findSize = true
-		} else {
-			findSize = undefined
-		}
+      let findSize;
+      if (dishSizes.id == payload.selectSize.id) {
+        findSize = true
+      } else {
+        findSize = undefined
+      }
 
       console.log('INCREMENT_DISH -> findSize', findSize)
       if (findSize !== undefined) {
         state.data.dishs[findDish].selectSize.count++
       } else {
-		  console.log('push ');
-		state.data.dishs.push(payload)
-	  }
+        console.log('push ');
+        state.data.dishs.push(payload)
+      }
     }
   },
   SAVE_RESTRUARNT_URL(state, url) {
@@ -95,36 +95,36 @@ export const mutations = {
   },
   DECREMENT_DISH(state, payload) {
     state.status = '200'
-	let dishList = state.data.dishs
-	let findDish = dishList.findIndex((dish) => {
-		return dish.id == payload.id
-	  })
-	  let dishSizes;
-	  if (findDish !== undefined) {
-  
-		dishSizes = state.data.dishs[findDish].selectSize
-  
-		  let findSize;
-		  if (dishSizes.id == payload.selectSize.id) {
-			  findSize = true
-		  } else {
-			  findSize = undefined
-		  }
-  
-		let wellBe = state.data.dishs[findDish].selectSize.count- 1
-		if (findSize !== undefined) {
-			if (wellBe < 1) {
-				state.data.dishs.splice(findDish, 1)
-			} else {
-				state.data.dishs[findDish].selectSize.count--
-			}
-		} else {
-			console.log('push ');
-		  state.data.dishs.push(payload)
-		}
-	  }
+    let dishList = state.data.dishs
+    let findDish = dishList.findIndex((dish) => {
+      return dish.id == payload.id
+    })
+    let dishSizes;
+    if (findDish !== undefined) {
 
-//   state.data.dishs.splice(index, 1)
+      dishSizes = state.data.dishs[findDish].selectSize
+
+      let findSize;
+      if (dishSizes.id == payload.selectSize.id) {
+        findSize = true
+      } else {
+        findSize = undefined
+      }
+
+      let wellBe = state.data.dishs[findDish].selectSize.count - 1
+      if (findSize !== undefined) {
+        if (wellBe < 1) {
+          state.data.dishs.splice(findDish, 1)
+        } else {
+          state.data.dishs[findDish].selectSize.count--
+        }
+      } else {
+        console.log('push ');
+        state.data.dishs.push(payload)
+      }
+    }
+
+    //   state.data.dishs.splice(index, 1)
   },
   REMOVE_FROM_BASKET(state, id) {
     state.status = '200'
@@ -145,7 +145,7 @@ export const getters = {
     let dl = state.data.dishs
     let totalPrice = 0
     dl.forEach(element => {
-      	totalPrice += element.selectSize.price * element.selectSize.count
+      totalPrice += element.selectSize.price * element.selectSize.count
     });
     return totalPrice.toFixed(1)
   },
