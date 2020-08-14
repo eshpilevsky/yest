@@ -498,7 +498,6 @@ export default {
     white-space: nowrap;
     text-overflow: ellipsis;
     width: 100%;
-    text-align: start;
     min-height: 30px;
     text-align: left;
 }
@@ -541,10 +540,6 @@ export default {
     border-top: 4px solid rgba(245, 245, 245, 0.6);
 }
 
-.hidetime {
-    padding-top: 12px;
-}
-
 @media screen and (max-width: 1000px) {
     .list-item-block {
         min-height: 280px;
@@ -554,7 +549,7 @@ export default {
 
 @media screen and (max-width: 992px) {
     .restorane-list {
-      padding: 0px;
+      padding: 0;
     }
 
     .restorane-title {

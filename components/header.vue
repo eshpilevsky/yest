@@ -289,12 +289,16 @@ export default {
 }
 
 .zone-btn .v-btn__content {
-    max-width: 200px;
     overflow: hidden;
     direction: rtl;
     text-align: left;
     display: flex;
     flex-direction: row-reverse;
+}
+
+.zone-btn .v-btn__content i {
+  font-size: 18px;
+  margin-right: 4px;
 }
 
 .burger-logo-img {
