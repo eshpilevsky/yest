@@ -152,12 +152,12 @@
                     <div class="delivery-options">
                         <v-divider />
                         <div class="my-order-top__total d-flex flex-row justify-space-between align-center py-2">
-                                          <span class="delivery-title">
-                                              Доставка
-                                          </span>
-                          <span class="delivery-count">
-                                              {{computedDeliveryCost().delivery ? computedDeliveryCost().delivery : computedDeliveryCost().deliveryFee}} BYN
-                                          </span>
+                            <span class="delivery-title">
+                                Доставка
+                            </span>
+                            <span class="delivery-count">
+                                {{computedDeliveryCost().delivery ? computedDeliveryCost().delivery : computedDeliveryCost().deliveryFee}} BYN
+                            </span>
                         </div>
                         <p class="more-delivery delivery-info-text">
                             {{computedFreeDeliveryCost()}}
@@ -176,7 +176,7 @@
             <client-only>
                 <v-overlay :dark='false' z-index="999" v-model="showOptionsmenu">
                     <v-card width="50vw" class="select-option-card">
-                        <div class="d-flex flex-row justify-space-between pb-3" >
+                        <div class="d-flex flex-row justify-space-between pb-3">
                             <div class="select-option-title" color="secondary">
                                 Выберите опции
                             </div>
@@ -560,8 +560,9 @@ export default {
             showorderForm: false,
             showRestInfo: false,
             showRestName: false,
+            lastPath: null,
         }
-    },
+	},
     methods: {
         computedDeliveryCost() {
             let deliveryMass = this.sortDeliverFee
@@ -741,7 +742,8 @@ export default {
             this.selectedDishCounter++
         },
         goBack() {
-            this.$router.push(`/${this.getSelectedZone.alias}`)
+			this.$router.back()
+            console.log('goBack -> this.$router', this.$router)
         },
         closeOptionMenu() {
             this.showOptionsmenu = false
@@ -760,16 +762,16 @@ export default {
 
         scroll(id) {
             const element = document.getElementById(id);
-			const yOffset = window.innerWidth < 992 ? 80 : 140;
-			const y = element.getBoundingClientRect().top + window.pageYOffset - yOffset;
+            const yOffset = window.innerWidth < 992 ? 80 : 140;
+            const y = element.getBoundingClientRect().top + window.pageYOffset - yOffset;
             window.scrollTo({
                 top: y,
                 behavior: 'smooth'
-			});
-			this.tab = id
+            });
+            this.tab = id
         },
         categoryNameIntersect(entries, observer) {
-			let visibleCategory =entries[0].target.id.split('_')
+            let visibleCategory = entries[0].target.id.split('_')
             this.tab = visibleCategory[1]
         }
     },
@@ -897,8 +899,7 @@ export default {
         color: #000 !important;
     }
 }
-</style>
-<style scoped>
+</style><style scoped>
 .fs10 {
     font-size: 10px !important;
 }
@@ -925,7 +926,7 @@ export default {
 
 .delivery-options {
     padding: 10px 0 11px;
-    border-top: 1px solid hsla(0,0%,100%,.2);
+    border-top: 1px solid hsla(0, 0%, 100%, .2);
     flex-wrap: wrap;
     margin-top: auto;
 }
@@ -1141,14 +1142,14 @@ export default {
 }
 
 .my-counter {
-  min-width: 35px;
-  height: 35px;
-  min-height: 35px;
-  display: flex;
-  align-items: center;
-  position: relative;
-  flex: 0 1 10%;
-  margin-top: -6px;
+    min-width: 35px;
+    height: 35px;
+    min-height: 35px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    flex: 0 1 10%;
+    margin-top: -6px;
 }
 
 .my-counter .counter-count {
@@ -1206,10 +1207,10 @@ export default {
 }
 
 .order-item__price {
-  flex: 0 1 20%;
-  font-size: 14px;
-  text-align: right;
-  padding-left: 10px !important;
+    flex: 0 1 20%;
+    font-size: 14px;
+    text-align: right;
+    padding-left: 10px !important;
 }
 
 .order-item-info {
