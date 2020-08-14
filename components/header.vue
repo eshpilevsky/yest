@@ -117,7 +117,7 @@
             <client-only>
                 <v-btn v-if="this.getTotalPrice > 0" color="primary" @click='goToLatestReset()'>
                     {{this.getTotalPrice}} BYN
-                    <v-icon>shopping_cart</v-icon>
+                    <v-icon class="header-cart-icon">shopping_cart</v-icon>
                 </v-btn>
             </client-only>
             <v-overlay :dark='false' :value="burgerOverlay" :opacity=".5">
@@ -283,6 +283,10 @@ export default {
 </script>
 
 <style>
+.header-cart-icon {
+    font-size: 20px;
+    margin-left: 6px;
+}
 .zone-btn-address {
     text-overflow: ellipsis;
     overflow: hidden;
@@ -384,8 +388,7 @@ export default {
 .technical-Btns {
     display: flex;
     flex-direction: row;
-    width: inherit;
-    max-width: 50%;
+    align-items: center;
 }
 
 .rounding {
@@ -483,6 +486,8 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
+    flex: 1 0 auto;
 }
 
 .links-list a {
@@ -515,7 +520,7 @@ export default {
     height: 32px;
     min-width: 50px;
     padding: 7px 16px;
-    margin-left: auto !important;
+    margin-left: 20px !important;
     font-size: 15px !important;
     text-transform: none !important;
     color: #000 !important;
