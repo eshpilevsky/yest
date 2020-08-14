@@ -63,7 +63,7 @@
                 </div>
                 <div class="catalog">
                     <v-tabs hide-slider v-model="tab" class="catalog-tabs" center-active>
-                        <v-tab class="tab-item" active-class="tab-item--active" height="70px" v-for="(category, index) in restuarant.menu" :key="category.cat_id" @click="scroll(`${index}`)">
+                        <v-tab class="tab-item" active-class="tab-item--active" height="70px" v-for="(category, index) in restuarant.menu" :key="category.cat_id" @click="scroll(`desktop_${index}`)">
                             {{category.name}}
                         </v-tab>
                     </v-tabs>
@@ -72,7 +72,7 @@
                 <div class="catalog-list">
                     <div v-for="(category, index) in restuarant.menu" :key="category.cat_id">
                         <div class="category-title">
-                            <h2 :id='`${index}`'>
+                            <h2 v-intersect="categoryNameIntersect" :id='`desktop_${index}`'>
                                 {{category.name}}
                             </h2>
                             <span class="category-list-counter">
@@ -311,7 +311,7 @@
             </div>
             <div class="rest-info-bottom">
                 <v-tabs hide-slider z-index='1' v-model="tab" class="catalog-tabs catalog-tabs-mobile">
-                    <v-tab active-class="catalog-tab-mobile-container--active" v-for="(category, index) in restuarant.menu" :key="category.id" @click="scroll(`${index}`)" :color="tab == index ? 'primary': null" class="catalog-tab-mobile-container">
+                    <v-tab active-class="catalog-tab-mobile-container--active" v-for="(category, index) in restuarant.menu" :key="category.id" @click="scroll(`mob_${index}`)" :color="tab == index ? 'primary': null" class="catalog-tab-mobile-container">
                         <v-chip>
                             {{category.name}}
                         </v-chip>
@@ -320,7 +320,7 @@
             </div>
             <div class="mobile-catalog">
                 <div v-for="(category, index) in restuarant.menu" :key="category.id">
-                    <h2 :id="`${index}`" class="category-title">
+                    <h2 v-intersect="categoryNameIntersect" :id="`mob_${index}`" class="category-title">
                         {{category.name}}
                     </h2>
                     <div class="dishs-list-mobile">
@@ -758,19 +758,18 @@ export default {
         },
 
         scroll(id) {
-            const yOffset = -140;
             const element = document.getElementById(id);
-            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-
+			const yOffset = window.innerWidth < 992 ? 80 : 140;
+			const y = element.getBoundingClientRect().top + window.pageYOffset - yOffset;
             window.scrollTo({
                 top: y,
                 behavior: 'smooth'
 			});
 			this.tab = id
-
         },
         categoryNameIntersect(entries, observer) {
-            this.tab = parseInt(entries[0].target.id, 10)
+			let visibleCategory =entries[0].target.id.split('_')
+            this.tab = s[1]
         }
     },
     computed: {
