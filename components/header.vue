@@ -117,7 +117,7 @@
             <client-only>
                 <v-btn v-if="this.getTotalPrice > 0" color="primary" @click='goToLatestReset()'>
                     {{this.getTotalPrice}} BYN
-                    <v-icon>shopping_cart</v-icon>
+                    <v-icon class="header-cart-icon">shopping_cart</v-icon>
                 </v-btn>
             </client-only>
             <v-overlay :dark='false' :value="burgerOverlay" :opacity=".5">
@@ -125,7 +125,7 @@
             </v-overlay>
             <v-menu offset-y>
                 <template v-slot:activator="{ on }">
-                    <v-btn small rounded outlined class="zone-btn" color="primary" v-on="on">
+                    <v-btn small rounded outlined class="zone-btn country-zone-btn" color="primary" v-on="on">
                         {{ getSelectedZone.name }}
                     </v-btn>
                 </template>
@@ -283,18 +283,30 @@ export default {
 </script>
 
 <style>
+.header-cart-icon {
+    font-size: 20px;
+    margin-left: 6px;
+}
 .zone-btn-address {
-    text-overflow: clip;
+    text-overflow: ellipsis;
     overflow: hidden;
+    direction: rtl;
+    text-align: left;
+    max-width: 100%;
 }
 
 .zone-btn .v-btn__content {
-    max-width: 200px;
+    max-width: 100%;
     overflow: hidden;
     direction: rtl;
     text-align: left;
     display: flex;
     flex-direction: row-reverse;
+}
+
+.zone-btn .v-btn__content i {
+  font-size: 18px;
+  margin-right: 4px;
 }
 
 .burger-logo-img {
@@ -304,10 +316,15 @@ export default {
 .logo-img {
     height: 40px !important;
 }
-</style><style scoped>
+</style>
+<style scoped>
+.country-zone-btn {
+    max-width: initial !important;
+}
+
 .header-map-btn {
     display: none;
-    margin-top: 0px;
+    margin-top: 0;
     position: relative;
     z-index: 999;
 }
@@ -371,6 +388,7 @@ export default {
 .technical-Btns {
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 .rounding {
@@ -468,6 +486,8 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
+    flex: 1 0 auto;
 }
 
 .links-list a {
@@ -500,12 +520,13 @@ export default {
     height: 32px;
     min-width: 50px;
     padding: 7px 16px;
-    margin-left: 15px !important;
+    margin-left: 20px !important;
     font-size: 15px !important;
     text-transform: none !important;
     color: #000 !important;
     text-overflow: clip;
     overflow: hidden;
+    max-width: 80%;
 }
 
 .links {

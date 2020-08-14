@@ -100,10 +100,10 @@
                         </div>
                         <div v-if="this.orderList.length > 0 && this.getLatetestRestInfoWithOrder.params.resName == this.$router.currentRoute.params.resName" class="my-order-dishes-desktop">
                             <div v-for="order in this.orderList" :key="order.selectSize.id" class="order-item">
-                                <div class="d-flex flex-column">
+                                <div class="d-flex flex-column order-item__title">
                                     <div class="d-flex flex-column order-item-info">
                                         <div class="item-name">
-                                            {{order.name}}
+                                            <span>{{order.name}}</span>
                                             <span class="order-item-subbtitle">
                                                 {{order.selectSize.weight}}
                                             </span>
@@ -138,23 +138,9 @@
                                         </v-icon>
                                     </div>
                                 </div>
-                                <div class="pl-4">
-                                    x {{order.selectSize.price }} BYN
+                                <div class="pl-4 order-item__price">
+                                    {{order.selectSize.price }} <span class="fs10">BYN</span>
                                 </div>
-                            </div>
-                            <div class="delivery-options">
-                                <v-divider />
-                                <div class="d-flex flex-row justify-space-between align-center py-2">
-                                    <span class="delivery-title">
-                                        Доставка
-                                    </span>
-                                    <span class="delivery-count">
-                                        {{computedDeliveryCost().delivery ? computedDeliveryCost().delivery : computedDeliveryCost().deliveryFee}} BYN
-                                    </span>
-                                </div>
-                                <p class="more-delivery">
-                                    {{computedFreeDeliveryCost()}}
-                                </p>
                             </div>
                         </div>
                         <div v-else class="my-order">
@@ -162,6 +148,20 @@
                                 Выберите блюда и добавьте их к заказу
                             </span>
                         </div>
+                    </div>
+                    <div class="delivery-options">
+                        <v-divider />
+                        <div class="my-order-top__total d-flex flex-row justify-space-between align-center py-2">
+                                          <span class="delivery-title">
+                                              Доставка
+                                          </span>
+                          <span class="delivery-count">
+                                              {{computedDeliveryCost().delivery ? computedDeliveryCost().delivery : computedDeliveryCost().deliveryFee}} BYN
+                                          </span>
+                        </div>
+                        <p class="more-delivery delivery-info-text">
+                            {{computedFreeDeliveryCost()}}
+                        </p>
                     </div>
                     <div class="my-order-bottom">
                         <div class="total-price">
@@ -897,7 +897,16 @@ export default {
         color: #000 !important;
     }
 }
-</style><style scoped>
+</style>
+<style scoped>
+.fs10 {
+    font-size: 10px !important;
+}
+
+.delivery-info-text {
+    padding: 0 20px;
+}
+
 .tab-item {
     transition: none;
     font-size: 14px !important;
@@ -915,9 +924,10 @@ export default {
 }
 
 .delivery-options {
-    padding: 19px 0 11px;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 10px 0 11px;
+    border-top: 1px solid hsla(0,0%,100%,.2);
     flex-wrap: wrap;
+    margin-top: auto;
 }
 
 .price-text p:first-child {
@@ -1074,11 +1084,19 @@ export default {
 }
 
 .my-order-top {
-    display: contents;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    max-height: calc(100% - 160px);
+}
+
+.my-order-top__total {
+    padding: 0 20px;
 }
 
 .my-order-dishes-desktop {
-    flex: auto;
+    margin-bottom: auto;
+    padding-bottom: 20px;
 }
 
 .desctop_btn_confirm_order {
@@ -1122,10 +1140,44 @@ export default {
     line-height: 36px;
 }
 
-.counter-count {
+.my-counter {
+  min-width: 35px;
+  height: 35px;
+  min-height: 35px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex: 0 1 10%;
+  margin-top: -6px;
+}
+
+.my-counter .counter-count {
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #b0b0b0;
+    font-weight: 300;
+    font-size: 14px;
+    min-width: 35px;
+    min-height: 35px;
+    line-height: 35px;
+    height: 35px;
+}
+
+.my-counter .counter-plus {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    right: 0;
+    border-bottom: none !important;
+}
+
+.my-counter .counter-minus {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    border-top: none !important;
 }
 
 .my-counter:hover .counter-count,
@@ -1133,18 +1185,36 @@ export default {
 .my-counter:hover .counter-minus {
     display: flex;
     border: .5px solid rgb(176, 176, 176);
-    background: #f2f2f2;
     cursor: pointer;
+    background-color: #fff !important;
 }
 
 .counter-plus,
 .counter-minus {
     display: none;
     cursor: pointer;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    height: 35px;
+    background-color: #fff !important;
+    z-index: 1;
+}
+
+.order-item__title {
+    flex: 1 1 60%;
+}
+
+.order-item__price {
+  flex: 0 1 20%;
+  font-size: 14px;
+  text-align: right;
+  padding-left: 10px !important;
 }
 
 .order-item-info {
     flex: 1 1 60%;
+    line-height: 1em;
 }
 
 .order-item-subbtitle {
@@ -1154,12 +1224,12 @@ export default {
 }
 
 .order-item {
-    padding: 0 20px;
+    padding: 10px 20px;
     font-size: 16px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .price {
@@ -1579,14 +1649,15 @@ export default {
 }
 
 .right {
-    width: 320px;
-    height: max-content;
+    width: 310px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     position: sticky;
     top: 90px;
+    height: calc(100vh - 100px);
+    overflow: hidden;
 }
 
 .mapimg {
@@ -1601,8 +1672,8 @@ export default {
 
 .rest-cotainer {
     display: grid;
-    grid-template-columns: calc(100% - 340px) 320px;
-    grid-column-gap: 20px;
+    grid-template-columns: calc(100% - 320px) 310px;
+    grid-column-gap: 10px;
     margin: auto;
     max-width: 1500px;
     width: 100%;
