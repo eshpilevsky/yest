@@ -125,7 +125,7 @@
             </v-overlay>
             <v-menu offset-y>
                 <template v-slot:activator="{ on }">
-                    <v-btn small rounded outlined class="zone-btn" color="primary" v-on="on">
+                    <v-btn small rounded outlined class="zone-btn country-zone-btn" color="primary" v-on="on">
                         {{ getSelectedZone.name }}
                     </v-btn>
                 </template>
@@ -312,7 +312,12 @@ export default {
 .logo-img {
     height: 40px !important;
 }
-</style><style scoped>
+</style>
+<style scoped>
+.country-zone-btn {
+    max-width: initial !important;
+}
+
 .header-map-btn {
     display: none;
     margin-top: 0px;
@@ -379,7 +384,8 @@ export default {
 .technical-Btns {
     display: flex;
     flex-direction: row;
-    max-width: 40%;
+    width: inherit;
+    max-width: 50%;
 }
 
 .rounding {
@@ -515,7 +521,7 @@ export default {
     color: #000 !important;
     text-overflow: clip;
     overflow: hidden;
-    max-width: 55%;
+    max-width: 80%;
 }
 
 .links {
