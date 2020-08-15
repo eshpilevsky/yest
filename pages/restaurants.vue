@@ -211,14 +211,12 @@
                         </div>
                         <div class='options-actions'>
                             <div class="d-flex flex-row">
-                                <div>
-                                    <v-btn color="primary" @click="addCraftDish()">Добавить</v-btn>
-                                </div>
+                                <v-btn class="options-actions__add" color="primary" @click="addCraftDish()">Добавить</v-btn>
                                 <div class="dish-counter">
                                     <v-icon @click="dencrementSelectedDish()" color="black">
                                         remove
                                     </v-icon>
-                                    {{selectedDishCounter}}
+                                    <span class="dish-counter__qty">{{selectedDishCounter}}</span>
                                     <v-icon @click="incrementSelectedDish()" color="black">
                                         add
                                     </v-icon>
@@ -927,6 +925,15 @@ export default {
   align-items: center;
   text-transform: capitalize !important;
 }
+
+.options-list div[role=radiogroup] {
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+}
+
+.options-list div[role=radiogroup] .v-radio {
+  width: 50% !important;
+}
 </style>
 <style scoped>
 .bgGray {
@@ -1113,6 +1120,7 @@ export default {
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
+    line-height: 1em;
 }
 
 .dish-counter i {
@@ -1129,14 +1137,38 @@ export default {
     margin: 0 10px;
 }
 
+.dish-counter__qty {
+  margin: 0 12px;
+  min-width: 24px;
+  font-size: 16px;
+  line-height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .options-actions {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding: 0 10px;
-    max-height: 48px;
-    padding-top: 20px;
+    padding: 20px 20px 0;
+    margin: 0 -20px;
+    border-top: 1px solid #ececec;
+}
+
+.options-actions__add {
+  width: auto;
+  margin: 0 8px 0 0;
+  padding: 15.5px 14px !important;
+  min-width: 213px !important;
+  min-height: auto;
+  border-radius: 4px;
+  height: 47px !important;
+  color: #000 !important;
+  text-transform: capitalize !important;
+  font-size: 16px !important;
+  letter-spacing: 0.1px !important;
 }
 
 .rest-info-content {
@@ -1196,14 +1228,19 @@ export default {
 
 .options-list {
     background: #fafafa;
-    padding: 0 20px;
+    padding: 6px 20px 0;
+    max-height: calc(100vh - 220px);
+    overflow-y: auto;
     margin: 0 -20px;
 }
 
 .select-option-card {
     color: #000 !important;
-    padding: 20px;
-    max-width: 420px;
+    padding: 14px 20px 20px;
+    max-width: 660px;
+    border-radius: 10px !important;
+    max-height: calc(100vh - 80px);
+    overflow: hidden;
 }
 
 .multi-title {
@@ -1215,6 +1252,7 @@ export default {
 
 .close-select-option {
     cursor: pointer;
+    margin-top: 2px;
 }
 
 .select-option-title {
