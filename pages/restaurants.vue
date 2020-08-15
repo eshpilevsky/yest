@@ -184,7 +184,8 @@
                                 <v-icon color="#000">close</v-icon>
                             </div>
                         </div>
-                        <div class="options-list" v-show="this.selectedDish.sizes.length > 0">
+                        <div class="options-list">
+                        <!-- <div class="options-list" v-show="this.selectedDish.sizes.length > 0"> -->
                             <div class="sizes">
                                 <div class="multi-title">
                                     Размер на выбор
@@ -193,7 +194,8 @@
                                     <v-radio v-for="size in selectedDish.sizes" :key="size.id" :label="size.name" :value="size" color="primary"></v-radio>
                                 </v-radio-group>
                             </div>
-                            <div class="options" v-show="this.selectedDish.options.length > 0">
+                            <div class="options">
+                            <!-- <div class="options" v-show="this.selectedDish.options.length > 0"> -->
                                 <div class="multi-title">
                                     Дополнительниые ингреденеты
                                 </div>
