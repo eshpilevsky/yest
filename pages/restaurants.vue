@@ -448,25 +448,17 @@
             </div>
         </div>
     </div>
-    <v-overlay :dark='false' opacity="0.5" z-index="999" v-model="showWarning">
+    <v-overlay class="modal-change-products" :dark='false' opacity="0.5" z-index="999" v-model="showWarning">
         <v-card class="d-flex flex-column justify-space-between select-option-card">
-            <div class="d-flex flex-row justify-space-between align-center pb-2">
-                <div class="warning-title" color="secondary">
-                    Оформить заказ из ресторана {{this.restuarant.name}}
-                </div>
-                <div>
-                    <v-icon @click="cancelDeleteBasket()" color="black">close</v-icon>
-                </div>
-            </div>
             <div class="warning-info" color="secondary">
                 Все ранее добавленные блюда из ресторана "{{this.getLatetestRestInfoWithOrder == null ? '404' : this.getLatetestRestInfoWithOrder.restName}}" будут удалены из корзины
             </div>
-            <v-card-actions class="d-flex flex-row">
-                <v-btn color="primary" @click="coontinue()">
-                    Продолжить
+            <v-card-actions class="modal-change-products__actions d-flex flex-row">
+                <v-btn class="modal-change-products__continue" color="primary" @click="coontinue()">
+                    OK
                 </v-btn>
-                <v-btn @click="cancelDeleteBasket()" class="mx-3" outlined>
-                    Отменить
+                <v-btn @click="cancelDeleteBasket()" class="modal-change-products__cancel" outlined>
+                    Отмена
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -903,6 +895,38 @@ export default {
         color: #000 !important;
     }
 }
+
+.modal-change-products {
+    padding: 0 20px;
+}
+
+.modal-change-products__actions {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.modal-change-products__continue {
+  flex: 1 0 0;
+  margin-right: 8px;
+  height: 56px !important;
+  border-radius: 16px;
+  color: #000 !important;
+}
+
+.modal-change-products__cancel {
+  border-radius: 16px;
+  flex: 1 0 0;
+  height: 56px !important;
+  margin-left: 8px !important;
+  margin-right: 0 !important;
+  background: transparent;
+  border: 1px solid #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: capitalize !important;
+}
 </style>
 <style scoped>
 .bgGray {
@@ -1073,11 +1097,9 @@ export default {
 }
 
 .warning-info {
-    border-top: solid 1px #f5f5f5;
-    border-bottom: solid 1px #f5f5f5;
-    background: #fafafa;
+    font-weight: 600;
     margin: 0 -20px;
-    padding: 16px 20px;
+    padding: 0 20px 20px;
 }
 
 .price-calc-sum {
@@ -1179,7 +1201,6 @@ export default {
 }
 
 .select-option-card {
-    background: #f5f5f5 !important;
     color: #000 !important;
     padding: 20px;
 }
