@@ -58,7 +58,7 @@ module.exports = {
    ** Plugins to load before mounting the App
    */
   plugins: [{
-      src: '~plugins/vuex-persist',
+      src: '~/plugins/vuex-persist',
       ssr: false
     },
     // {

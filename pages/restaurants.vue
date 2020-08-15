@@ -774,7 +774,7 @@ export default {
         },
         categoryNameIntersect(entries, observer) {
             let visibleCategory = entries[0].target.id.split('_')
-            this.tab = visibleCategory[1]
+            this.tab = parseInt(visibleCategory[1])
         }
     },
     computed: {
