@@ -365,64 +365,68 @@
                     </div>
                 </div>
                 <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showDish" scrollable persistent no-click-animation z-index='999'>
-                    <v-card>
+                    <v-card class="mobile-addition">
                         <v-card-text class="pa-0">
-                            <div class="close-block">
-                                <v-btn icon color="white" @click="showDish = false">
+                            <div class="mobile-addition__top">
+                                <div class="close-block">
+                                  <v-btn class="close-block-btn" icon color="white" @click="showDish = false">
                                     <v-icon color="black">close</v-icon>
-                                </v-btn>
-                            </div>
-                            <div class="selected-dish-top">
-                                <img :src="'https://img.eatmealby.com/resize/dish/400/'+selectedDish.image" :alt="selectedDish.name" class="dish-img-mobile-selected" />
-                            </div>
-                            <div class="selected-dish-composition">
-                                {{selectedDish.description}}
-                            </div>
-                            <div>
+                                  </v-btn>
+                                </div>
+                                <div class="selected-dish-top">
+                                  <img :src="'https://img.eatmealby.com/resize/dish/400/'+selectedDish.image" :alt="selectedDish.name" class="dish-img-mobile-selected" />
+                                </div>
+                                <div class="selected-dish-composition">
+                                  {{selectedDish.description}}
+                                </div>
+                                <div class="bgGray">
                                 <div class="sizes px-3">
-                                    <div class="multi-title">
-                                        Размер на выбор
-                                    </div>
-                                    <v-radio-group v-model="sizesRadioBtn" :mandatory="false" class="d-flex flex-row">
-                                        <v-radio v-for="size in selectedDish.sizes" :key="size.id" :label="size.name" :value="size" color="primary"></v-radio>
-                                    </v-radio-group>
+                                  <div class="multi-title">
+                                    Размер на выбор
+                                  </div>
+                                  <v-radio-group v-model="sizesRadioBtn" :mandatory="false" class="d-flex flex-row">
+                                    <v-radio v-for="size in selectedDish.sizes" :key="size.id" :label="size.name" :value="size" color="primary"></v-radio>
+                                  </v-radio-group>
                                 </div>
                                 <div class="options px-3">
-                                    <div class="multi-title">
-                                        Дополнительниые ингреденеты
+                                  <div class="multi-title">
+                                    Дополнительниые ингреденеты
+                                  </div>
+                                  <div v-for="option in selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
+                                    <div>
+                                      {{option.title}}
                                     </div>
-                                    <div v-for="option in selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
-                                        <div>
-                                            {{option.title}}
-                                        </div>
-                                        <div class="d-flex flex-row justify-start">
-                                            <v-radio-group v-model="selectOption" :mandatory="false" class="d-flex flex-row">
-                                                <v-radio v-for="optionV in option.variants" :key="optionV.id" :label="`${optionV.name} +${optionV.price[0] != undefined ? optionV.price[0].price : 0} BYN`" :value="optionV" color="primary"></v-radio>
-                                            </v-radio-group>
-                                        </div>
+                                    <div class="d-flex flex-row justify-start">
+                                      <v-radio-group v-model="selectOption" :mandatory="false" class="d-flex flex-row">
+                                        <v-radio v-for="optionV in option.variants" :key="optionV.id" :label="`${optionV.name} +${optionV.price[0] != undefined ? optionV.price[0].price : 0} BYN`" :value="optionV" color="primary"></v-radio>
+                                      </v-radio-group>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="mobile-addition__bottom">
+                                <div class="d-flex flex-row justify-space-between bottom-withTitle">
+                                    <div class="dish-bottom-name">
+                                        {{selectedDish.name}}
+                                    </div>
+                                    <div class="dish-bottom-price d-flex align-center">
+                                        {{sizesRadioBtn.price}} BYN
                                     </div>
                                 </div>
-                            </div>
-                            <div class="d-flex flex-row justify-space-between px-3">
-                                <div class="dish-bottom-name">
-                                    {{selectedDish.name}}
-                                </div>
-                                <div class="d-flex align-center">
-                                    {{sizesRadioBtn.price}} BYN
-                                </div>
-                            </div>
-                            <div class="d-flex flex-row justify-space-between align-center m-5 pa-3">
-                                <div class="d-flex flex-row counter-component">
-                                    <v-icon @click="dencrementSelectedDish()">
-                                        remove
-                                    </v-icon>
-                                    {{selectedDishCounter}}
-                                    <v-icon @click="incrementSelectedDish()">
+                                <div class="d-flex flex-row justify-space-between align-center m-5">
+                                    <div class="d-flex flex-row counter-component">
+                                        <v-icon @click="dencrementSelectedDish()">
+                                          remove
+                                        </v-icon>
+                                        <span class="counter-component__qty">{{selectedDishCounter}}</span>
+                                        <v-icon @click="incrementSelectedDish()">
                                         add
-                                    </v-icon>
-                                </div>
-                                <div class="add-btn">
-                                    <v-btn color="primary" @click="addToBasketMobile()">Добавить</v-btn>
+                                      </v-icon>
+                                    </div>
+                                    <div class="add-btn">
+                                        <v-btn color="primary" @click="addToBasketMobile()">Добавить</v-btn>
+                                    </div>
                                 </div>
                             </div>
                         </v-card-text>
@@ -898,6 +902,50 @@ export default {
 }
 </style>
 <style scoped>
+.bgGray {
+    background-color: #fafafa;
+}
+
+.mobile-addition {
+    position: relative !important;
+    border-radius: 12px 12px 0 0 !important;
+    overflow: hidden !important;
+}
+
+.mobile-addition__top {
+  overflow: auto;
+  max-height: calc(100% - 125px);
+  padding-bottom: 10px;
+}
+
+.mobile-addition__bottom {
+    padding: 16px;
+    width: 100%;
+    background-color: #fff;
+    flex: 0 0 auto;
+    border-top: 1px solid #ececec;
+    box-shadow: 0 -2px 10px 0 #ececec;
+    position: relative;
+}
+
+.bottom-withTitle {
+  margin-bottom: 16px;
+}
+
+.close-block-btn {
+    top: 12px;
+    width: 40px;
+    right: 12px;
+    height: 40px;
+    z-index: 6;
+    position: absolute;
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.07);
+    border-radius: 50%;
+    background-color: white;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 .fs10 {
     font-size: 10px !important;
 }
@@ -1105,9 +1153,20 @@ export default {
 }
 
 .dish-bottom-name {
+    flex: 0 1 auto;
     color: #000000;
     line-height: 1.25;
-    padding: 20px;
+    margin-right: auto;
+    font-size: 16px;
+}
+
+.dish-bottom-price {
+    flex: 0 0 auto;
+    color: #000000;
+    align-self: center;
+    line-height: 1.25;
+    padding-left: 4px;
+    font-size: 16px;
 }
 
 .options-list {
@@ -1124,8 +1183,8 @@ export default {
 
 .multi-title {
     color: #b0b0b0;
-    font-size: 14px;
-    padding-top: 20px;
+    font-size: 12px;
+    padding-top: 8px;
     text-transform: uppercase;
 }
 
@@ -1295,11 +1354,40 @@ export default {
 .counter-component {
     border: solid 1px #f5f5f5;
     display: flex;
-    padding: 13px 20px;
+    padding: 15px 20px;
+    height: 56px;
     align-items: center;
     margin-right: 5px;
     justify-content: center;
     background-color: #ffffff;
+    border-radius: 16px;
+}
+
+.counter-component__qty {
+    margin: 0 10px;
+    min-width: 24px;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+}
+
+.add-btn {
+    border-radius: 16px;
+    flex: 1;
+    margin-left: 5px;
+    color: #000;
+    height: 56px;
+    color: #000;
+}
+
+.add-btn button {
+    width: 100%;
+    text-transform: capitalize;
+    font-size: 17px;
+    letter-spacing: 0.1px;
+    border-radius: 16px;
+    height: 56px !important;
+    color: #000 !important;
 }
 
 .selected-dish-composition {
@@ -1307,6 +1395,7 @@ export default {
     font-size: 14px;
     background: #fafafa;
     line-height: 22px;
+    color: #000;
 }
 
 .rest-info-bottom {
@@ -1316,6 +1405,7 @@ export default {
 }
 
 .dish-img-mobile-selected {
+    display: block;
     width: 100%;
     object-fit: contain;
 }
