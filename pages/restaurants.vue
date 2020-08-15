@@ -185,7 +185,6 @@
                             </div>
                         </div>
                         <div class="options-list">
-                        <!-- <div class="options-list" v-show="this.selectedDish.sizes.length > 0"> -->
                             <div class="sizes">
                                 <div class="multi-title">
                                     Размер на выбор
@@ -195,7 +194,6 @@
                                 </v-radio-group>
                             </div>
                             <div class="options">
-                            <!-- <div class="options" v-show="this.selectedDish.options.length > 0"> -->
                                 <div class="multi-title">
                                     Дополнительниые ингреденеты
                                 </div>
@@ -213,14 +211,12 @@
                         </div>
                         <div class='options-actions'>
                             <div class="d-flex flex-row">
-                                <div>
-                                    <v-btn color="primary" @click="addCraftDish()">Добавить</v-btn>
-                                </div>
+                                <v-btn class="options-actions__add" color="primary" @click="addCraftDish()">Добавить</v-btn>
                                 <div class="dish-counter">
                                     <v-icon @click="dencrementSelectedDish()" color="black">
                                         remove
                                     </v-icon>
-                                    {{selectedDishCounter}}
+                                    <span class="dish-counter__qty">{{selectedDishCounter}}</span>
                                     <v-icon @click="incrementSelectedDish()" color="black">
                                         add
                                     </v-icon>
@@ -245,11 +241,11 @@
     </div>
     <div class="mobile-mode">
         <div class="mobile-mode_header">
-            <v-icon @click="goBack()">arrow_back</v-icon>
+            <v-icon class="mobile-mode_header-btn" @click="goBack()">arrow_back</v-icon>
             <h1 class="info-top-title" v-show="showRestName">
                 {{restuarant.name}}
             </h1>
-            <v-icon>search</v-icon>
+            <v-icon class="mobile-mode_header-btn">search</v-icon>
         </div>
         <div class="mobile-rest-info">
             <div class="rest-info-content">
@@ -367,64 +363,68 @@
                     </div>
                 </div>
                 <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showDish" scrollable persistent no-click-animation z-index='999'>
-                    <v-card>
+                    <v-card class="mobile-addition">
                         <v-card-text class="pa-0">
-                            <div class="close-block">
-                                <v-btn icon color="white" @click="showDish = false">
+                            <div class="mobile-addition__top">
+                                <div class="close-block">
+                                  <v-btn class="close-block-btn" icon color="white" @click="showDish = false">
                                     <v-icon color="black">close</v-icon>
-                                </v-btn>
-                            </div>
-                            <div class="selected-dish-top">
-                                <img :src="'https://img.eatmealby.com/resize/dish/400/'+selectedDish.image" :alt="selectedDish.name" class="dish-img-mobile-selected" />
-                            </div>
-                            <div class="selected-dish-composition">
-                                {{selectedDish.description}}
-                            </div>
-                            <div>
+                                  </v-btn>
+                                </div>
+                                <div class="selected-dish-top">
+                                  <img :src="'https://img.eatmealby.com/resize/dish/400/'+selectedDish.image" :alt="selectedDish.name" class="dish-img-mobile-selected" />
+                                </div>
+                                <div class="selected-dish-composition">
+                                  {{selectedDish.description}}
+                                </div>
+                                <div class="bgGray">
                                 <div class="sizes px-3">
-                                    <div class="multi-title">
-                                        Размер на выбор
-                                    </div>
-                                    <v-radio-group v-model="sizesRadioBtn" :mandatory="false" class="d-flex flex-row">
-                                        <v-radio v-for="size in selectedDish.sizes" :key="size.id" :label="size.name" :value="size" color="primary"></v-radio>
-                                    </v-radio-group>
+                                  <div class="multi-title">
+                                    Размер на выбор
+                                  </div>
+                                  <v-radio-group v-model="sizesRadioBtn" :mandatory="false" class="d-flex flex-row">
+                                    <v-radio v-for="size in selectedDish.sizes" :key="size.id" :label="size.name" :value="size" color="primary"></v-radio>
+                                  </v-radio-group>
                                 </div>
                                 <div class="options px-3">
-                                    <div class="multi-title">
-                                        Дополнительниые ингреденеты
+                                  <div class="multi-title">
+                                    Дополнительниые ингреденеты
+                                  </div>
+                                  <div v-for="option in selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
+                                    <div>
+                                      {{option.title}}
                                     </div>
-                                    <div v-for="option in selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
-                                        <div>
-                                            {{option.title}}
-                                        </div>
-                                        <div class="d-flex flex-row justify-start">
-                                            <v-radio-group v-model="selectOption" :mandatory="false" class="d-flex flex-row">
-                                                <v-radio v-for="optionV in option.variants" :key="optionV.id" :label="`${optionV.name} +${optionV.price[0] != undefined ? optionV.price[0].price : 0} BYN`" :value="optionV" color="primary"></v-radio>
-                                            </v-radio-group>
-                                        </div>
+                                    <div class="d-flex flex-row justify-start">
+                                      <v-radio-group v-model="selectOption" :mandatory="false" class="d-flex flex-row">
+                                        <v-radio v-for="optionV in option.variants" :key="optionV.id" :label="`${optionV.name} +${optionV.price[0] != undefined ? optionV.price[0].price : 0} BYN`" :value="optionV" color="primary"></v-radio>
+                                      </v-radio-group>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="mobile-addition__bottom">
+                                <div class="d-flex flex-row justify-space-between bottom-withTitle">
+                                    <div class="dish-bottom-name">
+                                        {{selectedDish.name}}
+                                    </div>
+                                    <div class="dish-bottom-price d-flex align-center">
+                                        {{sizesRadioBtn.price}} BYN
                                     </div>
                                 </div>
-                            </div>
-                            <div class="d-flex flex-row justify-space-between px-3">
-                                <div class="dish-bottom-name">
-                                    {{selectedDish.name}}
-                                </div>
-                                <div class="d-flex align-center">
-                                    {{sizesRadioBtn.price}} BYN
-                                </div>
-                            </div>
-                            <div class="d-flex flex-row justify-space-between align-center m-5 pa-3">
-                                <div class="d-flex flex-row counter-component">
-                                    <v-icon @click="dencrementSelectedDish()">
-                                        remove
-                                    </v-icon>
-                                    {{selectedDishCounter}}
-                                    <v-icon @click="incrementSelectedDish()">
+                                <div class="d-flex flex-row justify-space-between align-center m-5">
+                                    <div class="d-flex flex-row counter-component">
+                                        <v-icon @click="dencrementSelectedDish()">
+                                          remove
+                                        </v-icon>
+                                        <span class="counter-component__qty">{{selectedDishCounter}}</span>
+                                        <v-icon @click="incrementSelectedDish()">
                                         add
-                                    </v-icon>
-                                </div>
-                                <div class="add-btn">
-                                    <v-btn color="primary" @click="addToBasketMobile()">Добавить</v-btn>
+                                      </v-icon>
+                                    </div>
+                                    <div class="add-btn">
+                                        <v-btn color="primary" @click="addToBasketMobile()">Добавить</v-btn>
+                                    </div>
                                 </div>
                             </div>
                         </v-card-text>
@@ -446,25 +446,17 @@
             </div>
         </div>
     </div>
-    <v-overlay :dark='false' opacity="0.5" z-index="999" v-model="showWarning">
+    <v-overlay class="modal-change-products" :dark='false' opacity="0.5" z-index="999" v-model="showWarning">
         <v-card class="d-flex flex-column justify-space-between select-option-card">
-            <div class="d-flex flex-row justify-space-between align-center pb-2">
-                <div class="warning-title" color="secondary">
-                    Оформить заказ из ресторана {{this.restuarant.name}}
-                </div>
-                <div>
-                    <v-icon @click="cancelDeleteBasket()" color="black">close</v-icon>
-                </div>
-            </div>
             <div class="warning-info" color="secondary">
                 Все ранее добавленные блюда из ресторана "{{this.getLatetestRestInfoWithOrder == null ? '404' : this.getLatetestRestInfoWithOrder.restName}}" будут удалены из корзины
             </div>
-            <v-card-actions class="d-flex flex-row">
-                <v-btn color="primary" @click="coontinue()">
-                    Продолжить
+            <v-card-actions class="modal-change-products__actions d-flex flex-row">
+                <v-btn class="modal-change-products__continue" color="primary" @click="coontinue()">
+                    OK
                 </v-btn>
-                <v-btn @click="cancelDeleteBasket()" class="mx-3" outlined>
-                    Отменить
+                <v-btn @click="cancelDeleteBasket()" class="modal-change-products__cancel" outlined>
+                    Отмена
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -901,7 +893,93 @@ export default {
         color: #000 !important;
     }
 }
-</style><style scoped>
+
+.modal-change-products {
+    padding: 0 20px;
+}
+
+.modal-change-products__actions {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.modal-change-products__continue {
+  flex: 1 0 0;
+  margin-right: 8px;
+  height: 56px !important;
+  border-radius: 16px;
+  color: #000 !important;
+}
+
+.modal-change-products__cancel {
+  border-radius: 16px;
+  flex: 1 0 0;
+  height: 56px !important;
+  margin-left: 8px !important;
+  margin-right: 0 !important;
+  background: transparent;
+  border: 1px solid #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: capitalize !important;
+}
+
+.options-list div[role=radiogroup] {
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+}
+
+.options-list div[role=radiogroup] .v-radio {
+  width: 50% !important;
+}
+</style>
+<style scoped>
+.bgGray {
+    background-color: #fafafa;
+}
+
+.mobile-addition {
+    position: relative !important;
+    border-radius: 12px 12px 0 0 !important;
+    overflow: hidden !important;
+}
+
+.mobile-addition__top {
+  overflow: auto;
+  max-height: calc(100% - 125px);
+  padding-bottom: 10px;
+}
+
+.mobile-addition__bottom {
+    padding: 16px;
+    width: 100%;
+    background-color: #fff;
+    flex: 0 0 auto;
+    border-top: 1px solid #ececec;
+    box-shadow: 0 -2px 10px 0 #ececec;
+    position: relative;
+}
+
+.bottom-withTitle {
+  margin-bottom: 16px;
+}
+
+.close-block-btn {
+    top: 12px;
+    width: 40px;
+    right: 12px;
+    height: 40px;
+    z-index: 6;
+    position: absolute;
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.07);
+    border-radius: 50%;
+    background-color: white;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 .fs10 {
     font-size: 10px !important;
 }
@@ -1026,11 +1104,9 @@ export default {
 }
 
 .warning-info {
-    border-top: solid 1px #f5f5f5;
-    border-bottom: solid 1px #f5f5f5;
-    background: #fafafa;
+    font-weight: 600;
     margin: 0 -20px;
-    padding: 16px 20px;
+    padding: 0 20px 20px;
 }
 
 .price-calc-sum {
@@ -1044,6 +1120,7 @@ export default {
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
+    line-height: 1em;
 }
 
 .dish-counter i {
@@ -1060,14 +1137,38 @@ export default {
     margin: 0 10px;
 }
 
+.dish-counter__qty {
+  margin: 0 12px;
+  min-width: 24px;
+  font-size: 16px;
+  line-height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .options-actions {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding: 0 10px;
-    max-height: 48px;
-    padding-top: 20px;
+    padding: 20px 20px 0;
+    margin: 0 -20px;
+    border-top: 1px solid #ececec;
+}
+
+.options-actions__add {
+  width: auto;
+  margin: 0 8px 0 0;
+  padding: 15.5px 14px !important;
+  min-width: 213px !important;
+  min-height: auto;
+  border-radius: 4px;
+  height: 47px !important;
+  color: #000 !important;
+  text-transform: capitalize !important;
+  font-size: 16px !important;
+  letter-spacing: 0.1px !important;
 }
 
 .rest-info-content {
@@ -1109,32 +1210,49 @@ export default {
 }
 
 .dish-bottom-name {
+    flex: 0 1 auto;
     color: #000000;
     line-height: 1.25;
-    padding: 20px;
+    margin-right: auto;
+    font-size: 16px;
+}
+
+.dish-bottom-price {
+    flex: 0 0 auto;
+    color: #000000;
+    align-self: center;
+    line-height: 1.25;
+    padding-left: 4px;
+    font-size: 16px;
 }
 
 .options-list {
     background: #fafafa;
-    padding: 0 20px;
+    padding: 6px 20px 0;
+    max-height: calc(100vh - 220px);
+    overflow-y: auto;
     margin: 0 -20px;
 }
 
 .select-option-card {
-    background: #f5f5f5 !important;
     color: #000 !important;
-    padding: 20px;
+    padding: 14px 20px 20px;
+    max-width: 660px;
+    border-radius: 10px !important;
+    max-height: calc(100vh - 80px);
+    overflow: hidden;
 }
 
 .multi-title {
     color: #b0b0b0;
-    font-size: 14px;
-    padding-top: 20px;
+    font-size: 12px;
+    padding-top: 8px;
     text-transform: uppercase;
 }
 
 .close-select-option {
     cursor: pointer;
+    margin-top: 2px;
 }
 
 .select-option-title {
@@ -1299,11 +1417,40 @@ export default {
 .counter-component {
     border: solid 1px #f5f5f5;
     display: flex;
-    padding: 13px 20px;
+    padding: 15px 20px;
+    height: 56px;
     align-items: center;
     margin-right: 5px;
     justify-content: center;
     background-color: #ffffff;
+    border-radius: 16px;
+}
+
+.counter-component__qty {
+    margin: 0 10px;
+    min-width: 24px;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+}
+
+.add-btn {
+    border-radius: 16px;
+    flex: 1;
+    margin-left: 5px;
+    color: #000;
+    height: 56px;
+    color: #000;
+}
+
+.add-btn button {
+    width: 100%;
+    text-transform: capitalize;
+    font-size: 17px;
+    letter-spacing: 0.1px;
+    border-radius: 16px;
+    height: 56px !important;
+    color: #000 !important;
 }
 
 .selected-dish-composition {
@@ -1311,6 +1458,7 @@ export default {
     font-size: 14px;
     background: #fafafa;
     line-height: 22px;
+    color: #000;
 }
 
 .rest-info-bottom {
@@ -1320,6 +1468,7 @@ export default {
 }
 
 .dish-img-mobile-selected {
+    display: block;
     width: 100%;
     object-fit: contain;
 }
@@ -1450,13 +1599,19 @@ export default {
     z-index: 5;
     background: #ffffff;
     display: flex;
-    padding: 8px 8px 0;
     align-items: center;
     justify-content: space-between;
     box-sizing: border-box;
     width: calc(100% - 8px);
     overflow: hidden;
     max-width: 100%;
+}
+
+.mobile-mode_header-btn {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  margin: 20px;
 }
 
 .desktop-mode {
