@@ -2,8 +2,8 @@
 <div>
     <div class="cart" v-show="!showForm">
         <div class="mobile-mode_header">
-            <v-icon @click="goBack()">arrow_back</v-icon>
-            <v-icon @click="showDropBasketForm()" v-show="getSelectedDishs.length > 0">delete_forever</v-icon>
+            <v-icon class="mobile-mode_header-btn" @click="goBack()">arrow_back</v-icon>
+            <v-icon class="mobile-mode_header-btn" @click="showDropBasketForm()" v-show="getSelectedDishs.length > 0">delete_forever</v-icon>
             <v-overlay :dark='false' v-model="dropBasketForm">
                 <v-card>
                     <v-card-title>
@@ -20,8 +20,8 @@
                 </v-card>
             </v-overlay>
         </div>
-        <div class="px-2" v-show="getSelectedDishs.length > 0">
-            <h1>Заказ </h1>
+        <div class="main-mobile-cart" v-show="getSelectedDishs.length > 0">
+            <h1 class="main-mobile-cart__title">Заказ </h1>
             <div class="order-list">
                 <client-only>
                     <div v-for="order in getSelectedDishs" :key="`${order.id}`" class="list-item">
@@ -29,22 +29,20 @@
                             <v-img cover :src="'https://img.eatmealby.com/resize/dish/400/'+order.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="order.name" class="order-img"></v-img>
                         </div>
                         <div class="dish-info">
-                            <div class="d-flex flex-row align-center justify-space-between ">
-                                <span class="dish-info-text">
-                                    {{order.name}}
-                                </span>
-                                <span class="dish-info-text">
+                            <div class="d-flex flex-row align-center justify-space-between main-mobile-cart__name">
+                                {{order.name}}
+                                <div class="main-mobile-cart__product-price">
                                     {{order.selectSize.price}} BYN
-                                </span>
+                                </div>
                             </div>
                             <div class="d-flex flex-row align-center">
-                                <v-btn icon @click="decrement(order.id)" class="rounded-xl">
+                                <v-btn icon @click="decrement(order.id)" class="rounded-xl main-mobile-cart__count-btn">
                                     <v-icon>remove</v-icon>
                                 </v-btn>
-                                <div>
-                                    {{order.count}}
+                                <div class="main-mobile-cart__order-qty">
+<!--                                    {{order.count}}-->1
                                 </div>
-                                <v-btn icon @click="increment(order.id)" class="rounded-xl">
+                                <v-btn icon @click="increment(order.id)" class="rounded-xl main-mobile-cart__count-btn">
                                     <v-icon>add</v-icon>
                                 </v-btn>
                             </div>
@@ -167,8 +165,47 @@ export default {
 
 <style scoped>
 
+.main-mobile-cart__title {
+    margin: 20px 0 10px 16px;
+    font-size: 32px;
+    font-weight: 600;
+}
+
+.main-mobile-cart__name {
+    align-items: flex-start !important;
+    font-size: 16px;
+    line-height: 19px;
+    margin-bottom: 8px;
+}
+
+.main-mobile-cart__product-price {
+    margin-left: 10px;
+    flex: 0 0 auto;
+}
+
+.main-mobile-cart__count-btn {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    border-radius: 16px;
+    justify-content: center;
+    background-color: #F1F0ED;
+}
+
+.main-mobile-cart__order-qty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 12px;
+  font-size: 20px;
+}
+
 .order-img{
-	border-radius: 3px;
+    width: 104px;
+    height: 104px;
+    overflow: hidden;
+    border-radius: 24px;
 }
 
 .form{
@@ -201,13 +238,11 @@ export default {
 }
 
 .total-info-block {
-    margin: 5px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding-bottom: 8px;
-
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 auto;
 }
 
 .delivery-time {
@@ -224,9 +259,22 @@ export default {
 }
 
 .next-btn-block {
-    width: 90%;
-    margin: 20px;
-    margin-left: 10px !important;
+  width: 100%;
+  margin-left: 16px;
+}
+
+.next-btn-block button {
+  border-radius: 16px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  font-size: 16px;
+  letter-spacing: 0.1px;
+  text-transform: capitalize;
+  padding: 0 11px !important;
+  height: 56px !important;
 }
 
 .cart {
@@ -240,13 +288,13 @@ export default {
 .confirm-order {
     position: fixed;
     bottom: 0;
+    right: 0;
+    left: 0;
     background: #ffffff;
-    box-shadow: 0px -4px 20px rgba(117, 115, 111, 0.2);
-    height: 88px;
+    box-shadow: 0 -4px 20px rgba(117, 115, 111, 0.2);
+    height: 72px;
     display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    width: 100%;
+    padding: 8px 16px 8px;
 }
 
 .dish-info-text {
@@ -267,10 +315,18 @@ export default {
     max-height: 104px;
 }
 
+.order-list {
+  padding-bottom: 72px;
+}
+
 .list-item {
+    width: 100%;
     display: flex;
-    flex-direction: row;
-	padding-bottom: 10px;
+    padding: 15px 16px 15px 16px;
+    font-size: 14px;
+    border-bottom: 1px solid #f5f5f5;
+    justify-content: flex-start;
+    background-color: white;
 }
 
 .empty-basket-img {
@@ -291,10 +347,12 @@ export default {
     height: 60px;
     z-index: 5;
     background: #ffffff;
-    padding-top: 8px;
     display: flex;
-    padding: 0 8px;
     align-items: center;
     justify-content: space-between;
+}
+
+.mobile-mode_header-btn {
+    margin: 20px;
 }
 </style>

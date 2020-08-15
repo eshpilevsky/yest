@@ -241,11 +241,11 @@
     </div>
     <div class="mobile-mode">
         <div class="mobile-mode_header">
-            <v-icon @click="goBack()">arrow_back</v-icon>
+            <v-icon class="mobile-mode_header-btn" @click="goBack()">arrow_back</v-icon>
             <h1 class="info-top-title" v-show="showRestName">
                 {{restuarant.name}}
             </h1>
-            <v-icon>search</v-icon>
+            <v-icon class="mobile-mode_header-btn">search</v-icon>
         </div>
         <div class="mobile-rest-info">
             <div class="rest-info-content">
@@ -1599,13 +1599,19 @@ export default {
     z-index: 5;
     background: #ffffff;
     display: flex;
-    padding: 8px 8px 0;
     align-items: center;
     justify-content: space-between;
     box-sizing: border-box;
     width: calc(100% - 8px);
     overflow: hidden;
     max-width: 100%;
+}
+
+.mobile-mode_header-btn {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  margin: 20px;
 }
 
 .desktop-mode {
