@@ -1203,6 +1203,7 @@ export default {
 .select-option-card {
     color: #000 !important;
     padding: 20px;
+    max-width: 420px;
 }
 
 .multi-title {
