@@ -121,7 +121,8 @@ export default {
 }
 
 .dish-img {
-    max-height: 210px;
+    /* max-height: 210px; */
+	object-fit: contain;
     width: 100%;
     border-radius: 5px;
     background-repeat: no-repeat;
