@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VuexPersistence from 'vuex-persist'
-Vue.use(VuexPersist);
+Vue.use(VuexPersistence);
 
 export default ({ store }) => {
   new VuexPersistence({
