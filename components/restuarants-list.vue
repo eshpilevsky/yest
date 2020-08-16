@@ -543,7 +543,7 @@ export default {
 
 @media screen and (max-width: 1000px) {
     .list-item-block {
-        min-height: 280px;
+        min-height: 273px;
         margin: 10px 20px;
     }
 }
