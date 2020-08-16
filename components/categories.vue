@@ -6,14 +6,14 @@
                 <div class="category-name">
                     {{ item.name }}
                 </div>
-            </v-chip>ы
+            </v-chip>
             <v-menu offset-y max-height="200px">
                 <template v-slot:activator="{ on }">
                     <v-chip v-on="on" class="category-chips" :color="more.isMore === true ? 'primary': 'white'">
                         <span class="category-name">
-                            {{ more }} 
+                            {{ more.text }}
                         </span>
-                        <v-icon color="primary">
+                        <v-icon color="secondary">
                             keyboard_arrow_down
                         </v-icon>
                     </v-chip>
@@ -52,7 +52,7 @@
     </div>
     <div class="category-list-mobile">
         <button class="category-list-mobile-item" @click="showModalWindow()">
-            <span class="item-name fix-width48">
+            <span class="item-name">
                 <v-icon>search</v-icon>
             </span>
         </button>
@@ -325,11 +325,9 @@ export default {
         this.allCategory = this.categoriesList
         this.first = this.allCategory.slice(0, this.sliceCounter)
         this.second = this.allCategory.slice(this.sliceCounter, this.categoriesList.length)
-        console.log('created -> this.second', this.second.length)
-        console.log('created -> this.first', this.first.length)
     },
     mounted() {
-        // this.getCategories()
+        this.getCategories()
         this.hideCategory = false
         this.ww = window.innerWidth
         if (this.getSearchNameKitchenDish !== null) {
@@ -384,11 +382,6 @@ export default {
     }
 }
 </style><style scoped>
-.fix-width48 {
-  width: 48px;
-  flex: 0 0 auto;
-}
-
 .list-component {
     overflow: scroll;
 }
@@ -446,7 +439,6 @@ export default {
 .selected {
     background-color: #00a646 !important;
     background: #00a646 !important;
-    color: #fff;
 }
 
 .more-category-list:hover {
@@ -493,6 +485,7 @@ export default {
     line-height: 46px;
     font-weight: 400;
     font-size: 16px;
+    color: #000 !important;
     white-space: nowrap;
 }
 
@@ -503,10 +496,6 @@ export default {
     line-height: 46px;
     border-radius: 22px !important;
     margin-right: 4px;
-}
-
-.category-chips.primary {
-  color: #fff !important;
 }
 
 .category-list-mobile-loading {
