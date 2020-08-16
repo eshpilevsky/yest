@@ -115,7 +115,7 @@
                 </span>
             </v-btn>
             <client-only>
-                <v-btn v-if="this.getTotalPrice > 0" color="primary" @click='goToLatestReset()'>
+                <v-btn v-if="this.getTotalPrice > 0" color="primary" @click='goToLatestReset()' class="header-cart-btn">
                     {{this.getTotalPrice}} BYN
                     <v-icon class="header-cart-icon">shopping_cart</v-icon>
                 </v-btn>
@@ -287,6 +287,17 @@ export default {
     font-size: 20px;
     margin-left: 6px;
 }
+
+.header-cart-btn {
+    color: #000 !important;
+    font-size: 14px !important;
+    letter-spacing: 0.1px;
+}
+
+.header-cart-btn i {
+  font-size: 20px;
+}
+
 .zone-btn-address {
     text-overflow: ellipsis;
     overflow: hidden;

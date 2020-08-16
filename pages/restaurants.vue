@@ -1208,8 +1208,12 @@ export default {
 
 .desctop_btn_confirm_order {
     width: 100%;
-    font-weight: 900;
+    font-weight: 600;
     letter-spacing: inherit;
+    color: #000 !important;
+    text-transform: inherit;
+    font-size: 16px;
+    min-height: 41px;
 }
 
 .dish-bottom-name {
@@ -1387,7 +1391,7 @@ export default {
 }
 
 .right-my-order {
-    height: calc(100vh - 145px);
+    height: calc(100vh - 154px);
     width: 100%;
     display: flex;
     flex-direction: column;
