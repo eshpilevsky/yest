@@ -306,6 +306,7 @@ export default {
     padding: 2px 10px 2px 2px;
     margin-right: 10px;
     border-radius: 100px;
+    color: #fff;
 }
 
 .card-options__rating .rating-icon {

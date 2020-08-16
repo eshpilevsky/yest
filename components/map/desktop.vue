@@ -284,7 +284,6 @@ export default {
     max-width: 100px;
     width: 100%;
     text-transform: uppercase !important;
-    color: #000 !important;
     font-size: 16px !important;
 }
 

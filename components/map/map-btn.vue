@@ -1,9 +1,9 @@
 <template>
-<v-btn class="black--text set-you-address" height="40" width="245" color="primary" dense rounded depressed @click="showMap">
+<v-btn class="set-you-address" height="40" width="245" color="primary" dense rounded depressed @click="showMap">
     <i class="material-icons near_me_icon">near_me</i>
-	<span class="address">
-		{{this.text}}
-	</span>
+    <span class="address">
+        {{this.text}}
+    </span>
 </v-btn>
 </template>
 

@@ -289,7 +289,6 @@ export default {
 }
 
 .header-cart-btn {
-    color: #000 !important;
     font-size: 14px !important;
     letter-spacing: 0.1px;
 }

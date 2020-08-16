@@ -1,5 +1,5 @@
 <template>
-<v-card class="pa-3" color="#f5f5f5">
+<v-card class="confirm-order-modal pa-3" color="#f5f5f5">
     <v-card-title class="card-title">
         Ваш заказ
         <v-icon @click="closeCheckout()" color="#000">
@@ -148,6 +148,11 @@ export default {
 </script>
 
 <style scoped>
+.confirm-order-modal {
+    max-height: calc(100vh - 100px);
+    overflow: auto;
+}
+
 .card-title {
     display: flex;
     flex-direction: row;

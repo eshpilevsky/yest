@@ -439,6 +439,7 @@ export default {
 .selected {
     background-color: #00a646 !important;
     background: #00a646 !important;
+    color: #fff;
 }
 
 .more-category-list:hover {
@@ -485,7 +486,6 @@ export default {
     line-height: 46px;
     font-weight: 400;
     font-size: 16px;
-    color: #000 !important;
     white-space: nowrap;
 }
 
@@ -496,6 +496,10 @@ export default {
     line-height: 46px;
     border-radius: 22px !important;
     margin-right: 4px;
+}
+
+.category-chips.primary {
+  color: #fff !important;
 }
 
 .category-list-mobile-loading {

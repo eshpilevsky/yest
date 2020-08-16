@@ -354,12 +354,6 @@ h2.currentAddress-title {
     pointer-events: auto;
     background-color: rgba(255, 255, 255, 0.8);
 }
-
-@media screen and (max-width: 992px) {
-    ymaps .customMapBtn.getGeo {
-        display: none !important;
-    }
-}
 </style>
 <style scoped>
 .v-overlay__content {

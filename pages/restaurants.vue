@@ -909,7 +909,6 @@ export default {
   margin-right: 8px;
   height: 56px !important;
   border-radius: 16px;
-  color: #000 !important;
 }
 
 .modal-change-products__cancel {
@@ -1077,7 +1076,6 @@ export default {
     justify-content: space-between;
     text-transform: capitalize;
     font-size: 16px;
-    color: #000 !important;
 }
 
 .btn-sub-text {
@@ -1168,7 +1166,6 @@ export default {
   min-height: auto;
   border-radius: 4px;
   height: 47px !important;
-  color: #000 !important;
   text-transform: capitalize !important;
   font-size: 16px !important;
   letter-spacing: 0.1px !important;
@@ -1210,7 +1207,6 @@ export default {
     width: 100%;
     font-weight: 600;
     letter-spacing: inherit;
-    color: #000 !important;
     text-transform: inherit;
     font-size: 16px;
     min-height: 41px;
@@ -1447,7 +1443,6 @@ export default {
     margin-left: 5px;
     color: #000;
     height: 56px;
-    color: #000;
 }
 
 .add-btn button {
@@ -1457,7 +1452,6 @@ export default {
     letter-spacing: 0.1px;
     border-radius: 16px;
     height: 56px !important;
-    color: #000 !important;
 }
 
 .selected-dish-composition {

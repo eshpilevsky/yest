@@ -190,7 +190,6 @@ export default {
     border-radius: 16px;
     flex: 1 0 0;
     height: 56px !important;
-    color: #000 !important;
     font-size: 16px;
     letter-spacing: 0.1px;
 }
@@ -311,7 +310,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #000 !important;
   font-size: 16px;
   letter-spacing: 0.1px;
   text-transform: capitalize;
