@@ -143,7 +143,7 @@ export default {
         },
         async showRestuarants() {
             const component = this
-            await this.ymaps.geocode(this.searchAddress, {
+            await ymaps.geocode(this.searchAddress, {
                 results: 1,
                 boundedBy: [
                     [51.753588, 23.148098],
@@ -167,7 +167,7 @@ export default {
         async getSuggest(str) {
             this.loadingSuggest = true
             const component = this
-            await this.ymaps.suggest(str, {
+            await ymaps.suggest(str, {
                 results: 5,
                 boundedBy: [
                     [51.753588, 23.148098],
@@ -203,10 +203,8 @@ export default {
             ...settings,
             debug: true
         });
-        this.ymaps = ymaps
 		this.ww = window.innerWidth;
 		this.currentCategoryy = this.currentCategory
-        console.log('beforeMount -> this.currentCategory', this.currentCategory)
     },
     mounted() {
         this.searchAddress = this.getCurrentAddress

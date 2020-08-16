@@ -218,6 +218,7 @@ export default {
             }
         },
         selectCategory(item, boll) {
+            console.log('selectCategory -> item', item)
             // this.$store.dispatch('user/selectCategory', {
             //     id: item.id,
             //     alias: item.alias,

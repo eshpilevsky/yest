@@ -63,9 +63,6 @@ export default {
             const sw = document.getElementById('swiper')[0]
             sw.nextEl()
         },
-        nextImg() {
-
-        },
         getSpecialOffers() {
             this.hide = false
             ApiService.post(`/restaurants/special-offers`, {

@@ -789,7 +789,7 @@ export default {
     },
     watch: {
         getSelectedZone(newValue) {
-            this.dropBasket()
+            // this.dropBasket()
         },
         showRatingSheet(newValue) {
             return newValue
