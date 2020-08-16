@@ -265,7 +265,6 @@ export default {
     margin-top: -12px !important;
     margin-left: -15px !important;
     height: 48px !important;
-    color: #000 !important;
     font-weight: bold !important;
     text-transform: none !important;
     border-top-left-radius: 0px !important;
@@ -364,6 +363,8 @@ export default {
     }
 
     .info-pre-title {
+        display: flex;
+        margin-bottom: 2px;
         color: #b0b0b0;
         font-size: 12px;
     }
@@ -375,6 +376,7 @@ export default {
         min-height: 60px;
         line-height: 1.2;
         align-items: center;
+        margin: 0 0 14px;
     }
 
     .info-setPlace {

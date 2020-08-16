@@ -273,8 +273,7 @@ ymaps .customMapBtn.plus i, ymaps .customMapBtn.minus i {
 ymaps .customMapBtn.iamhere {
     border-radius: 16px !important;
     height: 36px !important;
-    margin-bottom: -110px;
-    margin-top: 50px;
+    width: 100%;
 }
 
 ymaps [title="Определить ваше местоположение"] {
@@ -353,12 +352,6 @@ h2.currentAddress-title {
     border-radius: 14px;
     pointer-events: auto;
     background-color: rgba(255, 255, 255, 0.8);
-}
-
-@media screen and (max-width: 992px) {
-    ymaps .customMapBtn.getGeo {
-        display: none !important;
-    }
 }
 </style>
 <style scoped>

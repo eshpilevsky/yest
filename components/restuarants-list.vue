@@ -294,7 +294,7 @@ export default {
 }
 
 .card-options__delivery {
-    margin-right: 5px;
+    margin-right: 10px;
 }
 
 .card-options__rating {
@@ -306,6 +306,7 @@ export default {
     padding: 2px 10px 2px 2px;
     margin-right: 10px;
     border-radius: 100px;
+    color: #fff;
 }
 
 .card-options__rating .rating-icon {
@@ -475,8 +476,8 @@ export default {
 .restorane-logo {
     height: 100%;
     width: 100%;
-    min-height: 222px;
-    max-height: 222px;
+    min-height: 188px;
+    max-height: 188px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     object-fit: cover;
@@ -609,8 +610,7 @@ export default {
     }
 
     .restorane-title {
-        padding: 10px 30px;
-        padding-bottom: 0;
+        padding: 16px 30px;
         font-size: 20px;
     }
 

@@ -58,7 +58,7 @@ export const getZoomIn = (
     options: {
       float: 'none',
       position: {
-        bottom: '50vh',
+        bottom: '54vh',
         right: '25px'
       }
     }
@@ -80,7 +80,7 @@ export const getZoomOut = (
     options: {
       float: 'none',
       position: {
-        top: '50vh',
+        top: '46vh',
         right: '25px'
       }
     }
@@ -113,10 +113,10 @@ export const getGeo = (
       noPlacemark: true,
       clickHandler,
       layout: ymaps.templateLayoutFactory.createClass(
-		`<div class='customMapBtn getGeo'><i class="material-icons">near_me</i><div/>`
+		`<div class='customMapBtn getGeo'><i class="material-icons" style="font-size: 20px;">near_me</i><div/>`
       ),
       position: {
-        bottom: '35vh',
+        bottom: '40vh',
         right: '25px'
       }
     }
@@ -146,10 +146,12 @@ export const getIamHere = (
     options: {
       float: 'none',
       position: {
-        bottom: navigator.userAgent.includes('Mac OS') ? '8rem' : '2rem',
-        right: '8vw',
+        // bottom: navigator.userAgent.includes('Mac OS') ? '8rem' : '2rem',
+        bottom: '20px',
+        right: '20px',
+        left: '20px',
       },
-      content: 'Я здесь'
+      content: 'Я здесь',
     }
   })
 }

@@ -4,9 +4,11 @@
         <div class="burger-log" @click="showHideSidebar()" v-show="showSidebar == false" />
         <v-navigation-drawer v-model="showSidebar" absolute left temporary burgerOverlay-opacity="0.7" class="newHeader" v-show="showSidebar">
             <v-list>
-                <div class="burger-log-close" @click="showHideSidebar()" />
-                <div class="mobile-logo-block">
+                <div class="menu-header" style="position: relative">
+                  <div class="burger-log-close" @click="showHideSidebar()" />
+                  <div class="mobile-logo-block">
                     <img src="@/assets/logo.svg" class="logo-img" alt="logomobile">
+                  </div>
                 </div>
                 <div class="primary-links">
                     <div>
@@ -115,7 +117,7 @@
                 </span>
             </v-btn>
             <client-only>
-                <v-btn v-if="this.getTotalPrice > 0" color="primary" @click='goToLatestReset()'>
+                <v-btn v-if="this.getTotalPrice > 0" color="primary" @click='goToLatestReset()' class="header-cart-btn">
                     {{this.getTotalPrice}} BYN
                     <v-icon class="header-cart-icon">shopping_cart</v-icon>
                 </v-btn>
@@ -287,6 +289,16 @@ export default {
     font-size: 20px;
     margin-left: 6px;
 }
+
+.header-cart-btn {
+    font-size: 14px !important;
+    letter-spacing: 0.1px;
+}
+
+.header-cart-btn i {
+  font-size: 20px;
+}
+
 .zone-btn-address {
     text-overflow: ellipsis;
     overflow: hidden;
@@ -446,9 +458,12 @@ export default {
     justify-content: center;
     align-items: center;
     padding: 20px;
-    border-top: 20vh solid rgb(245, 245, 245);
     width: 100%;
-    /* padding-top: 18vh; */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
 }
 
 .burgerOverlaySet {
@@ -625,12 +640,12 @@ export default {
         height: 55px;
         position: relative;
         left: 20px;
-        top: 15px;
+        top: 10px;
     }
 
     .mobile-logo-block {
         position: absolute;
-        top: 10px;
+        top: 2px;
         left: 90px;
         min-height: 60px;
         max-height: 140px;
@@ -706,6 +721,10 @@ export default {
     height: 100%;
     justify-content: space-between !important;
 
+}
+
+.secondary-links {
+  padding-bottom: 96px;
 }
 
 .secondary-links,

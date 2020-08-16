@@ -865,8 +865,8 @@ export default {
         padding: 0 !important;
     }
 
-    .catalog-tabs .v-slide-group__wrapper {
-        margin-left: -42px !important;
+    .catalog-tabs .v-slide-group__prev--disabled {
+        display: none !important;
     }
 
     .catalog-tabs .v-ripple__container {
@@ -909,7 +909,6 @@ export default {
   margin-right: 8px;
   height: 56px !important;
   border-radius: 16px;
-  color: #000 !important;
 }
 
 .modal-change-products__cancel {
@@ -1075,6 +1074,8 @@ export default {
     border-radius: 16px !important;
     display: flex;
     justify-content: space-between;
+    text-transform: capitalize;
+    font-size: 16px;
 }
 
 .btn-sub-text {
@@ -1165,7 +1166,6 @@ export default {
   min-height: auto;
   border-radius: 4px;
   height: 47px !important;
-  color: #000 !important;
   text-transform: capitalize !important;
   font-size: 16px !important;
   letter-spacing: 0.1px !important;
@@ -1205,8 +1205,11 @@ export default {
 
 .desctop_btn_confirm_order {
     width: 100%;
-    font-weight: 900;
+    font-weight: 600;
     letter-spacing: inherit;
+    text-transform: inherit;
+    font-size: 16px;
+    min-height: 41px;
 }
 
 .dish-bottom-name {
@@ -1384,7 +1387,7 @@ export default {
 }
 
 .right-my-order {
-    height: calc(100vh - 145px);
+    height: calc(100vh - 154px);
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -1440,7 +1443,6 @@ export default {
     margin-left: 5px;
     color: #000;
     height: 56px;
-    color: #000;
 }
 
 .add-btn button {
@@ -1450,7 +1452,6 @@ export default {
     letter-spacing: 0.1px;
     border-radius: 16px;
     height: 56px !important;
-    color: #000 !important;
 }
 
 .selected-dish-composition {
@@ -1510,6 +1511,7 @@ export default {
     font-weight: 400;
     letter-spacing: -0.5px;
     height: 48px;
+    min-width: 48px;
     display: flex;
     transition: opacity, background-color 100ms;
     align-items: center;
