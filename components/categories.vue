@@ -6,12 +6,12 @@
                 <div class="category-name">
                     {{ item.name }}
                 </div>
-            </v-chip>ы
+            </v-chip>
             <v-menu offset-y max-height="200px">
                 <template v-slot:activator="{ on }">
                     <v-chip v-on="on" class="category-chips" :color="more.isMore === true ? 'primary': 'white'">
                         <span class="category-name">
-                            {{ more }} 
+                            {{ more.text }} 
                         </span>
                         <v-icon color="primary">
                             keyboard_arrow_down
