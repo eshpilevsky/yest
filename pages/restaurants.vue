@@ -865,8 +865,8 @@ export default {
         padding: 0 !important;
     }
 
-    .catalog-tabs .v-slide-group__wrapper {
-        margin-left: -42px !important;
+    .catalog-tabs .v-slide-group__prev--disabled {
+        display: none !important;
     }
 
     .catalog-tabs .v-ripple__container {

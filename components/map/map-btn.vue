@@ -47,10 +47,14 @@ export default {
     overflow: hidden;
     direction: rtl;
     text-align: left;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 25px;
 }
 
 .set-you-address {
-    position: relative;
+    position: relative !important;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -68,5 +72,9 @@ export default {
 .set-you-address .near_me_icon {
     margin-right: 6px;
     font-size: 20px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 120px;
 }
 </style>

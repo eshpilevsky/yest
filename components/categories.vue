@@ -52,7 +52,7 @@
     </div>
     <div class="category-list-mobile">
         <button class="category-list-mobile-item" @click="showModalWindow()">
-            <span class="item-name">
+            <span class="item-name fix-width48">
                 <v-icon>search</v-icon>
             </span>
         </button>
@@ -382,6 +382,11 @@ export default {
     }
 }
 </style><style scoped>
+.fix-width48 {
+  width: 48px;
+  flex: 0 0 auto;
+}
+
 .list-component {
     overflow: scroll;
 }

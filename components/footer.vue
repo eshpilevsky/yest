@@ -284,6 +284,8 @@ export default {
 
 .footer {
     width: 100%;
+    background-color: #f9f9f9;
+    z-index: 10;
 }
 
 .containe {

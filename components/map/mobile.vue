@@ -273,8 +273,6 @@ ymaps .customMapBtn.plus i, ymaps .customMapBtn.minus i {
 ymaps .customMapBtn.iamhere {
     border-radius: 16px !important;
     height: 36px !important;
-    margin-bottom: -110px;
-    margin-top: 50px;
     width: 100%;
 }
 

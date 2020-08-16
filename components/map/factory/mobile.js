@@ -146,10 +146,12 @@ export const getIamHere = (
     options: {
       float: 'none',
       position: {
-        bottom: navigator.userAgent.includes('Mac OS') ? '8rem' : '2rem',
+        // bottom: navigator.userAgent.includes('Mac OS') ? '8rem' : '2rem',
+        bottom: '20px',
         right: '20px',
         left: '20px',
       },
+      content: 'Я здесь',
     }
   })
 }
