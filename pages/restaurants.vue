@@ -1075,6 +1075,9 @@ export default {
     border-radius: 16px !important;
     display: flex;
     justify-content: space-between;
+    text-transform: capitalize;
+    font-size: 16px;
+    color: #000 !important;
 }
 
 .btn-sub-text {
@@ -1510,6 +1513,7 @@ export default {
     font-weight: 400;
     letter-spacing: -0.5px;
     height: 48px;
+    min-width: 48px;
     display: flex;
     transition: opacity, background-color 100ms;
     align-items: center;

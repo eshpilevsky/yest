@@ -5,15 +5,15 @@
             <v-icon class="mobile-mode_header-btn" @click="goBack()">arrow_back</v-icon>
             <v-icon class="mobile-mode_header-btn" @click="showDropBasketForm()" v-show="getSelectedDishs.length > 0">delete_forever</v-icon>
             <v-overlay :dark='false' v-model="dropBasketForm">
-                <v-card>
-                    <v-card-title>
+                <v-card class="clear-cart-modal">
+                    <v-card-title class="clear-cart-modal__title">
                         Очистить корзину?
                     </v-card-title>
-                    <v-card-actions class="d-flex justify-center">
-                        <v-btn color="primary" @click="dropBasket()">
+                    <v-card-actions class="clear-cart-modal__actions d-flex justify-center">
+                        <v-btn class="clear-cart-modal__ok-btn" color="primary" @click="dropBasket()">
                             Ок
                         </v-btn>
-                        <v-btn @click="showDropBasketForm()">
+                        <v-btn class="clear-cart-modal__cancel-btn" @click="showDropBasketForm()">
                             Отмена
                         </v-btn>
                     </v-card-actions>
@@ -164,6 +164,48 @@ export default {
 </script>
 
 <style scoped>
+.clear-cart-modal {
+    max-width: 420px;
+    min-width: 280px;
+    padding: 20px;
+}
+
+.clear-cart-modal__title {
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: bold;
+    padding: 0;
+}
+
+.clear-cart-modal__actions {
+    padding: 0;
+    flex: 1 0 auto;
+    margin-top: 24px;
+    flex-direction: row;
+    justify-content: initial !important;
+}
+
+.clear-cart-modal__ok-btn {
+    margin-right: 8px;
+    border-radius: 16px;
+    flex: 1 0 0;
+    height: 56px !important;
+    color: #000 !important;
+    font-size: 16px;
+    letter-spacing: 0.1px;
+}
+
+.clear-cart-modal__cancel-btn {
+    margin-left: 8px !important;
+    background: #fff !important;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .1);
+    height: 56px !important;
+    border-radius: 16px;
+    flex: 1 0 0;
+    font-size: 16px;
+    text-transform: capitalize;
+    letter-spacing: 0.1px;
+}
 
 .main-mobile-cart__title {
     margin: 20px 0 10px 16px;
@@ -269,7 +311,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #000;
+  color: #000 !important;
   font-size: 16px;
   letter-spacing: 0.1px;
   text-transform: capitalize;
