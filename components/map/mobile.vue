@@ -79,7 +79,6 @@ export default {
         await loadYmap({
             ...yMapSettings
         });
-        this.ymaps = ymaps
     },
     async mounted() {
         if (performance.navigation.type == 1) {
@@ -152,7 +151,6 @@ export default {
         },
         onSelect(e) {
             const mapInstance = this.mapInstance
-            const ymaps = this.ymaps
             const component = this
             if (mapInstance !== null) {
                 const selectedValue = e.get('item').value
