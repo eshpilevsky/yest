@@ -120,7 +120,6 @@ export default {
         },
     },
     methods: {
-
         showAllCategory() {
             this.all = !this.all
         },

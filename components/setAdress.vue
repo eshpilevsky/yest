@@ -205,7 +205,6 @@ export default {
         });
 		this.ww = window.innerWidth;
 		this.currentCategoryy = this.currentCategory
-        console.log('beforeMount -> this.currentCategory', this.currentCategory)
     },
     mounted() {
         this.searchAddress = this.getCurrentAddress
