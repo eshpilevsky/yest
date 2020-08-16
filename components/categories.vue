@@ -6,14 +6,14 @@
                 <div class="category-name">
                     {{ item.name }}
                 </div>
-            </v-chip>
+            </v-chip>ы
             <v-menu offset-y max-height="200px">
                 <template v-slot:activator="{ on }">
                     <v-chip v-on="on" class="category-chips" :color="more.isMore === true ? 'primary': 'white'">
                         <span class="category-name">
-                            {{ more.text }}
+                            {{ more }} 
                         </span>
-                        <v-icon color="secondary">
+                        <v-icon color="primary">
                             keyboard_arrow_down
                         </v-icon>
                     </v-chip>
@@ -325,9 +325,11 @@ export default {
         this.allCategory = this.categoriesList
         this.first = this.allCategory.slice(0, this.sliceCounter)
         this.second = this.allCategory.slice(this.sliceCounter, this.categoriesList.length)
+        console.log('created -> this.second', this.second.length)
+        console.log('created -> this.first', this.first.length)
     },
     mounted() {
-        this.getCategories()
+        // this.getCategories()
         this.hideCategory = false
         this.ww = window.innerWidth
         if (this.getSearchNameKitchenDish !== null) {

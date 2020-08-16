@@ -1,22 +1,27 @@
-// import VuexPersistence from 'vuex-persist'
-
-// export default ({ store }) => {
-//   new VuexPersistence({
-
-//   }).plugin(store)
-// }
-
+import Vue from 'vue';
 import VuexPersistence from 'vuex-persist'
+Vue.use(VuexPersist);
 
-export default ({
-  store
-}) => {
-  window.onNuxtReady(() => {
-    new VuexPersistence({
-      key: 'yest',
-      modules: [
-        'user', 'zone', 'map', 'device', 'basket'
-      ]
-    }).plugin(store);
-  });
+export default ({ store }) => {
+  new VuexPersistence({
+	key: 'yest',
+	modules: [
+	  'user', 'zone', 'map', 'device', 'basket'
+	]
+  }).plugin(store)
 }
+
+
+
+// export default ({
+//   store
+// }) => {
+//   window.onNuxtReady(() => {
+//     new VuexPersistence({
+//       key: 'yest',
+//       modules: [
+//         'user', 'zone', 'map', 'device', 'basket'
+//       ]
+//     }).plugin(store);
+//   });
+// }
