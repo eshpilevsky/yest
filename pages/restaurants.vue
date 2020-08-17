@@ -88,89 +88,7 @@
                 </div>
             </div>
             <div cols-2 xl8 class="right">
-                <div class="right-my-order">
-                    <div class="my-order-top">
-                        <div class="order-title">
-                            <p>
-                                Мой заказ
-                            </p>
-                            <v-icon v-show="this.orderList.length > 0" @click="dropBasket()">
-                                delete_forever
-                            </v-icon>
-                        </div>
-                        <div v-if="this.orderList.length > 0 && this.getLatetestRestInfoWithOrder.params.resName == this.$router.currentRoute.params.resName" class="my-order-dishes-desktop">
-                            <div v-for="order in this.orderList" :key="order.selectSize.id" class="order-item">
-                                <div class="d-flex flex-column order-item__title">
-                                    <div class="d-flex flex-column order-item-info">
-                                        <div class="item-name">
-                                            <span>{{order.name}}</span>
-                                            <span class="order-item-subbtitle">
-                                                {{order.selectSize.weight}}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="order-item-subbtitle">
-                                        {{order.selectSize.name}}
-                                    </div>
-
-                                    <!-- <div v-if="order.selectOption.length > 1">
-                                        <div v-for="option in order.selectOption" :key="`selectOption${option.id}`" class="order-item-subbtitle">
-                                            {{option.name}}
-                                        </div>
-                                    </div>
-                                    <div v-else class="order-item-subbtitle">
-                                        {{order.selectOption.name}}
-                                    </div> -->
-
-                                </div>
-                                <div class="d-flex flex-column my-counter">
-                                    <div class="counter-plus" @click="increment(order)">
-                                        <v-icon>
-                                            add
-                                        </v-icon>
-                                    </div>
-                                    <div class="counter-count">
-                                        {{order.selectSize.count}}
-                                    </div>
-                                    <div class="counter-minus" @click="decrement(order)">
-                                        <v-icon>
-                                            {{order.selectSize.count == 1 ? 'close' : 'remove'}}
-                                        </v-icon>
-                                    </div>
-                                </div>
-                                <div class="pl-4 order-item__price">
-                                    {{order.selectSize.price }} <span class="fs10">BYN</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div v-else class="my-order">
-                            <span class="my-order-text">
-                                Выберите блюда и добавьте их к заказу
-                            </span>
-                        </div>
-                    </div>
-                    <div class="delivery-options">
-                        <v-divider />
-                        <div class="my-order-top__total d-flex flex-row justify-space-between align-center py-2">
-                            <span class="delivery-title">
-                                Доставка
-                            </span>
-                            <span class="delivery-count">
-                                {{computedDeliveryCost().delivery ? computedDeliveryCost().delivery : computedDeliveryCost().deliveryFee}} BYN
-                            </span>
-                        </div>
-                        <p class="more-delivery delivery-info-text">
-                            {{computedFreeDeliveryCost()}}
-                        </p>
-                    </div>
-                    <div class="my-order-bottom">
-                        <div class="total-price">
-                            <p class="total-title">Итого</p>
-                            <p v-if="this.orderList.length > 0 && this.getLatetestRestInfoWithOrder.params.resName == this.$router.currentRoute.params.resName" class="price">{{this.getTotalPrice}} BYN</p>
-                            <p v-else class="price">0.0 BYN</p>
-                        </div>
-                    </div>
-                </div>
+                <basket :orderList="this.orderList" :delivery='restuarant.delivery' />
                 <v-btn :disabled="this.getTotalPrice <= 0" color="primary" class="desctop_btn_confirm_order" @click="checkout()">Оформить заказ</v-btn>
             </div>
             <client-only>
@@ -234,7 +152,24 @@
                     </v-card>
                 </v-overlay>
                 <v-overlay opacity="0.5" :dark='false' z-index="999" v-model="showorderForm">
-                    <orderForm @closeCheckout='checkout()' />
+                    <!-- <orderForm @closeCheckout='checkout()' /> -->
+                    <v-card>
+                        <v-card-title class="d-flex flex-row">
+                            Пожалуйста укажите свой телефон
+                            <v-icon @click="checkout()">
+                                close
+                            </v-icon>
+                        </v-card-title>
+                        <div>
+                            <v-text-field label="Ваш номер телефона" outlined v-model="phone"></v-text-field>
+                        </div>
+                        <div>
+                            <v-text-field label="Код из смс" outlined v-model="code"></v-text-field>
+                        </div>
+                        <v-btn block color="primary" :disabled="code.length < 3" @click="goToCheckout()">
+                            Дальше
+                        </v-btn>
+                    </v-card>
                 </v-overlay>
             </client-only>
         </div>
@@ -367,41 +302,41 @@
                         <v-card-text class="pa-0">
                             <div class="mobile-addition__top">
                                 <div class="close-block">
-                                  <v-btn class="close-block-btn" icon color="white" @click="showDish = false">
-                                    <v-icon color="black">close</v-icon>
-                                  </v-btn>
+                                    <v-btn class="close-block-btn" icon color="white" @click="showDish = false">
+                                        <v-icon color="black">close</v-icon>
+                                    </v-btn>
                                 </div>
                                 <div class="selected-dish-top">
-                                  <img :src="'https://img.eatmealby.com/resize/dish/400/'+selectedDish.image" :alt="selectedDish.name" class="dish-img-mobile-selected" />
+                                    <img :src="'https://img.eatmealby.com/resize/dish/400/'+selectedDish.image" :alt="selectedDish.name" class="dish-img-mobile-selected" />
                                 </div>
                                 <div class="selected-dish-composition">
-                                  {{selectedDish.description}}
+                                    {{selectedDish.description}}
                                 </div>
                                 <div class="bgGray">
-                                <div class="sizes px-3">
-                                  <div class="multi-title">
-                                    Размер на выбор
-                                  </div>
-                                  <v-radio-group v-model="sizesRadioBtn" :mandatory="false" class="d-flex flex-row">
-                                    <v-radio v-for="size in selectedDish.sizes" :key="size.id" :label="size.name" :value="size" color="primary"></v-radio>
-                                  </v-radio-group>
-                                </div>
-                                <div class="options px-3">
-                                  <div class="multi-title">
-                                    Дополнительниые ингреденеты
-                                  </div>
-                                  <div v-for="option in selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
-                                    <div>
-                                      {{option.title}}
+                                    <div class="sizes px-3">
+                                        <div class="multi-title">
+                                            Размер на выбор
+                                        </div>
+                                        <v-radio-group v-model="sizesRadioBtn" :mandatory="false" class="d-flex flex-row">
+                                            <v-radio v-for="size in selectedDish.sizes" :key="size.id" :label="size.name" :value="size" color="primary"></v-radio>
+                                        </v-radio-group>
                                     </div>
-                                    <div class="d-flex flex-row justify-start">
-                                      <v-radio-group v-model="selectOption" :mandatory="false" class="d-flex flex-row">
-                                        <v-radio v-for="optionV in option.variants" :key="optionV.id" :label="`${optionV.name} +${optionV.price[0] != undefined ? optionV.price[0].price : 0} BYN`" :value="optionV" color="primary"></v-radio>
-                                      </v-radio-group>
+                                    <div class="options px-3">
+                                        <div class="multi-title">
+                                            Дополнительниые ингреденеты
+                                        </div>
+                                        <div v-for="option in selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
+                                            <div>
+                                                {{option.title}}
+                                            </div>
+                                            <div class="d-flex flex-row justify-start">
+                                                <v-radio-group v-model="selectOption" :mandatory="false" class="d-flex flex-row">
+                                                    <v-radio v-for="optionV in option.variants" :key="optionV.id" :label="`${optionV.name} +${optionV.price[0] != undefined ? optionV.price[0].price : 0} BYN`" :value="optionV" color="primary"></v-radio>
+                                                </v-radio-group>
+                                            </div>
+                                        </div>
                                     </div>
-                                  </div>
                                 </div>
-                              </div>
                             </div>
                             <div class="mobile-addition__bottom">
                                 <div class="d-flex flex-row justify-space-between bottom-withTitle">
@@ -415,12 +350,12 @@
                                 <div class="d-flex flex-row justify-space-between align-center m-5">
                                     <div class="d-flex flex-row counter-component">
                                         <v-icon @click="dencrementSelectedDish()">
-                                          remove
+                                            remove
                                         </v-icon>
                                         <span class="counter-component__qty">{{selectedDishCounter}}</span>
                                         <v-icon @click="incrementSelectedDish()">
-                                        add
-                                      </v-icon>
+                                            add
+                                        </v-icon>
                                     </div>
                                     <div class="add-btn">
                                         <v-btn color="primary" @click="addToBasketMobile()">Добавить</v-btn>
@@ -441,7 +376,6 @@
                             {{getTotalPrice}} BYN
                         </span>
                     </v-btn>
-
                 </div>
             </div>
         </div>
@@ -469,6 +403,7 @@ import ApiService from "../common/api.service";
 import MapBtn from '@/components/map/map-btn'
 import orderForm from '@/components/order-form'
 import cardDish from '@/components/restaurant/cardDish'
+import basket from '@/components/basket'
 import restuarantInfo from '@/components/restaurant/restuarantInfo'
 import axios from 'axios'
 
@@ -482,6 +417,7 @@ export default {
         cardDish,
         orderForm,
         restuarantInfo,
+        basket,
     },
     async asyncData({
         app,
@@ -554,10 +490,15 @@ export default {
             showorderForm: false,
             showRestInfo: false,
             showRestName: false,
-            lastPath: null,
+			lastPath: null,
+			phone: '0',
+			code: "000",
         }
-	},
+    },
     methods: {
+		goToCheckout(){
+			this.$router.push('/checkout')
+		},
         computedDeliveryCost() {
             let deliveryMass = this.sortDeliverFee
             let price = parseInt(this.getTotalPrice)
@@ -616,6 +557,7 @@ export default {
             this.$store.dispatch('basket/saveRestuarantUrl', {
                 params: this.$router.currentRoute.params,
                 restName: this.restuarant.name,
+                delivery: this.restuarant.delivery,
             });
             this.showOptionsmenu = false
         },
@@ -736,7 +678,7 @@ export default {
             this.selectedDishCounter++
         },
         goBack() {
-			this.$router.back()
+            this.$router.back()
             console.log('goBack -> this.$router', this.$router)
         },
         closeOptionMenu() {
@@ -882,7 +824,7 @@ export default {
     }
 
     .catalog-tabs .v-slide-group__wrapper {
-      margin-left: 12px;
+        margin-left: 12px;
     }
 
     .catalog-tabs .v-ripple__container {
@@ -921,36 +863,35 @@ export default {
 }
 
 .modal-change-products__continue {
-  flex: 1 0 0;
-  margin-right: 8px;
-  height: 56px !important;
-  border-radius: 16px;
+    flex: 1 0 0;
+    margin-right: 8px;
+    height: 56px !important;
+    border-radius: 16px;
 }
 
 .modal-change-products__cancel {
-  border-radius: 16px;
-  flex: 1 0 0;
-  height: 56px !important;
-  margin-left: 8px !important;
-  margin-right: 0 !important;
-  background: transparent;
-  border: 1px solid #ddd;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-transform: capitalize !important;
+    border-radius: 16px;
+    flex: 1 0 0;
+    height: 56px !important;
+    margin-left: 8px !important;
+    margin-right: 0 !important;
+    background: transparent;
+    border: 1px solid #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: capitalize !important;
 }
 
 .options-list div[role=radiogroup] {
-  flex-direction: row !important;
-  flex-wrap: wrap !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
 }
 
 .options-list div[role=radiogroup] .v-radio {
-  width: 50% !important;
+    width: 50% !important;
 }
-</style>
-<style scoped>
+</style><style scoped>
 .bgGray {
     background-color: #fafafa;
 }
@@ -962,9 +903,9 @@ export default {
 }
 
 .mobile-addition__top {
-  overflow: auto;
-  max-height: calc(100% - 125px);
-  padding-bottom: 10px;
+    overflow: auto;
+    max-height: calc(100% - 125px);
+    padding-bottom: 10px;
 }
 
 .mobile-addition__bottom {
@@ -978,7 +919,7 @@ export default {
 }
 
 .bottom-withTitle {
-  margin-bottom: 16px;
+    margin-bottom: 16px;
 }
 
 .close-block-btn {
@@ -1158,13 +1099,13 @@ export default {
 }
 
 .dish-counter__qty {
-  margin: 0 12px;
-  min-width: 24px;
-  font-size: 16px;
-  line-height: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    margin: 0 12px;
+    min-width: 24px;
+    font-size: 16px;
+    line-height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .options-actions {
@@ -1178,16 +1119,16 @@ export default {
 }
 
 .options-actions__add {
-  width: auto;
-  margin: 0 8px 0 0;
-  padding: 15.5px 14px !important;
-  min-width: 213px !important;
-  min-height: auto;
-  border-radius: 4px;
-  height: 47px !important;
-  text-transform: capitalize !important;
-  font-size: 16px !important;
-  letter-spacing: 0.1px !important;
+    width: auto;
+    margin: 0 8px 0 0;
+    padding: 15.5px 14px !important;
+    min-width: 213px !important;
+    min-height: auto;
+    border-radius: 4px;
+    height: 47px !important;
+    text-transform: capitalize !important;
+    font-size: 16px !important;
+    letter-spacing: 0.1px !important;
 }
 
 .rest-info-content {
@@ -1416,20 +1357,6 @@ export default {
     margin-bottom: 10px;
 }
 
-.order-title {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px;
-}
-
-.order-title p {
-    font-size: 20px;
-    font-weight: bold;
-    margin-right: auto;
-}
-
 .left {
     border: 1px solid #d5d5d5;
     border-top-left-radius: 4px;
@@ -1629,10 +1556,10 @@ export default {
 }
 
 .mobile-mode_header-btn {
-  flex: 0 0 24px;
-  width: 24px;
-  height: 24px;
-  margin: 20px;
+    flex: 0 0 24px;
+    width: 24px;
+    height: 24px;
+    margin: 20px;
 }
 
 .desktop-mode {
@@ -1761,7 +1688,7 @@ export default {
 }
 
 .info-left:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .moped-block {
