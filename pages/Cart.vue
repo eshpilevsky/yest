@@ -1,22 +1,22 @@
 <template>
 <div>
     <div class='desktop-cart'>
-      <div class="desktop-cart__content">
-        <v-card class="desktop-cart__wrapper">
-          <v-card-title class="desktop-cart__title">
-            Адрес доставки
-          </v-card-title>
-          <orderForm @closeCheckout='closeOrderForm()' />
-        </v-card>
-        <v-card-actions>
-          <v-btn block color="primary" @click="sendOrder()" :loading="loading">Перейти к
-            оплате
-          </v-btn>
-        </v-card-actions>
-      </div>
-      <div class="desktop-cart__sidebar">
-		  <basket :orderList="this.getSelectedDishs"/>
-      </div>
+        <div class="desktop-cart__content">
+            <v-card class="desktop-cart__wrapper">
+                <v-card-title class="desktop-cart__title">
+                    Адрес доставки
+                </v-card-title>
+                <orderForm @closeCheckout='closeOrderForm()' />
+            </v-card>
+            <v-card-actions>
+                <v-btn block color="primary">Перейти к
+                    оплате
+                </v-btn>
+            </v-card-actions>
+        </div>
+        <div class="desktop-cart__sidebar">
+            <basket :orderList="this.getSelectedDishs" />
+        </div>
     </div>
     <div class="mobile-cart">
         <div class="cart" v-show="!showForm">
@@ -112,29 +112,31 @@ export default {
     },
     async asyncData({
         app,
-		store,
-		params
+        store,
+        params
     }) {
         var lastRest = await store.getters['basket/getLatetestRestInfoWithOrder']
         var orderList = await store.getters['basket/getSelectedDishs']
-		var totalPrice = await store.getters['basket/getTotalPrice']
+        var totalPrice = await store.getters['basket/getTotalPrice']
 		var currentZone = await store.getters['zone/getSelectedZone']
-
-
+		
+        let zoneList = await axios.get('https://yestapi.xyz/get-zones')
+        const zoneListData = zoneList.data
+		store.dispatch('zone/setZone', zoneListData)
+		
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
             zone_id: currentZone.id
         })
         let categoriesListData = categoriesList.data
-		store.dispatch('user/allCategory', categoriesListData)
+        store.dispatch('user/allCategory', categoriesListData)
 
         // app.lastRest = lastRest
         app.orderList = orderList
         app.totalPrice = totalPrice
-		
-		
-		return{
-			lastRest : lastRest
-		}
+
+        return {
+            lastRest: lastRest
+        }
 
     },
     data() {
@@ -191,39 +193,39 @@ export default {
         },
     },
     created() {
-		this.totalPrice = this.getTotalPrice
-	},
+        this.totalPrice = this.getTotalPrice
+    },
 }
 </script>
 
 <style scoped>
 .desktop-cart {
-  display: grid;
-  grid-template-columns: calc(100% - 320px) 310px;
-  grid-column-gap: 10px;
-  max-width: 1500px;
-  width: 100%;
-  margin: 40px auto 10px;
+    display: grid;
+    grid-template-columns: calc(100% - 320px) 310px;
+    grid-column-gap: 10px;
+    max-width: 1500px;
+    width: 100%;
+    margin: 40px auto 10px;
 }
 
 .desktop-cart .right-my-order {
-  height: 100%;
+    height: 100%;
 }
 
 .desktop-cart__content {
-  padding: 13px 0 0;
+    padding: 13px 0 0;
 }
 
 .desktop-cart__wrapper {
-  background-color: #f2f2f2;
-  border-radius: 4px !important;
-  box-shadow: none!important;
+    background-color: #f2f2f2;
+    border-radius: 4px !important;
+    box-shadow: none !important;
 }
 
 .desktop-cart__title {
-  padding: 27px 40px 10px;
-  font-weight: 600;
-  letter-spacing: 0.1px;
+    padding: 27px 40px 10px;
+    font-weight: 600;
+    letter-spacing: 0.1px;
 }
 
 .mobile-cart {
@@ -419,17 +421,17 @@ export default {
     }
 
     .mobile-mode_header {
-    position: sticky;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    z-index: 10;
-    background: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+        position: sticky;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        z-index: 10;
+        background: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 
     .item-left {
         width: 30%;

@@ -68,9 +68,9 @@
     <div class="d-flex flex-row">
         <div class="total-price">
             <p class="total-title">Время доставки</p>
-            <!-- <p class="price">{{`${this.getLatetestRestInfoWithOrder.delivery.time.min} - ${this.getLatetestRestInfoWithOrder.delivery.time.max} BYN`}}</p> -->
+            <p class="price">{{`${this.time.min} - ${this.time.max} мин`}}</p>
         </div>
-        <div class="total-price">
+        <div class="total-price" v-show="this.$route.name !== 'checkout'">
             <p class="total-title">Итого</p>
             <p v-if="this.orderList.length > 0 " class="price">{{this.getTotalPrice}} BYN</p>
             <p v-else class="price">0.0 BYN</p>
@@ -89,6 +89,7 @@ export default {
 		return {
 			deliveryString: null,
 			deliveryCost: null,
+			time: {},
 		}
 	},
     props: {
@@ -183,6 +184,8 @@ export default {
         }),
 	},
 	async mounted () {
+		console.error(this.$route.name);
+		this.time = this.getLatetestRestInfoWithOrder.delivery.time
 		this.deliveryString = await this.computedFreeDeliveryCost();
 		this.deliveryCost = await this.computedDeliveryCost();
 	},

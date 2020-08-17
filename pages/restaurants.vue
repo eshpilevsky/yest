@@ -88,7 +88,7 @@
                 </div>
             </div>
             <div cols-2 xl8 class="right">
-                <basket :orderList="this.orderList" :delivery='restuarant.delivery' />
+                <basket :orderList="this.orderList" />
                 <v-btn :disabled="this.getTotalPrice <= 0" color="primary" class="desctop_btn_confirm_order" @click="checkout()">Оформить заказ</v-btn>
             </div>
             <client-only>
