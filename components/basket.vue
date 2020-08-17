@@ -172,11 +172,11 @@ export default {
         }),
         sortDeliverFee() {
             let listt = this.delivery.fee
-            // console.log('sortDeliverFee -> listt', listt)
-            // let sorted = listt.sort((a, b) => {
-            //     return a.delivery ? a.delivery > b.deliveryFee : a.deliveryFee > b.deliveryFee
-            // })
-			// return sorted
+            console.log('sortDeliverFee -> listt', listt)
+            let sorted = listt.sort((a, b) => {
+                return a.delivery ? a.delivery > b.deliveryFee : a.deliveryFee > b.deliveryFee
+            })
+			return sorted
 			return listt
         },
 	},

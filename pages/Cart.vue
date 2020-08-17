@@ -195,9 +195,11 @@ export default {
     created() {
         this.orderList = this.getSelectedDishs
 		this.totalPrice = this.getTotalPrice
-		this.deliveyInfo =this.getLatetestRestInfoWithOrder.delivery;
         console.log('created -> this.getSelectedDishs', this.getSelectedDishs)
-    }
+	},
+	mounted(){
+		this.deliveyInfo = this.getLatetestRestInfoWithOrder.delivery;
+	}
 }
 </script>
 
