@@ -1,12 +1,14 @@
 <template>
 <v-app>
-    <layout-header v-show="!isMapVisible && this.$route.name !=='cart'" />
+    <!-- <layout-header v-show="!isMapVisible && this.$route.name !=='cart'" /> -->
+    <layout-header v-show="!isMapVisible" />
     <v-content v-show="!isMapVisible">
         <v-container class="main_cont">
             <nuxt />
         </v-container>
     </v-content>
-    <layout-footer v-show="!isMapVisible && this.$route.name !=='cart'" />
+    <!-- <layout-footer v-show="!isMapVisible && this.$route.name !=='cart'" /> -->
+    <layout-footer v-show="!isMapVisible" />
     <map-container v-show="canDisplayMap" />
 </v-app>
 </template>

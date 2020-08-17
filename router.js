@@ -12,9 +12,15 @@ Vue.use(Router)
 export function createRouter() {
   return new Router({
     mode: 'history',
-    routes: [{
+    routes: [
+		{
         path: '/cart',
         name: 'cart',
+        component: cart,
+      },
+		{
+        path: '/checkout',
+        name: 'checkout',
         component: cart,
       },
       {
