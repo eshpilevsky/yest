@@ -440,6 +440,7 @@ export default {
 .selected {
     background-color: #00a646 !important;
     background: #00a646 !important;
+    color: #fff !important;
 }
 
 .more-category-list:hover {
