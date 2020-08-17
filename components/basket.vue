@@ -425,7 +425,7 @@ export default {
     display: flex;
     flex-direction: column;
     overflow: auto;
-    max-height: calc(100% - 160px);
+    height: calc(100% - 160px);
 }
 
 .my-order-top__total {
