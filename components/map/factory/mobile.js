@@ -147,7 +147,7 @@ export const getIamHere = (
       float: 'none',
       position: {
         // bottom: navigator.userAgent.includes('Mac OS') ? '8rem' : '2rem',
-        bottom: '20px',
+        bottom: '3vh',
         right: '20px',
         left: '20px',
       },

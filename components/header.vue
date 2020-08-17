@@ -118,8 +118,8 @@
             </v-btn>
             <client-only>
                 <v-btn v-if="this.getTotalPrice > 0" color="primary" @click='goToLatestReset()' class="header-cart-btn">
-                    {{this.getTotalPrice}} BYN
                     <v-icon class="header-cart-icon">shopping_cart</v-icon>
+                    {{this.getTotalPrice}} BYN
                 </v-btn>
             </client-only>
             <v-overlay :dark='false' :value="burgerOverlay" :opacity=".5">
@@ -127,7 +127,7 @@
             </v-overlay>
             <v-menu offset-y>
                 <template v-slot:activator="{ on }">
-                    <v-btn small rounded outlined class="zone-btn country-zone-btn" color="primary" v-on="on">
+                    <v-btn small rounded outlined class="zone-btn country-zone-btn btn--rounded" color="primary" v-on="on">
                         {{ getSelectedZone.name }}
                     </v-btn>
                 </template>
@@ -293,10 +293,14 @@ export default {
 .header-cart-btn {
     font-size: 14px !important;
     letter-spacing: 0.1px;
+    border-radius: 0 28px 28px 0;
+    box-shadow: none;
+    padding-left: 4px !important;
+    height: 28px !important;
 }
 
 .header-cart-btn i {
-  font-size: 20px;
+  font-size: 20px !important;
 }
 
 .zone-btn-address {
@@ -305,6 +309,10 @@ export default {
     direction: rtl;
     text-align: left;
     max-width: 100%;
+}
+
+.btn--rounded {
+    border-radius: 28px !important;
 }
 
 .zone-btn .v-btn__content {
@@ -460,7 +468,7 @@ export default {
     padding: 20px;
     width: 100%;
     position: absolute;
-    bottom: 0;
+    bottom: 8px;
     left: 0;
     right: 0;
     background-color: #fff;
@@ -542,6 +550,7 @@ export default {
     text-overflow: clip;
     overflow: hidden;
     max-width: 80%;
+    border-radius: 28px 0 0 28px;
 }
 
 .links {
@@ -717,14 +726,12 @@ export default {
     text-decoration: none;
 }
 
-.secondary-links {
-    height: 100%;
-    justify-content: space-between !important;
-
-}
 
 .secondary-links {
-  padding-bottom: 96px;
+  padding-bottom: 100px;
+  position: relative;
+  height: 100%;
+  justify-content: space-between !important;
 }
 
 .secondary-links,

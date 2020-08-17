@@ -390,12 +390,18 @@ export default {
         line-height: 19px;
     }
 
-    .dish-info {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        padding: 0 10px;
-    }
+.mobile-mode_header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    z-index: 10;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 
     .item-left {
         width: 30%;

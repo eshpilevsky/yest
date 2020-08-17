@@ -52,7 +52,7 @@
     </div>
     <div class="category-list-mobile">
         <button class="category-list-mobile-item" @click="showModalWindow()">
-            <span class="item-name">
+            <span class="item-name" style="width: 48px;">
                 <v-icon>search</v-icon>
             </span>
         </button>
@@ -440,6 +440,7 @@ export default {
 .selected {
     background-color: #00a646 !important;
     background: #00a646 !important;
+    color: #fff !important;
 }
 
 .more-category-list:hover {
