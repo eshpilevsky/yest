@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <div class="catalog">
-                    <v-tabs hide-slider v-model="tab" class="catalog-tabs" center-active>
+                    <v-tabs hide-slider v-model="tab" class="catalog-tabs catalog-tabs--desktop" center-active>
                         <v-tab class="tab-item" active-class="tab-item--active" height="70px" v-for="(category, index) in restuarant.menu" :key="category.cat_id" @click="scroll(`desktop_${index}`)">
                             {{category.name}}
                         </v-tab>
@@ -860,6 +860,18 @@ export default {
     margin-bottom: 0 !important;
 }
 
+.catalog-tabs--desktop {
+    height: 70px;
+}
+
+.catalog-tabs--desktop .tab-item {
+    height: 70px;
+}
+
+.catalog-tabs--desktop .v-tabs-bar {
+    height: 70px;
+}
+
 @media screen and (max-width: 992px) {
     .catalog-tabs {
         padding: 0 !important;
@@ -995,11 +1007,12 @@ export default {
     transition: none;
     font-size: 14px !important;
     text-transform: initial;
+    border-bottom: 4px solid #fff !important;
 }
 
 .tab-item.tab-item--active {
     color: #000;
-    box-shadow: inset 0 -4px 0 #00a646;
+    border-bottom: 4px solid #00a646 !important;
 }
 
 .restaurant-rating .restaurant-rating__icon {
