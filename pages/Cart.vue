@@ -8,7 +8,7 @@
         <orderForm @closeCheckout='closeOrderForm()' />
       </v-card>
       <div class="desktop-cart__sidebar">
-
+		  <basket :orderList="this.getSelectedDishs" :delivery="this.deliveyInfo"/>
       </div>
     </div>
     <div class="mobile-cart">
@@ -95,11 +95,13 @@ import {
     mapGetters
 } from "vuex";
 import orderForm from '@/components/order-form'
+import basket from '@/components/basket'
 import axios from 'axios'
 
 export default {
     components: {
         orderForm,
+        basket,
     },
     async asyncData({
         app,
@@ -141,6 +143,7 @@ export default {
             selectedDishCounter: 1,
             dropBasketForm: false,
             showForm: false,
+            deliveyInfo: {},
         }
     },
     watch: {
@@ -189,7 +192,8 @@ export default {
     },
     created() {
         this.orderList = this.getSelectedDishs
-        this.totalPrice = this.getTotalPrice
+		this.totalPrice = this.getTotalPrice
+		this.deliveyInfo =this.getLatetestRestInfoWithOrder.delivery;
         console.log('created -> this.getSelectedDishs', this.getSelectedDishs)
     }
 }

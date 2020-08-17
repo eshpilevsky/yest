@@ -82,7 +82,9 @@ export const mutations = {
   },
   SAVE_RESTRUARNT_URL(state, url) {
     state.status = '200'
-    state.data.restuarantUrl = url
+	state.data.restuarantUrl = url
+	// state.data.restuarantUrl = url
+	
   },
   SAVE_TO_BASKET(state, payload) {
     state.status = '200'
