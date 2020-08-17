@@ -582,6 +582,7 @@ export default {
     .card-title {
         width: 100%;
         height: 25px;
+        margin-bottom: 6px;
     }
 
     .noLocation {
