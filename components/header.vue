@@ -460,7 +460,7 @@ export default {
     padding: 20px;
     width: 100%;
     position: absolute;
-    bottom: 0;
+    bottom: 8px;
     left: 0;
     right: 0;
     background-color: #fff;
@@ -717,14 +717,12 @@ export default {
     text-decoration: none;
 }
 
-.secondary-links {
-    height: 100%;
-    justify-content: space-between !important;
-
-}
 
 .secondary-links {
-  padding-bottom: 96px;
+  padding-bottom: 100px;
+  position: relative;
+  height: 100%;
+  justify-content: space-between !important;
 }
 
 .secondary-links,

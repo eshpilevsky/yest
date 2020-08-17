@@ -1176,7 +1176,7 @@ export default {
 }
 
 .rest-info-content {
-    padding: 0 16px 16px 16px;
+    padding: 60px 16px 16px 16px;
     background: #fff;
     border-bottom: 10px solid #fafafa;
 }
