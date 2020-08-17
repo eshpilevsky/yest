@@ -1,13 +1,18 @@
 <template>
 <div>
     <div class='desktop-cart'>
-      <div class="desktop-cart__wrapper">
-        <v-card>
+      <div class="desktop-cart__content">
+        <v-card class="desktop-cart__wrapper">
           <v-card-title class="desktop-cart__title">
             Адрес доставки
           </v-card-title>
           <orderForm @closeCheckout='closeOrderForm()' />
         </v-card>
+        <v-card-actions>
+          <v-btn block color="primary" @click="sendOrder()" :loading="loading">Перейти к
+            оплате
+          </v-btn>
+        </v-card-actions>
       </div>
       <div class="desktop-cart__sidebar">
 		  <basket :orderList="this.getSelectedDishs"/>
@@ -198,22 +203,25 @@ export default {
   grid-column-gap: 10px;
   max-width: 1500px;
   width: 100%;
-  margin: 40px auto 0;
+  margin: 40px auto 10px;
 }
 
-.desktop-cart .v-card {
-  background: transparent !important;
-  box-shadow: none !important;
+.desktop-cart .right-my-order {
+  height: 100%;
+}
+
+.desktop-cart__content {
+  padding: 13px 0 0;
 }
 
 .desktop-cart__wrapper {
-  padding: 13px 40px;
   background-color: #f2f2f2;
-  border-radius: 4px;
+  border-radius: 4px !important;
+  box-shadow: none!important;
 }
 
 .desktop-cart__title {
-  padding: 27px 0 10px;
+  padding: 27px 40px 10px;
   font-weight: 600;
   letter-spacing: 0.1px;
 }
