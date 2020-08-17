@@ -10,7 +10,7 @@
                 delete_forever
             </v-icon>
         </div>
-        <div v-if="this.orderList.length > 0 && this.getLatetestRestInfoWithOrder.params.resName == this.$router.currentRoute.params.resName" class="my-order-dishes-desktop">
+        <div v-if="this.orderList.length > 0 " class="my-order-dishes-desktop">
             <div v-for="order in this.orderList" :key="order.selectSize.id" class="order-item">
                 <div class="d-flex flex-column order-item__title">
                     <div class="d-flex flex-column order-item-info">
@@ -65,10 +65,14 @@
 			{{this.deliveryString}}
         </p>
     </div>
-    <div class="my-order-bottom">
+    <div class="d-flex flex-row">
+        <div class="total-price">
+            <p class="total-title">Время доставки</p>
+            <!-- <p class="price">{{`${this.getLatetestRestInfoWithOrder.delivery.time.min} - ${this.getLatetestRestInfoWithOrder.delivery.time.max} BYN`}}</p> -->
+        </div>
         <div class="total-price">
             <p class="total-title">Итого</p>
-            <p v-if="this.orderList.length > 0 && this.getLatetestRestInfoWithOrder.params.resName == this.$router.currentRoute.params.resName" class="price">{{this.getTotalPrice}} BYN</p>
+            <p v-if="this.orderList.length > 0 " class="price">{{this.getTotalPrice}} BYN</p>
             <p v-else class="price">0.0 BYN</p>
         </div>
     </div>
@@ -89,11 +93,10 @@ export default {
 	},
     props: {
         orderList: Array,
-        delivery: Object,
     },
     methods: {
         computedFreeDeliveryCost() {
-            let deliveryMass = this.sortDeliverFee
+            let deliveryMass = this.sortDeliverFee(this.getLatetestRestInfoWithOrder.delivery.fee)
             let price = parseFloat(this.getTotalPrice)
             let finded = deliveryMass.findIndex((cost) => {
                 return cost.min <= price && price <= cost.max
@@ -114,7 +117,7 @@ export default {
             }
         },
         computedDeliveryCost() {
-            let deliveryMass = this.sortDeliverFee
+            let deliveryMass = this.sortDeliverFee(this.getLatetestRestInfoWithOrder.delivery.fee)
             let price = parseInt(this.getTotalPrice)
             let finded = deliveryMass.find((cost) => {
                 if (cost.min <= price && price <= cost.max) {
@@ -142,6 +145,14 @@ export default {
         increment(dish) {
             this.showDish = false
             this.$store.dispatch('basket/incrementDishCounter', dish);
+		},
+		sortDeliverFee(mass) {
+			console.log('sortDeliverFee -> mass', mass)
+            // let sorted = mass.sort((a, b) => {
+			// 	return a.delivery ? a.delivery > b.deliveryFee : a.deliveryFee > b.deliveryFee
+            // })
+			// return sorted
+			return mass
         },
     },
     watch: {
@@ -170,19 +181,10 @@ export default {
             getTotalPrice: "basket/getTotalPrice",
             getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
         }),
-        sortDeliverFee() {
-            let listt = this.delivery.fee
-            console.log('sortDeliverFee -> listt', listt)
-            let sorted = listt.sort((a, b) => {
-                return a.delivery ? a.delivery > b.deliveryFee : a.deliveryFee > b.deliveryFee
-            })
-			return sorted
-			return listt
-        },
 	},
-	mounted () {
-		this.deliveryString = this.computedFreeDeliveryCost();
-		this.deliveryCost = this.computedDeliveryCost();
+	async mounted () {
+		this.deliveryString = await this.computedFreeDeliveryCost();
+		this.deliveryCost = await this.computedDeliveryCost();
 	},
 
 }

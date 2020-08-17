@@ -10,7 +10,7 @@
         </v-card>
       </div>
       <div class="desktop-cart__sidebar">
-		  <basket :orderList="this.getSelectedDishs" :delivery="this.deliveyInfo"/>
+		  <basket :orderList="this.getSelectedDishs"/>
       </div>
     </div>
     <div class="mobile-cart">
@@ -113,39 +113,32 @@ export default {
         var lastRest = await store.getters['basket/getLatetestRestInfoWithOrder']
         var orderList = await store.getters['basket/getSelectedDishs']
 		var totalPrice = await store.getters['basket/getTotalPrice']
+		var currentZone = await store.getters['zone/getSelectedZone']
 
-        let zoneList = await axios.get('https://yestapi.xyz/get-zones')
-        const zoneListData = zoneList.data
-        store.dispatch('zone/setZone', zoneListData)
-        let currentZoneNew = zoneListData.find((zones) => {
-            if (zones.alias == params.region) {
-                return zones
-            }
-        })
-        if (currentZoneNew == undefined) {
-            currentZoneNew = zoneListData[0]
-        }
+
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
-            zone_id: currentZoneNew.id
+            zone_id: currentZone.id
         })
         let categoriesListData = categoriesList.data
 		store.dispatch('user/allCategory', categoriesListData)
 
-        app.lastRest = lastRest
+        // app.lastRest = lastRest
         app.orderList = orderList
         app.totalPrice = totalPrice
-        console.log('orderList', orderList)
+		
+		
+		return{
+			lastRest : lastRest
+		}
 
     },
     data() {
         return {
-            lastRest: {},
             orderList: [],
             totalPrice: 0,
             selectedDishCounter: 1,
             dropBasketForm: false,
             showForm: false,
-            deliveyInfo: {},
         }
     },
     watch: {
@@ -193,13 +186,8 @@ export default {
         },
     },
     created() {
-        this.orderList = this.getSelectedDishs
 		this.totalPrice = this.getTotalPrice
-        console.log('created -> this.getSelectedDishs', this.getSelectedDishs)
 	},
-	mounted(){
-		this.deliveyInfo = this.getLatetestRestInfoWithOrder.delivery;
-	}
 }
 </script>
 
