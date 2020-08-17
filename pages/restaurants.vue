@@ -1469,7 +1469,7 @@ export default {
 .rest-info-bottom {
     position: sticky;
     top: 60px;
-    z-index: 999;
+    z-index: 9;
 }
 
 .dish-img-mobile-selected {

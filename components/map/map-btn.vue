@@ -66,7 +66,6 @@ export default {
     font-size: 14px !important;
     text-overflow: clip;
     overflow: hidden;
-    box-shadow: 0 4px 12px 0 rgba(0, 166, 70, 0.3), 0 2px 4px 0 rgba(0, 166, 70, 0.3) !important;
 }
 
 .set-you-address .near_me_icon {
