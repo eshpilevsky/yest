@@ -869,6 +869,10 @@ export default {
         display: none !important;
     }
 
+    .catalog-tabs .v-slide-group__wrapper {
+      margin-left: 12px;
+    }
+
     .catalog-tabs .v-ripple__container {
         display: none !important;
     }

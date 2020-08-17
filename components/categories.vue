@@ -52,7 +52,7 @@
     </div>
     <div class="category-list-mobile">
         <button class="category-list-mobile-item" @click="showModalWindow()">
-            <span class="item-name">
+            <span class="item-name" style="width: 48px;">
                 <v-icon>search</v-icon>
             </span>
         </button>
