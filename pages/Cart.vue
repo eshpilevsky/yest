@@ -1,12 +1,14 @@
 <template>
 <div>
     <div class='desktop-cart'>
-      <v-card>
-        <v-card-title>
-          Адрес доставки
-        </v-card-title>
-        <orderForm @closeCheckout='closeOrderForm()' />
-      </v-card>
+      <div class="desktop-cart__wrapper">
+        <v-card>
+          <v-card-title class="desktop-cart__title">
+            Адрес доставки
+          </v-card-title>
+          <orderForm @closeCheckout='closeOrderForm()' />
+        </v-card>
+      </div>
       <div class="desktop-cart__sidebar">
 
       </div>
@@ -197,13 +199,29 @@ export default {
 
 <style scoped>
 .desktop-cart {
-    display: grid;
-    grid-template-columns: calc(100% - 320px) 310px;
-    grid-column-gap: 10px;
-    margin: auto;
-    max-width: 1500px;
-    width: 100%;
-    margin-top: 3rem;
+  display: grid;
+  grid-template-columns: calc(100% - 320px) 310px;
+  grid-column-gap: 10px;
+  max-width: 1500px;
+  width: 100%;
+  margin: 40px auto 0;
+}
+
+.desktop-cart .v-card {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.desktop-cart__wrapper {
+  padding: 13px 40px;
+  background-color: #f2f2f2;
+  border-radius: 4px;
+}
+
+.desktop-cart__title {
+  padding: 27px 0 10px;
+  font-weight: 600;
+  letter-spacing: 0.1px;
 }
 
 .mobile-cart {
@@ -398,7 +416,7 @@ export default {
         line-height: 19px;
     }
 
-.mobile-mode_header {
+    .mobile-mode_header {
     position: sticky;
     top: 0;
     left: 0;

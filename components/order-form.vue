@@ -1,15 +1,27 @@
 <template>
 <div>
-    <div class="desktop-form d-flex flex-column">
+    <div class="desktop-form">
         <div class="form-fields">
             <div>
-                <v-text-field v-model="delivery.address" placeholder="Адрес" required outlined></v-text-field>
+                <v-text-field class="form-input" v-model="delivery.address" placeholder="Адрес" required outlined></v-text-field>
             </div>
-            <div class="d-flex flex-row">
-                <v-text-field type="srting" v-model="delivery.enterence" placeholder="Подъезд" required outlined></v-text-field>
-                <v-text-field type="srting" v-model="delivery.flor" placeholder="Этаж" required outlined></v-text-field>
-                <v-text-field type="srting" v-model="delivery.intercom" placeholder="Код домофона" required outlined></v-text-field>
-                <v-text-field type="srting" v-model="delivery.room" placeholder="Номер квартиры" required outlined></v-text-field>
+            <div class="form-fields__grid-wrapper">
+              <div class="form-fields__container">
+                <p class="form-fields__label">Кв./офис</p>
+                <v-text-field class="form-input" type="srting" v-model="delivery.room" placeholder="" required outlined></v-text-field>
+              </div>
+              <div class="form-fields__container">
+                <p class="form-fields__label">Домофон</p>
+                <v-text-field class="form-input" type="srting" v-model="delivery.intercom" placeholder="" required outlined></v-text-field>
+              </div>
+              <div class="form-fields__container">
+                <p class="form-fields__label">Этаж</p>
+                <v-text-field class="form-input" type="srting" v-model="delivery.flor" placeholder="" required outlined></v-text-field>
+              </div>
+              <div class="form-fields__container">
+                <p class="form-fields__label">Подъезд</p>
+                <v-text-field class="form-input" type="srting" v-model="delivery.enterence" placeholder="" required outlined></v-text-field>
+              </div>
             </div>
             <div>
                 <v-radio-group v-model="payment_method" :mandatory="false">
@@ -193,53 +205,77 @@ export default {
     },
 }
 </script>
-
+<style>
+.form-input .v-input__slot {
+  background-color: #fff !important;
+  align-items: stretch;
+  min-height: 32px !important;
+}
+</style>
 <style scoped>
-
-
-.moped-block {
-    width: 28px;
-    height: 42px;
-    position: relative;
-    padding-left: 5px;
-    margin-right: 10px;
-    background-color: #00a646;
-}
-
-.treangule {
-    top: 6px;
-    right: -15px;
-    width: 30px;
-    height: 30px;
-    position: absolute;
-    transform: scaleX(0.4) rotate(45deg);
-    background-color: #00a646;
-    border-top-right-radius: 4px;
-}
-
-.moped {
-    background-color: #00a646;
-    border-radius: 3px;
-    width: 24px;
-    height: 24px;
-    padding: 9px 0;
-    z-index: 1;
-    position: relative;
-    box-sizing: content-box;
-    background-size: 100%;
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0wIDBoMjB2MjBIMHoiLz48ZyBzdHJva2U9IiMwMDAiPjxwYXRoIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGQ9Ik04Ljg1NyA5LjE0M2MwIC43Ni0xLjE0MyAxLjQ1NS0xLjE0MyAyLjU0NyAwIC42Mi40OTkuODEgMS4xNDMuODFIMTBjMS4xMjYgMCA2LjA4LTQuNTQyIDUuMTQyLTYuOTkiLz48cGF0aCBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGQ9Ik0xNi4xODkgMTMuNDFhMS43MTQgMS43MTQgMCAxIDEtMy4xODkuODc1YzAtLjE4Mi4xMzItLjYxNy4zMzMtLjc5OCIvPjxwYXRoIGQ9Ik0xMy4wMTUgNC4wMDVjMi43NzQuMDM1IDQuODI1IDcuNDg5IDQuODI1IDkuMDgxIDAgLjI5Ni0uMTg4LjU3NC0uNTYzLjgzNS0uNjcyLS42MTQtLjg3My0uNTA5LTEuMTYyLS41MDltLTMuMS42OTRjLS4yODIuNDYyLTIuODI1LjM5My0zLjI1Mi4zOTRNOC42ODYgOS42MDVMNC40NSA5LjQ4N2EuNzM2LjczNiAwIDAgMS0uNzM3LS43MzZ2LS4xOTRjMC0uNDI1LjM5LTEuMTA2LjgxNC0xLjA4bDMuOTY5LjU1MWMuMzg4LjAyNS40NzcuMzguNDc3Ljc3IDAgLjQwNy4xMTkuODA3LS4yODguODA3eiIvPjxwYXRoIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgZD0iTTMuNTI1IDEyLjcyOWMtLjA5MS4wNS0uMjEyLjE0NC0uMzYuMjgyLS4xNi4xNjItLjI0OC4yNTQtLjI2My4yNzZhMS42OCAxLjY4IDAgMCAwLS4zMy45OTkgMS43MTQgMS43MTQgMCAxIDAgMy40MjggMCIvPjxwYXRoIGQ9Ik00LjI4NiA5LjE0M0M0LjI4NiAxMC4yODYgMiAxMC43OSAyIDEyLjc5OGMwIDAgLjQyOC4yOTIuOTQ2LjUybTMuMDY2Ljk3N2MuNTM4LjEyNSAxLjA2Ny4yMDUgMS41NDIuMjA1aDMuMjA1TTEzLjA0MyA0SDExIi8+PC9nPjwvZz48L3N2Zz4=);
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-
 .desktop-form {
     display: flex;
-    margin-top: 3rem;
+    flex-direction: column;
+    max-width: 470px;
+}
+
+.form-fields__grid-wrapper {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 10px;
+}
+
+.form-fields__container {
+  width: 100%;
+}
+
+.form-fields__label {
+  font-size: 14px;
+  color: #b0b0b0;
+}
+
+.form-input {
+  background-color: transparent;
+  margin-bottom: 10px;
 }
 
 .mobile-form {
     display: none;
+}
+
+.moped-block {
+  width: 28px;
+  height: 42px;
+  position: relative;
+  padding-left: 5px;
+  margin-right: 10px;
+  background-color: #00a646;
+}
+
+.treangule {
+  top: 6px;
+  right: -15px;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  transform: scaleX(0.4) rotate(45deg);
+  background-color: #00a646;
+  border-top-right-radius: 4px;
+}
+
+.moped {
+  background-color: #00a646;
+  border-radius: 3px;
+  width: 24px;
+  height: 24px;
+  padding: 9px 0;
+  z-index: 1;
+  position: relative;
+  box-sizing: content-box;
+  background-size: 100%;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0wIDBoMjB2MjBIMHoiLz48ZyBzdHJva2U9IiMwMDAiPjxwYXRoIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGQ9Ik04Ljg1NyA5LjE0M2MwIC43Ni0xLjE0MyAxLjQ1NS0xLjE0MyAyLjU0NyAwIC42Mi40OTkuODEgMS4xNDMuODFIMTBjMS4xMjYgMCA2LjA4LTQuNTQyIDUuMTQyLTYuOTkiLz48cGF0aCBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGQ9Ik0xNi4xODkgMTMuNDFhMS43MTQgMS43MTQgMCAxIDEtMy4xODkuODc1YzAtLjE4Mi4xMzItLjYxNy4zMzMtLjc5OCIvPjxwYXRoIGQ9Ik0xMy4wMTUgNC4wMDVjMi43NzQuMDM1IDQuODI1IDcuNDg5IDQuODI1IDkuMDgxIDAgLjI5Ni0uMTg4LjU3NC0uNTYzLjgzNS0uNjcyLS42MTQtLjg3My0uNTA5LTEuMTYyLS41MDltLTMuMS42OTRjLS4yODIuNDYyLTIuODI1LjM5My0zLjI1Mi4zOTRNOC42ODYgOS42MDVMNC40NSA5LjQ4N2EuNzM2LjczNiAwIDAgMS0uNzM3LS43MzZ2LS4xOTRjMC0uNDI1LjM5LTEuMTA2LjgxNC0xLjA4bDMuOTY5LjU1MWMuMzg4LjAyNS40NzcuMzguNDc3Ljc3IDAgLjQwNy4xMTkuODA3LS4yODguODA3eiIvPjxwYXRoIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgZD0iTTMuNTI1IDEyLjcyOWMtLjA5MS4wNS0uMjEyLjE0NC0uMzYuMjgyLS4xNi4xNjItLjI0OC4yNTQtLjI2My4yNzZhMS42OCAxLjY4IDAgMCAwLS4zMy45OTkgMS43MTQgMS43MTQgMCAxIDAgMy40MjggMCIvPjxwYXRoIGQ9Ik00LjI4NiA5LjE0M0M0LjI4NiAxMC4yODYgMiAxMC43OSAyIDEyLjc5OGMwIDAgLjQyOC4yOTIuOTQ2LjUybTMuMDY2Ljk3N2MuNTM4LjEyNSAxLjA2Ny4yMDUgMS41NDIuMjA1aDMuMjA1TTEzLjA0MyA0SDExIi8+PC9nPjwvZz48L3N2Zz4=);
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 @media screen and (max-width: 992px) {
