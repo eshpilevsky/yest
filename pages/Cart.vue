@@ -1,12 +1,15 @@
 <template>
 <div>
     <div class='desktop-cart'>
-		<v-card>
-			<v-card-title>
-				Адрес доставки
-			</v-card-title>
-			<orderForm @closeCheckout='closeOrderForm()' />
-		</v-card>
+      <v-card>
+        <v-card-title>
+          Адрес доставки
+        </v-card-title>
+        <orderForm @closeCheckout='closeOrderForm()' />
+      </v-card>
+      <div class="desktop-cart__sidebar">
+
+      </div>
     </div>
     <div class="mobile-cart">
         <div class="cart" v-show="!showForm">
@@ -106,7 +109,7 @@ export default {
         var lastRest = await store.getters['basket/getLatetestRestInfoWithOrder']
         var orderList = await store.getters['basket/getSelectedDishs']
 		var totalPrice = await store.getters['basket/getTotalPrice']
-		
+
         let zoneList = await axios.get('https://yestapi.xyz/get-zones')
         const zoneListData = zoneList.data
         store.dispatch('zone/setZone', zoneListData)
@@ -123,7 +126,7 @@ export default {
         })
         let categoriesListData = categoriesList.data
 		store.dispatch('user/allCategory', categoriesListData)
-		
+
         app.lastRest = lastRest
         app.orderList = orderList
         app.totalPrice = totalPrice
@@ -194,8 +197,13 @@ export default {
 
 <style scoped>
 .desktop-cart {
-    display: flex;
-	margin-top: 3rem;
+    display: grid;
+    grid-template-columns: calc(100% - 320px) 310px;
+    grid-column-gap: 10px;
+    margin: auto;
+    max-width: 1500px;
+    width: 100%;
+    margin-top: 3rem;
 }
 
 .mobile-cart {

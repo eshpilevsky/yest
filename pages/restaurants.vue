@@ -1001,6 +1001,7 @@ export default {
 
 .delivery-info-text {
     padding: 0 20px;
+    font-size: 12px;
 }
 
 .tab-item {
@@ -1213,7 +1214,7 @@ export default {
 }
 
 .my-order-top__total {
-    padding: 0 20px;
+    padding: 8px 20px 0 !important;
 }
 
 .my-order-dishes-desktop {
@@ -1759,6 +1760,10 @@ export default {
     flex-direction: row;
 }
 
+.info-left:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
 .moped-block {
     width: 28px;
     height: 42px;
@@ -1766,6 +1771,7 @@ export default {
     padding-left: 5px;
     margin-right: 10px;
     background-color: #00a646;
+    border-radius: 4px;
 }
 
 .treangule {
