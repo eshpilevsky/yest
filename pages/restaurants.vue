@@ -27,7 +27,7 @@
                                             Доставка Yest.by
                                         </div>
                                         <div class="description-price ">
-                                            <!-- Доставка {{this.sortDeliverFee[this.sortDeliverFee.length-2].deliveryFee}} - {{this.sortDeliverFee[0].delivery}} BYN. Бесплатно при заказе от {{this.sortDeliverFee[this.sortDeliverFee.length-1].min}} BYN -->
+                                            Доставка {{this.sortDeliverFee[this.sortDeliverFee.length-2].deliveryFee}} - {{this.sortDeliverFee[0].delivery}} BYN. Бесплатно при заказе от {{this.sortDeliverFee[this.sortDeliverFee.length-1].min}} BYN
                                         </div>
                                     </div>
                                 </div>
@@ -36,7 +36,7 @@
                                         Заказ от
                                     </p>
                                     <p>
-                                        <!-- {{this.sortDeliverFee[0].min}} BYN -->
+                                        {{this.sortDeliverFee[0].min}} BYN
                                     </p>
                                 </div>
                                 <div class="white--text rest-info-text">
@@ -162,12 +162,15 @@
                             </v-icon>
                         </v-card-title>
                         <div>
-                            <v-text-field label="Ваш номер телефона" outlined v-model="phone"></v-text-field>
+                            <v-text-field label="Ваш номер телефона" outlined v-model="phone" v-mask="mask" :disabled="!smsSuccess"></v-text-field>
                         </div>
-                        <div>
-                            <v-text-field label="Код из смс" outlined v-model="code"></v-text-field>
+                        <div v-show="!smsSuccess">
+                            <v-text-field label="Код из смс" outlined v-model="code" ></v-text-field>
                         </div>
-                        <v-btn block color="primary" :disabled="code.length < 3" @click="goToCheckout()">
+                        <v-btn block color="primary" :disabled="phone.length < 17" :loading="loadingSendSms" @click="sendSms()" v-show="smsSuccess">
+                            Отправить смс
+                        </v-btn>
+                        <v-btn block color="primary" :disabled="code.length < 3" @click="goToCheckout()" v-show="!smsSuccess">
                             Дальше
                         </v-btn>
                     </v-card>
@@ -495,11 +498,21 @@ export default {
             showRestInfo: false,
             showRestName: false,
 			lastPath: null,
-			phone: '0',
-			code: "000",
+			phone: ' ',
+			mask: ['+375', '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/, ],
+			code: "1111",
+			loadingSendSms: false,
+			smsSuccess: true,
         }
     },
     methods: {
+		sendSms(){
+			this.loadingSendSms = true
+			setTimeout(() => {
+				this.smsSuccess = false
+				this.loadingSendSms = false
+			}, 3000);
+		},
 		goToCheckout(){
 			this.$router.push('/checkout')
 		},
