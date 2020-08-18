@@ -10,8 +10,16 @@
                                 <v-icon class="restaurant-rating__icon" color="#FFFADF">star</v-icon>
                                 <div>{{restuarant.rating ? restuarant.rating: 'Мало оценок'}}</div>
                             </v-chip>
-                            <div class="info-delivery white--text">
-                                Доставка еды • {{this.getSelectedZone.name}}
+                            <div>
+                                <nuxt-link to="/" class="info-delivery">
+                                    Доставка еды
+                                </nuxt-link>
+								<span class="white--text">
+                                •
+								</span>
+                                <nuxt-link :to="`/${this.getSelectedZone.alias}`" class="info-delivery">
+                                    {{this.getSelectedZone.name}}
+                                </nuxt-link>
                             </div>
                             <h1 class="restuarant-name white--text pb-3">
                                 {{restuarant.name}}
@@ -165,7 +173,7 @@
                             <v-text-field label="Ваш номер телефона" outlined v-model="phone" v-mask="mask" :disabled="!smsSuccess"></v-text-field>
                         </div>
                         <div v-show="!smsSuccess">
-                            <v-text-field label="Код из смс" outlined v-model="code" ></v-text-field>
+                            <v-text-field label="Код из смс" outlined v-model="code"></v-text-field>
                         </div>
                         <v-btn block color="primary" :disabled="phone.length < 17" :loading="loadingSendSms" @click="sendSms()" v-show="smsSuccess">
                             Отправить смс
@@ -374,7 +382,7 @@
                 <div>
                     <v-btn height="56px" block color="primary" class="basket-btn" @click="goToBasketPage()">
                         <span class="btn-sub-text">
-                          20 - 30 мин
+                            20 - 30 мин
                         </span>
                         <span>
                             Корзина
@@ -497,25 +505,25 @@ export default {
             showorderForm: false,
             showRestInfo: false,
             showRestName: false,
-			lastPath: null,
-			phone: ' ',
-			mask: ['+375', '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/, ],
-			code: "1111",
-			loadingSendSms: false,
-			smsSuccess: true,
+            lastPath: null,
+            phone: ' ',
+            mask: ['+375', '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/, ],
+            code: "1111",
+            loadingSendSms: false,
+            smsSuccess: true,
         }
     },
     methods: {
-		sendSms(){
-			this.loadingSendSms = true
-			setTimeout(() => {
-				this.smsSuccess = false
-				this.loadingSendSms = false
-			}, 3000);
-		},
-		goToCheckout(){
-			this.$router.push('/checkout')
-		},
+        sendSms() {
+            this.loadingSendSms = true
+            setTimeout(() => {
+                this.smsSuccess = false
+                this.loadingSendSms = false
+            }, 3000);
+        },
+        goToCheckout() {
+            this.$router.push('/checkout')
+        },
         computedDeliveryCost() {
             let deliveryMass = this.sortDeliverFee
             let price = parseInt(this.getTotalPrice)
@@ -968,7 +976,6 @@ export default {
 
 .tab-item {
     transition: none;
-    font-size: 14px !important;
     text-transform: initial;
     border-bottom: 4px solid #fff !important;
     font-size: 16px !important;
@@ -1716,13 +1723,12 @@ export default {
 }
 
 .delivery-options .price-text {
-  padding-top: 10px;
+    padding-top: 10px;
 }
 
 .delivery-options .rest-info-text {
-  padding-top: 10px;
+    padding-top: 10px;
 }
-
 
 .moped-block {
     width: 28px;
@@ -1763,6 +1769,8 @@ export default {
 .info-delivery {
     opacity: .8;
     margin-top: 15px;
+	color: #fff;
+	text-decoration: none;
 }
 
 .restuarant-name {
