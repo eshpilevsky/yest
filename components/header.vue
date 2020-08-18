@@ -294,7 +294,6 @@ export default {
     font-size: 14px !important;
     letter-spacing: 0.1px;
     border-radius: 0 28px 28px 0;
-    box-shadow: none;
     padding-left: 4px !important;
     height: 28px !important;
     box-shadow: none !important;

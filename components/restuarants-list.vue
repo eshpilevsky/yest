@@ -448,15 +448,17 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0 90px;
 }
 
 .showMore-btn {
-    margin: 0 90px !important;
-    width: 85% !important;
+    width: 100% !important;
     margin-bottom: 20px !important;
-    color: #000 !important;
+    color: #fff !important;
     font-weight: bold !important;
     text-transform: none !important;
+    height: 50px !important;
+    font-size: 16px !important;
 }
 
 .loading-item {
