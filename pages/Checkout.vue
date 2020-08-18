@@ -3,9 +3,6 @@
     <div class='desktop-cart'>
         <div class="desktop-cart__content">
             <v-card class="desktop-cart__wrapper">
-                <v-card-title class="desktop-cart__title">
-                    Адрес доставки
-                </v-card-title>
                 <orderForm @closeCheckout='closeOrderForm()' />
             </v-card>
         </div>
@@ -114,11 +111,11 @@ export default {
         var orderList = await store.getters['basket/getSelectedDishs']
         var totalPrice = await store.getters['basket/getTotalPrice']
 		var currentZone = await store.getters['zone/getSelectedZone']
-		
+
         let zoneList = await axios.get('https://yestapi.xyz/get-zones')
         const zoneListData = zoneList.data
 		store.dispatch('zone/setZone', zoneListData)
-		
+
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
             zone_id: currentZone.id
         })
@@ -208,11 +205,10 @@ export default {
 }
 
 .desktop-cart__content {
-    padding: 13px 0 0;
+
 }
 
 .desktop-cart__wrapper {
-    background-color: #f2f2f2;
     border-radius: 4px !important;
     box-shadow: none !important;
 }
