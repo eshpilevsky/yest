@@ -130,3 +130,5 @@ export const getters = {
     return state.data.userLocation
   }
 };
+
+export const strict = false

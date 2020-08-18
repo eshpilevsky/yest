@@ -20,3 +20,5 @@ export const getters = {
     return state.data.isMobile
   }
 };
+
+export const strict = false

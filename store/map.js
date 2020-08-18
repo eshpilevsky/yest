@@ -139,3 +139,5 @@ export const getters = {
     return state.data.inputAddressMode
   }
 };
+
+export const strict = false

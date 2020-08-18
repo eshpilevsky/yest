@@ -153,3 +153,5 @@ export const getters = {
     return totalPrice.toFixed(1)
   },
 };
+
+export const strict = false

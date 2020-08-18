@@ -89,7 +89,10 @@ export default {
 		return {
 			deliveryString: null,
 			deliveryCost: null,
-			time: {},
+			time: {
+				min: 0,
+				max: 0,
+			},
 		}
 	},
     props: {
@@ -180,11 +183,11 @@ export default {
             getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
         }),
 	},
-	async mounted () {
+	async beforeMount () {
 		if (this.getLatetestRestInfoWithOrder !== null) {
 			this.time = this.getLatetestRestInfoWithOrder.delivery.time
 		} else {
-			this.time = this.delivery.delivery.time
+			this.time = this.delivery.time
 		}
 		this.deliveryString = await this.computedFreeDeliveryCost();
 		this.deliveryCost = await this.computedDeliveryCost();

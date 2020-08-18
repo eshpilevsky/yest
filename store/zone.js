@@ -49,3 +49,5 @@ export const getters = {
     return state.data.zone
   }
 };
+
+export const strict = false
