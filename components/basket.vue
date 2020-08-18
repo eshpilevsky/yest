@@ -437,7 +437,6 @@ export default {
     text-align: center;
 }
 
-
 .my-order-top {
     display: flex;
     flex-direction: column;
@@ -449,8 +448,9 @@ export default {
     padding: 8px 20px 0 !important;
 }
 
-
 .right-my-order .my-order {
+    display: flex;
+    flex-direction: column;
     flex: auto;
 }
 
