@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="dash-info-bottom">
-        <img v-if="this.img !== null" :src="'https://img.eatmealby.com/resize/dish/400/'+this.img" :alt="this.name" class="dish-img" />
+        <img v-if="this.img !== ''" :src="'https://img.eatmealby.com/resize/dish/400/'+this.img" :alt="this.name" class="dish-img" />
         <img v-else src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="this.name" class="dish-img" />
     </div>
 </v-card>
