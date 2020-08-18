@@ -297,6 +297,11 @@ export default {
     box-shadow: none;
     padding-left: 4px !important;
     height: 28px !important;
+    box-shadow: none !important;
+}
+
+.header-cart-btn:before {
+  content: none !important;
 }
 
 .header-cart-btn i {

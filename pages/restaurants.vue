@@ -370,7 +370,10 @@
             <div class="basket-btn-block" v-show="this.getTotalPrice > 0">
                 <div>
                     <v-btn height="56px" block color="primary" class="basket-btn" @click="goToBasketPage()">
-                        <span class="pr-5">
+                        <span class="btn-sub-text">
+                          20 - 30 мин
+                        </span>
+                        <span>
                             Корзина
                         </span>
                         <span class="btn-sub-text">
@@ -1035,7 +1038,7 @@ export default {
     border-radius: 16px !important;
     display: flex;
     justify-content: space-between;
-    text-transform: capitalize;
+    text-transform: initial;
     font-size: 16px;
 }
 

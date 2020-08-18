@@ -104,6 +104,8 @@ export default {
 
 .dash-info-bottom {
     margin-top: 24px;
+    height: 210px;
+    overflow: hidden;
 }
 
 .card-dish {
