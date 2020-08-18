@@ -7,7 +7,7 @@
             </v-card>
         </div>
         <div class="desktop-cart__sidebar">
-            <basket :orderList="this.getSelectedDishs" />
+<!--            <basket :orderList="this.getSelectedDishs" />-->
         </div>
     </div>
     <div class="mobile-cart">
@@ -233,12 +233,6 @@ export default {
     box-shadow: none !important;
 }
 
-.desktop-cart__title {
-    padding: 27px 40px 10px;
-    font-weight: 600;
-    letter-spacing: 0.1px;
-}
-
 .mobile-cart {
     display: none;
 }
@@ -250,8 +244,7 @@ export default {
 
     .mobile-cart {
         display: flex;
-        padding-bottom: 40px;
-        padding-top: 20px;
+        padding-top: 18px;
     }
 
     .mobile-cart__form {
@@ -434,6 +427,10 @@ export default {
         display: flex;
         padding: 8px 16px 8px;
         z-index: 1;
+    }
+
+    .dish-info {
+      margin-left: 10px;
     }
 
     .dish-info-text {

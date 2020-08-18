@@ -80,32 +80,44 @@
         </v-btn>
     </div>
     <div class="mobile-form">
-        <v-card class="confirm-order-modal pa-3" color="#f5f5f5">
-            <v-card-title class="card-title">
-                Ваш заказ
-                <v-icon @click="closeCheckout()" color="#000">
-                    close
-                </v-icon>
-            </v-card-title>
-            <v-card-subtitle color="#000">
-                Телефон для связи
-            </v-card-subtitle>
+        <div class="mobile-form-header">
+          <v-icon class="mobile-form-header__icon" @click="closeCheckout()" color="#000">arrow_back</v-icon>
+          <span class="mobile-form-header__title">Оформление заказа</span>
+        </div>
+        <v-card class="confirm-order-modal">
+            <v-card-title class="mobile-form-title">Адрес доставки</v-card-title>
             <form>
                 <div>
                     <v-text-field v-model="phone" v-mask="mask" required></v-text-field>
                 </div>
-                <div>
-                    <v-text-field v-model="delivery.address" placeholder="Адрес" required></v-text-field>
+                <div class="mobile-input">
+                    <span class="mobile-input__label fs12">Адрес доставки</span>
+                    <v-text-field class="mobile-input__field" v-model="delivery.address" placeholder="" required></v-text-field>
                 </div>
-                <div class="d-flex flex-row">
-                    <v-text-field type="srting" v-model="delivery.enterence" placeholder="Подъезд" required></v-text-field>
-                    <v-text-field type="srting" v-model="delivery.flor" placeholder="Этаж" required></v-text-field>
+                <div class="mobile-from__box">
+                  <div class="mobile-input">
+                    <span class="mobile-input__label">Кв./Офис</span>
+                    <v-text-field class="mobile-input__field" type="srting" v-model="delivery.room" placeholder="" required></v-text-field>
+                  </div>
+                  <div class="mobile-input">
+                    <span class="mobile-input__label">Домофон</span>
+                    <v-text-field class="mobile-input__field" type="srting" v-model="delivery.intercom" placeholder="" required></v-text-field>
+                  </div>
+                  <div class="mobile-input">
+                    <span class="mobile-input__label">Подъезд</span>
+                    <v-text-field class="mobile-input__field" type="srting" v-model="delivery.enterence" placeholder="" required></v-text-field>
+                  </div>
+                  <div class="mobile-input">
+                    <span class="mobile-input__label">Этаж</span>
+                    <v-text-field class="mobile-input__field" type="srting" v-model="delivery.flor" placeholder="" required></v-text-field>
+                  </div>
                 </div>
-                <div class="d-flex flex-row">
-                    <v-text-field type="srting" v-model="delivery.intercom" placeholder="Код домофона" required></v-text-field>
-                    <v-text-field type="srting" v-model="delivery.room" placeholder="Номер квартиры" required></v-text-field>
+                <div class="mobile-input">
+                  <span class="mobile-input__label">Комментарий к заказу</span>
+                  <v-text-field class="mobile-input__field" v-model="comment" name="comment" placeholder=""></v-text-field>
+<!--                  <v-textarea rows="1" class="mobile-input__field" name="comment" dense max-height="50px" v-model="comment" clearable></v-textarea>-->
                 </div>
-                <v-card-subtitle color="#000">
+                <v-card-subtitle class="mobile-payment-title">
                     Выберете способ оплаты
                 </v-card-subtitle>
                 <div>
@@ -114,14 +126,14 @@
                         <v-radio label="Банковской картой на сайте" :value=1></v-radio>
                     </v-radio-group>
                 </div>
-                <v-card-subtitle color="#000">
-                    Комментарий
-                </v-card-subtitle>
-                <div class="pa-3">
-                    <v-textarea name="comment" dense max-height="50px" v-model="comment" clearable></v-textarea>
+                <div class="mobile-form__shipping">
+                  <p class="mobile-form__shipping-title">Доставка</p>
+                  <p class="mobile-form__shipping-time">45 &#8212; 55 мин</p>
                 </div>
-                <v-card-actions>
-                    <v-btn block color="primary" @click="sendOrder()" :disabled="phone.length<=11" :loading="loading">Заказать
+                <v-card-actions class="mobile-form__actions">
+                    <v-btn class="mobile-form__submit" block color="primary" @click="sendOrder()" :disabled="phone.length<=11" :loading="loading">
+                      Перейти к оплате
+                      <span class="mobile-form__submit-total">91.20 BYN</span>
                     </v-btn>
                 </v-card-actions>
             </form>
@@ -483,19 +495,122 @@ export default {
 
     .mobile-form {
         display: flex;
+        flex-direction: column;
+        background-color: #f5f5f5;
+    }
+
+    .mobile-form-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 66px;
+      background-color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 20;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .mobile-form-header__icon {
+      position: absolute !important;
+      top: 20px;
+      left: 16px;
+    }
+
+    .mobile-form-header__title {
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .mobile-form-title {
+      padding: 10px 0;
+      font-weight: 600;
+      font-size: 20px;
+    }
+
+    .mobile-from__box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-column-gap: 10px;
+    }
+
+    .mobile-input .mobile-input__label {
+      font-size: 13px;
+      color: #8b8b8b;
+      line-height: 1em;
+      margin-bottom: -4px;
+      display: block;
+    }
+
+    .mobile-input .mobile-input__label.fs12 {
+      font-size: 12px;
+    }
+
+    .mobile-input .mobile-input__field {
+      margin-top: 0;
+      padding-top: 0;
+      margin-bottom: 10px;
+    }
+
+    .mobile-payment-title {
+      padding: 0;
+      margin-bottom: 20px;
+      font-size: 16px;
+      font-weight: 600;
+      color:#000 !important;
+    }
+
+    .mobile-form__shipping {
+      border-bottom: 1px solid #ddd;
+      padding: 20px 0 10px;
+      margin-bottom: 30px;
+    }
+
+    .mobile-form__shipping-title {
+      font-size: 13px;
+      color: #8b8b8b;
+      line-height: 1em;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .mobile-form__shipping-time {
+      font-size: 16px;
+    }
+
+    .mobile-form__actions {
+      padding: 0;
+      margin-bottom: 20px;
+    }
+
+    .mobile-form__submit {
+      height: 50px !important;
+      font-size: 13px !important;
+      text-transform: initial;
+      background-color: green;
+      position: relative;
+      border-radius: 10px;
+    }
+
+    .mobile-form__submit-total {
+      position: absolute;
+      top: -3px;
+      right: 4px;
+      border-radius: 4px;
+      padding: 4px;
+      background-color: rgba(100, 100, 100, 0.1);
+      font-size: 12px;
     }
 
     .confirm-order-modal {
-        max-height: calc(100vh - 100px);
-        overflow: auto;
-    }
-
-    .card-title {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        width: 100%;
-        color: black;
+      width: 100%;
+      margin-top: 10px;
+      background-color: #fff;
+      padding: 16px;
+      box-shadow: none;
     }
 }
 </style>
