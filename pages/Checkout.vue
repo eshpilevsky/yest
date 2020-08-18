@@ -32,7 +32,7 @@
                 </v-overlay>
             </div>
             <div class="main-mobile-cart" v-show="getSelectedDishs.length > 0">
-                <h1 class="main-mobile-cart__title">Заказ </h1>
+                <h1 class="main-mobile-cart__title">Заказ</h1>
                 <div class="order-list">
                     <client-only>
                         <div v-for="order in getSelectedDishs" :key="`${order.id}`" class="list-item">
@@ -61,11 +61,31 @@
                         </div>
                     </client-only>
                 </div>
+                <div class="order-knifes">
+                  <img class="order-knifes__icon" src="../assets/orderKnifesIcon.svg" alt="knifes">
+                  <div class="d-flex flex-row align-center">
+                    <v-btn icon class="rounded-xl main-mobile-cart__count-btn">
+                      <v-icon>remove</v-icon>
+                    </v-btn>
+                    <div class="main-mobile-cart__order-qty">
+                      1
+                    </div>
+                    <v-btn icon class="rounded-xl main-mobile-cart__count-btn">
+                      <v-icon>add</v-icon>
+                    </v-btn>
+                  </div>
+                </div>
+                <h1 class="order-delivery-info__title">Доставка</h1>
+                <div class="order-delivery-info">
+                  <img class="order-delivery-info__icon" src="../assets/deliverPersonIcon.svg" alt="delivery">
+                  <span class="order-delivery-info__text">Доставка yest.by</span>
+                </div>
                 <div class="confirm-order" v-show="getSelectedDishs.length > 0">
                     <div class="total-info-block">
-                        <p class="total-price">
+                        <span class="total-price">
                             {{this.totalPrice}} BYN
-                        </p>
+                        </span>
+                        <span class="total-time">20 - 30 мин</span>
                     </div>
                     <div class="next-btn-block">
                         <v-btn block color="primary" @click="goToForm()">Далее</v-btn>
@@ -230,7 +250,11 @@ export default {
 
     .mobile-cart {
         display: flex;
+        padding-bottom: 40px;
+    }
 
+    .main-mobile-cart {
+      padding-top: 60px;
     }
 
     .clear-cart-modal {
@@ -294,8 +318,8 @@ export default {
     }
 
     .main-mobile-cart__count-btn {
-        width: 48px;
-        height: 48px;
+        width: 48px !important;
+        height: 48px !important;
         display: flex;
         align-items: center;
         border-radius: 16px;
@@ -350,7 +374,7 @@ export default {
     .total-info-block {
         display: flex;
         flex-direction: column;
-        align-items: center !important;
+        align-items: flex-start !important;
         justify-content: center !important;
         flex: 0 0 auto;
     }
@@ -366,6 +390,14 @@ export default {
         font-size: 24px;
         font-weight: 500;
         white-space: nowrap;
+        line-height: 1em;
+        margin-bottom: 4px;
+    }
+
+    .total-time {
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1em;
     }
 
     .next-btn-block {
@@ -390,10 +422,6 @@ export default {
         margin-top: -3rem;
     }
 
-    .confirm-order div {
-        text-align: center;
-    }
-
     .confirm-order {
         position: fixed;
         bottom: 0;
@@ -412,7 +440,7 @@ export default {
     }
 
     .mobile-mode_header {
-        position: sticky;
+        position: fixed;
         top: 0;
         left: 0;
         right: 0;
@@ -430,8 +458,34 @@ export default {
         max-height: 104px;
     }
 
-    .order-list {
-        padding-bottom: 72px;
+    .order-knifes {
+      display: flex;
+      align-items: center;
+      padding: 16px 20px;
+    }
+
+    .order-knifes .order-knifes__icon {
+      margin-right: 10px;
+    }
+
+    .order-delivery-info {
+      display: flex;
+      align-items: center;
+      padding: 0 20px 10px;
+    }
+
+    .order-delivery-info__title {
+      padding: 20px 20px 0;
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+
+    .order-delivery-info__icon {
+      margin-right: 10px;
+    }
+
+    .order-delivery-info__text {
+      font-size: 16px;
     }
 
     .list-item {
@@ -455,7 +509,7 @@ export default {
     }
 
     .mobile-mode_header {
-        position: sticky;
+        position: fixed;
         top: 0;
         left: 0;
         right: 0;
