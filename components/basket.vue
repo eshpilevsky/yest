@@ -165,9 +165,6 @@ export default {
 			this.deliveryString = this.computedFreeDeliveryCost();
 			this.deliveryCost = this.computedDeliveryCost();
 		},
-		getSelectedZone(newValue) {
-            this.dropBasket()
-		},
 		orderList(newValue){
 			return newValue
 		}

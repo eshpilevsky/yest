@@ -92,6 +92,7 @@ export const mutations = {
     state.data.dishs.push(payload)
   },
   DROP_BASKET(state) {
+	console.error('BYE BITCHES I AM BASKET CLENEAR');
     state.status = '200'
     state.data.dishs = []
   },
