@@ -94,6 +94,7 @@ export default {
 	},
     props: {
         orderList: Array,
+        delivery: Object,
     },
     methods: {
         computedFreeDeliveryCost() {
@@ -148,7 +149,6 @@ export default {
             this.$store.dispatch('basket/incrementDishCounter', dish);
 		},
 		sortDeliverFee(mass) {
-			console.log('sortDeliverFee -> mass', mass)
             // let sorted = mass.sort((a, b) => {
 			// 	return a.delivery ? a.delivery > b.deliveryFee : a.deliveryFee > b.deliveryFee
             // })
@@ -184,8 +184,11 @@ export default {
         }),
 	},
 	async mounted () {
-		console.error(this.$route.name);
-		this.time = this.getLatetestRestInfoWithOrder.delivery.time
+		if (this.getLatetestRestInfoWithOrder !== null) {
+			this.time = this.getLatetestRestInfoWithOrder.delivery.time			
+		} else {
+			this.time = this.delivery.delivery.time			
+		}
 		this.deliveryString = await this.computedFreeDeliveryCost();
 		this.deliveryCost = await this.computedDeliveryCost();
 	},

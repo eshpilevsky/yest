@@ -27,7 +27,7 @@
                                             Доставка Yest.by
                                         </div>
                                         <div class="description-price ">
-                                            Доставка {{this.sortDeliverFee[this.sortDeliverFee.length-2].deliveryFee}} - {{this.sortDeliverFee[0].delivery}} BYN. Бесплатно при заказе от {{this.sortDeliverFee[this.sortDeliverFee.length-1].min}} BYN
+                                            <!-- Доставка {{this.sortDeliverFee[this.sortDeliverFee.length-2].deliveryFee}} - {{this.sortDeliverFee[0].delivery}} BYN. Бесплатно при заказе от {{this.sortDeliverFee[this.sortDeliverFee.length-1].min}} BYN -->
                                         </div>
                                     </div>
                                 </div>
@@ -36,7 +36,7 @@
                                         Заказ от
                                     </p>
                                     <p>
-                                        {{this.sortDeliverFee[0].min}} BYN
+                                        <!-- {{this.sortDeliverFee[0].min}} BYN -->
                                     </p>
                                 </div>
                                 <div class="white--text">
@@ -60,6 +60,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
                 <div class="catalog">
                     <v-tabs hide-slider v-model="tab" class="catalog-tabs catalog-tabs--desktop" center-active>
@@ -88,7 +89,7 @@
                 </div>
             </div>
             <div cols-2 xl8 class="right">
-                <basket :orderList="this.orderList" />
+                <basket :orderList="this.orderList" :delivery='this.restuarant.delivery'/>
                 <v-btn :disabled="this.getTotalPrice <= 0" color="primary" class="desctop_btn_confirm_order" @click="checkout()">Оформить заказ</v-btn>
             </div>
             <client-only>
