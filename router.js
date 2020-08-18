@@ -4,7 +4,7 @@ import Router from 'vue-router'
 import Home from './pages/Home.vue'
 import notFound from './pages/notFound.vue'
 import restaurants from './pages/restaurants.vue'
-import cart from './pages/Cart.vue'
+import Checkout from './pages/Checkout.vue'
 import paymantStatus from './pages/paymantStatus.vue'
 
 Vue.use(Router)
@@ -16,12 +16,12 @@ export function createRouter() {
 		{
         path: '/cart',
         name: 'cart',
-        component: cart,
+        component: Checkout,
       },
 		{
         path: '/checkout',
         name: 'checkout',
-        component: cart,
+        component: Checkout,
       },
       {
         path: '/',

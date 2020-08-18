@@ -2,7 +2,7 @@
 <div>
     <div class="desktop-form">
         <div class="form-fields">
-            <v-text-field class="form-input" v-model="delivery.address" placeholder="" required outlined></v-text-field>
+            <v-text-field class="form-input" v-model="delivery.address" placeholder="" required outlined :disabled="this.getCurrentAddress !== ''"></v-text-field>
             <div class="form-fields__grid-wrapper">
                 <div class="form-fields__container">
                     <p class="form-fields__label">Кв./офис</p>
@@ -32,7 +32,8 @@
             </v-radio-group>
             <div class="form-fields__container form-promo">
                 <v-text-field class="form-input" type="srting" v-model="promocode" placeholder="Промокод (если есть)" outlined></v-text-field>
-                <button class="form-promo__button">Применить</button>
+                <!-- <button class="form-promo__button" >Применить</button> -->
+                <v-btn class="form-promo__button" height='32' dense color="primary" :disabled='promocode.length < 3'>Применить</v-btn>
             </div>
         </div>
         <div class="form-actions">
@@ -50,9 +51,11 @@
                     <p>Итого</p>
                     <p>{{this.getTotalPrice}} BYN</p>
                 </div>
-
             </div>
         </div>
+        <v-btn block color="primary" @click="sendOrder()" :loading="loading">Перейти к
+            оплате
+        </v-btn>
     </div>
     <div class="mobile-form">
         <v-card class="confirm-order-modal pa-3" color="#f5f5f5">
@@ -129,8 +132,8 @@ export default {
             order: [],
             billingUrl: '',
             loading: false,
-			mask: ['+375', '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/, ],
-			time:{}
+            mask: ['+375', '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/, ],
+            time: {}
         }
     },
     methods: {
@@ -202,7 +205,7 @@ export default {
         }),
     },
     mounted() {
-		this.time = this.getLatetestRestInfoWithOrder.delivery.time
+        this.time = this.getLatetestRestInfoWithOrder.delivery.time
         if (this.getCurrentAddress.length > 0) {
             this.delivery.address = this.getCurrentAddress
         }
@@ -319,8 +322,8 @@ export default {
     font-weight: 600;
     min-height: auto;
     border-radius: 0 4px 4px 0;
-    border: 1px solid #4ca647;
-    background-color: #4ca647;
+    /* border: 1px solid #4ca647;
+    background-color: #4ca647; */
     color: #fff;
     height: 32px;
     border-left: none;

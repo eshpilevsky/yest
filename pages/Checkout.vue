@@ -8,11 +8,6 @@
                 </v-card-title>
                 <orderForm @closeCheckout='closeOrderForm()' />
             </v-card>
-            <v-card-actions>
-                <v-btn block color="primary">Перейти к
-                    оплате
-                </v-btn>
-            </v-card-actions>
         </div>
         <div class="desktop-cart__sidebar">
             <basket :orderList="this.getSelectedDishs" />
