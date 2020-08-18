@@ -14,9 +14,9 @@
                                 <nuxt-link to="/" class="info-delivery">
                                     Доставка еды
                                 </nuxt-link>
-								<span class="white--text"> 
-                                •
-								</span>
+                                <span class="white--text">
+                                    •
+                                </span>
                                 <nuxt-link :to="`/${this.getSelectedZone.alias}`" class="info-delivery">
                                     {{this.getSelectedZone.name}}
                                 </nuxt-link>
@@ -25,28 +25,60 @@
                                 {{restuarant.name}}
                             </h1>
                             <div class="delivery-options d-flex flex-row justify-space-between">
-                                <div class="white--text info-left">
-                                    <div class="moped-block">
-                                        <div class="moped"></div>
-                                        <div class="treangule"></div>
-                                    </div>
-                                    <div class="restuarants-description pl-2">
-                                        <div class="description-who">
-                                            Доставка Yest.by
+
+                                <v-menu bottom origin="center center" z-index="999" transition="scale-transition" nudge-bottom='65'>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <div class="white--text info-left" v-bind="attrs" v-on="on">
+                                            <div class="moped-block">
+                                                <div class="moped"></div>
+                                                <div class="treangule"></div>
+                                            </div>
+                                            <div class="restuarants-description pl-2">
+                                                <div class="description-who">
+                                                    Доставка Yest.by
+                                                </div>
+                                                <div class="description-price ">
+                                                    Доставка {{sortDeliverFee[sortDeliverFee.length-2].deliveryFee}} - {{sortDeliverFee[0].delivery}} BYN. Бесплатно при заказе от {{sortDeliverFee[sortDeliverFee.length-1].min}} BYN
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="description-price ">
-                                            Доставка {{this.sortDeliverFee[this.sortDeliverFee.length-2].deliveryFee}} - {{this.sortDeliverFee[0].delivery}} BYN. Бесплатно при заказе от {{this.sortDeliverFee[this.sortDeliverFee.length-1].min}} BYN
+                                        <div class="white--text price-text">
+                                            <p>
+                                                Заказ от
+                                            </p>
+                                            <p>
+                                                {{sortDeliverFee[0].min}} BYN
+                                            </p>
                                         </div>
+                                    </template>
+                                    <div>
+                                        <div class="treangle"></div>
+                                        <v-card max-width='460' class="restuarants-legal-info">
+                                            <v-card-title>
+                                                Доставка Yest.by
+                                            </v-card-title>
+                                            <v-card-subtitle>
+                                                Доставку выполнят партнёры Yest.by
+                                            </v-card-subtitle>
+
+                                            <div v-for="fee in this.sortDeliverFee" :key="`deliveryFee${fee.min}`" class="d-flex flex-column">
+                                                <div class="delivery-info">
+                                                    <v-icon>
+                                                        directions_run
+                                                    </v-icon>
+                                                    <div>
+                                                        {{fee.delivery ? fee.delivery : fee.deliveryFee }} BYN
+                                                        <span>
+                                                            На заказ от {{fee.min}} BYN
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <v-divider width='90%' class="mx-auto" />
+                                            </div>
+                                        </v-card>
                                     </div>
-                                </div>
-                                <div class="white--text price-text">
-                                    <p>
-                                        Заказ от
-                                    </p>
-                                    <p>
-                                        {{this.sortDeliverFee[0].min}} BYN
-                                    </p>
-                                </div>
+                                </v-menu>
+
                                 <div class="white--text rest-info-text">
                                     <v-menu bottom origin="center center" z-index="999" transition="scale-transition" nudge-left='100' nudge-bottom='50'>
                                         <template v-slot:activator="{ on, attrs }">
@@ -1766,8 +1798,8 @@ export default {
 .info-delivery {
     opacity: .8;
     margin-top: 15px;
-	color: #fff;
-	text-decoration: none;
+    color: #fff;
+    text-decoration: none;
 }
 
 .restuarant-name {
