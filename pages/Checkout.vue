@@ -102,7 +102,7 @@
                 </div>
             </div>
         </div>
-        <div class="form" v-show="showForm">
+        <div class="mobile-cart__form" v-show="showForm">
             <orderForm @closeCheckout='closeOrderForm()' />
         </div>
     </div>
@@ -251,6 +251,11 @@ export default {
     .mobile-cart {
         display: flex;
         padding-bottom: 40px;
+        padding-top: 20px;
+    }
+
+    .mobile-cart__form {
+      width: 100%;
     }
 
     .main-mobile-cart {
@@ -340,10 +345,6 @@ export default {
         height: 104px;
         overflow: hidden;
         border-radius: 24px;
-    }
-
-    .form {
-        margin-top: -3rem;
     }
 
     .empty-basket-subtitle {
