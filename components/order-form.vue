@@ -1,59 +1,81 @@
 <template>
 <div>
     <div class="desktop-form">
-        <div class="form-fields">
+        <div class="desktop-form__wrapper">
+          <div class="form-fields">
+            <v-card-title class="form-title">
+              Адрес доставки
+            </v-card-title>
             <v-text-field class="form-input" v-model="delivery.address" placeholder="" required outlined :disabled="this.getCurrentAddress !== ''"></v-text-field>
             <div class="form-fields__grid-wrapper">
-                <div class="form-fields__container">
-                    <p class="form-fields__label">Кв./офис</p>
-                    <v-text-field class="form-input" type="srting" v-model="delivery.room" placeholder="" required outlined></v-text-field>
-                </div>
-                <div class="form-fields__container">
-                    <p class="form-fields__label">Домофон</p>
-                    <v-text-field class="form-input" type="srting" v-model="delivery.intercom" placeholder="" required outlined></v-text-field>
-                </div>
-                <div class="form-fields__container">
-                    <p class="form-fields__label">Этаж</p>
-                    <v-text-field class="form-input" type="srting" v-model="delivery.flor" placeholder="" required outlined></v-text-field>
-                </div>
-                <div class="form-fields__container">
-                    <p class="form-fields__label">Подъезд</p>
-                    <v-text-field class="form-input" type="srting" v-model="delivery.enterence" placeholder="" required outlined></v-text-field>
-                </div>
+              <div class="form-fields__container">
+                <p class="form-fields__label">Кв./офис</p>
+                <v-text-field class="form-input" type="srting" v-model="delivery.room" placeholder="" required outlined></v-text-field>
+              </div>
+              <div class="form-fields__container">
+                <p class="form-fields__label">Домофон</p>
+                <v-text-field class="form-input" type="srting" v-model="delivery.intercom" placeholder="" required outlined></v-text-field>
+              </div>
+              <div class="form-fields__container">
+                <p class="form-fields__label">Этаж</p>
+                <v-text-field class="form-input" type="srting" v-model="delivery.flor" placeholder="" required outlined></v-text-field>
+              </div>
+              <div class="form-fields__container">
+                <p class="form-fields__label">Подъезд</p>
+                <v-text-field class="form-input" type="srting" v-model="delivery.enterence" placeholder="" required outlined></v-text-field>
+              </div>
             </div>
             <div class="form-fields__container">
-                <p class="form-fields__label">Комментарий к заказу</p>
-                <v-textarea class="form-textarea" name="comment" dense max-height="50px" v-model="comment" clearable></v-textarea>
+              <p class="form-fields__label">Комментарий к заказу</p>
+              <v-textarea class="form-textarea" name="comment" dense max-height="50px" v-model="comment" clearable></v-textarea>
             </div>
             <h3 class="form-title">Оплата</h3>
-            <v-radio-group v-model="payment_method" :mandatory="false">
-                <v-radio label="Наличными" :value=0></v-radio>
-                <v-radio label="Банковской картой на сайте" :value=1></v-radio>
+            <v-radio-group class="form-fields__radio-group" v-model="payment_method" :mandatory="false">
+              <v-radio label="Наличными" :value=0></v-radio>
+              <v-radio label="Банковской картой на сайте" :value=1></v-radio>
             </v-radio-group>
             <div class="form-fields__container form-promo">
-                <v-text-field class="form-input" type="srting" v-model="promocode" placeholder="Промокод (если есть)" outlined></v-text-field>
-                <!-- <button class="form-promo__button" >Применить</button> -->
-                <v-btn class="form-promo__button" height='32' dense color="primary" :disabled='promocode.length < 3'>Применить</v-btn>
+              <v-text-field class="form-input" type="srting" v-model="promocode" placeholder="Промокод (если есть)" outlined></v-text-field>
+              <!-- <button class="form-promo__button" >Применить</button> -->
+              <v-btn class="form-promo__button" height='32' dense color="primary" :disabled='promocode.length < 3'>Применить</v-btn>
             </div>
-        </div>
-        <div class="form-actions">
-            <v-divider />
-            <div class="pa-3 d-flex flex-row">
-                <div class="moped-block">
-                    <div class="moped"></div>
-                    <div class="treangule"></div>
-                </div>
-                <div class="d-flex flex-column px-3">
-                    <p>Время доставки</p>
-                    <p>{{`${time.min} - ${this.time.max} мин`}}</p>
-                </div>
-                <div class="d-flex flex-column px-3">
-                    <p>Итого</p>
-                    <p>{{this.getTotalPrice}} BYN</p>
-                </div>
+          </div>
+          <div class="form-actions">
+            <div class="form-actions__wrapper d-flex flex-row">
+              <div class="moped-block">
+                <div class="moped"></div>
+                <div class="treangule"></div>
+              </div>
+              <div class="form-options d-flex flex-column">
+                <p class="form-options__text form-options__description">Время доставки</p>
+                <p class="form-options__text">{{`${time.min} - ${this.time.max} мин`}}</p>
+              </div>
+              <div class="form-options d-flex flex-column">
+                <p class="form-options__text form-options__description">Итого</p>
+                <p class="form-options__text">{{this.getTotalPrice}} BYN</p>
+              </div>
             </div>
+            <div class="form-additional">
+              <span class="form-additional__title">Количество приборов</span>
+              <div class="form-add">
+                <div class="form-add__btn">
+                  <v-icon>
+                    add
+                  </v-icon>
+                </div>
+                <span class="form-add__count">
+                  1
+                </span>
+                <div class="form-add__btn">
+                  <v-icon>
+                    remove
+                  </v-icon>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <v-btn block color="primary" @click="sendOrder()" :loading="loading">Перейти к
+        <v-btn class="form-fields__submit" block color="primary" @click="sendOrder()" :loading="loading">Перейти к
             оплате
         </v-btn>
     </div>
@@ -267,8 +289,15 @@ export default {
 .form-promo .v-input__slot {
     border-radius: 4px 0 0 4px;
 }
-</style><style scoped>
-.desktop-form {}
+</style>
+
+<style scoped>
+.desktop-form__wrapper {
+  padding-top: 40px;
+  border-radius: 4px;
+  background-color: #f2f2f2;
+  margin-bottom: 10px;
+}
 
 .form-fields {
     display: flex;
@@ -307,6 +336,18 @@ export default {
     font-size: 20px;
     font-weight: 600;
     letter-spacing: 0.1px;
+    padding: 0;
+}
+
+.form-fields__radio-group {
+  margin-top: 0;
+}
+
+.form-fields__submit {
+  text-transform: initial;
+  font-weight: 600;
+  font-size: 16px;
+  box-shadow: none;
 }
 
 .form-promo {
@@ -333,6 +374,68 @@ export default {
     z-index: 1;
 }
 
+.form-options {
+  margin-right: 50px;
+}
+
+.form-options__text {
+  margin-bottom: 0;
+  font-size: 25px;
+  line-height: 1em;
+}
+
+.form-options__description {
+  color: #b0b0b0;
+  font-size: 14px;
+  padding-bottom: 7px;
+  line-height: 1em;
+}
+
+.form-actions {
+  border-top: 1px solid #e5e5e5;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}
+
+.form-actions__wrapper {
+  padding: 20px 40px;
+  align-items: center;
+  border-right: 1px solid #e5e5e5;
+}
+
+.form-additional {
+  display: flex;
+  align-items: center;
+  padding: 20px 40px 20px 30px;
+  justify-content: space-between;
+}
+
+.form-additional__title {
+  font-size: 14px;
+  align-items: 1em;
+}
+
+.form-add {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-left: 10px;
+}
+
+.form-add__count {
+  padding: 4px 12px;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  background-color: #fff;
+  box-shadow: inset 0 1px 3px 0 rgba(0,0,0,.2);
+}
+
+.form-add__btn {
+  padding: 4px 6px;
+  cursor: pointer;
+}
+
 .mobile-form {
     display: none;
 }
@@ -342,8 +445,9 @@ export default {
     height: 42px;
     position: relative;
     padding-left: 5px;
-    margin-right: 10px;
+    margin-right: 30px;
     background-color: #00a646;
+    border-radius: 4px;
 }
 
 .treangule {
