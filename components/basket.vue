@@ -67,8 +67,11 @@
     </div>
     <div class="delivery-time-price">
         <div class="total-price">
-            <p class="total-title">Время доставки</p>
-            <p class="price">{{`${this.time.min} - ${this.time.max} мин`}}</p>
+            <p class="total-title">Время доставким</p>
+            <p class="price">
+              {{`${this.time.min} &#8212; ${this.time.max} мин`}}
+              <img class="price__icon" src="../assets/editIcon.svg" alt="Edit">
+            </p>
         </div>
         <div class="total-price" v-show="this.$route.name !== 'checkout'">
             <p class="total-title">Итого</p>
@@ -411,7 +414,13 @@ export default {
 }
 
 .price {
-    font-size: 25px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+}
+
+.price .price__icon {
+  margin-left: 6px;
 }
 
 .total-title {
