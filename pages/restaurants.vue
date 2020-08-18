@@ -39,7 +39,7 @@
                                         <!-- {{this.sortDeliverFee[0].min}} BYN -->
                                     </p>
                                 </div>
-                                <div class="white--text">
+                                <div class="white--text rest-info-text">
                                     <v-menu bottom origin="center center" z-index="999" transition="scale-transition" nudge-left='100' nudge-bottom='50'>
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-btn color="transparent" class="restaurant-info-btn" large v-bind="attrs" v-on="on">
@@ -1172,7 +1172,7 @@ export default {
     font-weight: 600;
     letter-spacing: inherit;
     text-transform: inherit;
-    font-size: 16px;
+    font-size: 16px !important;
     min-height: 41px;
 }
 
@@ -1686,14 +1686,26 @@ export default {
     font-size: 16px;
 }
 
-.info-left {
+.delivery-options .info-left {
     display: flex;
     flex-direction: row;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
-.info-left:hover {
+.delivery-options .info-left:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
+
+.delivery-options .price-text {
+  padding-top: 10px;
+}
+
+.delivery-options .rest-info-text {
+  padding-top: 10px;
+}
+
 
 .moped-block {
     width: 28px;

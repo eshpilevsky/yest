@@ -65,7 +65,7 @@
 			{{this.deliveryString}}
         </p>
     </div>
-    <div class="d-flex flex-row">
+    <div class="delivery-time-price">
         <div class="total-price">
             <p class="total-title">Время доставки</p>
             <p class="price">{{`${this.time.min} - ${this.time.max} мин`}}</p>
@@ -182,9 +182,9 @@ export default {
 	},
 	async mounted () {
 		if (this.getLatetestRestInfoWithOrder !== null) {
-			this.time = this.getLatetestRestInfoWithOrder.delivery.time			
+			this.time = this.getLatetestRestInfoWithOrder.delivery.time
 		} else {
-			this.time = this.delivery.delivery.time			
+			this.time = this.delivery.delivery.time
 		}
 		this.deliveryString = await this.computedFreeDeliveryCost();
 		this.deliveryCost = await this.computedDeliveryCost();
@@ -194,6 +194,18 @@ export default {
 </script>
 
 <style scoped>
+.delivery-time-price {
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 1.7fr 1.3fr;
+  grid-column-gap: 10px;
+}
+.delivery-info-text {
+  padding: 0 20px;
+  font-size: 12px;
+  margin-bottom: 10px !important;
+}
+
 .order-title {
     display: flex;
     flex-direction: row;
@@ -288,7 +300,7 @@ export default {
 }
 
 .price {
-    font-size: 25px;
+    font-size: 22px;
 }
 
 .total-title {
@@ -302,7 +314,7 @@ export default {
     flex-direction: column;
     justify-content: center;
     width: 100%;
-    align-items: center;
+    align-items: flex-start;
     padding: 10px 0;
 }
 
@@ -410,7 +422,7 @@ export default {
     flex-direction: column;
     justify-content: center;
     width: 100%;
-    align-items: center;
+    align-items: flex-start;
     padding: 10px 0;
 }
 
