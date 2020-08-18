@@ -432,6 +432,7 @@ export default {
         height: 72px;
         display: flex;
         padding: 8px 16px 8px;
+        z-index: 1;
     }
 
     .dish-info-text {
