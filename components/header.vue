@@ -132,7 +132,7 @@
                     </v-btn>
                 </template>
                 <v-list>
-                    <v-list-item v-for="(item, index) in this.getZoneList" :key="index" class="zone-list-item" @click="changeRegion(item)">
+                    <v-list-item v-for="(item, index) in this.getZoneList" :key="index" v-show="getSelectedZone.id !== item.id" class="zone-list-item" @click="changeRegion(item)">
                         <v-list-item-title>{{ item.name }} </v-list-item-title>
                     </v-list-item>
                 </v-list>
