@@ -90,7 +90,7 @@
             </div>
             <div cols-2 xl8 class="right">
                 <basket :orderList="this.orderList" :delivery='this.restuarant.delivery'/>
-                <v-btn :disabled="this.getTotalPrice <= 0" color="primary" class="desctop_btn_confirm_order" @click="checkout()">Оформить заказ</v-btn>
+                <v-btn :disabled="this.getTotalPrice <= 0" color="primary" class="desctop_btn_confirm_order" id="desctop_btn_confirm_order" @click="checkout()">Оформить заказ</v-btn>
             </div>
             <client-only>
                 <v-overlay :dark='false' z-index="999" v-model="showOptionsmenu">
@@ -810,6 +810,10 @@ export default {
 </script>
 
 <style>
+.rest-cotainer .right #desctop_btn_confirm_order.v-btn--disabled {
+  background-color: #4ca647 !important;
+}
+
 .v-input--selection-controls__input .v-icon {
     background-color: rgba(211, 211, 211, 0.4) !important;
     border-radius: 50% !important;
