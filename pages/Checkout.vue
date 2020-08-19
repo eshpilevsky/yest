@@ -62,18 +62,24 @@
                     </client-only>
                 </div>
                 <div class="order-knifes">
+					<div class="d-flex flex-row">
                   <img class="order-knifes__icon" src="../assets/orderKnifesIcon.svg" alt="knifes">
-                  <div class="d-flex flex-row align-center">
-                    <v-btn icon class="rounded-xl main-mobile-cart__count-btn">
+                  <div class="d-flex flex-row align-center" v-if="addKnifes">
+                    <v-btn icon class="rounded-xl main-mobile-cart__count-btn" @click="removeCutlery()">
                       <v-icon>remove</v-icon>
                     </v-btn>
                     <div class="main-mobile-cart__order-qty">
-                      1
+                      {{knifesCounter}}
                     </div>
-                    <v-btn icon class="rounded-xl main-mobile-cart__count-btn">
+                    <v-btn icon class="rounded-xl main-mobile-cart__count-btn" @click="addCutlery()">
                       <v-icon>add</v-icon>
                     </v-btn>
                   </div>
+				  <div v-else>
+					  Приборы и салфетки
+				  </div>
+					</div>
+					<v-switch v-model="addKnifes" inset></v-switch>
                 </div>
                 <h1 class="order-delivery-info__title">Доставка</h1>
                 <div class="order-delivery-info">
@@ -85,7 +91,9 @@
                         <span class="total-price">
                             {{this.totalPrice}} BYN
                         </span>
-                        <span class="total-time">20 - 30 мин</span>
+                        <span class="total-time">
+							{{`${this.getLatetestRestInfoWithOrder.delivery.time.min} - ${this.getLatetestRestInfoWithOrder.delivery.time.max} мин`}}
+						</span>
                     </div>
                     <div class="next-btn-block">
                         <v-btn block color="primary" @click="goToForm()">Далее</v-btn>
@@ -158,10 +166,15 @@ export default {
             selectedDishCounter: 1,
             dropBasketForm: false,
             showForm: false,
+			addKnifes: true,
+			knifesCounter: 1
         }
     },
     watch: {
-        getTotalPrice(newValue, ) {
+        getTotalPrice(newValue) {
+            return newValue
+        },
+        knifesCounter(newValue) {
             return newValue
         }
     },
@@ -173,6 +186,16 @@ export default {
         }),
     },
     methods: {
+		removeCutlery(){
+			if (this.knifesCounter !== 1) {
+				this.knifesCounter--
+			} else{
+				this.addKnifes = false
+			}
+		},
+		addCutlery(){
+			this.knifesCounter++
+		},
         closeOrderForm() {
             this.showForm = false
         },
@@ -461,6 +484,9 @@ export default {
       display: flex;
       align-items: center;
       padding: 16px 20px;
+	  flex-direction: row;
+	  width: 100vw;
+	  justify-content: space-between;
     }
 
     .order-knifes .order-knifes__icon {

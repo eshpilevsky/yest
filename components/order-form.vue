@@ -128,12 +128,14 @@
                 </div>
                 <div class="mobile-form__shipping">
                   <p class="mobile-form__shipping-title">Доставка</p>
-                  <p class="mobile-form__shipping-time">45 &#8212; 55 мин</p>
+                  <p class="mobile-form__shipping-time">
+					  {{this.getLatetestRestInfoWithOrder}}
+					  45 &#8212; 55 мин</p>
                 </div>
                 <v-card-actions class="mobile-form__actions">
                     <v-btn class="mobile-form__submit" block color="primary" @click="sendOrder()" :disabled="phone.length<=11" :loading="loading">
                       Перейти к оплате
-                      <span class="mobile-form__submit-total">91.20 BYN</span>
+                      <span class="mobile-form__submit-total">{{this.getTotalPrice}} BYN</span>
                     </v-btn>
                 </v-card-actions>
             </form>
