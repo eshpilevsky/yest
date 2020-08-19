@@ -394,14 +394,12 @@ export default {
 }
 
 .newHeader {
-    position: absolute;
+    position: fixed;
     top: 0px !important;
     width: 280px !important;
     bottom: 0px !important;
-    max-height: 100vh !important;
-    height: 100vh !important;
-    top: 0 !important;
-    bottom: 0 !important;
+    max-height: 100% !important;
+    height: 100% !important;
 }
 
 .burger-log,
@@ -733,7 +731,6 @@ export default {
 
 .secondary-links {
   padding-bottom: 100px;
-  position: relative;
   height: 100%;
   justify-content: space-between !important;
 }

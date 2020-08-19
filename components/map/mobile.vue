@@ -187,9 +187,14 @@ export default {
 };
 </script>
 
+
 <style lang="scss">
 $size: 7vw;
 $header: 65px;
+
+[class*=copyrights-pane] {
+  z-index: 3000;
+}
 
 .map-search-wrapper {
   height: 100% !important;
@@ -278,6 +283,7 @@ ymaps .customMapBtn.plus, ymaps .customMapBtn.minus {
 }
 
 ymaps .customMapBtn.plus {
+  margin-top: -38px;
   border-bottom: 1px solid #ddd !important;
 }
 
@@ -293,6 +299,8 @@ ymaps .customMapBtn.iamhere {
     border-radius: 16px !important;
     height: 36px !important;
     width: 100%;
+    color: #fff !important;
+    z-index: 4000;
 }
 
 ymaps [title="Определить ваше местоположение"] {

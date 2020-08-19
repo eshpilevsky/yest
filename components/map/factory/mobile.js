@@ -58,7 +58,7 @@ export const getZoomIn = (
     options: {
       float: 'none',
       position: {
-        bottom: '54vh',
+        top: '37vh',
         right: '25px'
       }
     }
@@ -80,7 +80,7 @@ export const getZoomOut = (
     options: {
       float: 'none',
       position: {
-        top: '46vh',
+        top: '37vh',
         right: '25px'
       }
     }
@@ -116,7 +116,7 @@ export const getGeo = (
 		`<div class='customMapBtn getGeo'><i class="material-icons" style="font-size: 20px;">near_me</i><div/>`
       ),
       position: {
-        bottom: '40vh',
+        top: '47vh',
         right: '25px'
       }
     }
