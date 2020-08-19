@@ -8,7 +8,7 @@ export const state = () => ({
     visible: false,
     currentCoords: [],
     inputAddressMode: false,
-    address: '',
+    address: 'Цнян',
     geolocationDenied: false,
     loading: false,
   },

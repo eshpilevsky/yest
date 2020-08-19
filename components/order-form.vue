@@ -2,87 +2,87 @@
 <div>
     <div class="desktop-form">
         <div class="desktop-form__wrapper">
-          <div class="form-fields">
-            <v-card-title class="form-title">
-              Адрес доставки
-            </v-card-title>
-            <v-text-field class="form-input" v-model="delivery.address" placeholder="" required outlined :disabled="this.getCurrentAddress !== ''"></v-text-field>
-            <div class="form-fields__grid-wrapper">
-              <div class="form-fields__container">
-                <p class="form-fields__label">Кв./офис</p>
-                <v-text-field class="form-input" type="srting" v-model="delivery.room" placeholder="" required outlined></v-text-field>
-              </div>
-              <div class="form-fields__container">
-                <p class="form-fields__label">Домофон</p>
-                <v-text-field class="form-input" type="srting" v-model="delivery.intercom" placeholder="" required outlined></v-text-field>
-              </div>
-              <div class="form-fields__container">
-                <p class="form-fields__label">Этаж</p>
-                <v-text-field class="form-input" type="srting" v-model="delivery.flor" placeholder="" required outlined></v-text-field>
-              </div>
-              <div class="form-fields__container">
-                <p class="form-fields__label">Подъезд</p>
-                <v-text-field class="form-input" type="srting" v-model="delivery.enterence" placeholder="" required outlined></v-text-field>
-              </div>
-            </div>
-            <div class="form-fields__container">
-              <p class="form-fields__label">Комментарий к заказу</p>
-              <v-textarea class="form-textarea" name="comment" dense max-height="50px" v-model="comment" clearable></v-textarea>
-            </div>
-            <h3 class="form-title">Оплата</h3>
-            <v-radio-group class="form-fields__radio-group" v-model="payment_method" :mandatory="false">
-              <v-radio label="Наличными" :value=0></v-radio>
-              <v-radio label="Банковской картой на сайте" :value=1></v-radio>
-            </v-radio-group>
-            <div class="form-fields__container form-promo">
-              <v-text-field class="form-input" type="srting" v-model="promocode" placeholder="Промокод (если есть)" outlined></v-text-field>
-              <!-- <button class="form-promo__button" >Применить</button> -->
-              <v-btn class="form-promo__button" height='32' dense color="primary" :disabled='promocode.length < 3'>Применить</v-btn>
-            </div>
-          </div>
-          <div class="form-actions">
-            <div class="form-actions__wrapper d-flex flex-row">
-              <div class="moped-block">
-                <div class="moped"></div>
-                <div class="treangule"></div>
-              </div>
-              <div class="form-options d-flex flex-column">
-                <p class="form-options__text form-options__description">Время доставки</p>
-                <p class="form-options__text">{{`${time.min} - ${this.time.max} мин`}}</p>
-              </div>
-              <div class="form-options d-flex flex-column">
-                <p class="form-options__text form-options__description">Итого</p>
-                <p class="form-options__text">{{this.getTotalPrice}} BYN</p>
-              </div>
-            </div>
-            <div class="form-additional">
-              <span class="form-additional__title">Количество приборов</span>
-              <div class="form-add">
-                <div class="form-add__btn">
-                  <v-icon>
-                    add
-                  </v-icon>
+            <div class="form-fields">
+                <v-card-title class="form-title">
+                    Адрес доставки
+                </v-card-title>
+                <v-text-field class="form-input" v-model="delivery.address" placeholder="" required outlined :disabled="this.getCurrentAddress !== ''" :append-icon="this.getCurrentAddress !== '' ? 'enhanced_encryption' : ''"></v-text-field>
+                <div class="form-fields__grid-wrapper">
+                    <div class="form-fields__container">
+                        <p class="form-fields__label">Кв./офис</p>
+                        <v-text-field class="form-input" type="srting" v-model="delivery.room" placeholder="" required outlined></v-text-field>
+                    </div>
+                    <div class="form-fields__container">
+                        <p class="form-fields__label">Домофон</p>
+                        <v-text-field class="form-input" type="srting" v-model="delivery.intercom" placeholder="" required outlined></v-text-field>
+                    </div>
+                    <div class="form-fields__container">
+                        <p class="form-fields__label">Этаж</p>
+                        <v-text-field class="form-input" type="srting" v-model="delivery.flor" placeholder="" required outlined></v-text-field>
+                    </div>
+                    <div class="form-fields__container">
+                        <p class="form-fields__label">Подъезд</p>
+                        <v-text-field class="form-input" type="srting" v-model="delivery.enterence" placeholder="" required outlined></v-text-field>
+                    </div>
                 </div>
-                <span class="form-add__count">
-                  1
-                </span>
-                <div class="form-add__btn">
-                  <v-icon>
-                    remove
-                  </v-icon>
+                <div class="form-fields__container">
+                    <p class="form-fields__label">Комментарий к заказу</p>
+                    <v-textarea class="form-textarea" name="comment" dense max-height="50px" v-model="comment" clearable></v-textarea>
                 </div>
-              </div>
+                <h3 class="form-title">Оплата</h3>
+                <v-radio-group class="form-fields__radio-group" v-model="payment_method" :mandatory="false">
+                    <v-radio label="Наличными" :value=0></v-radio>
+                    <v-radio label="Банковской картой на сайте" :value=1></v-radio>
+                </v-radio-group>
+                <div class="form-fields__container form-promo">
+                    <v-text-field class="form-input" type="srting" v-model="promocode" placeholder="Промокод (если есть)" outlined></v-text-field>
+                    <!-- <button class="form-promo__button" >Применить</button> -->
+                    <v-btn class="form-promo__button" height='32' dense color="primary" :disabled='promocode.length < 3'>Применить</v-btn>
+                </div>
             </div>
-          </div>
+            <div class="form-actions">
+                <div class="form-actions__wrapper d-flex flex-row">
+                    <div class="moped-block">
+                        <div class="moped"></div>
+                        <div class="treangule"></div>
+                    </div>
+                    <div class="form-options d-flex flex-column">
+                        <p class="form-options__text form-options__description">Время доставки</p>
+                        <p class="form-options__text">{{`${time.min} - ${this.time.max} мин`}}</p>
+                    </div>
+                    <div class="form-options d-flex flex-column">
+                        <p class="form-options__text form-options__description">Итого</p>
+                        <p class="form-options__text">{{this.getTotalPrice}} BYN</p>
+                    </div>
+                </div>
+                <div class="form-additional">
+                    <span class="form-additional__title">Количество приборов</span>
+                    <div class="form-add">
+                        <div class="form-add__btn" @click="removeCutlery()">
+                            <v-icon>
+                                remove
+                            </v-icon>
+                        </div>
+                        <span class="form-add__count">
+                            {{cutleryCounter}}
+                        </span>
+                        <div class="form-add__btn" @click="addCutlery()">
+                            <v-icon>
+                                add
+                            </v-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <v-btn class="form-fields__submit" block color="primary" @click="sendOrder()" :loading="loading">Перейти к
-            оплате
+        <v-btn class="form-fields__submit" block color="primary" @click="sendOrder()" :loading="loading">
+            {{this.payment_method == 0 ? 'Оформить заказ' : 'Перейти к оплате'}}
         </v-btn>
     </div>
     <div class="mobile-form">
         <div class="mobile-form-header">
-          <v-icon class="mobile-form-header__icon" @click="closeCheckout()" color="#000">arrow_back</v-icon>
-          <span class="mobile-form-header__title">Оформление заказа</span>
+            <v-icon class="mobile-form-header__icon" @click="closeCheckout()" color="#000">arrow_back</v-icon>
+            <span class="mobile-form-header__title">Оформление заказа</span>
         </div>
         <v-card class="confirm-order-modal">
             <v-card-title class="mobile-form-title">Адрес доставки</v-card-title>
@@ -95,27 +95,27 @@
                     <v-text-field class="mobile-input__field" v-model="delivery.address" placeholder="" required></v-text-field>
                 </div>
                 <div class="mobile-from__box">
-                  <div class="mobile-input">
-                    <span class="mobile-input__label">Кв./Офис</span>
-                    <v-text-field class="mobile-input__field" type="srting" v-model="delivery.room" placeholder="" required></v-text-field>
-                  </div>
-                  <div class="mobile-input">
-                    <span class="mobile-input__label">Домофон</span>
-                    <v-text-field class="mobile-input__field" type="srting" v-model="delivery.intercom" placeholder="" required></v-text-field>
-                  </div>
-                  <div class="mobile-input">
-                    <span class="mobile-input__label">Подъезд</span>
-                    <v-text-field class="mobile-input__field" type="srting" v-model="delivery.enterence" placeholder="" required></v-text-field>
-                  </div>
-                  <div class="mobile-input">
-                    <span class="mobile-input__label">Этаж</span>
-                    <v-text-field class="mobile-input__field" type="srting" v-model="delivery.flor" placeholder="" required></v-text-field>
-                  </div>
+                    <div class="mobile-input">
+                        <span class="mobile-input__label">Кв./Офис</span>
+                        <v-text-field class="mobile-input__field" type="srting" v-model="delivery.room" placeholder="" required></v-text-field>
+                    </div>
+                    <div class="mobile-input">
+                        <span class="mobile-input__label">Домофон</span>
+                        <v-text-field class="mobile-input__field" type="srting" v-model="delivery.intercom" placeholder="" required></v-text-field>
+                    </div>
+                    <div class="mobile-input">
+                        <span class="mobile-input__label">Подъезд</span>
+                        <v-text-field class="mobile-input__field" type="srting" v-model="delivery.enterence" placeholder="" required></v-text-field>
+                    </div>
+                    <div class="mobile-input">
+                        <span class="mobile-input__label">Этаж</span>
+                        <v-text-field class="mobile-input__field" type="srting" v-model="delivery.flor" placeholder="" required></v-text-field>
+                    </div>
                 </div>
                 <div class="mobile-input">
-                  <span class="mobile-input__label">Комментарий к заказу</span>
-                  <v-text-field class="mobile-input__field" v-model="comment" name="comment" placeholder=""></v-text-field>
-<!--                  <v-textarea rows="1" class="mobile-input__field" name="comment" dense max-height="50px" v-model="comment" clearable></v-textarea>-->
+                    <span class="mobile-input__label">Комментарий к заказу</span>
+                    <v-text-field class="mobile-input__field" v-model="comment" name="comment" placeholder=""></v-text-field>
+                    <!--                  <v-textarea rows="1" class="mobile-input__field" name="comment" dense max-height="50px" v-model="comment" clearable></v-textarea>-->
                 </div>
                 <v-card-subtitle class="mobile-payment-title">
                     Выберете способ оплаты
@@ -127,15 +127,15 @@
                     </v-radio-group>
                 </div>
                 <div class="mobile-form__shipping">
-                  <p class="mobile-form__shipping-title">Доставка</p>
-                  <p class="mobile-form__shipping-time">
-					  {{this.getLatetestRestInfoWithOrder}}
-					  45 &#8212; 55 мин</p>
+                    <p class="mobile-form__shipping-title">Доставка</p>
+                    <p class="mobile-form__shipping-time">
+                        {{this.getLatetestRestInfoWithOrder}}
+                        45 &#8212; 55 мин</p>
                 </div>
                 <v-card-actions class="mobile-form__actions">
                     <v-btn class="mobile-form__submit" block color="primary" @click="sendOrder()" :disabled="phone.length<=11" :loading="loading">
-                      Перейти к оплате
-                      <span class="mobile-form__submit-total">{{this.getTotalPrice}} BYN</span>
+                        Перейти к оплате
+                        <span class="mobile-form__submit-total">{{this.getTotalPrice}} BYN</span>
                     </v-btn>
                 </v-card-actions>
             </form>
@@ -169,10 +169,19 @@ export default {
             billingUrl: '',
             loading: false,
             mask: ['+375', '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/, ],
-            time: {}
+            time: {},
+            cutleryCounter: 1,
         }
     },
     methods: {
+        removeCutlery() {
+            if (this.cutleryCounter !== 1) {
+                this.cutleryCounter--
+            }
+        },
+        addCutlery() {
+            this.cutleryCounter++
+        },
         closeCheckout() {
             this.$emit('closeCheckout')
         },
@@ -303,14 +312,12 @@ export default {
 .form-promo .v-input__slot {
     border-radius: 4px 0 0 4px;
 }
-</style>
-
-<style scoped>
+</style><style scoped>
 .desktop-form__wrapper {
-  padding-top: 40px;
-  border-radius: 4px;
-  background-color: #f2f2f2;
-  margin-bottom: 10px;
+    padding-top: 40px;
+    border-radius: 4px;
+    background-color: #f2f2f2;
+    margin-bottom: 10px;
 }
 
 .form-fields {
@@ -354,14 +361,14 @@ export default {
 }
 
 .form-fields__radio-group {
-  margin-top: 0;
+    margin-top: 0;
 }
 
 .form-fields__submit {
-  text-transform: initial;
-  font-weight: 600;
-  font-size: 16px;
-  box-shadow: none;
+    text-transform: initial;
+    font-weight: 600;
+    font-size: 16px;
+    box-shadow: none;
 }
 
 .form-promo {
@@ -389,65 +396,65 @@ export default {
 }
 
 .form-options {
-  margin-right: 50px;
+    margin-right: 50px;
 }
 
 .form-options__text {
-  margin-bottom: 0;
-  font-size: 25px;
-  line-height: 1em;
+    margin-bottom: 0;
+    font-size: 25px;
+    line-height: 1em;
 }
 
 .form-options__description {
-  color: #b0b0b0;
-  font-size: 14px;
-  padding-bottom: 7px;
-  line-height: 1em;
+    color: #b0b0b0;
+    font-size: 14px;
+    padding-bottom: 7px;
+    line-height: 1em;
 }
 
 .form-actions {
-  border-top: 1px solid #e5e5e5;
-  display: grid;
-  grid-template-columns: 2fr 1fr;
+    border-top: 1px solid #e5e5e5;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
 }
 
 .form-actions__wrapper {
-  padding: 20px 40px;
-  align-items: center;
-  border-right: 1px solid #e5e5e5;
+    padding: 20px 40px;
+    align-items: center;
+    border-right: 1px solid #e5e5e5;
 }
 
 .form-additional {
-  display: flex;
-  align-items: center;
-  padding: 20px 40px 20px 30px;
-  justify-content: space-between;
+    display: flex;
+    align-items: center;
+    padding: 20px 40px 20px 30px;
+    justify-content: space-between;
 }
 
 .form-additional__title {
-  font-size: 14px;
-  align-items: 1em;
+    font-size: 14px;
+    align-items: 1em;
 }
 
 .form-add {
-  display: flex;
-  align-items: center;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  margin-left: 10px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-left: 10px;
 }
 
 .form-add__count {
-  padding: 4px 12px;
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-  background-color: #fff;
-  box-shadow: inset 0 1px 3px 0 rgba(0,0,0,.2);
+    padding: 4px 12px;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    background-color: #fff;
+    box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, .2);
 }
 
 .form-add__btn {
-  padding: 4px 6px;
-  cursor: pointer;
+    padding: 4px 6px;
+    cursor: pointer;
 }
 
 .mobile-form {
@@ -502,117 +509,117 @@ export default {
     }
 
     .mobile-form-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      width: 100%;
-      height: 66px;
-      background-color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 20;
-      border-bottom: 1px solid #e5e5e5;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 66px;
+        background-color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 20;
+        border-bottom: 1px solid #e5e5e5;
     }
 
     .mobile-form-header__icon {
-      position: absolute !important;
-      top: 20px;
-      left: 16px;
+        position: absolute !important;
+        top: 20px;
+        left: 16px;
     }
 
     .mobile-form-header__title {
-      font-weight: 600;
-      font-size: 16px;
+        font-weight: 600;
+        font-size: 16px;
     }
 
     .mobile-form-title {
-      padding: 10px 0;
-      font-weight: 600;
-      font-size: 20px;
+        padding: 10px 0;
+        font-weight: 600;
+        font-size: 20px;
     }
 
     .mobile-from__box {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-column-gap: 10px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: 10px;
     }
 
     .mobile-input .mobile-input__label {
-      font-size: 13px;
-      color: #8b8b8b;
-      line-height: 1em;
-      margin-bottom: -4px;
-      display: block;
+        font-size: 13px;
+        color: #8b8b8b;
+        line-height: 1em;
+        margin-bottom: -4px;
+        display: block;
     }
 
     .mobile-input .mobile-input__label.fs12 {
-      font-size: 12px;
+        font-size: 12px;
     }
 
     .mobile-input .mobile-input__field {
-      margin-top: 0;
-      padding-top: 0;
-      margin-bottom: 10px;
+        margin-top: 0;
+        padding-top: 0;
+        margin-bottom: 10px;
     }
 
     .mobile-payment-title {
-      padding: 0;
-      margin-bottom: 20px;
-      font-size: 16px;
-      font-weight: 600;
-      color:#000 !important;
+        padding: 0;
+        margin-bottom: 20px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #000 !important;
     }
 
     .mobile-form__shipping {
-      border-bottom: 1px solid #ddd;
-      padding: 20px 0 10px;
-      margin-bottom: 30px;
+        border-bottom: 1px solid #ddd;
+        padding: 20px 0 10px;
+        margin-bottom: 30px;
     }
 
     .mobile-form__shipping-title {
-      font-size: 13px;
-      color: #8b8b8b;
-      line-height: 1em;
-      margin-bottom: 4px;
-      display: block;
+        font-size: 13px;
+        color: #8b8b8b;
+        line-height: 1em;
+        margin-bottom: 4px;
+        display: block;
     }
 
     .mobile-form__shipping-time {
-      font-size: 16px;
+        font-size: 16px;
     }
 
     .mobile-form__actions {
-      padding: 0;
-      margin-bottom: 20px;
+        padding: 0;
+        margin-bottom: 20px;
     }
 
     .mobile-form__submit {
-      height: 50px !important;
-      font-size: 13px !important;
-      text-transform: initial;
-      background-color: green;
-      position: relative;
-      border-radius: 10px;
+        height: 50px !important;
+        font-size: 13px !important;
+        text-transform: initial;
+        background-color: green;
+        position: relative;
+        border-radius: 10px;
     }
 
     .mobile-form__submit-total {
-      position: absolute;
-      top: -3px;
-      right: 4px;
-      border-radius: 4px;
-      padding: 4px;
-      background-color: rgba(100, 100, 100, 0.1);
-      font-size: 12px;
+        position: absolute;
+        top: -3px;
+        right: 4px;
+        border-radius: 4px;
+        padding: 4px;
+        background-color: rgba(100, 100, 100, 0.1);
+        font-size: 12px;
     }
 
     .confirm-order-modal {
-      width: 100%;
-      margin-top: 10px;
-      background-color: #fff;
-      padding: 16px;
-      box-shadow: none;
+        width: 100%;
+        margin-top: 10px;
+        background-color: #fff;
+        padding: 16px;
+        box-shadow: none;
     }
 }
 </style>
