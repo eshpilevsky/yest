@@ -47,13 +47,13 @@
                                     </div>
                                 </div>
                                 <div class="d-flex flex-row align-center">
-                                    <v-btn icon @click="decrement(order.id)" class="rounded-xl main-mobile-cart__count-btn">
+                                    <v-btn icon @click="decrement(order)" class="rounded-xl main-mobile-cart__count-btn">
                                         <v-icon>remove</v-icon>
                                     </v-btn>
                                     <div class="main-mobile-cart__order-qty">
                                         {{order.selectSize.count}}
                                     </div>
-                                    <v-btn icon @click="increment(order.id)" class="rounded-xl main-mobile-cart__count-btn">
+                                    <v-btn icon @click="increment(order)" class="rounded-xl main-mobile-cart__count-btn">
                                         <v-icon>add</v-icon>
                                     </v-btn>
                                 </div>
@@ -223,11 +223,11 @@ export default {
         incrementSelectedDish() {
             this.selectedDishCounter++
         },
-        decrement(id) {
-            this.$store.dispatch('basket/decrementDishCounter', id);
+        decrement(dish) {
+            this.$store.dispatch('basket/decrementDishCounter', dish);
         },
-        increment(id) {
-            this.$store.dispatch('basket/incrementDishCounter', id);
+        increment(dish) {
+            this.$store.dispatch('basket/incrementDishCounter', dish);
         },
     },
     watch: {

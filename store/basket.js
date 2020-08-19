@@ -59,7 +59,9 @@ export const mutations = {
     })
     let dishSizes;
     if (findDish !== undefined) {
+    console.log('INCREMENT_DISH -> findDish', findDish)
 
+	console.error('INCREMENT_DISH -> state.data.dishs[findDish]', state.data.dishs[findDish])
       dishSizes = state.data.dishs[findDish].selectSize
       console.log('INCREMENT_DISH -> dishSizes', dishSizes.id)
       console.log('INCREMENT_DISH -> payload.selectSize', payload.selectSize.id)
