@@ -192,28 +192,9 @@
                         </div>
                     </v-card>
                 </v-overlay>
-                <v-overlay opacity="0.5" :dark='false' z-index="999" v-model="showorderForm">
+                <v-overlay opacity="0.5" :dark='false' z-index="999" v-model="showSmsForm">
                     <!-- <orderForm @closeCheckout='checkout()' /> -->
-                    <v-card>
-                        <v-card-title class="d-flex flex-row">
-                            Пожалуйста укажите свой телефон
-                            <v-icon @click="checkout()">
-                                close
-                            </v-icon>
-                        </v-card-title>
-                        <div>
-                            <v-text-field label="Ваш номер телефона" outlined v-model="phone" v-mask="mask" :disabled="!smsSuccess"></v-text-field>
-                        </div>
-                        <div v-show="!smsSuccess">
-                            <v-text-field label="Код из смс" outlined v-model="code"></v-text-field>
-                        </div>
-                        <v-btn block color="primary" :disabled="phone.length < 17" :loading="loadingSendSms" @click="sendSms()" v-show="smsSuccess">
-                            Отправить смс
-                        </v-btn>
-                        <v-btn block color="primary" :disabled="code.length < 3" @click="goToCheckout()" v-show="!smsSuccess">
-                            Дальше
-                        </v-btn>
-                    </v-card>
+					<smsForm @closeForm='closeSmsForm()' @closeFormShowOrderForm='closeFormShowOrderForm()'/>
                 </v-overlay>
             </client-only>
         </div>
@@ -233,7 +214,7 @@
                         {{restuarant.name}}
                     </h1>
                     <v-icon @click="showHideRestInfo()">info</v-icon>
-                    <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showRestInfo">
+                    <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showRestInfo" :eager=true>
                         <v-sheet>
                             <div class="sheet-top">
                                 <h2 class="sheet-top-title">Информация о ресторане</h2>
@@ -251,7 +232,7 @@
                     <v-chip @click="showDeliveryOption = !showDeliveryOption" :color="showDeliveryOption ? 'primary': null" class="rest-info-center-block-tag">
                         Условия доставки
                     </v-chip>
-                    <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showRatingSheet">
+                    <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showRatingSheet" :eager=true>
                         <v-sheet>
                             <div class="sheet-top">
                                 <h2 class="sheet-top-title">Рейтинг</h2>
@@ -262,7 +243,7 @@
                             </div>
                         </v-sheet>
                     </v-bottom-sheet>
-                    <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showDeliveryOption">
+                    <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showDeliveryOption" :eager=true>
                         <v-sheet>
                             <div class="sheet-top">
                                 <h2 class="sheet-top-title">Условия доставки</h2>
@@ -341,7 +322,7 @@
                         </div>
                     </div>
                 </div>
-                <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showDish" scrollable persistent no-click-animation z-index='999'>
+                <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showDish" scrollable persistent no-click-animation z-index='999' :eager=true>
                     <v-card class="mobile-addition">
                         <v-card-text class="pa-0">
                             <div class="mobile-addition__top">
@@ -452,6 +433,7 @@ import orderForm from '@/components/order-form'
 import cardDish from '@/components/restaurant/cardDish'
 import basket from '@/components/basket'
 import restuarantInfo from '@/components/restaurant/restuarantInfo'
+import smsForm from '@/components/restaurant/sms-form'
 import axios from 'axios'
 
 import {
@@ -465,6 +447,7 @@ export default {
         orderForm,
         restuarantInfo,
         basket,
+        smsForm,
     },
     async asyncData({
         app,
@@ -534,28 +517,20 @@ export default {
             lastRest: {},
             totalPrice: 0,
             orderList: [],
-            showorderForm: false,
+            showSmsForm: false,
             showRestInfo: false,
             showRestName: false,
             lastPath: null,
-            phone: ' ',
-            mask: ['+375', '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/, ],
-            code: "1111",
-            loadingSendSms: false,
-            smsSuccess: true,
         }
     },
     methods: {
-        sendSms() {
-            this.loadingSendSms = true
-            setTimeout(() => {
-                this.smsSuccess = false
-                this.loadingSendSms = false
-            }, 3000);
-        },
-        goToCheckout() {
-            this.$router.push('/checkout')
-        },
+		closeFormShowOrderForm(){
+			this.showSmsForm = false
+			this.showSmsForm = false
+		},
+		closeSmsForm(){
+			this.showSmsForm = false
+		},
         computedDeliveryCost() {
             let deliveryMass = this.sortDeliverFee
             let price = parseInt(this.getTotalPrice)
@@ -712,7 +687,7 @@ export default {
             this.showDeliveryOption = false
         },
         checkout() {
-            this.showorderForm = !this.showorderForm
+            this.showSmsForm = !this.showSmsForm
         },
         goToBasketPage() {
             this.$router.push(`/cart`)

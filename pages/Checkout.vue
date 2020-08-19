@@ -7,11 +7,11 @@
             </v-card>
         </div>
         <div class="desktop-cart__sidebar">
-           <basket :orderList="this.getSelectedDishs" :delivery="this.getLatetestRestInfoWithOrder" />
+            <basket :orderList="this.getSelectedDishs" :delivery="this.getLatetestRestInfoWithOrder" />
         </div>
     </div>
     <div class="mobile-cart">
-        <div class="cart" v-show="!showForm">
+        <div class="cart" v-show="showBasket">
             <div class="mobile-mode_header">
                 <v-icon class="mobile-mode_header-btn" @click="goBack()">arrow_back</v-icon>
                 <v-icon class="mobile-mode_header-btn" @click="showDropBasketForm()" v-show="getSelectedDishs.length > 0">delete_forever</v-icon>
@@ -62,29 +62,29 @@
                     </client-only>
                 </div>
                 <div class="order-knifes">
-					<div class="d-flex flex-row">
-                  <img class="order-knifes__icon" src="../assets/orderKnifesIcon.svg" alt="knifes">
-                  <div class="d-flex flex-row align-center" v-if="addKnifes">
-                    <v-btn icon class="rounded-xl main-mobile-cart__count-btn" @click="removeCutlery()">
-                      <v-icon>remove</v-icon>
-                    </v-btn>
-                    <div class="main-mobile-cart__order-qty">
-                      {{knifesCounter}}
+                    <div class="d-flex flex-row">
+                        <img class="order-knifes__icon" src="../assets/orderKnifesIcon.svg" alt="knifes">
+                        <div class="d-flex flex-row align-center" v-if="addKnifes">
+                            <v-btn icon class="rounded-xl main-mobile-cart__count-btn" @click="removeCutlery()">
+                                <v-icon>remove</v-icon>
+                            </v-btn>
+                            <div class="main-mobile-cart__order-qty">
+                                {{cutleryCounter}}
+                            </div>
+                            <v-btn icon class="rounded-xl main-mobile-cart__count-btn" @click="addCutlery()">
+                                <v-icon>add</v-icon>
+                            </v-btn>
+                        </div>
+                        <div v-else>
+                            Приборы и салфетки
+                        </div>
                     </div>
-                    <v-btn icon class="rounded-xl main-mobile-cart__count-btn" @click="addCutlery()">
-                      <v-icon>add</v-icon>
-                    </v-btn>
-                  </div>
-				  <div v-else>
-					  Приборы и салфетки
-				  </div>
-					</div>
-					<v-switch v-model="addKnifes" inset></v-switch>
+                    <v-switch v-model="addKnifes" inset></v-switch>
                 </div>
                 <h1 class="order-delivery-info__title">Доставка</h1>
                 <div class="order-delivery-info">
-                  <img class="order-delivery-info__icon" src="../assets/deliverPersonIcon.svg" alt="delivery">
-                  <span class="order-delivery-info__text">Доставка yest.by</span>
+                    <img class="order-delivery-info__icon" src="../assets/deliverPersonIcon.svg" alt="delivery">
+                    <span class="order-delivery-info__text">Доставка yest.by</span>
                 </div>
                 <div class="confirm-order" v-show="getSelectedDishs.length > 0">
                     <div class="total-info-block">
@@ -92,8 +92,8 @@
                             {{this.totalPrice}} BYN
                         </span>
                         <span class="total-time">
-							<!-- {{`${this.getLatetestRestInfoWithOrder.delivery.time.min} - ${this.getLatetestRestInfoWithOrder.delivery.time.max} мин`}} -->
-						</span>
+                            <!-- {{`${this.getLatetestRestInfoWithOrder.delivery.time.min} - ${this.getLatetestRestInfoWithOrder.delivery.time.max} мин`}} -->
+                        </span>
                     </div>
                     <div class="next-btn-block">
                         <v-btn block color="primary" @click="goToForm()">Далее</v-btn>
@@ -110,9 +110,21 @@
                 </div>
             </div>
         </div>
-        <div class="mobile-cart__form" v-show="showForm">
+        <div class="mobile-cart__form" v-show="showOrderForm">
             <orderForm @closeCheckout='closeOrderForm()' />
         </div>
+
+        <v-bottom-sheet v-model="showAuthForm" :eager=true :fullscreen=true>
+            <v-sheet class="text-center authFormSheet">
+                <div class="mini-header">
+                    <v-icon class="mobile-mode_header-btn " @click="goBack()">arrow_back</v-icon>
+                    <div class="logo-block">
+                        <img src="@/assets/logo.svg" alt="logo" class="mini-header_logo">
+                    </div>
+                </div>
+                <smsForm @closeForm='closeSmsForm()'  @closeFormShowOrderForm='closeFormShowOrderForm()'/>
+            </v-sheet>
+        </v-bottom-sheet>
     </div>
 </div>
 </template>
@@ -123,12 +135,14 @@ import {
 } from "vuex";
 import orderForm from '@/components/order-form'
 import basket from '@/components/basket'
+import smsForm from '@/components/restaurant/sms-form'
 import axios from 'axios'
 
 export default {
     components: {
         orderForm,
         basket,
+        smsForm,
     },
     async asyncData({
         app,
@@ -138,18 +152,17 @@ export default {
         var lastRest = await store.getters['basket/getLatetestRestInfoWithOrder']
         var orderList = await store.getters['basket/getSelectedDishs']
         var totalPrice = await store.getters['basket/getTotalPrice']
-		var currentZone = await store.getters['zone/getSelectedZone']
+        var currentZone = await store.getters['zone/getSelectedZone']
 
         let zoneList = await axios.get('https://yestapi.xyz/get-zones')
         const zoneListData = zoneList.data
-		store.dispatch('zone/setZone', zoneListData)
+        store.dispatch('zone/setZone', zoneListData)
 
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
             zone_id: currentZone.id
         })
         let categoriesListData = categoriesList.data
         store.dispatch('user/allCategory', categoriesListData)
-
 
     },
     data() {
@@ -158,42 +171,39 @@ export default {
             totalPrice: 0,
             selectedDishCounter: 1,
             dropBasketForm: false,
-            showForm: false,
-			addKnifes: true,
-			cutleryCounter: 1,
+            showOrderForm: false,
+            addKnifes: true,
+            cutleryCounter: 1,
+            showAuthForm: false,
+            showBasket: true,
+            sheet: false,
         }
-    },
-    watch: {
-        getTotalPrice(newValue) {
-            return newValue
-        },
-        knifesCounter(newValue) {
-            return newValue
-        }
-    },
-    computed: {
-        ...mapGetters({
-            getSelectedDishs: "basket/getSelectedDishs",
-            getTotalPrice: "basket/getTotalPrice",
-            getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
-        }),
     },
     methods: {
-		removeCutlery(){
-			if (this.cutleryCounter !== 1) {
-				this.cutleryCounter--
-			} else{
-				this.addKnifes = false
-			}
+		closeFormShowOrderForm(){
+			this.showAuthForm = false
+			this.showBasket = false
+			this.showOrderForm = true
 		},
-		addCutlery(){
-			this.cutleryCounter++
-		},
+        closeSmsForm() {
+			this.showAuthForm = false
+			this.showOrderForm = true
+        },
+        removeCutlery() {
+            if (this.cutleryCounter !== 1) {
+                this.cutleryCounter--
+            } else {
+                this.addKnifes = false
+            }
+        },
+        addCutlery() {
+            this.cutleryCounter++
+        },
         closeOrderForm() {
-            this.showForm = false
+            this.showOrderForm = false
         },
         goToForm() {
-            this.showForm = true
+            this.showAuthForm = true
         },
         goBack() {
             this.$router.go(-1)
@@ -220,6 +230,21 @@ export default {
             this.$store.dispatch('basket/incrementDishCounter', id);
         },
     },
+    watch: {
+        getTotalPrice(newValue) {
+            return newValue
+        },
+        cutleryCounter(newValue) {
+            return newValue
+        }
+    },
+    computed: {
+        ...mapGetters({
+            getSelectedDishs: "basket/getSelectedDishs",
+            getTotalPrice: "basket/getTotalPrice",
+            getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
+        }),
+    },
     created() {
         this.totalPrice = this.getTotalPrice
     },
@@ -227,6 +252,24 @@ export default {
 </script>
 
 <style scoped>
+.logo-block {
+    margin: auto;
+    width: 100%;
+}
+
+.mini-header_logo {
+    width: 125px;
+}
+
+.mini-header {
+    display: flex;
+    flex-direction: row;
+}
+
+.authFormSheet {
+    height: 100vh;
+}
+
 .desktop-cart {
     display: grid;
     grid-template-columns: calc(100% - 320px) 310px;
@@ -240,9 +283,7 @@ export default {
     height: 100%;
 }
 
-.desktop-cart__content {
-
-}
+.desktop-cart__content {}
 
 .desktop-cart__wrapper {
     border-radius: 4px !important;
@@ -264,11 +305,11 @@ export default {
     }
 
     .mobile-cart__form {
-      width: 100%;
+        width: 100%;
     }
 
     .main-mobile-cart {
-      padding-top: 60px;
+        padding-top: 60px;
     }
 
     .clear-cart-modal {
@@ -405,9 +446,9 @@ export default {
     }
 
     .total-time {
-      font-size: 13px;
-      font-weight: 600;
-      line-height: 1em;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1em;
     }
 
     .next-btn-block {
@@ -446,7 +487,7 @@ export default {
     }
 
     .dish-info {
-      margin-left: 10px;
+        margin-left: 10px;
     }
 
     .dish-info-text {
@@ -460,7 +501,7 @@ export default {
         left: 0;
         right: 0;
         height: 60px;
-        z-index: 10;
+        z-index: 100;
         background: #ffffff;
         display: flex;
         align-items: center;
@@ -474,36 +515,36 @@ export default {
     }
 
     .order-knifes {
-      display: flex;
-      align-items: center;
-      padding: 16px 20px;
-	  flex-direction: row;
-	  width: 100vw;
-	  justify-content: space-between;
+        display: flex;
+        align-items: center;
+        padding: 16px 20px;
+        flex-direction: row;
+        width: 100vw;
+        justify-content: space-between;
     }
 
     .order-knifes .order-knifes__icon {
-      margin-right: 10px;
+        margin-right: 10px;
     }
 
     .order-delivery-info {
-      display: flex;
-      align-items: center;
-      padding: 0 20px 10px;
+        display: flex;
+        align-items: center;
+        padding: 0 20px 10px;
     }
 
     .order-delivery-info__title {
-      padding: 20px 20px 0;
-      font-size: 26px;
-      margin-bottom: 10px;
+        padding: 20px 20px 0;
+        font-size: 26px;
+        margin-bottom: 10px;
     }
 
     .order-delivery-info__icon {
-      margin-right: 10px;
+        margin-right: 10px;
     }
 
     .order-delivery-info__text {
-      font-size: 16px;
+        font-size: 16px;
     }
 
     .list-item {

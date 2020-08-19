@@ -15,12 +15,17 @@ export const state = () => ({
         longitude: 0
       }
     },
-    language: null
+	language: null,
+	userNumber: null,
   },
   status: 0
 })
 
 export const actions = {
+
+  setUserPhoneNumber(context, payload) {
+    context.commit('SET_USER_PHONE_NUMBER', payload)
+  },
 
   selectCategory(context, payload) {
     context.commit('SELECT_CATEGORY', payload)
@@ -53,6 +58,11 @@ export const actions = {
 };
 
 export const mutations = {
+	SET_USER_PHONE_NUMBER(state, payload) {
+    state.status = '200'
+    state.data.userNumber = payload
+  },
+
   SELECT_CATEGORY(state, payload) {
     state.status = '200'
     state.data.selectedCategory = payload
@@ -128,6 +138,9 @@ export const getters = {
   },
   getUserLocation(state) {
     return state.data.userLocation
+  },
+  getUserPhoneNumber(state) {
+    return state.data.userNumber
   }
 };
 

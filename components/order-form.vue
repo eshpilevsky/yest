@@ -75,7 +75,7 @@
                 </div>
             </div>
         </div>
-        <v-btn class="form-fields__submit" block color="primary" @click="sendOrder()" :loading="loading">
+        <v-btn class="form-fields__submit" block color="primary" @click="sendOrder()" :loadingSendOrder="loadingSendOrder">
             {{this.payment_method == 0 ? 'Оформить заказ' : 'Перейти к оплате'}}
         </v-btn>
     </div>
@@ -87,9 +87,6 @@
         <v-card class="confirm-order-modal">
             <v-card-title class="mobile-form-title">Адрес доставки</v-card-title>
             <form>
-                <div>
-                    <v-text-field v-model="phone" v-mask="mask" required></v-text-field>
-                </div>
                 <div class="mobile-input">
                     <span class="mobile-input__label fs12">Адрес доставки</span>
                     <v-text-field class="mobile-input__field" v-model="delivery.address" placeholder="" required></v-text-field>
@@ -129,12 +126,12 @@
                 <div class="mobile-form__shipping">
                     <p class="mobile-form__shipping-title">Доставка</p>
                     <p class="mobile-form__shipping-time">
-                        {{this.getLatetestRestInfoWithOrder}}
-                        45 &#8212; 55 мин</p>
+						{{`${time.min} - ${this.time.max}`}}
+                    </p>
                 </div>
                 <v-card-actions class="mobile-form__actions">
-                    <v-btn class="mobile-form__submit" block color="primary" @click="sendOrder()" :disabled="phone.length<=11" :loading="loading">
-                        Перейти к оплате
+                    <v-btn class="mobile-form__submit" block color="primary" @click="sendOrder()" :disabled="phone.length<=11" :loadingSendOrder="loadingSendOrder">
+						{{payment_method == 0 ? 'Оформить заказ' : 'Перейти к оплате'}}
                         <span class="mobile-form__submit-total">{{this.getTotalPrice}} BYN</span>
                     </v-btn>
                 </v-card-actions>
@@ -167,7 +164,7 @@ export default {
             comment: '',
             order: [],
             billingUrl: '',
-            loading: false,
+            loadingSendOrder: false,
             mask: ['+375', '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/, ],
             time: {},
             cutleryCounter: 1,
@@ -186,7 +183,7 @@ export default {
             this.$emit('closeCheckout')
         },
         sendOrder() {
-            this.loading = true
+            this.loadingSendOrder = true
             let dishId;
             let dishOption = [];
             this.getSelectedDishs.forEach((dish) => {
@@ -214,7 +211,7 @@ export default {
             this.phone = parseInt(this.phone, 10)
 
             ApiService.post('/create/order', {
-                phone: this.phone,
+                phone: this.getUserPhoneNumber,
                 delivery: {
                     address: this.delivery.address,
                     room: this.delivery.room,
@@ -234,8 +231,9 @@ export default {
                 }
                 this.$store.dispatch('basket/dropBasket');
                 this.$router.push('/order/onliner_payment/success')
-                this.loading = false
+                this.loadingSendOrder = false
             }).catch((error) => {
+				this.$router.push('/order/onliner_payment/fail')
                 console.error(error)
             })
         }
@@ -247,6 +245,7 @@ export default {
             getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
             getTotalPrice: "basket/getTotalPrice",
             getCurrentAddress: "map/getCurrentAddress",
+            getUserPhoneNumber: "user/getUserPhoneNumber",
         }),
     },
     mounted() {

@@ -41,7 +41,7 @@
                     </div>
 
                     <div class="contact-us">
-                        <v-bottom-sheet v-model="sheet" persistent>
+                        <v-bottom-sheet v-model="sheet" persistent :eager=true>
                             <template v-slot:activator="{ on }">
                                 <div class="contact-us-block" v-on="on">
                                     <v-btn fab class="contact-us-btn" color="secondary">

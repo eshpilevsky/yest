@@ -10,7 +10,8 @@
                 delete_forever
             </v-icon>
         </div>
-        <div v-if="this.orderList.length > 0 " class="my-order-dishes-desktop">
+		
+        <div v-if="this.orderList.length > 0" class="my-order-dishes-desktop">
             <div v-for="order in this.orderList" :key="order.selectSize.id" class="order-item">
                 <div class="d-flex flex-column order-item__title">
                     <div class="d-flex flex-column order-item-info">
@@ -184,11 +185,15 @@ export default {
             getSelectedDishs: "basket/getSelectedDishs",
             getTotalPrice: "basket/getTotalPrice",
             getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
-        }),
+		}),
+		checkLastRestName(){
+			console.error(this.$router);
+		}
 	},
 	async beforeMount () {
 		if (this.getLatetestRestInfoWithOrder !== null) {
 			this.time = this.getLatetestRestInfoWithOrder.delivery.time
+			this.checkParams = this.getLatetestRestInfoWithOrder.params
 		} else {
 			this.time = this.delivery.time
 		}
