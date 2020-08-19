@@ -135,7 +135,10 @@ input:focus {
 }
 
 .manual-enter-address {
-    height: calc(var(--vh, 1vh) * 100);
+    /*height: calc(var(--vh, 1vh) * 100);*/
+    height: 100% !important;
+    overflow-y: scroll !important;
+    -webkit-overflow-scrolling: touch !important;
     width: 100vw;
     background-color: white;
     padding: 5px 0;

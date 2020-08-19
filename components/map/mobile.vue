@@ -1,9 +1,9 @@
 <template>
-    <v-overlay :dark='false' :value="isMapVisible">
+    <v-overlay class="mobile-map-wrapper" :dark='false' :value="isMapVisible">
         <div v-if="this.getMapLoading" class="map-loading">
             <v-progress-circular indeterminate size="40" color="grey"></v-progress-circular>
         </div>
-        <div v-else>
+        <div v-else class="map-search-wrapper">
             <div class="currentAddress" v-show="!isInputAddressMode">
                 <h2 class="currentAddress-title">{{address}}</h2>
                 <div class="currentAddress-put" @click="switchToAddressMode">Изменить адрес доставки</div>
@@ -190,6 +190,27 @@ export default {
 <style lang="scss">
 $size: 7vw;
 $header: 65px;
+
+.map-search-wrapper {
+  height: 100% !important;
+  overflow: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding-bottom: calc(0px + var(--safe-area-inset-bottom, 0px));
+}
+
+.mobile-map-wrapper .v-overlay__content {
+  height: 100%;
+  overflow: hidden;
+}
+
+.mobile-map-wrapper {
+  height: 100% !important;
+  overflow: hidden;
+}
+
+.mobile-map-wrapper .ymap-container {
+  height: 100% !important;
+}
 
 ymaps {
     color: black
