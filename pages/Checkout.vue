@@ -7,7 +7,7 @@
             </v-card>
         </div>
         <div class="desktop-cart__sidebar">
-<!--            <basket :orderList="this.getSelectedDishs" />-->
+           <basket :orderList="this.getSelectedDishs" :delivery="this.getLatetestRestInfoWithOrder" />
         </div>
     </div>
     <div class="mobile-cart">
@@ -92,7 +92,7 @@
                             {{this.totalPrice}} BYN
                         </span>
                         <span class="total-time">
-							{{`${this.getLatetestRestInfoWithOrder.delivery.time.min} - ${this.getLatetestRestInfoWithOrder.delivery.time.max} мин`}}
+							<!-- {{`${this.getLatetestRestInfoWithOrder.delivery.time.min} - ${this.getLatetestRestInfoWithOrder.delivery.time.max} мин`}} -->
 						</span>
                     </div>
                     <div class="next-btn-block">
@@ -150,13 +150,6 @@ export default {
         let categoriesListData = categoriesList.data
         store.dispatch('user/allCategory', categoriesListData)
 
-        // app.lastRest = lastRest
-        app.orderList = orderList
-        app.totalPrice = totalPrice
-
-        return {
-            lastRest: lastRest
-        }
 
     },
     data() {
@@ -167,7 +160,7 @@ export default {
             dropBasketForm: false,
             showForm: false,
 			addKnifes: true,
-			knifesCounter: 1
+			cutleryCounter: 1,
         }
     },
     watch: {
@@ -187,14 +180,14 @@ export default {
     },
     methods: {
 		removeCutlery(){
-			if (this.knifesCounter !== 1) {
-				this.knifesCounter--
+			if (this.cutleryCounter !== 1) {
+				this.cutleryCounter--
 			} else{
 				this.addKnifes = false
 			}
 		},
 		addCutlery(){
-			this.knifesCounter++
+			this.cutleryCounter++
 		},
         closeOrderForm() {
             this.showForm = false
