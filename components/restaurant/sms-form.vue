@@ -45,7 +45,7 @@ export default {
             }, 3000);
         },
         goToCheckout() {
-			this.$store.dispatch('user/setUserPhoneNumber', phone);
+			this.$store.dispatch('user/setUserPhoneNumber', this.phone);
 			if (this.currentRouteName !== 'cart') {
 				this.$router.push('/checkout')
 				console.error('push to checkout');

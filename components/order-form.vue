@@ -208,7 +208,6 @@ export default {
                 }
                 this.order.push(result)
             })
-            this.phone = parseInt(this.phone, 10)
 
             ApiService.post('/create/order', {
                 phone: this.getUserPhoneNumber,
