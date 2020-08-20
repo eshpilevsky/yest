@@ -3,8 +3,8 @@
     <div class="setAdressContaine-info">
         <span class="info-pre-title">
             Yest.by • {{this.currentZone.name}}
-            <span class="pre-title" v-show="this.currentCategoryy.id !== 0">
-                • {{this.currentCategoryy.name}}
+            <span class="pre-title" v-show="this.getSelectedCategory.id !== 0">
+                • {{this.getSelectedCategory.name}}
             </span>
         </span>
         <h1 class="info-title">
@@ -69,14 +69,12 @@ export default {
             searchAddress: '',
             overlay: false,
             showAdressList: false,
-            ww: 0,
             suggestions: [],
             filteredLocations: [],
             loadingSuggest: false,
             coords: [],
             showDesktopMap: false,
             ymaps: null,
-            currentCategoryy: {},
         }
     },
     computed: {
@@ -101,8 +99,7 @@ export default {
             }
         },
         getSelectedCategory(newValue) {
-			this.currentCategoryy = newValue
-            this.currentCategoryy.name = this.getSelectedCategory.name
+			return newValue
         },
         getCurrentAddress(newValue) {
             this.searchAddress = newValue
@@ -111,7 +108,6 @@ export default {
             this.setCurrentCoords(null)
             this.setCurrentAddress('')
             this.currentZone.name = newValue.name
-            this.currentCategoryy.name = this.getSelectedCategory.name
         },
         categoryInfoData(newValue) {
             return newValue
@@ -204,8 +200,6 @@ export default {
             ...settings,
             debug: true
         });
-		this.ww = window.innerWidth;
-		this.currentCategoryy = this.currentCategory
     },
     mounted() {
         this.searchAddress = this.getCurrentAddress
