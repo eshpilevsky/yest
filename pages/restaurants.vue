@@ -408,7 +408,7 @@
     </div>
     <v-overlay class="modal-change-products" :dark='false' opacity="0.5" z-index="999" v-model="showWarning">
         <v-card class="d-flex flex-column justify-space-between select-option-card">
-            <p class="modal-change-products__title">Оформить заказ из ресторана НАЗВАНИЕ РЕСТОРАНА</p>
+            <p class="modal-change-products__title">Оформить заказ из ресторана {{this.restuarant.name}}</p>
             <div class="warning-info" color="secondary">
                 Все ранее добавленные блюда из ресторана "{{this.getLatetestRestInfoWithOrder == null ? '404' : this.getLatetestRestInfoWithOrder.restName}}" будут удалены из корзины
             </div>
