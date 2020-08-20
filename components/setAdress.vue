@@ -2,10 +2,19 @@
 <div class='setAdressContaine containerr' id='bgImg'>
     <div class="setAdressContaine-info">
         <span class="info-pre-title">
-            Yest.by • {{this.currentZone.name}}
-            <span class="pre-title" v-show="this.getSelectedCategory.id !== 0">
-                • {{this.getSelectedCategory.name}}
-            </span>
+            <nuxt-link to="/" class="link">
+                Yest.by
+            </nuxt-link>
+            •
+            <nuxt-link :to="`/${this.currentZone.alias}`" class="link">
+                {{this.currentZone.name}}
+            </nuxt-link>
+			
+            <nuxt-link :to="`/${this.currentZone.alias}/restaurants/category/${this.getSelectedCategory.alias}`" class="link">
+                <span class="pre-title" v-show="this.getSelectedCategory.id !== 0">
+                    • {{this.getSelectedCategory.name}}
+                </span>
+            </nuxt-link>
         </span>
         <h1 class="info-title">
             {{this.categoryInfoData.header }} <br /> в {{ this.categoryInfoData.city }}
@@ -22,11 +31,11 @@
             <div v-show="showAdressList && searchAddress.length > 3" class="adressList">
                 <v-list>
                     <v-list-item v-for="(item, index) in suggestions" :key="'adres'+index" class="itemAdress" @click="selectAdress(item)">
-                    <v-list-item-content>
-                      <v-list-item-title>{{item.displayName}}</v-list-item-title>
-                      <v-list-item-subtitle class="itemAdress-sub">{{item.value}}</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
+                        <v-list-item-content>
+                            <v-list-item-title>{{item.displayName}}</v-list-item-title>
+                            <v-list-item-subtitle class="itemAdress-sub">{{item.value}}</v-list-item-subtitle>
+                        </v-list-item-content>
+                    </v-list-item>
                 </v-list>
             </div>
         </div>
@@ -99,7 +108,7 @@ export default {
             }
         },
         getSelectedCategory(newValue) {
-			return newValue
+            return newValue
         },
         getCurrentAddress(newValue) {
             this.searchAddress = newValue
@@ -208,6 +217,11 @@ export default {
 </script>
 
 <style scoped>
+.link{
+	color: #fff;
+	text-decoration: none;
+
+}
 
 .itemAdress-sub {
     color: #aaa !important;
@@ -281,8 +295,8 @@ export default {
 }
 
 .smart-search {
-  position: relative;
-  max-width: 80%;
+    position: relative;
+    max-width: 80%;
 }
 
 .search-me {
