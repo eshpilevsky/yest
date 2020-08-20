@@ -1,7 +1,7 @@
 <template>
 <div style="padding-bottom: 0px">
     <setAdress :currentZone='currentZone' :currentCategory='this.currentCategory' :categoryInfoData='categoryInfoData' :class="{hide: showSetAdress == false}" />
-    <specialOffers v-show="getCurrentAddress.length > 0" />
+    <specialOffers :offers="specilaOffers" v-show="showSpecialOffer" />
     <categories :categoriesList='categoriesList' :currentCategory='this.currentCategory' />
     <restuarantsList :restaurantsList='restaurantsList' :currentCategory='this.currentCategory' />
 </div>
@@ -34,6 +34,7 @@ export default {
             rest: [],
             categoryInfoData: null,
             currentZone: null,
+            specilaOffers: [],
         }
     },
     async asyncData({
@@ -44,6 +45,7 @@ export default {
     }) {
         console.log('START ASYNC DATA');
         let getCurrentCoords = store.getters['map/getCurrentCoords']
+        console.log('getCurrentCoords', getCurrentCoords)
         let zoneList = await axios.get('https://yestapi.xyz/get-zones')
         const zoneListData = zoneList.data
         store.dispatch('zone/setZone', zoneListData)
@@ -51,12 +53,12 @@ export default {
             return zones.alias == params.region
         })
 
-		let templateZone = zoneListData[1]
+        let templateZone = zoneListData[1]
 
         console.log('templateZone', templateZone)
         console.log('currentZone', currentZone)
-		store.dispatch('zone/setSelectedZone', currentZone !== undefined ? currentZone : templateZone)
-		// store.dispatch('zone/setSelectedZone', 'fuck')
+        store.dispatch('zone/setSelectedZone', currentZone !== undefined ? currentZone : templateZone)
+        // store.dispatch('zone/setSelectedZone', 'fuck')
         app.currentZone = currentZone
 
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
@@ -79,33 +81,33 @@ export default {
         })
 
         let categoryInfo;
-		let categoryInfoData;
-		
+        let categoryInfoData;
+
         if (currentCategory !== undefined) {
-			categoryInfo = await axios.post('https://yestapi.xyz/categories/info', {
-				zone_id: currentZone.id,
+            categoryInfo = await axios.post('https://yestapi.xyz/categories/info', {
+                zone_id: currentZone.id,
                 category_id: currentCategory.id
             })
 
             if (categoryInfo.status != 404) {
-				categoryInfoData = categoryInfo.data
+                categoryInfoData = categoryInfo.data
                 app.categoryInfoData = categoryInfoData
             } else {
-				categoryInfoData = {
-					header: 'Быстрая доставка',
+                categoryInfoData = {
+                    header: 'Быстрая доставка',
                     city: currentZone.name
                 }
-			}
-			
-		store.dispatch('user/selectCategory', currentCategory)
+            }
+
+            store.dispatch('user/selectCategory', currentCategory)
         } else {
             categoryInfoData = {
-				header: 'Быстрая доставка',
+                header: 'Быстрая доставка',
                 city: currentZone.name
-			}
-			currentCategory = categoryAll[0]
-			store.dispatch('user/selectCategory', currentCategory)
-		}
+            }
+            currentCategory = categoryAll[0]
+            store.dispatch('user/selectCategory', currentCategory)
+        }
 
         var sortByCoord = {}
         if (getCurrentCoords.length > 0) {
@@ -124,15 +126,15 @@ export default {
             }
         }
         let restaurantsList;
-		let checkCatId  =  currentCategory ? currentCategory.id : 0
-		let restaurantsListData
+        let checkCatId = currentCategory ? currentCategory.id : 0
+        let restaurantsListData
 
         if (checkCatId == 0) {
-			restaurantsList = await axios.post('https://yestapi.xyz/restaurants', sortByCoord)
-			restaurantsListData = restaurantsList.data.restaurants
+            restaurantsList = await axios.post('https://yestapi.xyz/restaurants', sortByCoord)
+            restaurantsListData = restaurantsList.data.restaurants
         } else {
-			restaurantsList = await axios.post(`https://yestapi.xyz/restaurants/category/${currentCategory.id}`, sortByCoord)
-			restaurantsListData = restaurantsList.data.restaurants
+            restaurantsList = await axios.post(`https://yestapi.xyz/restaurants/category/${currentCategory.id}`, sortByCoord)
+            restaurantsListData = restaurantsList.data.restaurants
         }
 
         var filtByTime;
@@ -178,7 +180,7 @@ export default {
                     openTimeTimestamp.setSeconds(openTimeSec);
 
                     item.today_close_time = closeTimeTimestamp.getTime();
-					// console.log(`#${i} - ${arr.length}, ${item.name} -closeTime- ${closeTime}`);
+                    // console.log(`#${i} - ${arr.length}, ${item.name} -closeTime- ${closeTime}`);
                     item.today_open_time = openTimeTimestamp.getTime();
 
                     if (buffer.length !== 1) {
@@ -195,7 +197,8 @@ export default {
                 }
             });
             return openRestorants.concat(closeRestorants);
-		}
+        }
+
         return {
             restaurantsList: restaurantsListData,
             categoriesList: categoryAll.concat(categoriesList.data),
@@ -204,8 +207,30 @@ export default {
             currentZone: currentZone,
         }
     },
+    methods: {
+        getSpecialOffer() {
+            ApiService.post(`/restaurants/special-offers`, {
+                zone_id: this.getSelectedZone.id,
+                latitude: parseInt(this.getUserCoordinate.latitude),
+                longitude: parseInt(this.getUserCoordinate.longitude)
+            }).then((response) => {
+                if (response.status === 200) {
+                    const resp = response.data
+                    this.specilaOffers = resp
+                    if (resp.length == 0) {
+                        this.showSpecialOffer = false
+                    } else {
+                        this.showSpecialOffer = true
+                    }
+                }
+            }).catch((error) => {
+                console.error(error)
+            })
+        }
+    },
     watch: {
         getCurrentAddress(newValue, oldValue) {
+            console.log('getCurrentAddress -> newValue.length', newValue.length)
             if (window.innerWidth < 450) {
                 if (newValue.length > 0) {
                     this.showSetAdress = false
@@ -213,30 +238,36 @@ export default {
                     this.showSetAdress = true
                 }
             }
+            if (newValue.length > 0) {
+                this.getSpecialOffer()
+            }
         },
     },
     computed: {
         ...mapGetters({
-            selectedZoneId: 'zone/getSelectedZone',
+            getSelectedZone: 'zone/getSelectedZone',
             getZoneList: 'zone/getZoneList',
             getCategoryList: 'user/getCategoryList',
+            getUserCoordinate: 'user/getUserCoordinate',
             getCurrentAddress: "map/getCurrentAddress",
         })
-	},
-	created(){	
-		this.$store.dispatch('zone/setSelectedZone', this.currentZone)
-		this.$store.dispatch('user/selectCategory', this.currentCategory)
-	
-	},
+    },
+    created() {
+        this.$store.dispatch('zone/setSelectedZone', this.currentZone)
+        this.$store.dispatch('user/selectCategory', this.currentCategory)
+    },
     mounted() {
-		window.scrollTo(0, 0);
+        window.scrollTo(0, 0);
+        if (this.getCurrentAddress.length > 0) {
+            this.getSpecialOffer()
+        }
         setTimeout(() => {
-          if (window.innerWidth < 992) {
-            document.getElementById('bgImg').setAttribute('style', 'background: #fff;')
-          }else{
-            document.getElementById('bgImg').setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.categoryInfoData.background + '");')
-          }
-          }, 200);
+            if (window.innerWidth < 992) {
+                document.getElementById('bgImg').setAttribute('style', 'background: #fff;')
+            } else {
+                document.getElementById('bgImg').setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.categoryInfoData.background + '");')
+            }
+        }, 200);
         let lastScrollTop = 0
         if (window.innerWidth < 992) {
             if (this.getCurrentAddress.length > 0) {

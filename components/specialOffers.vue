@@ -1,8 +1,8 @@
 <template>
-<div class='specialOffer-container' v-if="!hide">
+<div class='specialOffer-container' v-show="!hide">
     <div v-swiper="swiperOptions" id='swiper'>
         <div class="swiper-wrapper specialOffer-wrapper">
-            <div class="swiper-slide specialOffer-slide" v-for='(item, index) in specilaOffers' :key='index'>
+            <div class="swiper-slide specialOffer-slide" v-for='(item, index) in this.offers' :key='index'>
                 <img :src='item.image' class="specialOfferImg" />
             </div>
         </div>
@@ -27,7 +27,10 @@ export default {
     name: 'specialOffers',
     directives: {
         swiper: directive
-    },
+	},
+	props: {
+		offers: Array,
+	},
     data() {
         return {
             serachAdress: '',
@@ -68,37 +71,7 @@ export default {
             const sw = document.getElementById('swiper')[0]
             sw.nextEl()
         },
-        getSpecialOffers() {
-            this.hide = false
-            ApiService.post(`/restaurants/special-offers`, {
-                zone_id: this.getSelectedZone.id,
-                latitude: parseInt(this.getUserCoordinate.latitude),
-                longitude: parseInt(this.getUserCoordinate.longitude)
-            }).then((response) => {
-                if (response.status === 200) {
-                    const resp = response.data
-                    this.specilaOffers = resp
-                    if (resp.length == 0) {
-                        this.hide = true
-                    }
-                    this.loadingSO = false
-                }
-            }).catch((error) => {
-                console.error(error)
-            })
-        }
-    },
-    watch: {
-        getSpecialOffers(newValue) {
-            this.loadingSO = true
-            setTimeout(() => {
-                this.getSpecialOffers()
-            }, 100)
-        }
 	},
-    mounted() {
-        this.getSpecialOffers()
-    }
 }
 </script>
 
