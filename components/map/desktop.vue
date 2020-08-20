@@ -256,6 +256,10 @@ export default {
   width: 100%;
 }
 
+.map-actions-container input {
+  color: #fff !important;
+}
+
 .map-actions-bottom {
     position: absolute;
     top: 100%;
@@ -305,6 +309,10 @@ export default {
     line-height: 24px !important;
 }
 
+.address-input [aria-label="clear icon"] {
+  color: #fff !important;
+}
+
 .close-icon {
     position: absolute;
     top: 10px;
@@ -347,9 +355,9 @@ export default {
     min-width: 800px;
     font-size: 16px;
     background: white;
-    min-height: 600px;
+    min-height: 580px;
     border-radius: 10px;
-    padding: 40px;
+    padding: 30px 40px 40px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;

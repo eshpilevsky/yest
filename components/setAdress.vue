@@ -9,7 +9,7 @@
             <nuxt-link :to="`/${this.currentZone.alias}`" class="link">
                 {{this.currentZone.name}}
             </nuxt-link>
-			
+
             <nuxt-link :to="`/${this.currentZone.alias}/restaurants/category/${this.getSelectedCategory.alias}`" class="link">
                 <span class="pre-title" v-show="this.getSelectedCategory.id !== 0">
                     • {{this.getSelectedCategory.name}}
@@ -41,7 +41,7 @@
         </div>
         <map-btn v-show="this.canDisplayMap" class="map-btn" />
     </div>
-    <v-overlay :dark='false' :value="showDesktopMap" :opacity=".5">
+    <v-overlay z-index="25" :dark='false' :value="showDesktopMap" :opacity=".5">
         <MapDesktop @closeMap='closeDesktopMap()'></MapDesktop>
     </v-overlay>
 </div>
