@@ -408,12 +408,13 @@
     </div>
     <v-overlay class="modal-change-products" :dark='false' opacity="0.5" z-index="999" v-model="showWarning">
         <v-card class="d-flex flex-column justify-space-between select-option-card">
+            <p class="modal-change-products__title">Оформить заказ из ресторана НАЗВАНИЕ РЕСТОРАНА</p>
             <div class="warning-info" color="secondary">
                 Все ранее добавленные блюда из ресторана "{{this.getLatetestRestInfoWithOrder == null ? '404' : this.getLatetestRestInfoWithOrder.restName}}" будут удалены из корзины
             </div>
             <v-card-actions class="modal-change-products__actions d-flex flex-row">
                 <v-btn class="modal-change-products__continue" color="primary" @click="coontinue()">
-                    OK
+                    Продолжить
                 </v-btn>
                 <v-btn @click="cancelDeleteBasket()" class="modal-change-products__cancel" outlined>
                     Отмена
@@ -892,29 +893,26 @@ export default {
 
 .modal-change-products__actions {
     flex: 1 0 auto;
-    display: flex;
-    flex-direction: row;
+    display: flex !important;
+    flex-direction: row !important;
+    padding: 0;
 }
 
 .modal-change-products__continue {
-    flex: 1 0 0;
-    margin-right: 8px;
-    height: 56px !important;
-    border-radius: 16px;
+    font-size: 16px !important;
+    font-weight: 600;
+    text-transform: initial;
+    padding: 4px 20px !important;
+    letter-spacing: 0.1px;
+    margin-right: 10px;
 }
 
 .modal-change-products__cancel {
-    border-radius: 16px;
-    flex: 1 0 0;
-    height: 56px !important;
-    margin-left: 8px !important;
-    margin-right: 0 !important;
-    background: transparent;
-    border: 1px solid #ddd;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-transform: capitalize !important;
+    height: 41px !important;
+    text-transform: initial;
+    padding: 4px 20px !important;
+    font-size: 16px !important;
+    letter-spacing: 0.1px;
 }
 
 .options-list div[role=radiogroup] {
@@ -925,7 +923,21 @@ export default {
 .options-list div[role=radiogroup] .v-radio {
     width: 50% !important;
 }
-</style><style scoped>
+</style>
+<style scoped>
+.modal-change-products__title {
+  padding-top: 6px;
+  margin-bottom: 20px !important;
+  font-size: 24px;
+  font-weight: bold;
+  white-space: pre-line;
+  line-height: 36px;
+}
+
+.modal-change-products .select-option-card {
+  max-width: 600px;
+}
+
 .rest-info-wrapper, .delivery-modal-wrapper {
   overflow-y: visible !important;
   overflow-x: visible;
@@ -1137,9 +1149,13 @@ export default {
 }
 
 .warning-info {
-    font-weight: 600;
-    margin: 0 -20px;
-    padding: 0 20px 20px;
+    font-weight: 400;
+    margin: 0 -20px 20px;
+    padding: 16px 20px;
+    line-height: 1em;
+    background-color: #fafafa;
+    border-top: solid 1px #f5f5f5;
+    border-bottom: solid 1px #f5f5f5;
 }
 
 .price-calc-sum {
@@ -1894,6 +1910,40 @@ export default {
         z-index: 10;
         background: white;
         position: relative;
+    }
+
+    .modal-change-products__title {
+        display: none;
+    }
+
+    .modal-change-products__continue {
+        flex: 1 0 0;
+        margin-right: 8px;
+        height: 56px !important;
+        border-radius: 16px;
+    }
+
+    .modal-change-products__cancel {
+        border-radius: 16px;
+        flex: 1 0 0;
+        height: 56px !important;
+        margin-left: 8px !important;
+        margin-right: 0 !important;
+        background: transparent;
+        border: 1px solid #ddd;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-transform: capitalize !important;
+    }
+
+    .warning-info {
+        font-weight: 600;
+        margin: 0 -20px;
+        padding: 0 20px 20px;
+        background-color: transparent;
+        border-top: none;
+        border-bottom: none;
     }
 }
 
