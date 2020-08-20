@@ -110,12 +110,12 @@ export default {
                 return cost.min <= price && price <= cost.max
             })
             if (finded !== undefined) {
-                if (deliveryMass[deliveryMass.length - 1].min < price) {
+                if (deliveryMass[deliveryMass.length - 1].min <= price) {
                     return ``
                 } else {
 					let computedNextSum = deliveryMass[finded + 1].min - price
 					if (deliveryMass[finded+1].delivery ? deliveryMass[finded+1].delivery : deliveryMass[finded+1].deliveryFee !== 0) {
-						return `Закажите ещё на ${computedNextSum.toFixed(1)} BYN для доставки за ${deliveryMass[finded+1].delivery ? deliveryMass[finded+1].delivery : deliveryMass[finded+1].deliveryFee} BYN`
+						return `Закажите ещё на ${computedNextSum.toFixed(1) == 0 ? deliveryMass[finded + 2].min-price : computedNextSum.toFixed(1) } BYN для доставки за ${deliveryMass[finded+1].delivery ? deliveryMass[finded+1].delivery : deliveryMass[finded+1].deliveryFee} BYN`
 					} else {
 						return `Закажите ещё на ${computedNextSum.toFixed(1)} BYN для бесплатной доставки`
 					}
@@ -128,7 +128,7 @@ export default {
             let deliveryMass = this.sortDeliverFee(this.getLatetestRestInfoWithOrder.delivery.fee)
             let price = parseInt(this.getTotalPrice)
             let finded = deliveryMass.find((cost) => {
-                if (cost.min <= price && price <= cost.max) {
+                if (cost.min < price && price < cost.max) {
                     return cost
                 }
             })
