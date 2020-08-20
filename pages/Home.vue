@@ -230,13 +230,13 @@ export default {
 	},
     mounted() {
 		window.scrollTo(0, 0);
-        // setTimeout(() => {
-        //   if (window.innerWidth < 992) {
-        //     // document.getElementById('bgImg').setAttribute('style', 'background: #fff;')
-        //   }else{
-        //     // document.getElementById('bgImg').setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.categoryInfoData.background + '");')
-        //   }
-        //   }, 200);
+        setTimeout(() => {
+          if (window.innerWidth < 992) {
+            document.getElementById('bgImg').setAttribute('style', 'background: #fff;')
+          }else{
+            document.getElementById('bgImg').setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.categoryInfoData.background + '");')
+          }
+          }, 200);
         let lastScrollTop = 0
         if (window.innerWidth < 992) {
             if (this.getCurrentAddress.length > 0) {
