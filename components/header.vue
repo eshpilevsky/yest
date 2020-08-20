@@ -598,7 +598,7 @@ export default {
     height: 80px;
     position: fixed;
     background: #fff;
-    z-index: 2;
+    z-index: 20;
     display: flex;
     justify-content: center;
 }

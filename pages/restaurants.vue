@@ -26,7 +26,7 @@
                             </h1>
                             <div class="delivery-options d-flex flex-row justify-space-between">
 
-                                <v-menu bottom origin="center center" z-index="999" transition="scale-transition" nudge-bottom='65'>
+                                <v-menu content-class="delivery-modal-wrapper" min-width="356" bottom origin="center center" z-index="999" transition="scale-transition" nudge-bottom='65'>
                                     <template v-slot:activator="{ on, attrs }">
                                         <div class="white--text info-left" v-bind="attrs" v-on="on">
                                             <div class="moped-block">
@@ -51,13 +51,12 @@
                                             </p>
                                         </div>
                                     </template>
-                                    <div class="rest-info-modal">
-                                        <div class="treangle"></div>
-                                        <v-card max-width='460' class="restuarants-legal-info">
-                                            <v-card-title>
+                                    <div class="delivery-modal">
+                                        <v-card max-width='356' class="restuarants-legal-info">
+                                            <v-card-title class="modal-title">
                                                 Доставка Yest.by
                                             </v-card-title>
-                                            <v-card-subtitle>
+                                            <v-card-subtitle class="modal-text-gray">
                                                 Доставку выполнят партнёры Yest.by
                                             </v-card-subtitle>
 
@@ -73,14 +72,14 @@
                                                         </span>
                                                     </div>
                                                 </div>
-                                                <v-divider width='90%' class="mx-auto" />
+                                                <v-divider width='100%' class="mx-auto" />
                                             </div>
                                         </v-card>
                                     </div>
                                 </v-menu>
 
                                 <div class="white--text rest-info-text">
-                                    <v-menu bottom origin="center center" z-index="999" transition="scale-transition" nudge-left='100' nudge-bottom='50'>
+                                    <v-menu content-class="rest-info-wrapper" bottom origin="center center" z-index="999" transition="scale-transition" nudge-left='100' nudge-bottom='50'>
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-btn color="transparent" class="restaurant-info-btn" large v-bind="attrs" v-on="on">
                                                 <p class="info-btn-text">
@@ -89,8 +88,7 @@
                                                 <img src="../assets/restaurantInfoIcon.svg" alt="restaurant info">
                                             </v-btn>
                                         </template>
-                                        <div>
-                                            <div class="treangle"></div>
+                                        <div class="rest-info-modal">
                                             <v-card max-width='460' class="restuarants-legal-info">
                                                 <restuarantInfo :restuarant='this.restuarant' />
                                             </v-card>
@@ -261,7 +259,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                <v-divider width='90%' class="mx-auto" />
+                                <v-divider width='100%' class="mx-auto" />
                             </div>
                         </v-sheet>
                     </v-bottom-sheet>
@@ -928,9 +926,45 @@ export default {
     width: 50% !important;
 }
 </style><style scoped>
-.rest-info-modal {
-  position: relative;
+.rest-info-wrapper, .delivery-modal-wrapper {
+  overflow-y: visible !important;
+  overflow-x: visible;
+  contain: none;
+  z-index: 10 !important;
 }
+
+.rest-info-modal, .delivery-modal {
+  position: relative;
+  overflow: visible;
+}
+
+.rest-info-modal:before, .delivery-modal:before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 25px solid transparent;
+  border-right: 25px solid transparent;
+  border-bottom: 17px solid #fff;
+  width: 10%;
+  margin: auto;
+  z-index: 200;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 600;
+  padding: 20px 20px 0;
+  margin-bottom: 10px;
+}
+
+.modal-text-gray {
+  padding: 3px 20px;
+  font-size: 14px;
+  color: #a0a0a0;
+}
+
 .bgGray {
     background-color: #fafafa;
 }
@@ -1537,7 +1571,7 @@ export default {
     flex-direction: row;
     width: 100%;
     justify-content: flex-start;
-    padding: 10px 20px;
+    padding: 2px 20px 4px;
 }
 
 .rating-info-bottom {
@@ -1717,7 +1751,7 @@ export default {
 }
 
 .description-price {
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .delivery-options .info-left {
@@ -1745,7 +1779,7 @@ export default {
     height: 42px;
     position: relative;
     padding-left: 5px;
-    margin-right: 10px;
+    margin-right: 16px;
     background-color: #00a646;
     border-radius: 4px;
 }

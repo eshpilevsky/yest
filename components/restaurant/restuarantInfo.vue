@@ -1,25 +1,25 @@
 <template>
 <div>
-    <div class="pa-3">
-        <h3>
+    <div class="modal-container">
+        <p class="modal-title">
             {{restuarant.name}}
-        </h3>
+        </p>
         <div>
-            <ul>
-                <li v-for="branch in restuarant.branch">
+            <ul class="rest-info-list">
+                <li class="modal-text-gray" v-for="branch in restuarant.branch">
                     {{branch.address}}
                 </li>
             </ul>
         </div>
-        <div>
+        <div class="modal-text-gray rest-info-categories">
             <span v-for="tag in restuarant.tags">
                 {{tag.name}}
             </span>
         </div>
-        <div>
+        <div class="modal-text-gray">
             Исполнитель (продавец): {{restuarant.legal_info.business_firm_name}}, {{restuarant.legal_info.business_address}}, УНП {{restuarant.legal_info.business_unp}}.
         </div>
-        <div>
+        <div class="modal-text-gray">
             Режим работы ресторана: с 09:00 до 21:00
         </div>
     </div>
@@ -35,3 +35,31 @@ export default {
 }
 </script>
 
+<style scoped>
+  .modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    padding: 20px 20px 0;
+    margin-bottom: 10px !important;
+  }
+
+  .modal-text-gray {
+    padding: 3px 20px;
+    line-height: 1em;
+    font-size: 14px;
+    color: #a0a0a0;
+  }
+
+  .modal-container {
+    padding-bottom: 14px;
+  }
+
+  .rest-info-categories {
+    margin-bottom: 10px;
+  }
+
+  .rest-info-list {
+    padding: 0;
+    margin-bottom: 10px;
+  }
+</style>
