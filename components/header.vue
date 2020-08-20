@@ -108,7 +108,7 @@
             </nuxt-link>
         </div>
         <div class="technical-Btns">
-            <v-btn v-show="this.getCurrentAddress.length > 0" small rounded outlined class="zone-btn" color="primary" @click="showDesktopMap()">
+            <v-btn v-show="this.getCurrentAddress.length > 0" small rounded outlined class="zone-btn" color="primary" @click="showDesktopMap()" :class="{'btn--rounded' : this.getTotalPrice == 0}">
                 <v-icon>
                     near_me
                 </v-icon>
