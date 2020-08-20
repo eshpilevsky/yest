@@ -50,7 +50,8 @@ export default {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    left: 25px;
+    right: 0;
+    left: 26px;
 }
 
 .set-you-address {
@@ -62,7 +63,6 @@ export default {
     display: flex;
     text-transform: none !important;
     color: #fff !important;
-    padding: 0px 50px !important;
     font-size: 14px !important;
     text-overflow: clip;
     overflow: hidden;
@@ -73,7 +73,7 @@ export default {
     font-size: 20px;
     position: absolute;
     top: 50%;
+    left: 0;
     transform: translateY(-50%);
-    right: 120px;
 }
 </style>

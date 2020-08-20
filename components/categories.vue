@@ -2,7 +2,7 @@
 <div class="categories-containe sticky" v-if="!hideCategory">
     <div class="category-list">
         <div class="category-list__container">
-            <v-chip class="category-chips" v-for="(item, index) in first" :key="'firstCategor' + index" :color="item.alias == getSelectedCategory.alias ? 'primary': 'white'" @click="selectCategory(item, false)">
+            <v-chip active-class="category-chips--active" class="category-chips" v-for="(item, index) in first" :key="'firstCategor' + index" :color="item.alias == getSelectedCategory.alias ? 'primary': 'white'" @click="selectCategory(item, false)">
                 <div class="category-name">
                     {{ item.name }}
                 </div>
@@ -354,6 +354,10 @@ export default {
 </script>
 
 <style>
+.category-chips.primary .category-name {
+  color: #fff !important;
+}
+
 .v-text-field.v-text-field--enclosed .v-text-field__details {
     display: none !important;
 }
@@ -389,6 +393,7 @@ export default {
     }
 }
 </style><style scoped>
+
 .list-component {
     overflow: scroll;
 }

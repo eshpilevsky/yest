@@ -1,9 +1,9 @@
 <template>
 <div class='specialOffer-container' v-if="!hide">
     <div v-swiper="swiperOptions" id='swiper'>
-        <div class="swiper-wrapper">
-            <div class="swiper-slide" v-for='(item, index) in specilaOffers' :key='index'>
-                <v-img :src='item.image' class="specialOfferImg" />
+        <div class="swiper-wrapper specialOffer-wrapper">
+            <div class="swiper-slide specialOffer-slide" v-for='(item, index) in specilaOffers' :key='index'>
+                <img :src='item.image' class="specialOfferImg" />
             </div>
         </div>
         <div class="customBtnPrev" slot="button-prev"></div>
@@ -38,7 +38,7 @@ export default {
             swiperOptions: {
                 observer: true,
                 observeParents: true,
-                slidesPerView: 3,
+                slidesPerView: 4,
                 spaceBetween: 30,
                 navigation: {
                     nextEl: '.customBtnNext',
@@ -104,23 +104,30 @@ export default {
 
 <style scoped>
 #swiper {
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding: 20px 80px;
+    max-width: 1420px;
+    width: 100%;
+    margin: 0 auto;
 }
 
-.customBtnNext,
-.swiper-container-rtl .customBtnPrev {
-    right: 10px;
-    left: auto;
+.specialOffer-wrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
+.specialOffer-slide {
+  width: 100%;
+  height: 162px;
+  overflow: hidden;
+  border-radius: 10px;
 }
 
 .customBtnNext {
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTAgMGgyNHYyNEgweiIvPjxwYXRoIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIyIiBkPSJNOC41IDYuNTVsNS42NTcgNS42NTdMOC41IDE3Ljg2NGgwIi8+PC9nPjwvc3ZnPg==);
+    background-image: url("../assets/nextArrowIcon.svg");
 }
 
 .customBtnPrev {
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTAgMGgyNHYyNEgweiIvPjxwYXRoIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIyIiBkPSJNMTUuNSA2LjU1bC01LjY1NyA1LjY1NyA1LjY1NyA1LjY1N2gwIi8+PC9nPjwvc3ZnPg==);
-    left: 10px;
+    background-image: url("../assets/prevArrowIcon.svg");
 }
 
 .customBtnPrev.swiper-button-disabled,
@@ -132,8 +139,8 @@ export default {
 .customBtnNext {
     position: absolute;
     top: 50%;
-    width: calc(var(--swiper-navigation-size) / 44 * 27);
-    height: var(--swiper-navigation-size);
+    /*width: calc(var(--swiper-navigation-size) / 44 * 27);*/
+    /*height: var(--swiper-navigation-size);*/
     margin-top: calc(-1 * var(--swiper-navigation-size) / 2);
     z-index: 10;
     cursor: pointer;
@@ -147,10 +154,19 @@ export default {
     background-color: #00a646;
 }
 
+.customBtnPrev {
+  left: 20px;
+}
+
+.customBtnNext {
+  right: 20px;
+}
+
 .specialOfferImg {
-    width: 90%;
-    display: flex;
-    margin: auto;
+    /*object-fit: cover;*/
+    /*background-repeat: no-repeat;*/
+    /*background-position: bottom left;*/
+    height: 100%;
     border-radius: 10px;
 }
 
@@ -188,11 +204,15 @@ export default {
 }
 
 @media screen and (max-width: 992px) {
+    #swiper {
+      padding: 20px 0;
+      max-width: 1420px;
+      width: 100%;
+      margin: 0 auto;
+    }
 
     .specialOfferImg {
-        width: 95%;
-        border-radius: 20px;
-        height: 170px;
+        border-radius: 10px;
     }
 
     .customBtnPrev,
@@ -205,7 +225,7 @@ export default {
     }
 
     .specialOffer-container {
-        padding-left: 16px;
+        padding: 20px;
     }
 }
 </style><style>
