@@ -10,7 +10,6 @@
                 delete_forever
             </v-icon>
         </div>
-		
         <div v-if="this.orderList.length > 0" class="my-order-dishes-desktop">
             <div v-for="order in this.orderList" :key="order.selectSize.id" class="order-item">
                 <div class="d-flex flex-column order-item__title">
@@ -51,24 +50,24 @@
                 Выберите блюда и добавьте их к заказу
             </span>
         </div>
-    </div>
-    <div class="delivery-options" v-show="this.getTotalPrice > 0">
+        <div class="delivery-options" v-show="this.getTotalPrice > 0">
         <v-divider />
         <div class="my-order-top__total d-flex flex-row justify-space-between align-center py-2">
             <span class="delivery-title">
                 Доставка
             </span>
-            <span class="delivery-count">
+          <span class="delivery-count">
 				{{deliveryCost}} BYN
             </span>
         </div>
         <p class="more-delivery delivery-info-text">
-			{{this.deliveryString}}
+          {{this.deliveryString}}
         </p>
+      </div>
     </div>
     <div class="delivery-time-price">
         <div class="total-price">
-            <p class="total-title">Время доставким</p>
+            <p class="total-title">Время доставки</p>
             <p class="price">
               {{`${this.time.min} &#8212; ${this.time.max} мин`}}
               <img class="price__icon" src="../assets/editIcon.svg" alt="Edit">
@@ -206,11 +205,10 @@ export default {
 
 <style scoped>
 .delivery-time-price {
-  padding: 0 20px;
   display: grid;
   grid-template-columns: 1.7fr 1.3fr;
-  grid-column-gap: 10px;
 }
+
 .delivery-info-text {
   padding: 0 20px;
   font-size: 12px;
@@ -266,7 +264,6 @@ export default {
     line-height: 36px;
 }
 
-
 .counter-plus,
 .counter-minus {
     display: none;
@@ -288,6 +285,16 @@ export default {
     font-size: 14px;
     text-align: right;
     padding-left: 10px !important;
+    display: flex;
+    flex-direction: column;
+    line-height: 1em;
+    align-items: center;
+}
+
+.fs10 {
+  font-size: 10px;
+  line-height: 1em;
+  margin-top: 2px;
 }
 
 .order-item-info {
@@ -326,7 +333,7 @@ export default {
     justify-content: center;
     width: 100%;
     align-items: flex-start;
-    padding: 10px 0;
+    padding: 10px 5px 10px 20px;
 }
 
 .my-order-text {
@@ -433,16 +440,6 @@ export default {
     font-size: 14px;
 }
 
-.total-price {
-    border-top: 1px solid rgba(0, 0, 0, .05);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 100%;
-    align-items: flex-start;
-    padding: 10px 0;
-}
-
 .my-order-text {
     color: #b0b0b0;
     display: flex;
@@ -458,7 +455,7 @@ export default {
     display: flex;
     flex-direction: column;
     overflow: auto;
-    height: calc(100% - 160px);
+    height: calc(100% - 70px);
 }
 
 .my-order-top__total {
