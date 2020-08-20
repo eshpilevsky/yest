@@ -146,10 +146,16 @@ export default {
         }
     },
     watch: {
-        getSelectedZone() {
-            this.getCategories()
-            this.selectedCategory = this.getSelectedCategory
-        }
+        // getSelectedZone(newValue, oldValue) {
+        //     console.log('getSelectedZone -> newValue', newValue)
+        //     console.log('getSelectedZone -> newValue', oldValue)
+        //     if (newValue.id !== oldValue.id) {
+        //         console.error('new Zone');
+        //         console.log('watcher getSelectedZone')
+        //         this.getCategories()
+        //         this.selectedCategory = this.getSelectedCategory
+        //     }
+        // }
     },
     computed: {
         ...mapGetters({
@@ -328,7 +334,7 @@ export default {
         this.second = this.allCategory.slice(this.sliceCounter, this.categoriesList.length)
     },
     mounted() {
-        this.getCategories()
+        // this.getCategories()
         this.hideCategory = false
         this.ww = window.innerWidth
         if (this.getSearchNameKitchenDish !== null) {

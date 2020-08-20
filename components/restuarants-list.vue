@@ -143,7 +143,6 @@ export default {
 						// this.restaurants = rest;
 						this.totalCount = rest.length
                         this.restaurants = this.computedOpenTime(rest).slice(0, this.limit)
-                        console.log('getRestaurants -> this.restaurants', this.restaurants[0])
                         this.notFound = false;
                     } else if (resp.status === 404) {
                         this.restaurants = [];
@@ -276,12 +275,13 @@ export default {
         }
     },
     created() {
-		if(this.restaurantsList !== 404){
+		if(this.restaurantsList[0] !== 404){
 			this.totalCount = this.restaurantsList.length
 			this.restaurants = this.restaurantsList.slice(0, this.limit)
 		} else {
 			this.restaurants = [];
-            this.notFound = true;
+			this.notFound = true;
+			this.totalCount = 0
 		}
     }
 };

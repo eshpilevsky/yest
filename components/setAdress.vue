@@ -101,6 +101,7 @@ export default {
             }
         },
         getSelectedCategory(newValue) {
+			this.currentCategoryy = newValue
             this.currentCategoryy.name = this.getSelectedCategory.name
         },
         getCurrentAddress(newValue) {
@@ -213,9 +214,6 @@ export default {
 </script>
 
 <style scoped>
-.pre-title {
-    display: none;
-}
 
 .itemAdress-sub {
     color: #aaa !important;

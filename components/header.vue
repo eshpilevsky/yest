@@ -180,6 +180,10 @@ export default {
         }
     },
     watch: {
+		getSelectedZone(newValue){
+            console.log('getSelectedZone -> newValue', newValue)
+			return newValue
+		},
         getCurrentAddress(newValue, oldValue) {
             if (newValue.length > 0) {
                 this.showSetAdressBtn = true
@@ -228,7 +232,7 @@ export default {
                 id: 0,
                 alias: 'all'
             })
-            this.$store.dispatch('zone/setSelectedZone', item.id)
+            this.$store.dispatch('zone/setSelectedZone', item)
             this.$store.dispatch('user/setSelectedCategoryTitle')
             this.$router.replace(`/${this.getSelectedZone.alias}`)
         }

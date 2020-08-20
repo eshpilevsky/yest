@@ -26,7 +26,6 @@ export function createRouter() {
       {
         path: '/',
         component: Home,
-        redirect: '/minsk',
         children: [{
           path: '/:region',
           component: Home,

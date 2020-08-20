@@ -23,7 +23,7 @@ export const mutations = {
     state.data.zone = payload
   },
   SET_SELECTED_ZONE(state, payload) {
-    state.status = '200'
+	  state.status = '200'
     state.data.selectedZoneId = payload
   }
 };
@@ -31,19 +31,13 @@ export const mutations = {
 export const getters = {
   getSelectedZone(state) {
     const zones = state.data.zone
-    let find = {
-      alias: 'minsk',
-      id: 1,
-      name: 'Минск'
-    }
+
     if (zones !== null) {
-      zones.forEach((element) => {
-        if (element.id === (state.data.selectedZoneId == null ? 0 : state.data.selectedZoneId)) {
-          find = element
-        }
-      })
-    }
-    return find
+		return state.data.selectedZoneId
+	} else {
+		return zones[0];
+	}
+
   },
   getZoneList(state) {
     return state.data.zone

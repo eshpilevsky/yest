@@ -47,15 +47,16 @@ export default {
         let zoneList = await axios.get('https://yestapi.xyz/get-zones')
         const zoneListData = zoneList.data
         store.dispatch('zone/setZone', zoneListData)
-        let currentZone = zoneListData.find((zones) => {
-            if (zones.alias == params.region) {
-                return zones
-            }
+        var currentZone = zoneListData.find((zones) => {
+            return zones.alias == params.region
         })
 
-        if (currentZone == undefined) {
-            currentZone = zoneListData[0]
-        }
+		let templateZone = zoneListData[1]
+
+        console.log('templateZone', templateZone)
+        console.log('currentZone', currentZone)
+		store.dispatch('zone/setSelectedZone', currentZone !== undefined ? currentZone : templateZone)
+		// store.dispatch('zone/setSelectedZone', 'fuck')
         app.currentZone = currentZone
 
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
@@ -78,29 +79,33 @@ export default {
         })
 
         let categoryInfo;
-        let categoryInfoData;
-        if (currentCategory === undefined) {
-            currentCategory = categoryAll[0]
-            categoryInfoData = {
-                header: 'Быстрая доставка',
-                city: currentZone.name
-            }
-        } else {
-            categoryInfo = await axios.post('https://yestapi.xyz/categories/info', {
-                zone_id: currentZone.id,
+		let categoryInfoData;
+		
+        if (currentCategory !== undefined) {
+			categoryInfo = await axios.post('https://yestapi.xyz/categories/info', {
+				zone_id: currentZone.id,
                 category_id: currentCategory.id
             })
 
             if (categoryInfo.status != 404) {
-                categoryInfoData = categoryInfo.data
+				categoryInfoData = categoryInfo.data
                 app.categoryInfoData = categoryInfoData
             } else {
-                categoryInfoData = {
-                    header: 'Быстрая доставка',
+				categoryInfoData = {
+					header: 'Быстрая доставка',
                     city: currentZone.name
                 }
-            }
-        }
+			}
+			
+		store.dispatch('user/selectCategory', currentCategory)
+        } else {
+            categoryInfoData = {
+				header: 'Быстрая доставка',
+                city: currentZone.name
+			}
+			currentCategory = categoryAll[0]
+			store.dispatch('user/selectCategory', currentCategory)
+		}
 
         var sortByCoord = {}
         if (getCurrentCoords.length > 0) {
@@ -119,18 +124,22 @@ export default {
             }
         }
         let restaurantsList;
-        if (currentCategory.id == 0) {
-            restaurantsList = await axios.post('https://yestapi.xyz/restaurants', sortByCoord)
+		let checkCatId  =  currentCategory ? currentCategory.id : 0
+		let restaurantsListData
+
+        if (checkCatId == 0) {
+			restaurantsList = await axios.post('https://yestapi.xyz/restaurants', sortByCoord)
+			restaurantsListData = restaurantsList.data.restaurants
         } else {
-            restaurantsList = await axios.post(`https://yestapi.xyz/restaurants/category/${currentCategory.id}`, sortByCoord)
+			restaurantsList = await axios.post(`https://yestapi.xyz/restaurants/category/${currentCategory.id}`, sortByCoord)
+			restaurantsListData = restaurantsList.data.restaurants
         }
-        let restaurantsListData = restaurantsList.data.restaurants
 
         var filtByTime;
         if (restaurantsList.data.status == 404) {
-            filtByTime = 404
+            restaurantsListData = [404]
         } else {
-            filtByTime = await computedOpenTime()
+            // filtByTime = await computedOpenTime()
         }
 
         function computedOpenTime() {
@@ -187,7 +196,6 @@ export default {
             });
             return openRestorants.concat(closeRestorants);
 		}
-		
         return {
             restaurantsList: restaurantsListData,
             categoriesList: categoryAll.concat(categoriesList.data),
@@ -214,10 +222,12 @@ export default {
             getCategoryList: 'user/getCategoryList',
             getCurrentAddress: "map/getCurrentAddress",
         })
-    },
-    async created() {
-        await this.$store.dispatch('zone/setSelectedZone', this.currentZone.id)
-    },
+	},
+	created(){	
+		this.$store.dispatch('zone/setSelectedZone', this.currentZone)
+		this.$store.dispatch('user/selectCategory', this.currentCategory)
+	
+	},
     mounted() {
 		window.scrollTo(0, 0);
         // setTimeout(() => {
