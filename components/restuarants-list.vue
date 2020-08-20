@@ -503,6 +503,7 @@ export default {
     width: 100%;
     min-height: 30px;
     text-align: left;
+    z-index: 1;
 }
 
 .restorane-list-item:hover {
