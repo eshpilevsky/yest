@@ -51,7 +51,7 @@
                                             </p>
                                         </div>
                                     </template>
-                                    <div>
+                                    <div class="rest-info-modal">
                                         <div class="treangle"></div>
                                         <v-card max-width='460' class="restuarants-legal-info">
                                             <v-card-title>
@@ -928,6 +928,9 @@ export default {
     width: 50% !important;
 }
 </style><style scoped>
+.rest-info-modal {
+  position: relative;
+}
 .bgGray {
     background-color: #fafafa;
 }
