@@ -2,9 +2,9 @@
 <div class='specialOffer-container' v-show="!hide">
     <div v-swiper="swiperOptions" id='swiper'>
         <div class="swiper-wrapper specialOffer-wrapper">
-            <div class="swiper-slide specialOffer-slide" v-for='(item, index) in this.offers' :key='index'>
+            <a class="swiper-slide specialOffer-slide" :href="item.link" v-for='(item, index) in this.offers' :key='index' @click="openLink(item.link)">
                 <img :src='item.image' class="specialOfferImg" />
-            </div>
+            </a>
         </div>
         <div class="customBtnPrev" slot="button-prev"></div>
         <div class="customBtnNext" slot="button-next"></div>
@@ -67,6 +67,9 @@ export default {
         }),
     },
     methods: {
+		openLink(link){
+			window.location().href = link
+		},
         prevImg() {
             const sw = document.getElementById('swiper')[0]
             sw.nextEl()
