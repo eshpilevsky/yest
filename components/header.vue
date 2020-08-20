@@ -307,20 +307,12 @@ export default {
   font-size: 20px !important;
 }
 
-.zone-btn-address {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    direction: rtl;
-    text-align: left;
-    max-width: 100%;
-}
-
 .btn--rounded {
     border-radius: 28px !important;
 }
 
 .zone-btn .v-btn__content {
-    max-width: 100%;
+    width: 100%;
     overflow: hidden;
     direction: rtl;
     text-align: left;
@@ -331,6 +323,17 @@ export default {
 .zone-btn .v-btn__content i {
   font-size: 18px;
   margin-right: 4px;
+}
+
+.zone-btn .zone-btn-address {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  direction: rtl;
+  text-align: left;
+  max-width: 100%;
+  flex: 1 1 auto;
+  width: calc(100% - 22px);
+  white-space: nowrap;
 }
 
 .burger-logo-img {
@@ -551,7 +554,7 @@ export default {
     color: #000 !important;
     text-overflow: clip;
     overflow: hidden;
-    max-width: 80%;
+    max-width: 400px;
     border-radius: 28px 0 0 28px;
 }
 
