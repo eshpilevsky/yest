@@ -457,7 +457,7 @@ export default {
     color: #fff !important;
     font-weight: bold !important;
     text-transform: none !important;
-    height: 50px !important;
+    height: 40px !important;
     font-size: 16px !important;
 }
 
@@ -559,11 +559,6 @@ export default {
       padding: 20px 20px 0px 20px;
     }
 
-    .showMore-btn {
-      width: 94% !important;
-      margin-top: 20px !important;
-    }
-
     .hidetime {
         padding-top: 0px;
     }
@@ -609,7 +604,7 @@ export default {
     }
 
     .showMore-btn {
-        margin: 20px 27px;
+        margin-bottom: 30px !important;
     }
 
     .restorane-title {

@@ -14,7 +14,7 @@
             Укажите ваше местоположение, чтобы мы смогли предложить вам список доступных ресторанов
         </span>
         <div class="smart-search">
-            <v-text-field @focus="focusInput" @blur="blurInput()" class='search-me' max-width='500px' prepend-inner-icon="near_me" @click:prepend-inner="openMap()" label="Укажите адрес доставки..." v-model='searchAddress' solo clearable @click:clear="clearAdress">
+            <v-text-field autocomplete="off" @focus="focusInput" @blur="blurInput()" class='search-me' max-width='500px' prepend-inner-icon="near_me" @click:prepend-inner="openMap()" label="Укажите адрес доставки..." v-model='searchAddress' solo clearable @click:clear="clearAdress">
                 <template v-slot:append-outer>
                     <v-btn class="showRest-block" color='primary' @click="showRestuarants()">Показать рестораны</v-btn>
                 </template>
