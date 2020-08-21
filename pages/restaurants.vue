@@ -1042,6 +1042,10 @@ export default {
     border-bottom: 4px solid #00a646 !important;
 }
 
+.restaurant-rating {
+  margin-bottom: 16px;
+}
+
 .restaurant-rating .restaurant-rating__icon {
     margin-right: 6px;
     font-size: 18px;
@@ -1220,7 +1224,7 @@ export default {
 }
 
 .rest-info-content {
-    padding: 60px 16px 16px 16px;
+    padding: 90px 16px 16px 16px;
     background: #fff;
     border-bottom: 10px solid #fafafa;
 }
@@ -1834,7 +1838,7 @@ export default {
 }
 
 .restuarant-name {
-    margin: 8px 0;
+    margin: 2px 0 8px;
     font-size: 60px;
     font-weight: bold;
     line-height: 1.08;
