@@ -2,8 +2,8 @@ import ApiService from '~/common/api.service'
 
 export const state = () => ({
   data: {
-    zone: null,
-    selectedZoneId: null
+    zone: [],
+    selectedZoneId: {}
   },
   status: 0
 })

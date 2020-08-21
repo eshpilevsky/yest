@@ -474,6 +474,7 @@ export default {
         if (currentZoneNew == undefined) {
             currentZoneNew = zoneListData[0]
         }
+            console.log('currentZoneNew', currentZoneNew)
 
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
             zone_id: currentZoneNew.id
@@ -487,7 +488,7 @@ export default {
         app.orderList = orderList
         app.totalPrice = totalPrice
         let restuarant = await axios.post(`https://yestapi.xyz/restaurant/${id[0]}`, {
-            zone_id: currentZone.id,
+            zone_id: currentZoneNew.id,
         })
         console.log('restuarant', restuarant.data)
 

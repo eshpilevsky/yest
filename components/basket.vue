@@ -104,7 +104,12 @@ export default {
     },
     methods: {
         computedFreeDeliveryCost() {
-            let deliveryMass = this.sortDeliverFee(this.getLatetestRestInfoWithOrder.delivery.fee)
+			let deliveryMass;
+			if (this.getLatetestRestInfoWithOrder == null) {
+				deliveryMass = this.sortDeliverFee(this.delivery.fee)
+			} else{
+				deliveryMass = this.sortDeliverFee(this.getLatetestRestInfoWithOrder.delivery.fee)
+			}
             let price = parseFloat(this.getTotalPrice)
             let finded = deliveryMass.findIndex((cost) => {
                 return cost.min <= price && price <= cost.max
@@ -125,7 +130,12 @@ export default {
             }
         },
         computedDeliveryCost() {
-            let deliveryMass = this.sortDeliverFee(this.getLatetestRestInfoWithOrder.delivery.fee)
+            let deliveryMass;
+			if (this.getLatetestRestInfoWithOrder == null) {
+				deliveryMass = this.sortDeliverFee(this.delivery.fee)
+			} else{
+				deliveryMass = this.sortDeliverFee(this.getLatetestRestInfoWithOrder.delivery.fee)
+			}
             let price = parseInt(this.getTotalPrice)
             let finded = deliveryMass.find((cost) => {
                 if (cost.min < price && price < cost.max) {
