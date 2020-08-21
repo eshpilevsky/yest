@@ -7,68 +7,103 @@
     <v-icon class="sms-modal__close" @click="closeForm()" v-show="currentRouteName !== 'cart'">
         close
     </v-icon>
-    <v-text-field class="sms-modal__field" label="Ваш номер телефона" outlined v-model="phone" v-mask="mask" :disabled="!smsSuccess"></v-text-field>
-    <div v-show="!smsSuccess">
-        <v-text-field class="sms-modal__field" label="Код из смс" outlined v-model="code"></v-text-field>
+    <v-text-field class="sms-modal__field" label="Ваш номер телефона" outlined v-model="phone" v-mask="mask" :disabled="smsSuccess"></v-text-field>
+    <div v-show="smsSuccess">
+        <v-text-field class="sms-modal__field" label="Код из смс" outlined v-model="code" :error-messages='this.badCode == true ? this.errorMsg : null' ></v-text-field>
     </div>
-    <v-btn class="sms-modal__submit" id="send-sms-modal-btn" block color="primary" :disabled="phone.length < 17" :loading="loadingSendSms" @click="sendSms()" v-show="smsSuccess">
+    <v-btn class="sms-modal__submit" id="send-sms-modal-btn" block color="primary" :disabled="phone.length < 17" :loading="loadingSendSms" @click="sendSms()" v-show="!smsSuccess">
         Получить код
     </v-btn>
-    <v-btn class="sms-modal__submit" block color="primary" :disabled="code.length < 3" @click="goToCheckout()" v-show="!smsSuccess">
+    <v-btn class="sms-modal__submit" block color="primary" :disabled="code.length < 5" @click="auth()" :loading="checkCode" v-show="smsSuccess">
         Дальше
     </v-btn>
 </v-card>
 </template>
 
 <script>
+import ApiService from "~/common/api.service";
+
 export default {
     data() {
         return {
             phone: ' ',
             mask: ['+375', '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/, ],
-            code: "1111",
+            code: ' ',
             loadingSendSms: false,
-			smsSuccess: true,
-			currentRouteName: null,
+            smsSuccess: false,
+            checkCode: false,
+            badCode: false,
+            currentRouteName: null,
+			errorMsg: '',
         }
     },
     methods: {
-		closeForm() {
-			this.$emit('closeForm')
-		},
+        closeForm() {
+            this.$emit('closeForm')
+        },
         sendSms() {
             this.loadingSendSms = true
-            setTimeout(() => {
-                this.smsSuccess = false
+            ApiService.post('/user/send_sms', {
+                phone: parseInt(this.phone.replace(/[^\d]/g, '')),
+            }).then((response) => {
                 this.loadingSendSms = false
-            }, 3000);
+				this.smsSuccess = true
+                if (response.data.status == 'err') {
+					this.badCode = true
+                    this.errorMsg = response.data.errors[0]
+                }
+            }).catch((error) => {
+                console.error(error)
+            })
+        },
+        auth() {
+            this.checkCode = true
+            ApiService.post('/user/auth', {
+				phone: parseInt(this.phone.replace(/[^\d]/g, '')),
+				code: parseInt(this.code),
+            }).then((response) => {
+				console.log('auth -> response', response.data)
+				if (response.data.status == 'err') {
+					this.badCode = true
+					this.checkCode = false
+                    this.errorMsg = response.data.error[0]
+                } else {
+					this.goToCheckout()
+				}
+            }).catch((error) => {
+                console.error(error)
+            })
         },
         goToCheckout() {
-			this.$store.dispatch('user/setUserPhoneNumber', this.phone);
-			if (this.currentRouteName !== 'cart') {
-				this.$router.push('/checkout')
-				console.error('push to checkout');
-			} else {
-				console.error('need close');
-				this.$emit('closeFormShowOrderForm')
-			}
+            this.$store.dispatch('user/setUserPhoneNumber', parseInt(this.phone.replace(/[^\d]/g, '')));
+            if (this.currentRouteName !== 'cart') {
+                this.$router.push('/checkout')
+                console.error('push to checkout');
+            } else {
+                console.error('need close');
+                this.$emit('closeFormShowOrderForm')
+            }
         },
-	},
-	mounted () {
-		this.currentRouteName = this.$route.name
-	},
+    },
+    watch: {
+        phone(newValue, oldValue) {
+            console.log('phone -> newValue', newValue)
+            return newValue
+        }
+    },
+    mounted() {
+        this.currentRouteName = this.$route.name
+    },
 
 }
 </script>
 
 <style>
-  .sms-modal #send-sms-modal-btn.sms-modal__send-sms.v-btn--disabled {
+.sms-modal #send-sms-modal-btn.sms-modal__send-sms.v-btn--disabled {
     background-color: #4ca647 !important;
-  }
-</style>
-
-<style scoped lang="scss">
-  .sms-modal {
+}
+</style><style lang="scss" scoped>
+.sms-modal {
     padding: 20px;
     position: relative;
     max-width: 440px;
@@ -76,36 +111,36 @@ export default {
     width: 100%;
 
     &__logo {
-      max-width: 120px;
-      display: block;
-      margin: 0 auto 20px;
+        max-width: 120px;
+        display: block;
+        margin: 0 auto 20px;
     }
 
     &__title {
-      padding: 0;
-      margin-bottom: 20px;
-      font-size: 20px;
-      font-weight: 600;
-      justify-content: center;
-      text-align: center;
-      line-height: 24px;
+        padding: 0;
+        margin-bottom: 20px;
+        font-size: 20px;
+        font-weight: 600;
+        justify-content: center;
+        text-align: center;
+        line-height: 24px;
     }
 
     &__close {
-      position: absolute !important;
-      top: 10px;
-      right: 10px;
+        position: absolute !important;
+        top: 10px;
+        right: 10px;
     }
 
     &__field {
-      margin-bottom: 10px;
+        margin-bottom: 10px;
     }
 
     &__submit {
-      text-transform: initial;
-      font-size: 16px !important;
-      font-weight: 600;
-      height: 50px !important;
+        text-transform: initial;
+        font-size: 16px !important;
+        font-weight: 600;
+        height: 50px !important;
     }
-  }
+}
 </style>
