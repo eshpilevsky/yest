@@ -396,6 +396,7 @@ export default {
     outline: none;
     margin-left: -1px;
     z-index: 1;
+    text-transform: initial !important;
 }
 
 .form-options {
