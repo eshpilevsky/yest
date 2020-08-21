@@ -62,7 +62,6 @@ export default {
 				phone: parseInt(this.phone.replace(/[^\d]/g, '')),
 				code: parseInt(this.code),
             }).then((response) => {
-				console.log('auth -> response', response.data)
 				if (response.data.status == 'err') {
 					this.badCode = true
 					this.checkCode = false
@@ -87,14 +86,12 @@ export default {
     },
     watch: {
         phone(newValue, oldValue) {
-            console.log('phone -> newValue', newValue)
             return newValue
         }
     },
     mounted() {
         this.currentRouteName = this.$route.name
     },
-
 }
 </script>
 
