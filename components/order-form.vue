@@ -6,7 +6,10 @@
                 <v-card-title class="form-title">
                     Адрес доставки
                 </v-card-title>
-                <v-text-field class="form-input" v-model="delivery.address" placeholder="" required outlined :disabled="this.getCurrentAddress !== ''" :append-icon="this.getCurrentAddress !== '' ? 'enhanced_encryption' : ''"></v-text-field>
+                <div class="form-fields__container">
+                    <p class="form-fields__label">Адрес</p>
+                    <v-text-field class="form-input" v-model="delivery.address" placeholder="" required outlined :disabled="this.getCurrentAddress !== ''" :append-icon="this.getCurrentAddress !== '' ? 'enhanced_encryption' : ''"></v-text-field>
+                </div>
                 <div class="form-fields__grid-wrapper">
                     <div class="form-fields__container">
                         <p class="form-fields__label">Кв./офис</p>
@@ -29,10 +32,10 @@
                     <p class="form-fields__label">Комментарий к заказу</p>
                     <v-textarea class="form-textarea" name="comment" dense max-height="50px" v-model="comment" clearable></v-textarea>
                 </div>
-                <h3 class="form-title">Оплата</h3>
+                <h3 class="form-title">Способ оплаты</h3>
                 <v-radio-group class="form-fields__radio-group" v-model="payment_method" :mandatory="false">
-                    <v-radio label="Наличными" :value=0></v-radio>
-                    <v-radio label="Банковской картой на сайте" :value=1></v-radio>
+                    <v-radio class="form-fields__radio-field" label="Наличными" :value=0></v-radio>
+                    <v-radio class="form-fields__radio-field" label="Банковской картой на сайте" :value=1></v-radio>
                 </v-radio-group>
                 <div class="form-fields__container form-promo">
                     <v-text-field class="form-input" type="srting" v-model="promocode" placeholder="Промокод (если есть)" outlined></v-text-field>
@@ -52,7 +55,7 @@
                     </div>
                     <div class="form-options d-flex flex-column">
                         <p class="form-options__text form-options__description">Итого</p>
-                        <p class="form-options__text">{{this.getTotalPrice}} BYN</p>
+                        <p class="form-options__text">{{this.getTotalPrice}} <span class="fs16">BYN</span></p>
                     </div>
                 </div>
                 <div class="form-additional">
@@ -257,10 +260,6 @@ export default {
 </script>
 
 <style>
-.desktop-form .v-radio .v-label {
-    font-weight: 600 !important;
-}
-
 .form-input .v-input__slot {
     background-color: #fff !important;
     align-items: stretch;
@@ -310,7 +309,13 @@ export default {
 .form-promo .v-input__slot {
     border-radius: 4px 0 0 4px;
 }
-</style><style scoped>
+
+.fs16 {
+    font-size: 16px;
+}
+</style>
+
+<style scoped>
 .desktop-form__wrapper {
     padding-top: 40px;
     border-radius: 4px;
@@ -391,6 +396,7 @@ export default {
     outline: none;
     margin-left: -1px;
     z-index: 1;
+    text-transform: initial !important;
 }
 
 .form-options {
