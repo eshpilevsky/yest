@@ -66,7 +66,7 @@
       </div>
     </div>
     <div class="delivery-time-price">
-        <div class="total-price">
+        <div class="total-price" v-show="this.$route.name !== 'checkout'">
             <p class="total-title">Время доставки</p>
             <p class="price">
               {{`${this.time.min} &#8212; ${this.time.max} мин`}}

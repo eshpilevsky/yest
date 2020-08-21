@@ -9,12 +9,12 @@
     </v-icon>
     <v-text-field class="sms-modal__field" label="Ваш номер телефона" outlined v-model="phone" v-mask="mask" :disabled="!smsSuccess"></v-text-field>
     <div v-show="!smsSuccess">
-        <v-text-field label="Код из смс" outlined v-model="code"></v-text-field>
+        <v-text-field class="sms-modal__field" label="Код из смс" outlined v-model="code"></v-text-field>
     </div>
-    <v-btn class="sms-modal__send-sms" id="send-sms-modal-btn" block color="primary" :disabled="phone.length < 17" :loading="loadingSendSms" @click="sendSms()" v-show="smsSuccess">
+    <v-btn class="sms-modal__submit" id="send-sms-modal-btn" block color="primary" :disabled="phone.length < 17" :loading="loadingSendSms" @click="sendSms()" v-show="smsSuccess">
         Получить код
     </v-btn>
-    <v-btn block color="primary" :disabled="code.length < 3" @click="goToCheckout()" v-show="!smsSuccess">
+    <v-btn class="sms-modal__submit" block color="primary" :disabled="code.length < 3" @click="goToCheckout()" v-show="!smsSuccess">
         Дальше
     </v-btn>
 </v-card>
@@ -92,7 +92,7 @@ export default {
     }
 
     &__close {
-      position: absolute;
+      position: absolute !important;
       top: 10px;
       right: 10px;
     }
@@ -101,9 +101,9 @@ export default {
       margin-bottom: 10px;
     }
 
-    &__send-sms {
+    &__submit {
       text-transform: initial;
-      font-size: 16px;
+      font-size: 16px !important;
       font-weight: 600;
       height: 50px !important;
     }
