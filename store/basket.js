@@ -59,12 +59,8 @@ export const mutations = {
     })
     let dishSizes;
     if (findDish !== undefined) {
-    console.log('INCREMENT_DISH -> findDish', findDish)
 
-	console.error('INCREMENT_DISH -> state.data.dishs[findDish]', state.data.dishs[findDish])
       dishSizes = state.data.dishs[findDish].selectSize
-      console.log('INCREMENT_DISH -> dishSizes', dishSizes.id)
-      console.log('INCREMENT_DISH -> payload.selectSize', payload.selectSize.id)
 
       let findSize;
       if (dishSizes.id == payload.selectSize.id) {
@@ -73,11 +69,9 @@ export const mutations = {
         findSize = undefined
       }
 
-      console.log('INCREMENT_DISH -> findSize', findSize)
       if (findSize !== undefined) {
         state.data.dishs[findDish].selectSize.count++
       } else {
-        console.log('push ');
         state.data.dishs.push(payload)
       }
     }
@@ -90,7 +84,6 @@ export const mutations = {
   },
   SAVE_TO_BASKET(state, payload) {
     state.status = '200'
-    console.log('SAVE_TO_BASKET -> payload', payload)
     state.data.dishs.push(payload)
   },
   DROP_BASKET(state) {
@@ -124,7 +117,6 @@ export const mutations = {
           state.data.dishs[findDish].selectSize.count--
         }
       } else {
-        console.log('push ');
         state.data.dishs.push(payload)
       }
     }

@@ -45,7 +45,6 @@ export default {
     }) {
         console.log('START ASYNC DATA');
         let getCurrentCoords = store.getters['map/getCurrentCoords']
-        console.log('getCurrentCoords', getCurrentCoords)
         let zoneList = await axios.get('https://yestapi.xyz/get-zones')
         const zoneListData = zoneList.data
         store.dispatch('zone/setZone', zoneListData)
@@ -55,8 +54,6 @@ export default {
 
         let templateZone = zoneListData[1]
 
-        console.log('templateZone', templateZone)
-        console.log('currentZone', currentZone)
         store.dispatch('zone/setSelectedZone', currentZone !== undefined ? currentZone : templateZone)
         // store.dispatch('zone/setSelectedZone', 'fuck')
         app.currentZone = currentZone
@@ -180,7 +177,6 @@ export default {
                     openTimeTimestamp.setSeconds(openTimeSec);
 
                     item.today_close_time = closeTimeTimestamp.getTime();
-                    // console.log(`#${i} - ${arr.length}, ${item.name} -closeTime- ${closeTime}`);
                     item.today_open_time = openTimeTimestamp.getTime();
 
                     if (buffer.length !== 1) {
@@ -230,7 +226,6 @@ export default {
     },
     watch: {
         getCurrentAddress(newValue, oldValue) {
-            console.log('getCurrentAddress -> newValue.length', newValue.length)
             if (window.innerWidth < 450) {
                 if (newValue.length > 0) {
                     this.showSetAdress = false

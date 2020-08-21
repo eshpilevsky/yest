@@ -146,16 +146,12 @@ export default {
         }
     },
     watch: {
-        // getSelectedZone(newValue, oldValue) {
-        //     console.log('getSelectedZone -> newValue', newValue)
-        //     console.log('getSelectedZone -> newValue', oldValue)
-        //     if (newValue.id !== oldValue.id) {
-        //         console.error('new Zone');
-        //         console.log('watcher getSelectedZone')
-        //         this.getCategories()
-        //         this.selectedCategory = this.getSelectedCategory
-        //     }
-        // }
+        getSelectedZone(newValue, oldValue) {
+            if (newValue.id !== oldValue.id) {
+                this.getCategories()
+                this.selectedCategory = this.getSelectedCategory
+            }
+        }
     },
     computed: {
         ...mapGetters({
@@ -188,7 +184,6 @@ export default {
                             id: allCategory[0].id,
                             alias: allCategory[0].alias
                         })
-                        console.log('getCategories -> this.getSelectedZone.name', this.getSelectedZone.name)
                         this.$store.dispatch('user/setSelectedCategoryTitle', `Быстрая доставка еды в ${this.getSelectedZone.name}`)
                     } else {
                         this.selectCategory(this.getSelectedCategory, false)
@@ -224,7 +219,6 @@ export default {
             }
         },
         selectCategory(item, boll) {
-            console.log('selectCategory -> item', item)
             // this.$store.dispatch('user/selectCategory', {
             //     id: item.id,
             //     alias: item.alias,

@@ -2,7 +2,7 @@
 <div class='specialOffer-container' v-show="!hide">
     <div v-swiper="swiperOptions" id='swiper'>
         <div class="swiper-wrapper specialOffer-wrapper">
-            <a class="swiper-slide specialOffer-slide" :href="item.link" v-for='(item, index) in this.offers' :key='index' @click="openLink(item.link)">
+            <a class="swiper-slide specialOffer-slide" :href="item.link" v-for='(item, index) in this.offers' :key='index' @click="openLink(item)">
                 <img :src='item.image' class="specialOfferImg" />
             </a>
         </div>

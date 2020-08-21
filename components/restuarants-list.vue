@@ -214,7 +214,6 @@ export default {
         },
         async showMore() {
 			this.loadingShowMore = true
-            console.log('showMore -> this.loadingShowMore', this.loadingShowMore)
             this.limit += 24;
             await this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
 			this.loadingShowMore = false
@@ -255,7 +254,6 @@ export default {
                     openTimeTimestamp.setSeconds(openTimeSec);
 
                     item.today_close_time = closeTimeTimestamp.getTime();
-					// console.log(`#${i} - ${arr.length}, ${item.name} -closeTime- ${closeTime}`);
                     item.today_open_time = openTimeTimestamp.getTime();
 
                     if (buffer.length !== 1) {

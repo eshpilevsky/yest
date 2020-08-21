@@ -227,7 +227,6 @@ export default {
                 comment: this.comment,
                 order: this.order,
             }).then((response) => {
-                console.log('sendOrder -> response', response.data)
                 if (response.data.hasOwnProperty('checkout')) {
                     window.location = response.data.checkout.redirect_url
                 }

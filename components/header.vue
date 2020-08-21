@@ -181,7 +181,6 @@ export default {
     },
     watch: {
 		getSelectedZone(newValue){
-            console.log('getSelectedZone -> newValue', newValue)
 			return newValue
 		},
         getCurrentAddress(newValue, oldValue) {

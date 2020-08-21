@@ -474,7 +474,6 @@ export default {
         if (currentZoneNew == undefined) {
             currentZoneNew = zoneListData[0]
         }
-            console.log('currentZoneNew', currentZoneNew)
 
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
             zone_id: currentZoneNew.id
@@ -490,7 +489,6 @@ export default {
         let restuarant = await axios.post(`https://yestapi.xyz/restaurant/${id[0]}`, {
             zone_id: currentZoneNew.id,
         })
-        console.log('restuarant', restuarant.data)
 
         return {
             restuarant: restuarant.data,
@@ -711,7 +709,6 @@ export default {
         },
         goBack() {
             this.$router.back()
-            console.log('goBack -> this.$router', this.$router)
         },
         closeOptionMenu() {
             this.showOptionsmenu = false
