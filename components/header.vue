@@ -402,7 +402,7 @@ export default {
 .newHeader {
     position: fixed;
     top: 0px !important;
-    width: 280px !important;
+    width: 310px !important;
     bottom: 0px !important;
     max-height: 100% !important;
     height: 100% !important;
@@ -663,7 +663,7 @@ export default {
     .mobile-logo-block {
         position: absolute;
         top: 2px;
-        left: 90px;
+        left: 104px;
         min-height: 60px;
         max-height: 140px;
     }
