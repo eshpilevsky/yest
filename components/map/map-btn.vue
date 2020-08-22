@@ -1,5 +1,5 @@
 <template>
-<v-btn class="set-you-address" height="40" width="245" color="primary" dense rounded depressed @click="showMap">
+<v-btn class="set-you-address" :class="{active : this.getCurrentAddress.length > 0}" height="40" width="245" color="primary" dense rounded depressed @click="showMap">
     <i class="material-icons near_me_icon">near_me</i>
     <span class="address">
         {{this.text}}
@@ -41,19 +41,6 @@ export default {
 
 <style>
 
-.address{
-    max-width: 200px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    direction: rtl;
-    text-align: left;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 0;
-    left: 26px;
-}
-
 .set-you-address {
     position: relative !important;
     top: 50%;
@@ -68,12 +55,33 @@ export default {
     overflow: hidden;
 }
 
+.set-you-address.active .near_me_icon {
+  display: none;
+}
+
+.set-you-address.active .address {
+  left: 4px;
+}
+
+.address{
+  max-width: 220px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  direction: rtl;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+  left: 20px;
+}
+
 .set-you-address .near_me_icon {
     margin-right: 6px;
     font-size: 20px;
     position: absolute;
     top: 50%;
-    left: 0;
+    left: 30px;
     transform: translateY(-50%);
 }
 </style>

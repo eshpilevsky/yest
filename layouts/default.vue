@@ -52,7 +52,7 @@ i {
 }
   @media screen and (max-width: 960px) {
     .container {
-      padding: 3rem 0 0;
+      padding: 65px 0 0;
     }
   }
 </style>

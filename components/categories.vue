@@ -555,7 +555,7 @@ export default {
     .sticky {
         position: sticky;
         top: 64px;
-        z-index: 1;
+        z-index: 2;
     }
 
     .divider {

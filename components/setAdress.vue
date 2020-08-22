@@ -217,10 +217,9 @@ export default {
 </script>
 
 <style scoped>
-.link{
+.link {
 	color: #fff;
 	text-decoration: none;
-
 }
 
 .itemAdress-sub {
@@ -341,6 +340,10 @@ export default {
 /*}*/
 
 @media screen and (max-width: 992px) {
+    .link {
+      color: #000000;
+      margin: 0 4px
+    }
 
     .pre-title {
         display: flex;
@@ -363,12 +366,13 @@ export default {
         background-size: auto 250px;
         background-repeat: no-repeat;
         background-position: top right;
-        margin-top: 16px;
+        margin-top: 0;
     }
 
     .info-pre-title {
         display: flex;
         margin-bottom: 2px;
+        margin-left: -4px;
         color: #b0b0b0;
         font-size: 12px;
     }
