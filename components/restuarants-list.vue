@@ -272,10 +272,16 @@ export default {
             return openRestorants.concat(closeRestorants);
         }
     },
-    created() {
+    beforeMount() {
 		if(this.restaurantsList[0] !== 404){
-			this.totalCount = this.restaurantsList.length
-			this.restaurants = this.restaurantsList.slice(0, this.limit)
+
+            if(this.getCurrentCoords.length > 0){
+                this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
+            } else {
+                this.totalCount = this.restaurantsList.length
+                this.restaurants = this.restaurantsList.slice(0, this.limit)
+            }
+
 		} else {
 			this.restaurants = [];
 			this.notFound = true;
