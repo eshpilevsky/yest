@@ -133,7 +133,7 @@ export default {
     }
 
     &__field {
-        margin-bottom: 10px;
+        margin-bottom: 10px !important;
     }
 
     &__submit {
