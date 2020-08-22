@@ -40,7 +40,7 @@
         </div>
     </div>
     <div class="show-btn-block">
-        <v-btn color="primary" class="showMore-btn" @click="showMore()" v-show="this.totalCount > limit" :loading="loadingShowMore">Показать ещё</v-btn>
+        <v-btn color="primary" class="showMore-btn" @click="showMore()" v-show="this.counterRest > limit" :loading="loadingShowMore">Показать ещё</v-btn>
     </div>
 </div>
 </template>
@@ -81,7 +81,7 @@ export default {
             restList: null,
             counterRest: 0,
 			urlStr: '',
-			loadingShowMore: false,
+            loadingShowMore: false,
         };
     },
     computed: {
@@ -144,7 +144,7 @@ export default {
                     if (resp.status === 200) {
                         this.restaurants = [];
 						// this.restaurants = rest;
-						this.totalCount = rest.length
+						this.counterRest = rest.length
                         this.restaurants = this.computedOpenTime(rest).slice(0, this.limit)
                         this.notFound = false;
                     } else if (resp.status === 404) {
@@ -281,14 +281,14 @@ export default {
             if(this.getCurrentCoords.length > 0){
                 this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
             } else {
-                this.totalCount = this.restaurantsList.length
+                this.counterRest = this.restaurantsList.length
                 this.restaurants = this.restaurantsList.slice(0, this.limit)
             }
 
 		} else {
 			this.restaurants = [];
 			this.notFound = true;
-			this.totalCount = 0
+			this.counterRest = 0
 		}
     }
 };
