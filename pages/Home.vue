@@ -121,6 +121,7 @@ export default {
                 start: 0,
             }
         }
+        console.log("sortByCoord", sortByCoord)
         let restaurantsList;
         let checkCatId = currentCategory ? currentCategory.id : 0
         let restaurantsListData

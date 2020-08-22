@@ -98,12 +98,20 @@ export const mutations = {
     state.data.visible = false
   },
   SET_CURRENT_COORDS(state, coords) {
-    if (coords != null) {
+    if(coords == null){
+      state.data.currentCoords = []
+      state.data.address = ''
+    } else{
       state.data.currentCoords = coords
     }
   },
   SET_CURRENT_ADDRESS(state, address) {
-    state.data.address = address
+    if (address == null) {
+      state.data.address = ''
+      state.data.currentCoords = []
+    } else {
+      state.data.address = address
+    }
   },
   SET_INPUT_ADDRESS_MODE(state) {
     state.data.inputAddressMode = true
