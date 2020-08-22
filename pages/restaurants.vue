@@ -322,7 +322,7 @@
                 </div>
                 <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showDish" scrollable persistent no-click-animation z-index='999' :eager=true>
                     <v-card class="mobile-addition">
-                        <v-card-text class="pa-0">
+                        <v-card-text class="pa-0 bgGray">
                             <div class="mobile-addition__top">
                                 <div class="close-block">
                                     <v-btn class="close-block-btn" icon color="white" @click="showDish = false">
@@ -987,8 +987,7 @@ export default {
 
 .mobile-addition__top {
     overflow: auto;
-    max-height: calc(100% - 125px);
-    padding-bottom: 10px;
+    padding-bottom: 125px;
 }
 
 .mobile-addition__bottom {
@@ -998,7 +997,10 @@ export default {
     flex: 0 0 auto;
     border-top: 1px solid #ececec;
     box-shadow: 0 -2px 10px 0 #ececec;
-    position: relative;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .bottom-withTitle {
