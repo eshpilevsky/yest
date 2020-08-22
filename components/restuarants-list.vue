@@ -99,6 +99,9 @@ export default {
         },
     },
     watch: {
+        getCurrentCoords(newValue, oldValue) {
+            this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
+        },
         getSelectedCategory(newValue, oldValue) {
             this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
         },
