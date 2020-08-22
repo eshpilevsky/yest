@@ -55,7 +55,6 @@ export default {
         let templateZone = zoneListData[1]
 
         store.dispatch('zone/setSelectedZone', currentZone !== undefined ? currentZone : templateZone)
-        // store.dispatch('zone/setSelectedZone', 'fuck')
         app.currentZone = currentZone
 
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
@@ -92,7 +91,7 @@ export default {
             } else {
                 categoryInfoData = {
                     header: 'Быстрая доставка',
-                    city: currentZone.name
+                    city: currentZone.name,
                 }
             }
 
@@ -260,7 +259,9 @@ export default {
             if (window.innerWidth < 992) {
                 document.getElementById('bgImg').setAttribute('style', 'background: #fff;')
             } else {
-                document.getElementById('bgImg').setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.categoryInfoData.background + '");')
+                if (this.categoryInfoData.background.hasOwnProperty('background')) {
+                    document.getElementById('bgImg').setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.categoryInfoData.background + '");')
+                }
             }
         }, 200);
         let lastScrollTop = 0

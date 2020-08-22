@@ -352,9 +352,9 @@ export default {
   color: #fff !important;
 }
 
-.v-text-field.v-text-field--enclosed .v-text-field__details {
+/* .v-text-field.v-text-field--enclosed .v-text-field__details {
     display: none !important;
-}
+} */
 
 .searchDesktop .v-input__control .v-input__slot .v-input__prepend-inner {
     margin-top: 11px !important;
