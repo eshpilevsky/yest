@@ -7,8 +7,12 @@
           <img :src='item.image' class="specialOfferImg"/>
         </a>
       </div>
-      <div class="customBtnPrev" slot="button-prev"></div>
-      <div class="customBtnNext" slot="button-next"></div>
+      <div class="customBtnPrev" slot="button-prev">
+        <div class="customBtnPrev-box"></div>
+      </div>
+      <div class="customBtnNext" slot="button-next">
+        <div class="customBtnNext-box"></div>
+      </div>
       <div class="swiper-pagination" slot="pagination"></div>
     </div>
   </div>
@@ -56,9 +60,13 @@
           breakpoints: {
             1200: {
               slidesPerView: 4,
+              spaceBetween: 30,
             },
             992: {
               slidesPerView: 3,
+            },
+            600: {
+              slidesPerView: 2.1,
             },
             320: {
               slidesPerView: 1.1,
@@ -88,15 +96,14 @@
 
 <style scoped>
   #swiper {
-    padding: 20px 80px;
     max-width: 1420px;
     width: 100%;
-    margin: 0 auto;
+    padding: 0 80px;
   }
 
   .specialOffer-wrapper {
-    width: 100%;
-    overflow: hidden;
+    width: fit-content;
+    /*overflow: hidden;*/
   }
 
   .specialOffer-slide {
@@ -106,26 +113,29 @@
     border-radius: 10px;
   }
 
-  .customBtnNext {
-    background-image: url("../assets/nextArrowIcon.svg");
-  }
-
-  .customBtnPrev {
-    background-image: url("../assets/prevArrowIcon.svg");
-  }
-
-  .customBtnPrev.swiper-button-disabled,
-  .customBtnNext.swiper-button-disabled {
-    opacity: 0;
-  }
-
   .customBtnPrev,
   .customBtnNext {
     position: absolute;
-    top: 50%;
-    /*width: calc(var(--swiper-navigation-size) / 44 * 27);*/
-    /*height: var(--swiper-navigation-size);*/
-    margin-top: calc(-1 * var(--swiper-navigation-size) / 2);
+    top: 0;
+    background: #fff;
+    z-index: 1;
+    overflow: hidden;
+    width: 80px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .customBtnPrev {
+    left: 0;
+  }
+
+  .customBtnNext {
+    right: 0;
+  }
+
+  .customBtnNext-box, .customBtnPrev-box {
     z-index: 10;
     cursor: pointer;
     display: flex;
@@ -138,12 +148,17 @@
     background-color: #00a646;
   }
 
-  .customBtnPrev {
-    left: 20px;
+  .customBtnNext .customBtnNext-box {
+    background-image: url("../assets/nextArrowIcon.svg");
   }
 
-  .customBtnNext {
-    right: 20px;
+  .customBtnPrev .customBtnPrev-box {
+    background-image: url("../assets/prevArrowIcon.svg");
+  }
+
+  .customBtnPrev.swiper-button-disabled .customBtnPrev-box,
+  .customBtnNext.swiper-button-disabled .customBtnPrev-box {
+    display: none;
   }
 
   .specialOfferImg {
@@ -181,15 +196,15 @@
   .specialOffer-container {
     width: 100%;
     max-width: 1420px;
+    padding: 1rem 0 0;
     margin: auto;
     border-left: 1px solid rgba(0, 0, 0, .1);
     border-right: 1px solid rgba(0, 0, 0, .1);
-    padding-top: 1rem;
   }
 
   @media screen and (max-width: 992px) {
     #swiper {
-      padding: 20px 0;
+      padding: 20px;
       max-width: 1420px;
       width: 100%;
       margin: 0 auto;
@@ -209,7 +224,7 @@
     }
 
     .specialOffer-container {
-      padding: 20px;
+      padding: 20px 0;
     }
   }
 </style>
