@@ -41,9 +41,12 @@ export default {
         context,
         store,
         params,
-        req,
+		req,
+		redirect,
     }) {
-        console.log('START ASYNC DATA');
+		console.log('START ASYNC DATA');
+		
+
         let getCurrentCoords = store.getters['map/getCurrentCoords']
         let zoneList = await axios.get('https://yestapi.xyz/get-zones')
         const zoneListData = zoneList.data
@@ -52,9 +55,14 @@ export default {
             return zones.alias == params.region
         })
 
-        let templateZone = zoneListData[1]
+		// let templateZone = zoneListData[1]
+		if (currentZone !== undefined) {
+			store.dispatch('zone/setSelectedZone', currentZone)
+		} else {
+			// redirect('/')
+			console.log('need push to /');
+		}
 
-        store.dispatch('zone/setSelectedZone', currentZone !== undefined ? currentZone : templateZone)
         app.currentZone = currentZone
 
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
@@ -98,15 +106,19 @@ export default {
                     background: 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png',
                 }
             }
-
             store.dispatch('user/selectCategory', currentCategory)
         } else {
-            categoryInfoData = {
-                header: 'Быстрая доставка',
-                city: currentZone.name
-            }
-            currentCategory = categoryAll[0]
-            store.dispatch('user/selectCategory', currentCategory)
+			if (params.alias) {
+				redirect(`/${currentZone.alias}`)
+			} else {
+				categoryInfoData = {
+				    header: 'Быстрая доставка',
+				    city: currentZone.name
+				}
+				currentCategory = categoryAll[0]
+				store.dispatch('user/selectCategory', currentCategory)
+
+			}
         }
 
         let latitude
@@ -236,7 +248,7 @@ export default {
         console.log('END ASYNC DATA');
         return {
             restaurantsList: restaurantsListData,
-            categoriesList: categoryAll.concat(categoriesList.data),
+            categoriesList: categoryAll.concat(categoriesListData),
             currentCategory: currentCategory,
             categoryInfoData: categoryInfoData,
             currentZone: currentZone,
