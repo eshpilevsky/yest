@@ -210,6 +210,7 @@ export default {
 		}
 		console.log('END ASYNC DATA');
 
+            console.log('restaurantsListData', restaurantsListData.length)
         return {
             restaurantsList: restaurantsListData,
             categoriesList: categoryAll.concat(categoriesList.data),
