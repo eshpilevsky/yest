@@ -291,17 +291,16 @@ export default {
     created() {
 		console.log(this.restaurantsList.length);
         if (this.restaurantsList[0] !== 404) {
-
-			console.log('beforeMount -> this.getCurrentCoords.', this.getCurrentCoords)
             if (this.getCurrentCoords.length > 0) {
                 this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
             } else {
 				this.counterRest = this.restaurantsList.length
-				
-                this.restaurants = this.restaurantsList.slice(0, this.limit)
+				this.restaurants = this.restaurantsList
+				setTimeout(() => {
+					this.restaurants = this.restaurantsList.slice(0, this.limit)
+				}, 100);
                 this.restOverlay = false
             }
-
         } else {
             this.restaurants = [];
             this.notFound = true;
