@@ -2,7 +2,7 @@
 <div style="padding-bottom: 0px">
     <setAdress :currentZone='currentZone' :currentCategory='this.currentCategory' :categoryInfoData='categoryInfoData' :class="{hide: showSetAdress == false}" />
     <specialOffers :offers="specilaOffers" v-show="showSpecialOffer" />
-    <categories :categoriesList='categoriesList' :currentCategory='this.currentCategory' />
+    <categories v-show="categoriesList.length > 1" :categoriesList='categoriesList' :currentCategory='this.currentCategory' />
     <restuarantsList :restaurantsList='restaurantsList' :currentCategory='this.currentCategory' />
 </div>
 </template>
