@@ -907,7 +907,7 @@ export default {
 
 .modal-change-products__cancel {
     height: 41px !important;
-    text-transform: initial;
+    text-transform: initial !important;
     padding: 4px 20px !important;
     font-size: 16px !important;
     letter-spacing: 0.1px;
@@ -1945,7 +1945,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        text-transform: capitalize !important;
+        text-transform: initial !important;
     }
 
     .warning-info {

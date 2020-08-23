@@ -57,7 +57,7 @@
                 Доставка
             </span>
           <span class="delivery-count">
-				{{deliveryCost}} BYN
+				{{deliveryCost}} <span class="delivery-count__text">BYN</span>
             </span>
         </div>
         <p class="more-delivery delivery-info-text">
@@ -223,6 +223,19 @@ export default {
   padding: 0 20px;
   font-size: 12px;
   margin-bottom: 10px !important;
+}
+
+.delivery-count {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1em;
+  font-size: 14px;
+  margin-right: 6px;
+}
+
+.delivery-count__text {
+  font-size: 10px;
 }
 
 .order-title {
