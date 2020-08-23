@@ -52,8 +52,10 @@ export const actions = {
     commit('SET_CURRENT_COORDS', coords)
     commit('HIDE_MAP')
   },
-  dropLocation({commit}){
-	commit('SET_CURRENT_COORDS',null)
+  dropLocation({
+    commit
+  }) {
+    commit('SET_CURRENT_COORDS', null)
   }
 };
 
@@ -102,12 +104,14 @@ export const mutations = {
     state.data.visible = false
   },
   SET_CURRENT_COORDS(state, coords) {
-    if(coords == null){
+    if (coords == null) {
       state.data.currentCoords = []
       state.data.address = ''
-    } else{
+      Cookie.remove('latitude')
+      Cookie.remove('longitude')
+      Cookie.remove('address')
+    } else {
       state.data.currentCoords = coords
-      Cookie.set('coords', coords)
       Cookie.set('latitude', coords[0])
       Cookie.set('longitude', coords[1])
 
@@ -117,6 +121,10 @@ export const mutations = {
     if (address == null) {
       state.data.address = ''
       state.data.currentCoords = []
+      Cookie.remove('latitude')
+      Cookie.remove('longitude')
+      Cookie.remove('address')
+
     } else {
       state.data.address = address
       console.log("SET_CURRENT_ADDRESS -> address", address)
@@ -143,16 +151,16 @@ export const getters = {
     return state.data.visible
   },
   getCurrentCoords(state) {
-  //   function getCookie(cookieName, stringCookie) {
-  //     let strCookie = new RegExp('' + cookieName + '[^;]+').exec(stringCookie)[0]
-  //     return unescape(strCookie ? strCookie.toString().replace(/^[^=]+./, '') : '')
-  // }
-  //   let latitude = getCookie('latitude')
-  //   let longitude = getCookie('longitude')
-    
-  //   console.log("getCurrentCoords -> latitude", latitude)
-  //   console.log("getCurrentCoords -> longitude", longitude)
-  //   let coords = [latitude,longitude]
+    //   function getCookie(cookieName, stringCookie) {
+    //     let strCookie = new RegExp('' + cookieName + '[^;]+').exec(stringCookie)[0]
+    //     return unescape(strCookie ? strCookie.toString().replace(/^[^=]+./, '') : '')
+    // }
+    //   let latitude = getCookie('latitude')
+    //   let longitude = getCookie('longitude')
+
+    //   console.log("getCurrentCoords -> latitude", latitude)
+    //   console.log("getCurrentCoords -> longitude", longitude)
+    //   let coords = [latitude,longitude]
     // let coords = Cookie.get('coords')
     // return coords
     // return [latitude,longitude]

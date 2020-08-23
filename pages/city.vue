@@ -41,11 +41,11 @@ export default {
         context,
         store,
         params,
-		req,
-		redirect,
+        req,
+        redirect,
     }) {
-		console.log('START ASYNC DATA');
-				
+        console.log('START ASYNC DATA');
+
         let zoneList = await axios.get('https://yestapi.xyz/get-zones')
         const zoneListData = zoneList.data
         store.dispatch('zone/setZone', zoneListData)
@@ -53,11 +53,11 @@ export default {
             return zones.alias == params.region
         })
 
-		if (currentZone !== undefined) {
-			store.dispatch('zone/setSelectedZone', currentZone)
-		} else {
-			redirect('/')
-		}
+        if (currentZone !== undefined) {
+            store.dispatch('zone/setSelectedZone', currentZone)
+        } else {
+            redirect('/')
+        }
 
         app.currentZone = currentZone
 
@@ -104,17 +104,17 @@ export default {
             }
             store.dispatch('user/selectCategory', currentCategory)
         } else {
-			if (params.alias) {
-				redirect(`/${currentZone.alias}`)
-			} else {
-				categoryInfoData = {
-				    header: 'Быстрая доставка',
-				    city: currentZone.name
-				}
-				currentCategory = categoryAll[0]
-				store.dispatch('user/selectCategory', currentCategory)
+            if (params.alias) {
+                redirect(`/${currentZone.alias}`)
+            } else {
+                categoryInfoData = {
+                    header: 'Быстрая доставка',
+                    city: currentZone.name
+                }
+                currentCategory = categoryAll[0]
+                store.dispatch('user/selectCategory', currentCategory)
 
-			}
+            }
         }
 
         let latitude
@@ -123,6 +123,7 @@ export default {
             if (req.headers.cookie) {
                 latitude = getCookie('latitude', req.headers.cookie)
                 longitude = getCookie('longitude', req.headers.cookie)
+
                 function getCookie(cookieName, stringCookie) {
                     let strCookie = new RegExp('' + cookieName + '[^;]+').exec(stringCookie)[0]
                     return unescape(strCookie ? strCookie.toString().replace(/^[^=]+./, '') : '')
@@ -131,15 +132,13 @@ export default {
         }
 
         var sortByCoord = {}
-        if (process.server) {
-            if (req.headers.cookie) {
-                sortByCoord = {
-                    zone_id: parseInt(currentZone.id),
-                    latitude: parseFloat(latitude),
-                    longitude: parseFloat(longitude),
-                    start: 0,
-                    limit: 100
-                }
+        if (latitude && longitude) {
+            sortByCoord = {
+                zone_id: parseInt(currentZone.id),
+                latitude: parseFloat(latitude),
+                longitude: parseFloat(longitude),
+                start: 0,
+                limit: 100
             }
         } else {
             sortByCoord = {
@@ -224,22 +223,22 @@ export default {
 
         let specialOffer;
         let specialOfferData;
-		let showSpecialOffer;
-		if (process.server) {
-			if (req.headers.cookie) {
-				specialOffer = await axios.post('https://yestapi.xyz/restaurants/special-offers', {
-					zone_id: parseInt(currentZone.id),
-					latitude: parseFloat(latitude),
-					longitude: parseFloat(longitude),
-				})
-				specialOfferData = specialOffer.data
-				if (specialOfferData.length == 0) {
-					showSpecialOffer = false
-				} else {
-					showSpecialOffer = true
-				}
-			}
-		}
+        let showSpecialOffer;
+        if (process.server) {
+            if (req.headers.cookie) {
+                specialOffer = await axios.post('https://yestapi.xyz/restaurants/special-offers', {
+                    zone_id: parseInt(currentZone.id),
+                    latitude: parseFloat(latitude),
+                    longitude: parseFloat(longitude),
+                })
+                specialOfferData = specialOffer.data
+                if (specialOfferData.length == 0) {
+                    showSpecialOffer = false
+                } else {
+                    showSpecialOffer = true
+                }
+            }
+        }
 
         console.log('END ASYNC DATA');
         return {
