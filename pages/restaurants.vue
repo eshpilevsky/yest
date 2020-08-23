@@ -893,13 +893,13 @@ export default {
     flex: 1 0 auto;
     display: flex !important;
     flex-direction: row !important;
-    padding: 0;
+    padding: 0 !important;
 }
 
 .modal-change-products__continue {
     font-size: 16px !important;
     font-weight: 600;
-    text-transform: initial;
+    text-transform: initial !important;
     padding: 4px 20px !important;
     letter-spacing: 0.1px;
     margin-right: 10px;
@@ -1492,6 +1492,12 @@ export default {
     height: 56px !important;
 }
 
+.selected-dish-top {
+  display: flex;
+  height: 280px;
+  overflow: hidden;
+}
+
 .selected-dish-composition {
     padding: 16px;
     font-size: 14px;
@@ -1508,8 +1514,9 @@ export default {
 
 .dish-img-mobile-selected {
     display: block;
-    width: 100%;
-    object-fit: contain;
+    height: 100%;
+    flex: 1;
+    object-fit: cover;
 }
 
 .dish-img-mobile {
@@ -1943,8 +1950,9 @@ export default {
 
     .warning-info {
         font-weight: 600;
+        line-height: 21px;
         margin: 0 -20px;
-        padding: 0 20px 20px;
+        padding: 4px 20px 26px;
         background-color: transparent;
         border-top: none;
         border-bottom: none;
