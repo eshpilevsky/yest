@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Home from './pages/Home.vue'
+import home from './pages/home.vue'
+import city from './pages/city.vue'
 import notFound from './pages/notFound.vue'
 import restaurants from './pages/restaurants.vue'
 import Checkout from './pages/Checkout.vue'
@@ -25,10 +26,10 @@ export function createRouter() {
       },
       {
         path: '/',
-        component: Home,
+        component: home,
         children: [{
           path: '/:region',
-          component: Home,
+          component: city,
           children: [{
             path: 'restaurants',
             children: [{

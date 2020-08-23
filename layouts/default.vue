@@ -50,9 +50,10 @@ i {
     margin: 0 auto;
     padding: 3rem 40px 0;
 }
-  @media screen and (max-width: 960px) {
+
+@media screen and (max-width: 960px) {
     .container {
-      padding: 65px 0 0;
+        padding: 65px 0 0;
     }
-  }
+}
 </style>
