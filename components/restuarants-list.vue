@@ -43,8 +43,8 @@
     <div class="show-btn-block">
         <v-btn color="primary" class="showMore-btn" @click="showMore()" v-show="this.counterRest > limit" :loading="loadingShowMore">Показать ещё</v-btn>
     </div>
-    <v-overlay :value="restOverlay" z-index="0" :absolute="absolute">
-        <v-progress-circular indeterminate size="64" color='primary'></v-progress-circular>
+    <v-overlay :value="restOverlay" z-index="0" :absolute="absolute" color="rgba(255, 255, 255, 0.5)">
+        <!-- <v-progress-circular indeterminate size="64" color='primary'></v-progress-circular> -->
     </v-overlay>
 </v-card>
 </template>
