@@ -88,14 +88,14 @@ export default {
             if (categoryInfo.status != 404) {
                 categoryInfoData = categoryInfo.data
                 if (categoryInfoData.background == '') {
-					categoryInfoData.background = 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png'
-				}
+                    categoryInfoData.background = 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png'
+                }
                 app.categoryInfoData = categoryInfoData
             } else {
                 categoryInfoData = {
                     header: 'Быстрая доставка',
-					city: currentZone.name,
-					background: 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png',
+                    city: currentZone.name,
+                    background: 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png',
                 }
             }
 
@@ -111,25 +111,27 @@ export default {
 
         let latitude
         let longitude
-        if (req.headers.cookie) {
-
-            latitude = getCookie('latitude', req.headers.cookie)
-            longitude = getCookie('longitude', req.headers.cookie)
-
-            function getCookie(cookieName, stringCookie) {
-                let strCookie = new RegExp('' + cookieName + '[^;]+').exec(stringCookie)[0]
-                return unescape(strCookie ? strCookie.toString().replace(/^[^=]+./, '') : '')
+        if (process.server) {
+            if (req.headers.cookie) {
+                latitude = getCookie('latitude', req.headers.cookie)
+                longitude = getCookie('longitude', req.headers.cookie)
+                function getCookie(cookieName, stringCookie) {
+                    let strCookie = new RegExp('' + cookieName + '[^;]+').exec(stringCookie)[0]
+                    return unescape(strCookie ? strCookie.toString().replace(/^[^=]+./, '') : '')
+                }
             }
         }
 
         var sortByCoord = {}
-        if (req.headers.cookie) {
-            sortByCoord = {
-                zone_id: parseInt(currentZone.id),
-                latitude: parseFloat(latitude),
-                longitude: parseFloat(longitude),
-                start: 0,
-                limit: 100
+        if (process.server) {
+            if (req.headers.cookie) {
+                sortByCoord = {
+                    zone_id: parseInt(currentZone.id),
+                    latitude: parseFloat(latitude),
+                    longitude: parseFloat(longitude),
+                    start: 0,
+                    limit: 100
+                }
             }
         } else {
             sortByCoord = {
@@ -138,6 +140,7 @@ export default {
                 start: 0,
             }
         }
+
         let restaurantsList;
         let checkCatId = currentCategory ? currentCategory.id : 0
         let restaurantsListData
@@ -211,23 +214,24 @@ export default {
             return openRestorants.concat(closeRestorants);
         }
 
-		let specialOffer;
-		let specialOfferData;
+        let specialOffer;
+        let specialOfferData;
 		let showSpecialOffer;
-        if (req.headers.cookie) {
-			specialOffer = await axios.post('https://yestapi.xyz/restaurants/special-offers', {
-				zone_id: parseInt(currentZone.id),
-                latitude: parseFloat(latitude),
-                longitude: parseFloat(longitude),
-			})
-			specialOfferData = specialOffer.data
-			if (specialOfferData.length == 0) {
-				showSpecialOffer = false
-			} else{
-				showSpecialOffer = true
+		if (process.server) {
+			if (req.headers.cookie) {
+				specialOffer = await axios.post('https://yestapi.xyz/restaurants/special-offers', {
+					zone_id: parseInt(currentZone.id),
+					latitude: parseFloat(latitude),
+					longitude: parseFloat(longitude),
+				})
+				specialOfferData = specialOffer.data
+				if (specialOfferData.length == 0) {
+					showSpecialOffer = false
+				} else {
+					showSpecialOffer = true
+				}
 			}
 		}
-
 
         console.log('END ASYNC DATA');
         return {

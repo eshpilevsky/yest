@@ -303,7 +303,8 @@ export default {
         } else {
             this.restaurants = [];
             this.notFound = true;
-            this.counterRest = 0
+			this.counterRest = 0
+			this.restOverlay = false
         }
     }
 };
