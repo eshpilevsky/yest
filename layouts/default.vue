@@ -4,7 +4,7 @@
     <layout-header v-show="!isMapVisible" />
     <v-content v-show="!isMapVisible">
         <v-container class="main_cont">
-            <nuxt />
+            <nuxt :key="$route.fullPath"/>
         </v-container>
     </v-content>
     <!-- <layout-footer v-show="!isMapVisible && this.$route.name !=='cart'" /> -->

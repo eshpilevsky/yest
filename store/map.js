@@ -51,6 +51,9 @@ export const actions = {
     commit('SET_CURRENT_ADDRESS', currentAddress)
     commit('SET_CURRENT_COORDS', coords)
     commit('HIDE_MAP')
+  },
+  dropLocation({commit}){
+	commit('SET_CURRENT_COORDS',null)
   }
 };
 

@@ -48,6 +48,9 @@ export default {
 		
 
         let getCurrentCoords = store.getters['map/getCurrentCoords']
+		let geqq = store.getters['zone/getSelectedZone']
+        console.log('geqq', geqq)
+		
         let zoneList = await axios.get('https://yestapi.xyz/get-zones')
         const zoneListData = zoneList.data
         store.dispatch('zone/setZone', zoneListData)

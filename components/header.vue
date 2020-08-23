@@ -226,14 +226,8 @@ export default {
             this.showburgerOverlay = false
         },
         changeRegion(item) {
-            this.$store.dispatch('user/dropUserLocation')
-            this.$store.dispatch('user/selectCategory', {
-                id: 0,
-                alias: 'all'
-            })
-            this.$store.dispatch('zone/setSelectedZone', item)
-            this.$store.dispatch('user/setSelectedCategoryTitle')
-            this.$router.replace(`/${this.getSelectedZone.alias}`)
+            this.$store.dispatch('map/dropLocation')
+            this.$router.push(`/${item.alias}`)
         }
     },
     computed: {
