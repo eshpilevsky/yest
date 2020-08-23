@@ -28,7 +28,7 @@
                     <v-btn class="showRest-block" color='primary' @click="showRestuarants()">Показать рестораны</v-btn>
                 </template>
             </v-text-field>
-            <div v-show="showAdressList && searchAddress.length > 3" class="adressList">
+            <div v-show="showAdressList && searchAddress.length > 2" class="adressList">
                 <v-list>
                     <v-list-item v-for="(item, index) in suggestions" :key="'adres'+index" class="itemAdress" @click="selectAdress(item)">
                         <v-list-item-content>
@@ -103,7 +103,7 @@ export default {
             this.categoryInfoData.city = newTitle[1]
         },
         searchAddress(newValue) {
-            if (newValue.length > 1) {
+            if (newValue !== null && newValue.length > 1) {
                 this.getSuggest(newValue)
             }
         },
@@ -171,6 +171,7 @@ export default {
             });
         },
         async getSuggest(str) {
+			this.showAdressList = true
             this.loadingSuggest = true
             const component = this
             await ymaps.suggest(str, {
@@ -185,7 +186,10 @@ export default {
             });
         },
         clearAdress() {
-            this.setCurrentAddress('');
+			this.showAdressList = false
+			this.searchAddress = ''
+            this.setCurrentAddress(null);
+			this.setCurrentCoords(null);
         },
         show(value) {
             var body = document.getElementsByTagName('body')[0]
