@@ -1,5 +1,5 @@
 <template>
-  <div class='specialOffer-container' v-show="!hide">
+  <div class='specialOffer-container'>
     <div v-swiper="swiperOptions" id='swiper'>
       <div class="swiper-wrapper specialOffer-wrapper">
         <a class="swiper-slide specialOffer-slide" :href="item.link" v-for='(item, index) in this.offers' :key='index'
@@ -19,14 +19,9 @@
 </template>
 
 <script>
-  import ApiService from '../common/api.service'
   import {
     directive
   } from 'vue-awesome-swiper'
-
-  import {
-    mapGetters
-  } from 'vuex'
 
   export default {
     name: 'specialOffers',
@@ -41,8 +36,6 @@
         serachAdress: '',
         specilaOffers: [],
         loadingSO: true,
-        hide: false,
-        notFindImg: require('../assets/logo.svg'),
         swiperOptions: {
           observer: true,
           observeParents: true,
@@ -76,12 +69,6 @@
         }
       }
     },
-    computed: {
-      ...mapGetters({
-        getSelectedZone: 'zone/getSelectedZone',
-        getUserCoordinate: 'user/getUserCoordinate'
-      }),
-    },
     methods: {
       openLink(link) {
         window.location().href = link
@@ -90,7 +77,7 @@
         const sw = document.getElementById('swiper')[0]
         sw.nextEl()
       },
-    },
+	},
   }
 </script>
 

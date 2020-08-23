@@ -14,20 +14,20 @@
     "phonetest": "cross-env NUXT_HOST=0.0.0.0 NUXT_PORT=3333 nuxt"
   },
   "dependencies": {
-    "@nuxtjs/axios": "^5.11.0",
-    "@nuxtjs/pwa": "^3.0.0-0",
+    "@nuxtjs/axios": "^5.12.1",
+    "@nuxtjs/pwa": "^3.0.1",
     "cross-env": "^5.2.0",
     "js-cookie": "^2.2.1",
     "koa": "^2.13.0",
-    "nuxt": "^2.13.3",
-    "swiper": "^6.0.1",
+    "nuxt": "^2.14.3",
+    "swiper": "^6.1.2",
     "v-click-outside": "^3.0.1",
     "v-mask": "^2.2.3",
     "vue-awesome-swiper": "^4.1.1",
-    "vue-yandex-maps": "^0.10.8",
-    "vuex-class-component": "^2.3.4",
+    "vue-yandex-maps": "^0.10.9",
+    "vuex-class-component": "^2.3.5",
     "vuex-persist": "^2.2.0",
-    "vuex-persistedstate": "^3.0.1"
+    "vuex-persistedstate": "^3.1.0"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^2.0.0",
