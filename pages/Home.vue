@@ -31,11 +31,9 @@ export default {
     data() {
         return {
             showSetAdress: true,
-            showSpecialOffer: false,
             rest: [],
             categoryInfoData: null,
             currentZone: null,
-            specilaOffers: [],
         }
     },
     async asyncData({
@@ -207,36 +205,35 @@ export default {
                 }
             });
             return openRestorants.concat(closeRestorants);
-		}
-		console.log('END ASYNC DATA');
+        }
 
+		let specialOffer;
+		let specialOfferData;
+		let showSpecialOffer;
+        if (req.headers.cookie) {
+			specialOffer = await axios.post('https://yestapi.xyz/restaurants/special-offers', {
+				zone_id: parseInt(currentZone.id),
+                latitude: parseFloat(latitude),
+                longitude: parseFloat(longitude),
+			})
+			specialOfferData = specialOffer.data
+			if (specialOfferData.length == 0) {
+				showSpecialOffer = false
+			} else{
+				showSpecialOffer = true
+			}
+		}
+
+
+        console.log('END ASYNC DATA');
         return {
             restaurantsList: restaurantsListData,
             categoriesList: categoryAll.concat(categoriesList.data),
             currentCategory: currentCategory,
             categoryInfoData: categoryInfoData,
             currentZone: currentZone,
-        }
-    },
-    methods: {
-        getSpecialOffer() {
-            ApiService.post(`/restaurants/special-offers`, {
-                zone_id: this.getSelectedZone.id,
-                latitude: parseInt(this.getUserCoordinate.latitude),
-                longitude: parseInt(this.getUserCoordinate.longitude)
-            }).then((response) => {
-                if (response.status === 200) {
-                    const resp = response.data
-                    this.specilaOffers = resp
-                    if (resp.length == 0) {
-                        this.showSpecialOffer = false
-                    } else {
-                        this.showSpecialOffer = true
-                    }
-                }
-            }).catch((error) => {
-                console.error(error)
-            })
+            specilaOffers: specialOfferData,
+            showSpecialOffer: showSpecialOffer,
         }
     },
     watch: {
@@ -247,9 +244,6 @@ export default {
                 } else {
                     this.showSetAdress = true
                 }
-            }
-            if (newValue.length > 0) {
-                this.getSpecialOffer()
             }
         },
     },
@@ -268,9 +262,6 @@ export default {
     },
     mounted() {
         window.scrollTo(0, 0);
-        if (this.getCurrentAddress.length > 0) {
-            this.getSpecialOffer()
-        }
         setTimeout(() => {
             if (window.innerWidth < 992) {
                 document.getElementById('bgImg').setAttribute('style', 'background: #fff;')

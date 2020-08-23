@@ -289,7 +289,6 @@ export default {
         }
     },
     created() {
-		console.log(this.restaurantsList.length);
         if (this.restaurantsList[0] !== 404) {
             if (this.getCurrentCoords.length > 0) {
                 this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
