@@ -27,20 +27,20 @@ export function createRouter() {
       {
         path: '/',
         component: home,
-        children: [{
-          path: '/:region',
-          component: city,
-          children: [{
-            path: 'restaurants',
-            children: [{
-              path: 'category',
-              children: [{
-                path: ':alias'
-              }]
-            }]
-          }]
-        }]
-      },
+	  },
+	  {
+		path: '/:region',
+		component: city,
+		children: [{
+		  path: 'restaurants',
+		  children: [{
+			path: 'category',
+			children: [{
+			  path: ':alias'
+			}]
+		  }]
+		}]
+	  },
       {
         path: '/404',
         component: notFound,
