@@ -45,12 +45,7 @@ export default {
 		redirect,
     }) {
 		console.log('START ASYNC DATA');
-		
-
-        let getCurrentCoords = store.getters['map/getCurrentCoords']
-		let geqq = store.getters['zone/getSelectedZone']
-        console.log('geqq', geqq)
-		
+				
         let zoneList = await axios.get('https://yestapi.xyz/get-zones')
         const zoneListData = zoneList.data
         store.dispatch('zone/setZone', zoneListData)
@@ -58,12 +53,10 @@ export default {
             return zones.alias == params.region
         })
 
-		// let templateZone = zoneListData[1]
 		if (currentZone !== undefined) {
 			store.dispatch('zone/setSelectedZone', currentZone)
 		} else {
-			// redirect('/')
-			console.log('need push to /');
+			redirect('/')
 		}
 
         app.currentZone = currentZone

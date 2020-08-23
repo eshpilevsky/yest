@@ -272,9 +272,7 @@ export default {
 
                             if (window.innerWidth > 992) {
                                 if (this.oldCategoryImg != null) {
-									console.error(bg);
 									let currentBg = bg == '' ? this.defaultBg : bg
-                                    console.log('selectCategory -> currentBg', currentBg)
                                     this.oldCategoryImg.setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + currentBg + '");')
                                     // this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.bg + '");'
                                 }
