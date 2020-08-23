@@ -526,6 +526,8 @@ export default {
     width: 100%;
     min-height: 30px;
     text-align: left;
+    z-index: 2;
+    position: relative;
 }
 
 .restorane-list-item:hover {
@@ -562,8 +564,9 @@ export default {
     max-width: 1420px;
     margin: auto;
     margin-bottom: .5rem;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-top: 4px solid rgba(245, 245, 245, 0.6);
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border-top: 4px solid rgba(245, 245, 245, 0.6) !important;
+    box-shadow: none !important;
 }
 
 @media screen and (max-width: 1000px) {
