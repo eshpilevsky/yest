@@ -136,7 +136,6 @@ export default {
                 start: 0,
             }
         }
-        console.log("sortByCoord", sortByCoord)
         let restaurantsList;
         let checkCatId = currentCategory ? currentCategory.id : 0
         let restaurantsListData
@@ -208,7 +207,8 @@ export default {
                 }
             });
             return openRestorants.concat(closeRestorants);
-        }
+		}
+		console.log('END ASYNC DATA');
 
         return {
             restaurantsList: restaurantsListData,

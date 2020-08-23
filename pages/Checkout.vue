@@ -122,7 +122,7 @@
                         <img src="@/assets/logo.svg" alt="logo" class="mini-header_logo">
                     </div>
                 </div>
-                <smsForm @closeForm='closeSmsForm()'  @closeFormShowOrderForm='closeFormShowOrderForm()'/>
+                <smsForm @closeForm='closeSmsForm()' @closeFormShowOrderForm='closeFormShowOrderForm()' />
             </v-sheet>
         </v-bottom-sheet>
     </div>
@@ -164,6 +164,13 @@ export default {
         let categoriesListData = categoriesList.data
         store.dispatch('user/allCategory', categoriesListData)
 
+        if (process.client) {
+            const {
+                from,
+                nuxtState
+            } = context
+                console.log('nuxtState', nuxtState)
+        }
     },
     data() {
         return {
@@ -180,14 +187,14 @@ export default {
         }
     },
     methods: {
-		closeFormShowOrderForm(){
-			this.showAuthForm = false
-			this.showBasket = false
-			this.showOrderForm = true
-		},
+        closeFormShowOrderForm() {
+            this.showAuthForm = false
+            this.showBasket = false
+            this.showOrderForm = true
+        },
         closeSmsForm() {
-			this.showAuthForm = false
-			this.showOrderForm = true
+            this.showAuthForm = false
+            this.showOrderForm = true
         },
         removeCutlery() {
             if (this.cutleryCounter !== 1) {

@@ -7,8 +7,8 @@
                 <img contain :lazy-src="notFindImg" :src="item.cover" class="restorane-logo" :class="{closeRestorane:item.is_open == false }" />
                 <div class="block-bottom">
                     <div class="card-time" v-show="checkAddress">
-                      <p class="card-time__quantity">{{item.time.min}} &mdash; {{item.time.max}}</p>
-                      <p class="card-time__unit">мин</p>
+                        <p class="card-time__quantity">{{item.time.min}} &mdash; {{item.time.max}}</p>
+                        <p class="card-time__unit">мин</p>
                     </div>
                     <div class="card-title">
                         <div class="restorane-list-item-name" :class="{hidetime: checkAddress}">{{ item.name }}</div>
@@ -18,15 +18,15 @@
                         </v-chip>
                     </div>
                     <div class="card-options">
-                        <img class="card-options__delivery" src="../assets/deliveryIcon.svg"/>
+                        <img class="card-options__delivery" src="../assets/deliveryIcon.svg" />
                         <span class="card-options__rating">
-                          <v-icon class="rating-icon" color="#FFFADF">star</v-icon>
-                          <span>{{ item.rating }}</span>
+                            <v-icon class="rating-icon" color="#FFFADF">star</v-icon>
+                            <span>{{ item.rating }}</span>
                         </span>
-                      <span class="card-options__currency">
-                        <img class="currency-icon" src="../assets/purseIcon.svg"/>
-                        BYN
-                      </span>
+                        <span class="card-options__currency">
+                            <img class="currency-icon" src="../assets/purseIcon.svg" />
+                            BYN
+                        </span>
                     </div>
                 </div>
             </div>
@@ -43,8 +43,8 @@
     <div class="show-btn-block">
         <v-btn color="primary" class="showMore-btn" @click="showMore()" v-show="this.counterRest > limit" :loading="loadingShowMore">Показать ещё</v-btn>
     </div>
-    <v-overlay :value="restOverlay" z-index="0" :absolute="absolute" color="rgba(255, 255, 255, 0.5)">
-        <!-- <v-progress-circular indeterminate size="64" color='primary'></v-progress-circular> -->
+    <v-overlay :value="restOverlay" z-index="0" :absolute="absolute" :color="wiw < 992 ? 'rgb(255, 255, 255)' : 'rgba(255, 255, 255, 0.5)'" :opacity="wiw < 992 ? 1 : 0.5">
+        <v-progress-circular indeterminate size="24" v-show="wiw < 992" color="black"></v-progress-circular>
     </v-overlay>
 </v-card>
 </template>
@@ -103,6 +103,11 @@ export default {
         swiper() {
             return this.$refs.mySwiper.$swiper;
         },
+        wiw() {
+            if (process.client) {
+                return window.innerWidth
+            }
+        }
     },
     watch: {
         getCurrentCoords(newValue, oldValue) {
@@ -304,6 +309,7 @@ export default {
 </script>
 
 <style scoped>
+
 .card-options {
     display: flex;
     align-items: center;
@@ -519,7 +525,6 @@ export default {
     width: 100%;
     min-height: 30px;
     text-align: left;
-    z-index: 1;
 }
 
 .restorane-list-item:hover {
