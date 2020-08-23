@@ -1,5 +1,5 @@
 <template>
-<div class="restuarants-container">
+<v-card class="restuarants-container">
     <h2 class="restorane-title" id="restTitle">Рестораны</h2>
     <v-flex cols-12 wrap class="restorane-list">
         <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in this.restaurants" :key="index" class="restorane-list-item" @click="goToRes(item)">
@@ -31,6 +31,7 @@
                 </div>
             </div>
         </v-flex>
+
     </v-flex>
     <div v-show="notFound" class="notFound">
         <div class="notfoundTitle">Нас тут ещё нет :(</div>
@@ -40,9 +41,12 @@
         </div>
     </div>
     <div class="show-btn-block">
-        <v-btn color="primary" class="showMore-btn" @click="showMore()" v-show="this.totalCount > limit" :loading="loadingShowMore">Показать ещё</v-btn>
+        <v-btn color="primary" class="showMore-btn" @click="showMore()" v-show="this.counterRest > limit" :loading="loadingShowMore">Показать ещё</v-btn>
     </div>
-</div>
+    <v-overlay :value="restOverlay" z-index="0" :absolute="absolute">
+        <v-progress-circular indeterminate size="64" color='primary'></v-progress-circular>
+    </v-overlay>
+</v-card>
 </template>
 
 <script>
@@ -60,6 +64,8 @@ export default {
     },
     data() {
         return {
+            restOverlay: true,
+            absolute: true,
             serachAdress: "",
             restaurants: [],
             selcatmass: [],
@@ -80,8 +86,8 @@ export default {
             },
             restList: null,
             counterRest: 0,
-			urlStr: '',
-			loadingShowMore: false,
+            urlStr: '',
+            loadingShowMore: false,
         };
     },
     computed: {
@@ -99,18 +105,22 @@ export default {
         },
     },
     watch: {
+        getCurrentCoords(newValue, oldValue) {
+            this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
+        },
         getSelectedCategory(newValue, oldValue) {
             this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
         },
         getSelectedZone(newValue, oldValue) {
             this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
-		},
-		loadingShowMore(newValue){
-			return newValue
-		}
+        },
+        loadingShowMore(newValue) {
+            return newValue
+        }
     },
     methods: {
         getRestaurants(latitude, longitude) {
+            this.restOverlay = true
             this.notFound = false;
             if (latitude !== 0 && longitude !== 0) {
                 this.params = {};
@@ -128,26 +138,27 @@ export default {
                     start: 0,
                     limit: 100
                 };
-			}
-			if (this.getSelectedCategory.id == 0) {
-				this.urlStr = `/restaurants`
-			} else {
-				this.urlStr = `/restaurants/category/${this.getSelectedCategory.id}`
-			}
+            }
+            if (this.getSelectedCategory.id == 0) {
+                this.urlStr = `/restaurants`
+            } else {
+                this.urlStr = `/restaurants/category/${this.getSelectedCategory.id}`
+            }
             ApiService.post(this.urlStr, this.params)
                 .then(response => {
                     const resp = response.data;
                     const rest = resp.restaurants;
                     if (resp.status === 200) {
                         this.restaurants = [];
-						// this.restaurants = rest;
-						this.totalCount = rest.length
+                        // this.restaurants = rest;
+                        this.counterRest = rest.length
                         this.restaurants = this.computedOpenTime(rest).slice(0, this.limit)
                         this.notFound = false;
                     } else if (resp.status === 404) {
                         this.restaurants = [];
                         this.notFound = true;
                     }
+                    this.restOverlay = false
                 })
                 .catch(error => {
                     console.error(error);
@@ -208,15 +219,15 @@ export default {
             return n_str.join('');
         },
         goToRes(info) {
-			let name = this.translite(info.name)
+            let name = this.translite(info.name)
             let modifName = name.replace(' ', '-')
             this.$router.push(`/${this.getSelectedZone.alias}/restaurant/${info.restaurant_id}-${modifName.toLowerCase()}`)
         },
         async showMore() {
-			this.loadingShowMore = true
+            this.loadingShowMore = true
             this.limit += 24;
             await this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
-			this.loadingShowMore = false
+            this.loadingShowMore = false
         },
         computedOpenTime(res) {
             const openRestorants = [];
@@ -272,15 +283,22 @@ export default {
             return openRestorants.concat(closeRestorants);
         }
     },
-    created() {
-		if(this.restaurantsList[0] !== 404){
-			this.totalCount = this.restaurantsList.length
-			this.restaurants = this.restaurantsList.slice(0, this.limit)
-		} else {
-			this.restaurants = [];
-			this.notFound = true;
-			this.totalCount = 0
-		}
+    beforeMount() {
+        if (this.restaurantsList[0] !== 404) {
+
+            if (this.getCurrentCoords.length > 0) {
+                this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
+            } else {
+                this.counterRest = this.restaurantsList.length
+                this.restaurants = this.restaurantsList.slice(0, this.limit)
+                this.restOverlay = false
+            }
+
+        } else {
+            this.restaurants = [];
+            this.notFound = true;
+            this.counterRest = 0
+        }
     }
 };
 </script>
@@ -323,55 +341,55 @@ export default {
 }
 
 .card-time {
-  position: absolute;
-  top: -20px;
-  right: 13px;
-  background-color: #fff;
-  border-radius: 23px;
-  padding: 10px 17px;
+    position: absolute;
+    top: -20px;
+    right: 13px;
+    background-color: #fff;
+    border-radius: 23px;
+    padding: 10px 17px;
 }
 
 .card-time .card-time__quantity {
-  text-align: center;
-  font-size: 16px;
-  line-height: 16px;
-  font-weight: 600;
+    text-align: center;
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: 600;
 }
 
 .card-time .card-time__unit {
-  text-align: center;
-  font-size: 12px;
-  line-height: 10px;
-  color: #646464;
-  font-weight: 600;
+    text-align: center;
+    font-size: 12px;
+    line-height: 10px;
+    color: #646464;
+    font-weight: 600;
 }
 
 .card-time:before {
-  content: "";
-  position: absolute;
-  top: calc(100% - 35px);
-  left: -7px;
-  display: block;
-  width: 10px;
-  height: 10px;
-  background-image: url("../assets/timeLeftPath.svg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+    content: "";
+    position: absolute;
+    top: calc(100% - 35px);
+    left: -7px;
+    display: block;
+    width: 10px;
+    height: 10px;
+    background-image: url("../assets/timeLeftPath.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .card-time:after {
-  content: "";
-  position: absolute;
-  top: calc(100% - 35px);
-  right: -7px;
-  display: block;
-  width: 10px;
-  height: 10px;
-  background-image: url("../assets/timeRightPath.svg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+    content: "";
+    position: absolute;
+    top: calc(100% - 35px);
+    right: -7px;
+    display: block;
+    width: 10px;
+    height: 10px;
+    background-image: url("../assets/timeRightPath.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .block-bottom {
@@ -551,11 +569,11 @@ export default {
 
 @media screen and (max-width: 992px) {
     .restorane-list {
-      padding: 0;
+        padding: 0;
     }
 
     .restorane-title {
-      padding: 20px 20px 0px 20px;
+        padding: 20px 20px 0px 20px;
     }
 
     .hidetime {

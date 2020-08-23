@@ -2,6 +2,7 @@ import {
   getAddresFromGeoobject,
   getAddresByCoords
 } from '@/common/lib/map'
+import * as Cookie from 'js-cookie'
 
 export const state = () => ({
   data: {
@@ -98,12 +99,27 @@ export const mutations = {
     state.data.visible = false
   },
   SET_CURRENT_COORDS(state, coords) {
-    if (coords != null) {
+    if(coords == null){
+      state.data.currentCoords = []
+      state.data.address = ''
+    } else{
       state.data.currentCoords = coords
+      Cookie.set('coords', coords)
+      Cookie.set('latitude', coords[0])
+      Cookie.set('longitude', coords[1])
+
     }
   },
   SET_CURRENT_ADDRESS(state, address) {
-    state.data.address = address
+    if (address == null) {
+      state.data.address = ''
+      state.data.currentCoords = []
+    } else {
+      state.data.address = address
+      console.log("SET_CURRENT_ADDRESS -> address", address)
+      Cookie.set('address', address)
+
+    }
   },
   SET_INPUT_ADDRESS_MODE(state) {
     state.data.inputAddressMode = true
@@ -124,6 +140,19 @@ export const getters = {
     return state.data.visible
   },
   getCurrentCoords(state) {
+  //   function getCookie(cookieName, stringCookie) {
+  //     let strCookie = new RegExp('' + cookieName + '[^;]+').exec(stringCookie)[0]
+  //     return unescape(strCookie ? strCookie.toString().replace(/^[^=]+./, '') : '')
+  // }
+  //   let latitude = getCookie('latitude')
+  //   let longitude = getCookie('longitude')
+    
+  //   console.log("getCurrentCoords -> latitude", latitude)
+  //   console.log("getCurrentCoords -> longitude", longitude)
+  //   let coords = [latitude,longitude]
+    // let coords = Cookie.get('coords')
+    // return coords
+    // return [latitude,longitude]
     return state.data.currentCoords
   },
   getCurrentAddress(state) {

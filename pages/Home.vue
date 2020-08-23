@@ -14,6 +14,7 @@ import specialOffers from '~/components/specialOffers.vue'
 import restuarantsList from '~/components/restuarants-list.vue'
 import ApiService from "~/common/api.service";
 import axios from 'axios'
+import * as Cookie from 'js-cookie'
 
 import {
     mapGetters
@@ -42,6 +43,7 @@ export default {
         context,
         store,
         params,
+        req,
     }) {
         console.log('START ASYNC DATA');
         let getCurrentCoords = store.getters['map/getCurrentCoords']
@@ -105,12 +107,25 @@ export default {
             store.dispatch('user/selectCategory', currentCategory)
         }
 
+        let latitude
+        let longitude
+        if (req.headers.cookie) {
+
+            latitude = getCookie('latitude', req.headers.cookie)
+            longitude = getCookie('longitude', req.headers.cookie)
+
+            function getCookie(cookieName, stringCookie) {
+                let strCookie = new RegExp('' + cookieName + '[^;]+').exec(stringCookie)[0]
+                return unescape(strCookie ? strCookie.toString().replace(/^[^=]+./, '') : '')
+            }
+        }
+
         var sortByCoord = {}
-        if (getCurrentCoords.length > 0) {
+        if (req.headers.cookie) {
             sortByCoord = {
                 zone_id: parseInt(currentZone.id),
-                latitude: parseFloat(getCurrentCoords[0]),
-                longitude: parseFloat(getCurrentCoords[1]),
+                latitude: parseFloat(latitude),
+                longitude: parseFloat(longitude),
                 start: 0,
                 limit: 100
             }
@@ -121,6 +136,7 @@ export default {
                 start: 0,
             }
         }
+        console.log("sortByCoord", sortByCoord)
         let restaurantsList;
         let checkCatId = currentCategory ? currentCategory.id : 0
         let restaurantsListData

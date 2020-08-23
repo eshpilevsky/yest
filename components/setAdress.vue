@@ -115,7 +115,7 @@ export default {
         },
         getSelectedZone(newValue) {
             this.setCurrentCoords(null)
-            this.setCurrentAddress('')
+            this.setCurrentAddress(null)
             this.currentZone.name = newValue.name
         },
         categoryInfoData(newValue) {
