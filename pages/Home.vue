@@ -87,11 +87,15 @@ export default {
 
             if (categoryInfo.status != 404) {
                 categoryInfoData = categoryInfo.data
+                if (categoryInfoData.background == '') {
+					categoryInfoData.background = 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png'
+				}
                 app.categoryInfoData = categoryInfoData
             } else {
                 categoryInfoData = {
                     header: 'Быстрая доставка',
-                    city: currentZone.name,
+					city: currentZone.name,
+					background: 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png',
                 }
             }
 
