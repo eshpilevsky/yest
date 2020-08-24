@@ -213,10 +213,10 @@
                     </h1>
                     <v-icon @click="showHideRestInfo()">info</v-icon>
                     <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showRestInfo" :eager=true>
-                        <v-sheet>
-                            <div class="sheet-top">
-                                <h2 class="sheet-top-title">Информация о ресторане</h2>
-                                <v-icon @click="showHideRestInfo()">close</v-icon>
+                        <v-sheet class="mobile-rest-info-modal">
+                            <div class="mobile-rest-info-modal__top">
+                                <p class="mobile-rest-info-modal__title">{{restuarant.name}}</p>
+                                <v-icon @click="showHideRestInfo()" color="#000">close</v-icon>
                             </div>
                             <restuarantInfo :restuarant='this.restuarant' />
                         </v-sheet>
@@ -232,35 +232,37 @@
                     </v-chip>
                     <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showRatingSheet" :eager=true>
                         <v-sheet>
-                            <div class="sheet-top">
-                                <h2 class="sheet-top-title">Рейтинг</h2>
-                                <v-icon @click="closeSheetRating()">close</v-icon>
+                            <div class="rest-ship-modal">
+                                <div class="rest-ship-modal__top">
+                                    <p class="rest-ship-modal__title">Рейтинг</p>
+                                    <v-icon @click="closeSheetRating()">close</v-icon>
+                                </div>
                             </div>
-                            <div class="rating-info-bottom">
+                            <div class="rest-ship-modal__rating">
                                 {{restuarant.rating ? restuarant.rating : 'Мало оценок'}}
                             </div>
                         </v-sheet>
                     </v-bottom-sheet>
                     <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showDeliveryOption" :eager=true>
-                        <v-sheet>
-                            <div class="sheet-top">
-                                <h2 class="sheet-top-title">Условия доставки</h2>
-                                <v-icon @click="closeSheetDeliveryOprion()">close</v-icon>
+                        <v-sheet class="rest-ship-modal">
+                            <div class="rest-ship-modal__top">
+                                <p class="rest-ship-modal__title">Условия доставки</p>
+                                <v-icon @click="closeSheetDeliveryOprion()" color="#000">close</v-icon>
                             </div>
-                            <div v-for="fee in this.sortDeliverFee" :key="`deliveryFee${fee.min}`" class="d-flex flex-column">
-                                <div class="delivery-info">
-                                    <v-icon>
-                                        directions_run
-                                    </v-icon>
-                                    <div>
-                                        {{fee.delivery ? fee.delivery : fee.deliveryFee }} BYN
+                            <div class="rest-ship-modal__wrapper">
+                                <div v-for="fee in this.sortDeliverFee" :key="`deliveryFee${fee.min}`" class="rest-ship-modal__item">
+                                    <div class="rest-ship-modal__item-box">
+                                        <v-icon class="rest-ship-modal__item-icon">
+                                            directions_run
+                                        </v-icon>
                                         <span>
-                                            На заказ от {{fee.min}} BYN
+                                            {{fee.delivery ? fee.delivery : fee.deliveryFee }} BYN
+                                            <span>на заказ от {{fee.min}} BYN</span>
                                         </span>
                                     </div>
                                 </div>
-                                <v-divider width='100%' class="mx-auto" />
                             </div>
+                            <p class="rest-ship-modal__descr">Доставку выполнят партнёры Yest.by</p>
                         </v-sheet>
                     </v-bottom-sheet>
                 </div>
@@ -829,6 +831,79 @@ export default {
 </script>
 
 <style>
+.mobile-rest-info-modal {
+  border-radius: 10px 10px 0 0 !important;
+}
+
+.mobile-rest-info-modal__top {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid #ddd;
+}
+
+.mobile-rest-info-modal__title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.rest-ship-modal {
+  border-radius: 10px 10px 0 0 !important;
+  padding-bottom: 14px;
+}
+
+.rest-ship-modal__top {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  margin-bottom: 14px;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
+}
+
+.rest-ship-modal__title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.rest-ship-modal__item {
+  width: 100%;
+  padding: 6px 16px 0;
+}
+
+.rest-ship-modal__item-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 0 0 6px;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.rest-ship-modal__item:last-child .rest-ship-modal__item-box {
+  border-bottom: none;
+}
+
+.rest-ship-modal__item-icon {
+  margin-right: 10px;
+}
+
+.rest-ship-modal__descr {
+  color: #b0b0b0;
+  font-size: 12px;
+  margin: 0;
+  padding: 12px 16px 2px;
+}
+
+.rest-ship-modal__rating {
+  padding: 0px 16px 28px;
+  color: #3f3f3f;
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 1em;
+}
+
 .rest-cotainer .right #desctop_btn_confirm_order.v-btn--disabled {
   background-color: #4ca647 !important;
 }
@@ -948,6 +1023,7 @@ export default {
   overflow-x: visible;
   contain: none;
   z-index: 10 !important;
+  box-shadow: none !important;
 }
 
 .rest-info-modal, .delivery-modal {
@@ -1145,7 +1221,7 @@ export default {
     position: fixed;
     bottom: 0;
     width: 100%;
-    padding: 16px;
+    padding: 16px 16px 26px;
     overflow: hidden;
     box-shadow: 0 -4px 8px 0 rgba(0, 0, 0, 0.05);
     transition: all 200ms ease-in;
@@ -1231,7 +1307,7 @@ export default {
 }
 
 .rest-info-content {
-    padding: 90px 16px 16px 16px;
+    padding: 50px 16px 16px 16px;
     background: #fff;
     border-bottom: 10px solid #fafafa;
 }

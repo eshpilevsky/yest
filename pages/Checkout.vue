@@ -40,7 +40,7 @@
                                 <v-img cover :src="'https://img.eatmealby.com/resize/dish/400/'+order.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="order.name" class="order-img"></v-img>
                             </div>
                             <div class="dish-info">
-                                <div class="d-flex flex-row align-center justify-space-between main-mobile-cart__name">
+                                <div class="d-flex flex-row justify-space-between main-mobile-cart__name">
                                     {{order.name}}
                                     <div class="main-mobile-cart__product-price">
                                         {{order.selectSize.price}} BYN
@@ -92,7 +92,7 @@
                             {{this.totalPrice}} BYN
                         </span>
                         <span class="total-time">
-                            <!-- {{`${this.getLatetestRestInfoWithOrder.delivery.time.min} - ${this.getLatetestRestInfoWithOrder.delivery.time.max} мин`}} -->
+                             {{`${this.getLatetestRestInfoWithOrder.delivery.time.min} - ${this.getLatetestRestInfoWithOrder.delivery.time.max} мин`}}
                         </span>
                     </div>
                     <div class="next-btn-block">
@@ -163,7 +163,7 @@ export default {
         })
         let categoriesListData = categoriesList.data
 		store.dispatch('user/allCategory', categoriesListData)
-		
+
     },
     data() {
         return {
