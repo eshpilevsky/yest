@@ -43,7 +43,7 @@
     <div class="show-btn-block">
         <v-btn color="primary" class="showMore-btn" @click="showMore()" v-show="this.counterRest > limit" :loading="loadingShowMore">Показать ещё</v-btn>
     </div>
-    <v-overlay :value="restOverlay" z-index="0" :absolute="absolute" :color="wiw < 992 ? 'rgb(255, 255, 255)' : 'rgba(255, 255, 255, 0.5)'" :opacity="wiw < 992 ? 1 : 0.5">
+    <v-overlay :value="restOverlay" z-index="100" :absolute="absolute" :color="wiw < 992 ? 'rgb(255, 255, 255)' : 'rgba(255, 255, 255, 0.5)'" :opacity="wiw < 992 ? 1 : 0.5">
         <v-progress-circular indeterminate size="24" v-show="wiw < 992" color="black"></v-progress-circular>
     </v-overlay>
 </v-card>
@@ -184,22 +184,22 @@ export default {
         }
     },
     created() {
-
-            if (this.restaurantsList[0] !== 404) {
-                this.restOverlay = true
+        if (this.restaurantsList[0] !== 404) {
+            this.restOverlay = true
+            setTimeout(() => {
                 this.counterRest = this.restaurantsList.length
                 this.restaurants = this.restaurantsList
                 setTimeout(() => {
                     this.restaurants = this.restaurantsList.slice(0, this.limit)
-                	this.restOverlay = false
-                }, 300);
-            } else {
-                this.restaurants = [];
-                this.notFound = true;
-                this.counterRest = 0
+                }, 100);
                 this.restOverlay = false
-            }
-
+            }, 250);
+        } else {
+            this.restaurants = [];
+            this.notFound = true;
+            this.counterRest = 0
+            this.restOverlay = false
+        }
     }
 };
 </script>
