@@ -192,7 +192,7 @@ export default {
         this.allCategory = this.categoriesList
         this.first = this.allCategory.slice(0, this.sliceCounter)
 		this.second = this.allCategory.slice(this.sliceCounter, this.categoriesList.length)
-		
+
 		let checkMore = this.first.find((cat)=>{
 			return cat.id == this.currentCategory.id
 		})
@@ -251,7 +251,10 @@ export default {
 }
 
 .v-text-field__details {
-    margin-bottom: 0;
+    margin-bottom: 0 !important;
+    min-height: initial !important;
+    padding: 0 !important;
+    height: initial;
 }
 
 @media screen and (max-width: 992px) {
