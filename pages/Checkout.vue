@@ -162,15 +162,8 @@ export default {
             zone_id: 1
         })
         let categoriesListData = categoriesList.data
-        store.dispatch('user/allCategory', categoriesListData)
-
-        if (process.client) {
-            const {
-                from,
-                nuxtState
-            } = context
-                console.log('nuxtState', nuxtState)
-        }
+		store.dispatch('user/allCategory', categoriesListData)
+		
     },
     data() {
         return {

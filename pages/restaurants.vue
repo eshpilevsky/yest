@@ -685,7 +685,11 @@ export default {
             this.showDeliveryOption = false
         },
         checkout() {
-            this.showSmsForm = !this.showSmsForm
+			if (this.getUserPhoneNumber) {
+				this.$router.push('/checkout')
+			} else {
+				this.showSmsForm = !this.showSmsForm
+			}
         },
         goToBasketPage() {
             this.$router.push(`/cart`)
@@ -748,7 +752,8 @@ export default {
             getUserLocation: "user/getUserLocation",
             getSelectedDishs: "basket/getSelectedDishs",
             getTotalPrice: "basket/getTotalPrice",
-            getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
+			getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
+			getUserPhoneNumber: "user/getUserPhoneNumber",
         }),
         sortDeliverFee() {
             let listt = this.restuarant.delivery.fee

@@ -28,7 +28,9 @@
 
 <script>
 import ApiService from "~/common/api.service";
-
+import {
+    mapGetters
+} from "vuex";
 export default {
     data() {
         return {
@@ -102,9 +104,18 @@ export default {
         phone(newValue, oldValue) {
             return newValue
         }
-    },
+	},
+	computed: {
+		...mapGetters({
+            getUserPhoneNumber: "user/getUserPhoneNumber",
+        }),
+	},
     mounted() {
-        this.currentRouteName = this.$route.name
+		this.currentRouteName = this.$route.name
+            console.log('mounted -> this.getUserPhoneNumber', this.getUserPhoneNumber)
+		if (this.getUserPhoneNumber) {
+			this.$router.push('/checkout')
+		}
     },
 }
 </script>
