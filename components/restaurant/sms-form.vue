@@ -1,6 +1,6 @@
 <template>
 <v-card class="sms-modal">
-    <img class="sms-modal__logo" src="../../assets/logo.svg" alt="Logo">
+    <img class="sms-modal__logo" src="@/assets/logo.svg" alt="Logo">
     <v-card-title class="sms-modal__title">
         Пожалуйста, укажите <br> свой телефон
     </v-card-title>
@@ -8,8 +8,14 @@
         close
     </v-icon>
     <v-text-field class="sms-modal__field" label="Ваш номер телефона" outlined v-model="phone" v-mask="mask" :disabled="smsSuccess"></v-text-field>
+    <div v-show="smsSuccess" @click="changePhoneNumber()">
+        Изменить номер телефона
+    </div>
     <div v-show="smsSuccess">
-        <v-text-field class="sms-modal__field" label="Код из смс" outlined v-model="code" :error-messages='this.badCode == true ? this.errorMsg : null' ></v-text-field>
+        <v-text-field class="sms-modal__field" label="Код из смс" outlined v-model="code" :error-messages='this.badCode == true ? this.errorMsg : null'></v-text-field>
+        <div v-show="smsSuccess" @click="sendSmsAgain()">
+            Отправить смс повторно
+        </div>
     </div>
     <v-btn class="sms-modal__submit" id="send-sms-modal-btn" block color="primary" :disabled="phone.length < 17" :loading="loadingSendSms" @click="sendSms()" v-show="!smsSuccess">
         Получить код
@@ -34,10 +40,18 @@ export default {
             checkCode: false,
             badCode: false,
             currentRouteName: null,
-			errorMsg: '',
+            errorMsg: '',
         }
     },
     methods: {
+		changePhoneNumber(){
+            console.log('changePhoneNumber -> changePhoneNumber')
+			this.smsSuccess = false
+		},
+		sendSmsAgain(){
+            console.log('sendSmsAgain -> sendSmsAgain')
+			this.sendSms()
+		},
         closeForm() {
             this.$emit('closeForm')
         },
@@ -47,9 +61,9 @@ export default {
                 phone: parseInt(this.phone.replace(/[^\d]/g, '')),
             }).then((response) => {
                 this.loadingSendSms = false
-				this.smsSuccess = true
+                this.smsSuccess = true
                 if (response.data.status == 'err') {
-					this.badCode = true
+                    this.badCode = true
                     this.errorMsg = response.data.errors[0]
                 }
             }).catch((error) => {
@@ -59,16 +73,16 @@ export default {
         auth() {
             this.checkCode = true
             ApiService.post('/user/auth', {
-				phone: parseInt(this.phone.replace(/[^\d]/g, '')),
-				code: parseInt(this.code),
+                phone: parseInt(this.phone.replace(/[^\d]/g, '')),
+                code: parseInt(this.code),
             }).then((response) => {
-				if (response.data.status == 'err') {
-					this.badCode = true
-					this.checkCode = false
+                if (response.data.status == 'err') {
+                    this.badCode = true
+                    this.checkCode = false
                     this.errorMsg = response.data.error[0]
                 } else {
-					this.goToCheckout()
-				}
+                    this.goToCheckout()
+                }
             }).catch((error) => {
                 console.error(error)
             })

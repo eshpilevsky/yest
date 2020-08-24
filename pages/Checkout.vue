@@ -159,7 +159,7 @@ export default {
         store.dispatch('zone/setZone', zoneListData)
 
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
-            zone_id: currentZone.id
+            zone_id: 1
         })
         let categoriesListData = categoriesList.data
         store.dispatch('user/allCategory', categoriesListData)
