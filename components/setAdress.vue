@@ -102,18 +102,14 @@ export default {
             this.categoryInfoData.header = newTitle[0]
             this.categoryInfoData.city = newTitle[1]
         },
-        searchAddress(newValue) {
-            if (newValue !== null && newValue.length > 1) {
+        searchAddress(newValue, oldValue) {
+            if (newValue !== null && newValue.length > 1 && oldValue !== '') {
+                this.showAdressList = false
                 this.getSuggest(newValue)
             }
         },
         getCurrentAddress(newValue) {
             this.searchAddress = newValue
-        },
-        getSelectedZone(newValue) {
-            this.setCurrentCoords(null)
-            this.setCurrentAddress(null)
-            this.currentZone.name = newValue.name
         },
         categoryInfoData(newValue) {
             return newValue
@@ -143,7 +139,8 @@ export default {
         focusInput() {
             setTimeout(() => {
                 this.showAdressList = true
-            }, 500);
+			}, 500);
+			this.getSuggest(this.searchAddress)
         },
         blurInput() {
             setTimeout(() => {
@@ -174,7 +171,7 @@ export default {
             });
         },
         async getSuggest(str) {
-			this.showAdressList = true
+            this.showAdressList = true
             this.loadingSuggest = true
             const component = this
             await ymaps.suggest(str, {
@@ -185,14 +182,15 @@ export default {
                 ]
             }).then((items) => {
                 component.suggestions = items
+                console.log('getSuggest -> items', items)
                 component.loadingSuggest = false
             });
         },
         clearAdress() {
-			this.showAdressList = false
-			this.searchAddress = ''
+            this.showAdressList = false
+            this.searchAddress = ''
             this.setCurrentAddress(null);
-			this.setCurrentCoords(null);
+            this.setCurrentCoords(null);
         },
         show(value) {
             var body = document.getElementsByTagName('body')[0]
@@ -225,8 +223,8 @@ export default {
 
 <style scoped>
 .link {
-	color: #fff;
-	text-decoration: none;
+    color: #fff;
+    text-decoration: none;
 }
 
 .itemAdress-sub {
@@ -348,8 +346,8 @@ export default {
 
 @media screen and (max-width: 992px) {
     .link {
-      color: #000000;
-      margin: 0 4px
+        color: #000000;
+        margin: 0 4px
     }
 
     .pre-title {
