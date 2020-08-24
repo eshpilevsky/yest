@@ -8,12 +8,12 @@
         close
     </v-icon>
     <v-text-field class="sms-modal__field" label="Ваш номер телефона" outlined v-model="phone" v-mask="mask" :disabled="smsSuccess"></v-text-field>
-    <div v-show="smsSuccess" @click="changePhoneNumber()">
+    <div class="sms-modal__link" v-show="smsSuccess" @click="changePhoneNumber()">
         Изменить номер телефона
     </div>
     <div v-show="smsSuccess">
         <v-text-field class="sms-modal__field" label="Код из смс" outlined v-model="code" :error-messages='this.badCode == true ? this.errorMsg : null'></v-text-field>
-        <div v-show="smsSuccess" @click="sendSmsAgain()">
+        <div class="sms-modal__link" v-show="smsSuccess" @click="sendSmsAgain()">
             Отправить смс повторно
         </div>
     </div>
@@ -124,7 +124,19 @@ export default {
 .sms-modal #send-sms-modal-btn.sms-modal__send-sms.v-btn--disabled {
     background-color: #4ca647 !important;
 }
-</style><style lang="scss" scoped>
+
+.sms-modal__field .v-input__slot {
+    margin-bottom: 0;
+}
+
+.sms-modal__field .v-text-field__details {
+    min-height: initial !important;
+    margin-top: 4px !important;
+    padding: 0 4px !important;
+}
+</style>
+
+<style lang="scss" scoped>
 .sms-modal {
     padding: 20px;
     position: relative;
@@ -155,7 +167,7 @@ export default {
     }
 
     &__field {
-        margin-bottom: 10px !important;
+
     }
 
     &__submit {
@@ -163,6 +175,16 @@ export default {
         font-size: 16px !important;
         font-weight: 600;
         height: 50px !important;
+    }
+
+    &__link {
+        font-size: 13px;
+        text-decoration: underline;
+        cursor: pointer;
+        margin-bottom: 30px;
+        margin-left: 4px;
+        width: fit-content;
+        color: #646464;
     }
 }
 </style>

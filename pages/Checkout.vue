@@ -92,7 +92,8 @@
                             {{this.totalPrice}} BYN
                         </span>
                         <span class="total-time">
-                             {{`${this.getLatetestRestInfoWithOrder.delivery.time.min} - ${this.getLatetestRestInfoWithOrder.delivery.time.max} мин`}}
+<!--                             {{`${this.getLatetestRestInfoWithOrder.delivery.time.min} - ${this.getLatetestRestInfoWithOrder.delivery.time.max} мин`}}-->
+                          30 - 100 мин
                         </span>
                     </div>
                     <div class="next-btn-block">
