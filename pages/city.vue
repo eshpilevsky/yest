@@ -102,7 +102,7 @@ export default {
                     city: currentZone.name,
                     background: 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png',
                 }
-            }
+			}
             store.dispatch('user/selectCategory', currentCategory)
         } else {
             if (params.alias) {
@@ -110,7 +110,8 @@ export default {
             } else {
                 categoryInfoData = {
                     header: 'Быстрая доставка',
-                    city: currentZone.name
+					city: currentZone.name,
+					background: 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png',
                 }
                 currentCategory = categoryAll[0]
                 store.dispatch('user/selectCategory', currentCategory)

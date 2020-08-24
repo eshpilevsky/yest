@@ -171,7 +171,11 @@ export default {
             this.showModalOverlay = !this.showModalOverlay
         },
         selectCategory(item, boll) {
-            this.$router.push(`/${this.currentZone.alias}/restaurants/category/${item.alias}`)
+			if (this.currentCategory.id == item.id) {
+				this.$router.push(`/${this.currentZone.alias}`)
+			} else {
+				this.$router.push(`/${this.currentZone.alias}/restaurants/category/${item.alias}`)
+			}
         },
         dropSearch() {
 			this.searchNameKitchenDish = ''
