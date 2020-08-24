@@ -1,10 +1,10 @@
 <template>
 <v-app>
-    <layout-header v-show="!isMapVisible && this.$route.name !=='cart' && this.$route.name !=='restik'" />
+    <layout-header v-show="!isMapVisible && this.$route.name !=='cart'" :class="{'hide': this.$route.name =='restik'}" />
     <!-- <layout-header v-show="!isMapVisible" /> -->
     <v-content v-show="!isMapVisible">
         <v-container class="main_cont">
-            <nuxt :key="$route.fullPath"/>
+            <nuxt :key="$route.fullPath" />
         </v-container>
     </v-content>
     <layout-footer v-show="!isMapVisible && this.$route.name !=='cart'" />
@@ -51,9 +51,17 @@ i {
     padding: 3rem 40px 0;
 }
 
+.hide {
+    display: flex;
+}
+
 @media screen and (max-width: 960px) {
     .container {
         padding: 65px 0 0;
+    }
+
+    .hide {
+        display: none;
     }
 }
 </style>
