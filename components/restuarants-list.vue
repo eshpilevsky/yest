@@ -55,6 +55,7 @@ import ApiService from "../common/api.service";
 import {
     mapGetters
 } from "vuex";
+import * as Cookie from 'js-cookie'
 
 export default {
     name: "Restorane",
@@ -106,7 +107,8 @@ export default {
             if (process.client) {
                 return window.innerWidth
             }
-        }
+        },
+
     },
     watch: {
         loadingShowMore(newValue) {
@@ -115,8 +117,27 @@ export default {
         restaurantsList(newValue) {
             return newValue
         },
+        getCurrentAddress(newValue) {
+			console.log('getCurrentAddress -> newValue', newValue)
+			this.getRestWithCoords()
+
+        }
     },
     methods: {
+        async getRestWithCoords() {
+			let latitude = Cookie.get('latitude')
+			let longitude = Cookie.get('longitude')
+            let restaurantsList = await ApiService.post('/restaurants', {
+                zone_id: parseInt(this.currentZone.id),
+                latitude: parseFloat(latitude),
+                longitude: parseFloat(longitude),
+                start: 0,
+                limit: 100
+            })
+            let restaurantsListData = restaurantsList.data.restaurants
+            this.restaurants = restaurantsListData.slice(0, this.limit)
+
+        },
         calcTime(mass) {
             const today = new Date().getDay();
             const openTime = mass[today - 1].open_time;
@@ -200,6 +221,9 @@ export default {
             this.counterRest = 0
             this.restOverlay = false
         }
+    },
+    mounted() {
+        this.getRestWithCoords()
     }
 };
 </script>
