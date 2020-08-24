@@ -2,7 +2,7 @@
 <div class="categories-containe sticky" v-if="!hideCategory">
     <div class="category-list">
         <div class="category-list__container">
-            <v-chip active-class="category-chips--active" class="category-chips" v-for="(item, index) in first" :key="'firstCategor' + index" :color="item.alias == getSelectedCategory.alias ? 'primary': 'white'" @click="selectCategory(item, false)">
+            <v-chip active-class="category-chips--active" class="category-chips" v-for="(item, index) in first" :key="'firstCategor' + index" :color="item.alias == currentCategory.alias ? 'primary': 'white'" @click="selectCategory(item, false)">
                 <div class="category-name">
                     {{ item.name }}
                 </div>
@@ -57,7 +57,7 @@
             </span>
         </button>
         <div v-for="(item, index) in allCategory" :key="'adaptiveCatList' + index" v-show="item.category_icon" class="category-list-mobile-item" @click="selectCategoryAdaptive(item, false)">
-            <v-chip :class="{selected: item.id === getSelectedCategory.id}" class="item-name">
+            <v-chip :class="{selected: item.id === currentCategory.id}" class="item-name">
                 {{ item.name }}
             </v-chip>
         </div>
@@ -90,7 +90,8 @@ export default {
     name: 'Categories',
     props: {
         categoriesList: Array,
-        currentCategory: Object,
+		currentCategory: Object,
+		currentZone: Object,
     },
     components: {
         searchModal,
@@ -149,14 +150,18 @@ export default {
         getSelectedZone(newValue, oldValue) {
             if (newValue.id !== oldValue.id) {
                 this.getCategories()
-                this.selectedCategory = this.getSelectedCategory
+                this.selectedCategory = this.currentCategory
             }
-        }
+		},
+		currentCategory(newValue){
+            console.log('currentCategory -> newValue', newValue)
+			return newValue
+		}
     },
     computed: {
         ...mapGetters({
             getSelectedZone: 'zone/getSelectedZone',
-            getSelectedCategory: 'user/getSelectedCategory',
+            // currentCategory: 'user/currentCategory',
             getUserCoordinate: 'user/getUserCoordinate',
             getCurrentAddress: 'map/getCurrentAddress',
             getSearchNameKitchenDish: 'user/getSearchNameKitchenDish',
@@ -179,26 +184,26 @@ export default {
                     this.hideCategory = true
                 } else {
                     this.$store.dispatch('user/allCategory', allCategory)
-                    if (this.getSelectedCategory.id === null) {
+                    if (this.currentCategory.id === null) {
                         this.$store.dispatch('user/selectCategory', {
                             id: allCategory[0].id,
                             alias: allCategory[0].alias
                         })
                         this.$store.dispatch('user/setSelectedCategoryTitle', `Быстрая доставка еды в ${this.getSelectedZone.name}`)
                     } else {
-                        this.selectCategory(this.getSelectedCategory, false)
+                        this.selectCategory(this.currentCategory, false)
                     }
                     this.allCategory = resp
                     this.first = allCategory.slice(0, this.sliceCounter)
                     this.second = allCategory.slice(this.sliceCounter, resp.length)
                     var qwe = this.first.find((category) => {
-                        if (category.id === this.getSelectedCategory.id) {
+                        if (category.id === this.currentCategory.id) {
                             return true
                         }
                     })
                     if (qwe === undefined) {
-                        this.more.text = this.getSelectedCategory.name
-                        this.more.id = this.getSelectedCategory.id
+                        this.more.text = this.currentCategory.name
+                        this.more.id = this.currentCategory.id
                         this.more.isMore = true
                     }
                     this.loadingCategories = false
@@ -208,110 +213,10 @@ export default {
             })
         },
         selectCategoryAdaptive(selectCategory, boll) {
-            if (selectCategory.id == this.getSelectedCategory.id) {
-                this.selectCategory({
-                    name: 'Все',
-                    id: 0,
-                    alias: 'all'
-                }, true)
-            } else {
-                this.selectCategory(selectCategory, boll)
-            }
+            this.$router.push(`/${this.currentZone.alias}/restaurants/category/${item.alias}`)
         },
         selectCategory(item, boll) {
-            // this.$store.dispatch('user/selectCategory', {
-            //     id: item.id,
-            //     alias: item.alias,
-            //     name: item.name
-            // })
-            // this.$router.push(`/${this.getSelectedZone.alias}/restaurants/category/${item.alias}`)
-
-            this.oldCategoryImg = document.getElementById('bgImg') ? document.getElementById('bgImg') : null
-            if (item.id !== 0) {
-                if (boll === true) {
-                    this.more.text = item.name
-                    this.more.id = item.id
-                    this.more.isMore = true
-                } else {
-                    this.more.text = 'Ещё'
-                    this.more.id = -1
-                    this.more.isMore = false
-                }
-                ApiService.post('/categories/info', {
-                    zone_id: this.getSelectedZone.id,
-                    category_id: item.id
-                }).then((response) => {
-                    if (response.status === 200) {
-                        const respData = response.data
-                        if (respData.hasOwnProperty('status')) {
-                            if (response.data.status === 404) {
-                                this.$store.dispatch('user/setSelectedCategoryTitle', 'Бесплатная и быстрая доставка')
-                                this.$store.dispatch('user/selectCategory', {
-                                    id: item.id,
-                                    alias: item.alias,
-                                    name: item.name
-                                })
-                                if (this.oldCategoryImg != null) {
-                                    // this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.defaultBg + '");'
-                                    this.oldCategoryImg.setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.defaultBg + '");')
-                                }
-                                if (item.id === 0) {
-                                    this.$router.push(`/${this.getSelectedZone.alias}`)
-                                } else {
-                                    this.$router.push(`/${this.getSelectedZone.alias}/restaurants/category/${item.alias}`)
-                                }
-                            }
-                        } else {
-                            this.$store.dispatch('user/selectCategory', {
-                                id: item.id,
-                                alias: response.data.alias,
-                                name: item.name
-                            })
-                            this.$store.dispatch('user/setSelectedCategoryTitle', response.data.header + ' в ' + response.data.city)
-                            var bg = response.data.background
-
-                            if (window.innerWidth > 992) {
-                                if (this.oldCategoryImg != null) {
-									let currentBg = bg == '' ? this.defaultBg : bg
-                                    this.oldCategoryImg.setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + currentBg + '");')
-                                    // this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.bg + '");'
-                                }
-                            } else {
-                                if (this.oldCategoryImg != null) {
-                                    this.oldCategoryImg.setAttribute('style', 'background-image: url("' + response.data.category_icon + '");')
-                                    // this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + response.data.category_icon + '");'
-                                }
-                            }
-                            if (item.id === 0) {
-                                this.$router.push(`/${this.getSelectedZone.alias}`)
-                            } else {
-                                this.$router.push(`/${this.getSelectedZone.alias}/restaurants/category/${response.data.alias}`)
-                            }
-                        }
-                    }
-                }).catch((error) => {
-                    console.error(error)
-                })
-            } else {
-                if (window.innerWidth < 992) {
-                    if (this.oldCategoryImg != null) {
-                        // this.oldCategoryImg.style.backgroundImage = 'url("https://menu-menu.by/images/category_icons/new/4529d57df6bc970d11c1f3496296d99b-200x200.jpg");'
-                        this.oldCategoryImg.setAttribute('style', 'background-image: url("https://menu-menu.by/images/category_background/mobile/pizza.jpg");')
-                    }
-                } else {
-                    if (this.oldCategoryImg != null) {
-                        this.oldCategoryImg.setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.defaultBg + '");')
-                        // this.oldCategoryImg.style.backgroundImage = '-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))),  url("' + this.defaultBg + '");'
-                    }
-                }
-                this.$store.dispatch('user/selectCategory', {
-                    id: 0,
-                    alias: item.alias,
-                    name: item.name
-                })
-                this.$router.push(`/${this.getSelectedZone.alias}`)
-                this.$store.dispatch('user/setSelectedCategoryTitle', `Быстрая доставка в ${this.getSelectedZone.name}`)
-            }
+            this.$router.push(`/${this.currentZone.alias}/restaurants/category/${item.alias}`)
         },
         dropSearch() {
             this.$store.dispatch('user/setSearchNameKitchenDish', null)

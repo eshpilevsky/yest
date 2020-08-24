@@ -10,9 +10,9 @@
                 {{this.currentZone.name}}
             </nuxt-link>
 
-            <nuxt-link :to="`/${this.currentZone.alias}/restaurants/category/${this.getSelectedCategory.alias}`" class="link">
-                <span class="pre-title" v-show="this.getSelectedCategory.id !== 0">
-                    • {{this.getSelectedCategory.name}}
+            <nuxt-link :to="`/${this.currentZone.alias}/restaurants/category/${this.currentCategory.alias}`" class="link">
+                <span class="pre-title" v-show="this.currentCategory.id !== 0">
+                    • {{this.currentCategory.name}}
                 </span>
             </nuxt-link>
         </span>
@@ -91,7 +91,7 @@ export default {
             getSelectedZone: 'zone/getSelectedZone',
             getSelectedCategoryTitle: 'user/getSelectedCategoryTitle',
             getSelectedCategoryName: 'user/getSelectedCategoryName',
-            getSelectedCategory: 'user/getSelectedCategory',
+            // getSelectedCategory: 'user/getSelectedCategory',
             canDisplayMap: 'device/isMobile',
             getCurrentAddress: 'map/getCurrentAddress'
         })
@@ -107,9 +107,6 @@ export default {
                 this.getSuggest(newValue)
             }
         },
-        getSelectedCategory(newValue) {
-            return newValue
-        },
         getCurrentAddress(newValue) {
             this.searchAddress = newValue
         },
@@ -119,6 +116,12 @@ export default {
             this.currentZone.name = newValue.name
         },
         categoryInfoData(newValue) {
+            return newValue
+        },
+        currentZone(newValue) {
+            return newValue
+        },
+        currentCategory(newValue) {
             return newValue
         },
     },

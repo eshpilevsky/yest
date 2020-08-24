@@ -2,7 +2,7 @@
 <div style="padding-bottom: 0px">
     <setAdress :currentZone='currentZone' :currentCategory='this.currentCategory' :categoryInfoData='categoryInfoData' :class="{hide: showSetAdress == false}" />
     <specialOffers :offers="specilaOffers" v-show="showSpecialOffer" />
-    <categories v-show="categoriesList.length > 1" :categoriesList='categoriesList' :currentCategory='this.currentCategory' />
+    <categories v-show="categoriesList.length > 1" :currentZone='currentZone' :categoriesList='categoriesList' :currentCategory='this.currentCategory' />
     <restuarantsList :restaurantsList='restaurantsList' :currentCategory='this.currentCategory' />
 </div>
 </template>
@@ -260,7 +260,10 @@ export default {
                     this.showSetAdress = true
                 }
             }
-        },
+		},
+		restaurantsList(newValue){
+			return newValue
+		}
     },
     computed: {
         ...mapGetters({
@@ -281,9 +284,7 @@ export default {
             if (window.innerWidth < 992) {
                 document.getElementById('bgImg').setAttribute('style', 'background: #fff;')
             } else {
-                if (this.categoryInfoData.background.hasOwnProperty('background')) {
-                    document.getElementById('bgImg').setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.categoryInfoData.background + '");')
-                }
+                document.getElementById('bgImg').setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.categoryInfoData.background + '");')
             }
         }, 200);
         let lastScrollTop = 0

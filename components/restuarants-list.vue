@@ -121,7 +121,10 @@ export default {
         },
         loadingShowMore(newValue) {
             return newValue
-        }
+        },
+        restaurantsList(newValue) {
+            return newValue
+        },
     },
     methods: {
         getRestaurants(latitude, longitude) {

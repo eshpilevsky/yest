@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import home from './pages/Home.vue'
 import city from './pages/city.vue'
+import city2 from './pages/city.vue'
 import notFound from './pages/notFound.vue'
 import restaurants from './pages/restaurants.vue'
 import Checkout from './pages/Checkout.vue'
@@ -31,15 +32,11 @@ export function createRouter() {
 	  {
 		path: '/:region',
 		component: city,
-		children: [{
-		  path: 'restaurants',
-		  children: [{
-			path: 'category',
-			children: [{
-			  path: ':alias'
-			}]
-		  }]
-		}]
+
+	  },
+	  {
+		path: '/:region/restaurants/category/:alias',
+		component: city2,
 	  },
       {
         path: '/404',
