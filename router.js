@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import home from './pages/home.vue'
+import home from './pages/Home.vue'
 import city from './pages/city.vue'
 import notFound from './pages/notFound.vue'
 import restaurants from './pages/restaurants.vue'
