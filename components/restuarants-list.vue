@@ -178,27 +178,28 @@ export default {
         },
         showMore() {
             this.loadingShowMore = true
-			this.limit += 24;
-			this.restaurants = this.restaurantsList.slice(0, this.limit)
+            this.limit += 24;
+            this.restaurants = this.restaurantsList.slice(0, this.limit)
             this.loadingShowMore = false
         }
     },
     created() {
-        if (this.restaurantsList[0] !== 404) {
-            this.counterRest = this.restaurantsList.length
-            this.restaurants = this.restaurantsList
-            setTimeout(() => {
-                this.restaurants = this.restaurantsList.slice(0, this.limit)
-            }, 100);
-            setTimeout(() => {
+
+            if (this.restaurantsList[0] !== 404) {
+                this.restOverlay = true
+                this.counterRest = this.restaurantsList.length
+                this.restaurants = this.restaurantsList
+                setTimeout(() => {
+                    this.restaurants = this.restaurantsList.slice(0, this.limit)
+                	this.restOverlay = false
+                }, 300);
+            } else {
+                this.restaurants = [];
+                this.notFound = true;
+                this.counterRest = 0
                 this.restOverlay = false
-            }, 300);
-        } else {
-            this.restaurants = [];
-            this.notFound = true;
-            this.counterRest = 0
-            this.restOverlay = false
-        }
+            }
+
     }
 };
 </script>

@@ -89,10 +89,6 @@ export const mutations = {
           if (this.state == 'prompt') {
             state.data.loading = true
           } else if (this.state == 'granted') {
-            state.data.loading = false
-            setTimeout(() => {
-
-            }, 5000);
           } else if (this.state == 'denied') {
             state.data.loading = false
             state.data.inputAddressMode = true
