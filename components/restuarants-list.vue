@@ -233,8 +233,8 @@ export default {
         },
         async showMore() {
             this.loadingShowMore = true
-            this.limit += 24;
-            await this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
+			this.limit += 24;
+			this.restaurants = this.restaurantsList.slice(0, this.limit)
             this.loadingShowMore = false
         },
         computedOpenTime(res) {
