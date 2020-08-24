@@ -165,7 +165,7 @@ export default {
         if (restaurantsList.data.status == 404) {
             restaurantsListData = [404]
         } else {
-            // filtByTime = await computedOpenTime()
+            filtByTime = await computedOpenTime()
         }
 
         function computedOpenTime() {
@@ -242,10 +242,9 @@ export default {
         }
 
 		console.log('END ASYNC DATA');
-		            console.log('currentCategory', currentCategory)
 
         return {
-            restaurantsList: restaurantsListData,
+            restaurantsList: filtByTime,
             categoriesList: categoryAll.concat(categoriesListData),
             currentCategory: currentCategory,
             categoryInfoData: categoryInfoData,
