@@ -154,7 +154,6 @@ export default {
             }
 		},
 		currentCategory(newValue){
-            console.log('currentCategory -> newValue', newValue)
 			return newValue
 		}
     },

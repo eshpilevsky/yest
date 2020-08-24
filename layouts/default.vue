@@ -1,6 +1,6 @@
 <template>
 <v-app>
-    <layout-header v-show="!isMapVisible && this.$route.name !=='cart'" />
+    <layout-header v-show="!isMapVisible && this.$route.name !=='cart' && this.$route.name !=='restik'" />
     <!-- <layout-header v-show="!isMapVisible" /> -->
     <v-content v-show="!isMapVisible">
         <v-container class="main_cont">
