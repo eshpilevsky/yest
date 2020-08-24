@@ -633,7 +633,8 @@ export default {
                     this.$store.dispatch('basket/addToBasket', this.selectedDish);
                     this.$store.dispatch('basket/saveRestuarantUrl', {
                         params: this.$router.currentRoute.params,
-                        restName: this.restuarant.name,
+						restName: this.restuarant.name,
+						delivery: this.restuarant.delivery,
                     });
                     this.showDish = false
                 }
@@ -644,7 +645,8 @@ export default {
                 this.$store.dispatch('basket/addToBasket', this.selectedDish);
                 this.$store.dispatch('basket/saveRestuarantUrl', {
                     params: this.$router.currentRoute.params,
-                    restName: this.restuarant.name,
+					restName: this.restuarant.name,
+					delivery: this.restuarant.delivery,
                 });
                 this.showDish = false
             }

@@ -105,11 +105,13 @@ export default {
     methods: {
         computedFreeDeliveryCost() {
 			let deliveryMass;
-			if (this.getLatetestRestInfoWithOrder == null) {
-				deliveryMass = this.sortDeliverFee(this.delivery.fee)
-			} else{
-				deliveryMass = this.sortDeliverFee(this.getLatetestRestInfoWithOrder.delivery.fee)
-			}
+			// if (this.getLatetestRestInfoWithOrder == null) {
+                console.log('computedFreeDeliveryCost -> this.delivery', this.delivery)
+				deliveryMass = this.sortDeliverFee(this.delivery.fee ? this.delivery.fee : this.delivery.delivery.fee)
+                console.log('computedFreeDeliveryCost -> deliveryMass', deliveryMass)
+			// } else{
+			// 	deliveryMass = this.sortDeliverFee(this.getLatetestRestInfoWithOrder.delivery.fee)
+			// }
             let price = parseFloat(this.getTotalPrice)
             let finded = deliveryMass.findIndex((cost) => {
                 return cost.min <= price && price <= cost.max
@@ -131,11 +133,11 @@ export default {
         },
         computedDeliveryCost() {
             let deliveryMass;
-			if (this.getLatetestRestInfoWithOrder == null) {
-				deliveryMass = this.sortDeliverFee(this.delivery.fee)
-			} else{
-				deliveryMass = this.sortDeliverFee(this.getLatetestRestInfoWithOrder.delivery.fee)
-			}
+			// if (this.getLatetestRestInfoWithOrder == null) {
+				deliveryMass = this.sortDeliverFee(this.delivery.fee ? this.delivery.fee : this.delivery.delivery.fee)
+			// } else{
+			// 	deliveryMass = this.sortDeliverFee(this.getLatetestRestInfoWithOrder.delivery.fee)
+			// }
             let price = parseInt(this.getTotalPrice)
             let finded = deliveryMass.find((cost) => {
                 if (cost.min < price && price < cost.max) {
@@ -200,12 +202,13 @@ export default {
 		}
 	},
 	async beforeMount () {
-		if (this.getLatetestRestInfoWithOrder !== null) {
-			this.time = this.getLatetestRestInfoWithOrder.delivery.time
-			this.checkParams = this.getLatetestRestInfoWithOrder.params
-		} else {
-			this.time = this.delivery.time
-		}
+		// if (this.getLatetestRestInfoWithOrder !== null) {
+		// 	console.log('get from vuex');
+		// 	this.time = this.getLatetestRestInfoWithOrder.delivery.time
+		// 	this.checkParams = this.getLatetestRestInfoWithOrder.params
+		// } else {
+			this.time = this.delivery.time ? this.delivery.time : this.delivery.delivery.time
+		// }
 		this.deliveryString = await this.computedFreeDeliveryCost();
 		this.deliveryCost = await this.computedDeliveryCost();
 	},
