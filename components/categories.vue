@@ -2,7 +2,7 @@
 <div class="categories-containe sticky" v-if="!hideCategory">
     <div class="category-list">
         <div class="category-list__container">
-            <v-chip active-class="category-chips--active" class="category-chips" v-for="(item, index) in first" :key="'firstCategor' + index" :color="item.alias == currentCategory.alias ? 'primary': 'white'" @click="selectCategory(item, false)">
+            <v-chip active-class="category-chips--active" class="category-chips" v-for="(item, index) in first" :key="'firstCategor' + index" :color="item.alias == currentCategory.alias ? 'primary': 'white'" @click="selectCategory(item)">
                 <div class="category-name">
                     {{ item.name }}
                 </div>
@@ -19,7 +19,7 @@
                     </v-chip>
                 </template>
                 <v-list class="list-component">
-                    <v-list-item v-for="(item, index) in second" :key="'secondCategor' + index" class="more-category-list" @click="selectCategory(item, true)">
+                    <v-list-item v-for="(item, index) in second" :key="'secondCategor' + index" class="more-category-list" @click="selectCategory(item)">
                         <v-list-item-title>{{ item.name }}</v-list-item-title>
                     </v-list-item>
                 </v-list>
@@ -56,7 +56,7 @@
                 <v-icon>search</v-icon>
             </span>
         </button>
-        <div v-for="(item, index) in allCategory" :key="'adaptiveCatList' + index" v-show="item.category_icon" class="category-list-mobile-item" @click="selectCategoryAdaptive(item, false)">
+        <div v-for="(item, index) in allCategory" :key="'adaptiveCatList' + index" v-show="item.category_icon" class="category-list-mobile-item" @click="selectCategory(item)">
             <v-chip :class="{selected: item.id === currentCategory.id}" class="item-name">
                 {{ item.name }}
             </v-chip>
@@ -171,54 +171,11 @@ export default {
         showModalWindow() {
             this.showModalOverlay = !this.showModalOverlay
         },
-        getCategories() {
-            this.hideCategory = false
-            ApiService.post('/categories', {
-                zone_id: this.getSelectedZone.id
-            }).then((response) => {
-                const resp = response.data
-                const allCategory = this.categoryAll.concat(response.data)
-                if (allCategory.length == 1) {
-                    this.$store.dispatch('user/setSelectedCategoryTitle', null)
-                    this.loadingCategories = false
-                    this.hideCategory = true
-                } else {
-                    this.$store.dispatch('user/allCategory', allCategory)
-                    if (this.currentCategory.id === null) {
-                        this.$store.dispatch('user/selectCategory', {
-                            id: allCategory[0].id,
-                            alias: allCategory[0].alias
-                        })
-                        this.$store.dispatch('user/setSelectedCategoryTitle', `Быстрая доставка еды в ${this.getSelectedZone.name}`)
-                    } else {
-                        this.selectCategory(this.currentCategory, false)
-                    }
-                    this.allCategory = resp
-                    this.first = allCategory.slice(0, this.sliceCounter)
-                    this.second = allCategory.slice(this.sliceCounter, resp.length)
-                    var qwe = this.first.find((category) => {
-                        if (category.id === this.currentCategory.id) {
-                            return true
-                        }
-                    })
-                    if (qwe === undefined) {
-                        this.more.text = this.currentCategory.name
-                        this.more.id = this.currentCategory.id
-                        this.more.isMore = true
-                    }
-                    this.loadingCategories = false
-                }
-            }).catch((error) => {
-                console.error(error)
-            })
-        },
-        selectCategoryAdaptive(selectCategory, boll) {
-            this.$router.push(`/${this.currentZone.alias}/restaurants/category/${item.alias}`)
-        },
         selectCategory(item, boll) {
             this.$router.push(`/${this.currentZone.alias}/restaurants/category/${item.alias}`)
         },
         dropSearch() {
+			this.searchNameKitchenDish = ''
             this.$store.dispatch('user/setSearchNameKitchenDish', null)
         },
         searchFocus() {
@@ -231,10 +188,26 @@ export default {
         this.selectedCategory = this.$route.params.alias
         this.allCategory = this.categoriesList
         this.first = this.allCategory.slice(0, this.sliceCounter)
-        this.second = this.allCategory.slice(this.sliceCounter, this.categoriesList.length)
+		this.second = this.allCategory.slice(this.sliceCounter, this.categoriesList.length)
+		
+		let checkMore = this.first.find((cat)=>{
+			return cat.id == this.currentCategory.id
+		})
+		if (checkMore == undefined) {
+			this.more= {
+                text: this.currentCategory.name,
+                id: this.currentCategory.id,
+                isMore: true
+            }
+		} else {
+			this.more= {
+                text: 'Ещё',
+                id: -1,
+                isMore: false
+            }
+		}
     },
     mounted() {
-        // this.getCategories()
         this.hideCategory = false
         this.ww = window.innerWidth
         if (this.getSearchNameKitchenDish !== null) {

@@ -83,6 +83,7 @@ export default {
         let categoryInfo;
         let categoryInfoData;
 
+            console.log('currentCategory', currentCategory)
         if (currentCategory !== undefined) {
             categoryInfo = await axios.post('https://yestapi.xyz/categories/info', {
                 zone_id: currentZone.id,
@@ -240,7 +241,9 @@ export default {
             }
         }
 
-        console.log('END ASYNC DATA');
+		console.log('END ASYNC DATA');
+		            console.log('currentCategory', currentCategory)
+
         return {
             restaurantsList: restaurantsListData,
             categoriesList: categoryAll.concat(categoriesListData),
