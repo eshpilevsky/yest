@@ -293,28 +293,25 @@ export default {
     },
     created() {
         if (this.restaurantsList[0] !== 404) {
-            if (this.getCurrentCoords.length > 0) {
-                this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
-            } else {
-				this.counterRest = this.restaurantsList.length
-				this.restaurants = this.restaurantsList
-				setTimeout(() => {
-					this.restaurants = this.restaurantsList.slice(0, this.limit)
-				}, 100);
+            this.counterRest = this.restaurantsList.length
+            this.restaurants = this.restaurantsList
+            setTimeout(() => {
+                this.restaurants = this.restaurantsList.slice(0, this.limit)
+            }, 100);
+            setTimeout(() => {
                 this.restOverlay = false
-            }
+            }, 300);
         } else {
             this.restaurants = [];
             this.notFound = true;
-			this.counterRest = 0
-			this.restOverlay = false
+            this.counterRest = 0
+            this.restOverlay = false
         }
     }
 };
 </script>
 
 <style scoped>
-
 .card-options {
     display: flex;
     align-items: center;
