@@ -309,7 +309,7 @@ export default {
     }
 
     .main-mobile-cart {
-        padding-top: 60px;
+        padding-top: 30px;
     }
 
     .clear-cart-modal {
@@ -487,7 +487,8 @@ export default {
     }
 
     .dish-info {
-        margin-left: 10px;
+        margin-left: 16px;
+        width: 100%;
     }
 
     .dish-info-text {

@@ -1141,9 +1141,9 @@ export default {
 
 .basket-btn-block {
     position: fixed;
-    bottom: 0px;
+    bottom: 0;
     width: 100%;
-    padding: 8px;
+    padding: 16px;
     overflow: hidden;
     box-shadow: 0 -4px 8px 0 rgba(0, 0, 0, 0.05);
     transition: all 200ms ease-in;
