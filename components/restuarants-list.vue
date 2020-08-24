@@ -18,13 +18,13 @@
                         </v-chip>
                     </div>
                     <div class="card-options">
-                        <img class="card-options__delivery" src="../assets/deliveryIcon.svg" />
+                        <img class="card-options__delivery" src="@/assets/deliveryIcon.svg" />
                         <span class="card-options__rating">
                             <v-icon class="rating-icon" color="#FFFADF">star</v-icon>
                             <span>{{ item.rating }}</span>
                         </span>
                         <span class="card-options__currency">
-                            <img class="currency-icon" src="../assets/purseIcon.svg" />
+                            <img class="currency-icon" src="@/assets/purseIcon.svg" />
                             BYN
                         </span>
                     </div>
@@ -61,6 +61,7 @@ export default {
     props: {
         restaurantsList: Array,
         currentCategory: Object,
+        currentZone: Object,
     },
     data() {
         return {
@@ -92,8 +93,6 @@ export default {
     },
     computed: {
         ...mapGetters({
-            getSelectedZone: "zone/getSelectedZone",
-            getSelectedCategory: "user/getSelectedCategory",
             getCurrentAddress: "map/getCurrentAddress",
             getCurrentCoords: "map/getCurrentCoords"
         }),
@@ -110,15 +109,6 @@ export default {
         }
     },
     watch: {
-        getCurrentCoords(newValue, oldValue) {
-            this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
-        },
-        getSelectedCategory(newValue, oldValue) {
-            this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
-        },
-        getSelectedZone(newValue, oldValue) {
-            this.getRestaurants(this.getCurrentCoords.length > 0 ? this.getCurrentCoords[0] : 0, this.getCurrentCoords.length > 0 ? this.getCurrentCoords[1] : 0)
-        },
         loadingShowMore(newValue) {
             return newValue
         },
@@ -127,51 +117,6 @@ export default {
         },
     },
     methods: {
-        getRestaurants(latitude, longitude) {
-            this.restOverlay = true
-            this.notFound = false;
-            if (latitude !== 0 && longitude !== 0) {
-                this.params = {};
-                this.params = {
-                    zone_id: parseInt(this.getSelectedZone.id),
-                    latitude: parseFloat(latitude),
-                    longitude: parseFloat(longitude),
-                    start: 0,
-                    limit: 100
-                };
-            } else {
-                this.params = {};
-                this.params = {
-                    zone_id: this.getSelectedZone.id,
-                    start: 0,
-                    limit: 100
-                };
-            }
-            if (this.getSelectedCategory.id == 0) {
-                this.urlStr = `/restaurants`
-            } else {
-                this.urlStr = `/restaurants/category/${this.getSelectedCategory.id}`
-            }
-            ApiService.post(this.urlStr, this.params)
-                .then(response => {
-                    const resp = response.data;
-                    const rest = resp.restaurants;
-                    if (resp.status === 200) {
-                        this.restaurants = [];
-                        // this.restaurants = rest;
-                        this.counterRest = rest.length
-                        this.restaurants = this.computedOpenTime(rest).slice(0, this.limit)
-                        this.notFound = false;
-                    } else if (resp.status === 404) {
-                        this.restaurants = [];
-                        this.notFound = true;
-                    }
-                    this.restOverlay = false
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        },
         calcTime(mass) {
             const today = new Date().getDay();
             const openTime = mass[today - 1].open_time;
@@ -229,66 +174,13 @@ export default {
         goToRes(info) {
             let name = this.translite(info.name)
             let modifName = name.replace(' ', '-')
-            this.$router.push(`/${this.getSelectedZone.alias}/restaurant/${info.restaurant_id}-${modifName.toLowerCase()}`)
+            this.$router.push(`/${this.currentZone.alias}/restaurant/${info.restaurant_id}-${modifName.toLowerCase()}`)
         },
-        async showMore() {
+        showMore() {
             this.loadingShowMore = true
 			this.limit += 24;
 			this.restaurants = this.restaurantsList.slice(0, this.limit)
             this.loadingShowMore = false
-        },
-        computedOpenTime(res) {
-            const openRestorants = [];
-            const closeRestorants = [];
-            const currentDay = new Date().getDay();
-            const currentTime = new Date().getTime();
-            res.forEach((item, i, arr) => {
-                const op = item.operation_time;
-                const buffer = [];
-                if (item.operation_time.length > 6) {
-                    op.forEach((optime, index, operationTimeArr) => {
-                        if (optime.day === currentDay) {
-                            buffer.push(optime);
-                        }
-                    });
-                    let closeTime = buffer[0].close_time
-                    const openTime =
-                        buffer.length > 1 ? buffer[1].open_time : buffer[0].open_time;
-
-                    const closeTimeHour = closeTime.slice(0, 2);
-                    const closeTimeMin = closeTime.slice(3, 5);
-                    const closeTimeSec = closeTime.slice(6, 8);
-                    const closeTimeTimestamp = new Date();
-                    closeTimeTimestamp.setHours(closeTimeHour);
-                    closeTimeTimestamp.setMinutes(closeTimeMin);
-                    closeTimeTimestamp.setSeconds(closeTimeSec);
-
-                    const openTimeHour = openTime.slice(0, 2);
-                    const openTimeMin = openTime.slice(3, 5);
-                    const openTimeSec = openTime.slice(6, 8);
-                    const openTimeTimestamp = new Date();
-
-                    openTimeTimestamp.setHours(openTimeHour);
-                    openTimeTimestamp.setMinutes(openTimeMin);
-                    openTimeTimestamp.setSeconds(openTimeSec);
-
-                    item.today_close_time = closeTimeTimestamp.getTime();
-                    item.today_open_time = openTimeTimestamp.getTime();
-
-                    if (buffer.length !== 1) {
-                        item.today_close_time += 86400000;
-                    }
-
-                    if (currentTime < item.today_close_time) {
-                        openRestorants.push(item);
-                        item.is_open = true;
-                    } else {
-                        closeRestorants.push(item);
-                        item.is_open = false;
-                    }
-                }
-            });
-            return openRestorants.concat(closeRestorants);
         }
     },
     created() {

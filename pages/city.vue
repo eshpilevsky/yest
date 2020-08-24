@@ -3,7 +3,7 @@
     <setAdress :currentZone='currentZone' :currentCategory='this.currentCategory' :categoryInfoData='categoryInfoData' :class="{hide: showSetAdress == false}" />
     <specialOffers :offers="specilaOffers" v-show="showSpecialOffer" />
     <categories v-show="categoriesList.length > 1" :currentZone='currentZone' :categoriesList='categoriesList' :currentCategory='this.currentCategory' />
-    <restuarantsList :restaurantsList='restaurantsList' :currentCategory='this.currentCategory' />
+    <restuarantsList :restaurantsList='restaurantsList' :currentCategory='this.currentCategory' :currentZone='currentZone'/>
 </div>
 </template>
 
