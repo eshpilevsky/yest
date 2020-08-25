@@ -51,6 +51,7 @@
 
 <script>
 import ApiService from "../common/api.service";
+import axios from 'axios'
 
 import {
     mapGetters
@@ -125,9 +126,16 @@ export default {
     },
     methods: {
         async getRestWithCoords() {
+			let queryString;
+			if (this.currentCategory.id !== 0) {
+				queryString = `https://yestapi.xyz/restaurants`
+			} else {
+				queryString = `https://yestapi.xyz/restaurants/category/${this.currentCategory.id}`
+			}
+
 			let latitude = Cookie.get('latitude')
 			let longitude = Cookie.get('longitude')
-            let restaurantsList = await ApiService.post('/restaurants', {
+            let restaurantsList = await axios.post(queryString, {
                 zone_id: parseInt(this.currentZone.id),
                 latitude: parseFloat(latitude),
                 longitude: parseFloat(longitude),
@@ -222,9 +230,6 @@ export default {
             this.restOverlay = false
         }
     },
-    mounted() {
-        this.getRestWithCoords()
-    }
 };
 </script>
 
