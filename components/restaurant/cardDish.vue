@@ -88,6 +88,25 @@ export default {
         }
     },
     mounted() {
+        // console.error(this.id);
+        this.$store.watch(
+            (state) => {
+                return this.$store.state.basket.data.dishs // could also put a Getter here
+            },
+            (newValue, oldValue) => {
+                let findDish = newValue.find((dish) => {
+                    return dish.id == this.id
+                })
+                if (findDish !== undefined) {
+					console.log(findDish);
+					this.counter = findDish.selectSize.count
+                }
+            },
+            //Optional Deep if you need it
+            {
+                deep: true
+            }
+        )
         this.checkInBasket(this.getSelectedDishs)
     },
 }
@@ -124,7 +143,7 @@ export default {
 
 .dish-img {
     /* max-height: 210px; */
-	object-fit: contain;
+    object-fit: contain;
     width: 100%;
     border-radius: 5px;
     background-repeat: no-repeat;

@@ -163,8 +163,8 @@ export default {
             this.$store.dispatch('basket/decrementDishCounter', dish);
         },
         increment(dish) {
-            this.showDish = false
-            this.$store.dispatch('basket/incrementDishCounter', dish);
+			this.showDish = false
+			this.$store.dispatch('basket/incrementDishCounter', dish);
 		},
 		sortDeliverFee(mass) {
             // let sorted = mass.sort((a, b) => {

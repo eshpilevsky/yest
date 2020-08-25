@@ -575,31 +575,32 @@ export default {
             }
         },
         saveBasket() {
-			console.log('SAVE BASKET');
-			let find = this.orderList.find((el) => {
-				return el.id == this.selectedDish.id
-			})
-			if (find == undefined) {
-				
-				this.selectOption = this.selectedDish.options ? this.selectedDish.options[0] : []
-				// sizesRadioBtn
-				this.sizesRadioBtn.count = this.selectedDishCounter
-				// this.selectedDish.sizes[0] = this.sizesRadioBtn
-				// this.selectedDish.selectOption = this.selectOption
-				this.selectedDishCounter = 1
-				this.selectedDish.selectSize = []
-				this.selectedDish.selectSize = this.sizesRadioBtn
-	
-				this.$store.dispatch('basket/addToBasket', this.selectedDish);
-				this.$store.dispatch('basket/saveRestuarantUrl', {
-					params: this.$router.currentRoute.params,
-					restName: this.restuarant.name,
-					delivery: this.restuarant.delivery,
-				});
-				this.showOptionsmenu = false
-			} else{
-				this.increment(this.selectedDish)
-			}
+            console.log('SAVE BASKET');
+            let find = this.orderList.find((el) => {
+                return el.id == this.selectedDish.id
+            })
+            console.log('saveBasket -> find', find)
+            if (find == undefined) {
+
+                this.selectOption = this.selectedDish.options ? this.selectedDish.options[0] : []
+                // sizesRadioBtn
+                this.sizesRadioBtn.count = this.selectedDishCounter
+                // this.selectedDish.sizes[0] = this.sizesRadioBtn
+                // this.selectedDish.selectOption = this.selectOption
+                this.selectedDishCounter = 1
+                this.selectedDish.selectSize = []
+                this.selectedDish.selectSize = this.sizesRadioBtn
+
+                this.$store.dispatch('basket/addToBasket', this.selectedDish);
+                this.$store.dispatch('basket/saveRestuarantUrl', {
+                    params: this.$router.currentRoute.params,
+                    restName: this.restuarant.name,
+                    delivery: this.restuarant.delivery,
+                });
+                this.showOptionsmenu = false
+            } else {
+                this.increment(this.selectedDish)
+            }
         },
         addToBasket(dish) {
             if (dish.sizes.length > 1 || dish.options.length > 1) {
@@ -728,6 +729,7 @@ export default {
             this.$store.dispatch('basket/decrementDishCounter', dish);
         },
         increment(dish) {
+            dish.selectSize = dish.sizes[0]
             this.showDish = false
             this.$store.dispatch('basket/incrementDishCounter', dish);
         },
@@ -808,6 +810,7 @@ export default {
             this.$router.push(`/${this.getSelectedZone.alias}`)
         }
     },
+
     mounted() {
         window.scrollTo(0, 0);
         this.orderList = this.getSelectedDishs
