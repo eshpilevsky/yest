@@ -124,7 +124,7 @@
                     </div>
                 </div>
                 <!-- <smsForm @closeForm='closeSmsForm()' @closeFormShowOrderForm='closeFormShowOrderForm()' class='' /> -->
-				<miblieSmsForm />
+				        <mobileSmsForm />
             </v-sheet>
         </v-bottom-sheet>
     </div>
@@ -138,7 +138,7 @@ import {
 import orderForm from '@/components/order-form'
 import basket from '@/components/basket'
 import smsForm from '@/components/restaurant/sms-form'
-import miblieSmsForm from '@/components/restaurant/mobile-sms-form'
+import mobileSmsForm from '@/components/restaurant/mobile-sms-form'
 import axios from 'axios'
 
 export default {
@@ -146,7 +146,7 @@ export default {
         orderForm,
         basket,
         smsForm,
-        miblieSmsForm,
+        mobileSmsForm,
     },
     async asyncData({
         app,
