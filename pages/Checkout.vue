@@ -92,7 +92,8 @@
                             {{this.totalPrice}} BYN
                         </span>
                         <span class="total-time">
-                            {{`${this.LatetestRestInfoWithOrder.delivery.time.min} - ${this.LatetestRestInfoWithOrder.delivery.time.max} мин`}}
+                            <!-- {{`${this.LatetestRestInfoWithOrder.delivery.time.min} - ${this.LatetestRestInfoWithOrder.delivery.time.max} мин`}} -->
+							60-100 мин
                         </span>
                     </div>
                     <div class="next-btn-block">
@@ -150,7 +151,8 @@ export default {
     async asyncData({
         app,
         store,
-        params
+		params,
+		req
     }) {
         var lastRest = await store.getters['basket/getLatetestRestInfoWithOrder']
         var orderList = await store.getters['basket/getSelectedDishs']

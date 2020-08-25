@@ -1,3 +1,5 @@
+import ApiService from "~/common/api.service";
+
 import {
   mapGetters
 } from "vuex"
@@ -14,8 +16,8 @@ export default {
       badCode: false,
       currentRouteName: null,
       errorMsg: '',
-      current: true,
-
+	  current: true,
+	  timer: 59
     }
   },
   methods: {
@@ -37,6 +39,7 @@ export default {
       this.$emit('closeForm')
     },
     sendSms() {
+		this.timer = 59
       this.loadingSendSms = true
       ApiService.post('/user/send_sms', {
         phone: parseInt(this.phone.replace(/[^\d]/g, '')),
@@ -49,7 +52,15 @@ export default {
         }
       }).catch((error) => {
         console.error(error)
-      })
+	  })
+	  
+	  setInterval(() => {
+		  if (this.timer !== 0) {
+			this.timer--
+		  } else {
+
+		  }
+	  }, 1000);
     },
     auth() {
       this.checkCode = true

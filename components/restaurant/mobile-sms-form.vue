@@ -6,16 +6,19 @@
             <v-text-field class="sms-form__field" label="Ваш номер телефона" outlined v-model="phone" v-mask="mask"></v-text-field>
             <v-btn class="sms-form__submit" block color="primary" @click="showCurrnet()">Далее</v-btn>
         </div>
-        <p class="sms-form__terms">Нажимая кнопку «Далее», Вы принимаете условия <a href="#" target="_blank" class="link">пользовательского соглашения</a></p>
+        <p class="sms-form__terms">Нажимая кнопку «Далее», Вы принимаете условия
+		 	<nuxt-link to='/' target="_blank" class="link"> пользовательского соглашения </nuxt-link>
+		</p>
     </div>
     <div :class="{active:!current}" class="sms-form__second">
         <p class="sms-form__title">Подтверждение</p>
-        <p class="sms-form__description">Код подтверждения был отправлен <br> на номер +375(29)9379992</p>
+        <p class="sms-form__description">Код подтверждения был отправлен <br> на номер {{this.phone}}</p>
         <div class="sms-form__container">
             <v-text-field class="sms-form__field" label="Код из смс" outlined v-model="code"></v-text-field>
-            <v-btn class="sms-form__submit" block color="primary"  @click="showCurrnet()">Готово</v-btn>
+            <v-btn class="sms-form__submit" block color="primary"  @click="auth()">Готово</v-btn>
         </div>
-        <div class="sms-form__send-sms">Отправить код повторно <span class="time">0:38</span></div>
+        <div class="sms-form__send-sms" v-show="timer > 0">Отправить код повторно <span class="time">0:{{this.timer}}</span></div>
+		<v-btn @click="sendSms()" v-show="timer == 0">Отправить код повторно</v-btn>
     </div>
 </div>
 </template>
