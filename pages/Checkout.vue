@@ -123,7 +123,8 @@
                         <img src="@/assets/logo.svg" alt="logo" class="mini-header_logo">
                     </div>
                 </div>
-                <smsForm @closeForm='closeSmsForm()' @closeFormShowOrderForm='closeFormShowOrderForm()' />
+                <!-- <smsForm @closeForm='closeSmsForm()' @closeFormShowOrderForm='closeFormShowOrderForm()' class='' /> -->
+				<miblieSmsForm />
             </v-sheet>
         </v-bottom-sheet>
     </div>
@@ -137,6 +138,7 @@ import {
 import orderForm from '@/components/order-form'
 import basket from '@/components/basket'
 import smsForm from '@/components/restaurant/sms-form'
+import miblieSmsForm from '@/components/restaurant/mobile-sms-form'
 import axios from 'axios'
 
 export default {
@@ -144,6 +146,7 @@ export default {
         orderForm,
         basket,
         smsForm,
+        miblieSmsForm,
     },
     async asyncData({
         app,
@@ -175,7 +178,8 @@ export default {
             showOrderForm: false,
             addKnifes: true,
             cutleryCounter: 1,
-            showAuthForm: false,
+            // showAuthForm: false,
+            showAuthForm: true,
             showBasket: true,
             sheet: false,
         }
