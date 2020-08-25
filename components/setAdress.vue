@@ -310,6 +310,7 @@ export default {
 .setAdressContaine-info {
     padding: 50px 80px;
     min-width: 100%;
+    height: 334px;
     /* margin-bottom: 70px; */
 }
 

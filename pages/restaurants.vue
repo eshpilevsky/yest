@@ -985,6 +985,7 @@ export default {
     padding: 4px 20px !important;
     letter-spacing: 0.1px;
     margin-right: 10px;
+    height: 41px !important;
 }
 
 .modal-change-products__cancel {

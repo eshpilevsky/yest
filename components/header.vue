@@ -411,6 +411,7 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
+    min-width: 228px;
 }
 
 .rounding {
