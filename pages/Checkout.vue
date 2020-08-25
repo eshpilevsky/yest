@@ -92,8 +92,7 @@
                             {{this.totalPrice}} BYN
                         </span>
                         <span class="total-time">
-<!--                             {{`${this.getLatetestRestInfoWithOrder.delivery.time.min} - ${this.getLatetestRestInfoWithOrder.delivery.time.max} мин`}}-->
-                          30 - 100 мин
+                            {{`${this.LatetestRestInfoWithOrder.delivery.time.min} - ${this.LatetestRestInfoWithOrder.delivery.time.max} мин`}}
                         </span>
                     </div>
                     <div class="next-btn-block">
@@ -168,6 +167,10 @@ export default {
         let categoriesListData = categoriesList.data
 		store.dispatch('user/allCategory', categoriesListData)
 
+		return {
+			lastRest : lastRest
+		}
+
     },
     data() {
         return {
@@ -178,10 +181,11 @@ export default {
             showOrderForm: false,
             addKnifes: true,
             cutleryCounter: 1,
-            // showAuthForm: false,
-            showAuthForm: true,
+            showAuthForm: false,
             showBasket: true,
             sheet: false,
+			time: 0,
+			LatetestRestInfoWithOrder: {},
         }
     },
     methods: {
@@ -251,8 +255,15 @@ export default {
         }),
     },
     created() {
-        this.totalPrice = this.getTotalPrice
-    },
+		this.totalPrice = this.getTotalPrice
+	},
+	mounted () {
+		if (process.client) {
+			
+			this.LatetestRestInfoWithOrder = this.getLatetestRestInfoWithOrder;
+        console.log('mounted -> this.LatetestRestInfoWithOrder', this.LatetestRestInfoWithOrder)
+		}
+	},
 }
 </script>
 

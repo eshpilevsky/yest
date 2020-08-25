@@ -4,7 +4,7 @@
         <p class="sms-form__title">Введите номер телефона</p>
         <div class="sms-form__container">
             <v-text-field class="sms-form__field" label="Ваш номер телефона" outlined v-model="phone" v-mask="mask"></v-text-field>
-            <v-btn class="sms-form__submit" block color="primary" @click="auth()">Далее</v-btn>
+            <v-btn class="sms-form__submit" block color="primary" @click="showCurrnet()">Далее</v-btn>
         </div>
         <p class="sms-form__terms">Нажимая кнопку «Далее», Вы принимаете условия <a href="#" target="_blank" class="link">пользовательского соглашения</a></p>
     </div>
@@ -13,7 +13,7 @@
         <p class="sms-form__description">Код подтверждения был отправлен <br> на номер +375(29)9379992</p>
         <div class="sms-form__container">
             <v-text-field class="sms-form__field" label="Код из смс" outlined v-model="code"></v-text-field>
-            <v-btn class="sms-form__submit" block color="primary"  @click="auth()">Готово</v-btn>
+            <v-btn class="sms-form__submit" block color="primary"  @click="showCurrnet()">Готово</v-btn>
         </div>
         <div class="sms-form__send-sms">Отправить код повторно <span class="time">0:38</span></div>
     </div>
@@ -21,20 +21,13 @@
 </template>
 
 <script>
+  import ApiService from "~/common/api.service";
+  import SmsMixin from "./mixins/sms";
+  import {
+    mapGetters
+  } from "vuex";
 export default {
-    data() {
-        return {
-			code: ' ',
-            phone: ' ',
-			mask: ['+375', '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/, ],
-			current: true,
-        }
-	},
-	methods: {
-		auth() {
-			this.current = !this.current
-		}
-	},
+	mixins:[SmsMixin],
 }
 </script>
 
