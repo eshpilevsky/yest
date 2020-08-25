@@ -52,7 +52,6 @@ export const actions = {
 
 export const mutations = {
   INCREMENT_DISH(state, payload) {
-    console.log('INCREMENT_DISH -> payload', payload)
     state.status = '200'
     let dishList = state.data.dishs
     let findDish = dishList.findIndex((dish) => {

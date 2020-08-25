@@ -98,7 +98,6 @@ export default {
                     return dish.id == this.id
                 })
                 if (findDish !== undefined) {
-					console.log(findDish);
 					this.counter = findDish.selectSize.count
                 }
             },

@@ -106,9 +106,7 @@ export default {
         computedFreeDeliveryCost() {
 			let deliveryMass;
 			// if (this.getLatetestRestInfoWithOrder == null) {
-                console.log('computedFreeDeliveryCost -> this.delivery', this.delivery)
 				deliveryMass = this.sortDeliverFee(this.delivery.fee ? this.delivery.fee : this.delivery.delivery.fee)
-                console.log('computedFreeDeliveryCost -> deliveryMass', deliveryMass)
 			// } else{
 			// 	deliveryMass = this.sortDeliverFee(this.getLatetestRestInfoWithOrder.delivery.fee)
 			// }
