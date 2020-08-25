@@ -127,7 +127,7 @@
                 </div>
             </div>
             <div cols-2 xl8 class="right">
-                <basket :orderList="this.orderList" :delivery='this.restuarant.delivery'/>
+                <basket :orderList="this.orderList" :delivery='this.restuarant.delivery' />
                 <v-btn :disabled="this.getTotalPrice <= 0" color="primary" class="desctop_btn_confirm_order" id="desctop_btn_confirm_order" @click="checkout()">Оформить заказ</v-btn>
             </div>
             <client-only>
@@ -192,7 +192,7 @@
                 </v-overlay>
                 <v-overlay opacity="0.5" :dark='false' z-index="999" v-model="showSmsForm">
                     <!-- <orderForm @closeCheckout='checkout()' /> -->
-					<smsForm @closeForm='closeSmsForm()' @closeFormShowOrderForm='closeFormShowOrderForm()'/>
+                    <smsForm @closeForm='closeSmsForm()' @closeFormShowOrderForm='closeFormShowOrderForm()' />
                 </v-overlay>
             </client-only>
         </div>
@@ -524,13 +524,13 @@ export default {
         }
     },
     methods: {
-		closeFormShowOrderForm(){
-			this.showSmsForm = false
-			this.showSmsForm = false
-		},
-		closeSmsForm(){
-			this.showSmsForm = false
-		},
+        closeFormShowOrderForm() {
+            this.showSmsForm = false
+            this.showSmsForm = false
+        },
+        closeSmsForm() {
+            this.showSmsForm = false
+        },
         computedDeliveryCost() {
             let deliveryMass = this.sortDeliverFee
             let price = parseInt(this.getTotalPrice)
@@ -575,23 +575,31 @@ export default {
             }
         },
         saveBasket() {
-            console.log('SAVE BASKET');
-            this.selectOption = this.selectedDish.options ? this.selectedDish.options[0] : []
-            // sizesRadioBtn
-            this.sizesRadioBtn.count = this.selectedDishCounter
-            // this.selectedDish.sizes[0] = this.sizesRadioBtn
-            // this.selectedDish.selectOption = this.selectOption
-            this.selectedDishCounter = 1
-            this.selectedDish.selectSize = []
-            this.selectedDish.selectSize = this.sizesRadioBtn
-
-            this.$store.dispatch('basket/addToBasket', this.selectedDish);
-            this.$store.dispatch('basket/saveRestuarantUrl', {
-                params: this.$router.currentRoute.params,
-                restName: this.restuarant.name,
-                delivery: this.restuarant.delivery,
-            });
-            this.showOptionsmenu = false
+			console.log('SAVE BASKET');
+			let find = this.orderList.find((el) => {
+				return el.id == this.selectedDish.id
+			})
+			if (find == undefined) {
+				
+				this.selectOption = this.selectedDish.options ? this.selectedDish.options[0] : []
+				// sizesRadioBtn
+				this.sizesRadioBtn.count = this.selectedDishCounter
+				// this.selectedDish.sizes[0] = this.sizesRadioBtn
+				// this.selectedDish.selectOption = this.selectOption
+				this.selectedDishCounter = 1
+				this.selectedDish.selectSize = []
+				this.selectedDish.selectSize = this.sizesRadioBtn
+	
+				this.$store.dispatch('basket/addToBasket', this.selectedDish);
+				this.$store.dispatch('basket/saveRestuarantUrl', {
+					params: this.$router.currentRoute.params,
+					restName: this.restuarant.name,
+					delivery: this.restuarant.delivery,
+				});
+				this.showOptionsmenu = false
+			} else{
+				this.increment(this.selectedDish)
+			}
         },
         addToBasket(dish) {
             if (dish.sizes.length > 1 || dish.options.length > 1) {
@@ -600,20 +608,14 @@ export default {
                 this.showOptionsmenu = true
                 this.sizesRadioBtn = dish.sizes[0]
             } else {
+                this.selectedDish = dish
+                this.selectedDishCounter = 1
+                this.sizesRadioBtn = dish.sizes[0]
                 if (this.getLatetestRestInfoWithOrder == null) {
-                    this.selectedDish = dish
-                    this.selectedDishCounter = 1
-                    this.sizesRadioBtn = dish.sizes[0]
                     this.saveBasket()
                 } else if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
                     this.showWarning = true
-                    this.selectedDish = dish
-                    this.selectedDishCounter = 1
-                    this.sizesRadioBtn = dish.sizes[0]
                 } else {
-                    this.selectedDish = dish
-                    this.selectedDishCounter = 1
-                    this.sizesRadioBtn = dish.sizes[0]
                     this.saveBasket()
                 }
             }
@@ -635,8 +637,8 @@ export default {
                     this.$store.dispatch('basket/addToBasket', this.selectedDish);
                     this.$store.dispatch('basket/saveRestuarantUrl', {
                         params: this.$router.currentRoute.params,
-						restName: this.restuarant.name,
-						delivery: this.restuarant.delivery,
+                        restName: this.restuarant.name,
+                        delivery: this.restuarant.delivery,
                     });
                     this.showDish = false
                 }
@@ -647,8 +649,8 @@ export default {
                 this.$store.dispatch('basket/addToBasket', this.selectedDish);
                 this.$store.dispatch('basket/saveRestuarantUrl', {
                     params: this.$router.currentRoute.params,
-					restName: this.restuarant.name,
-					delivery: this.restuarant.delivery,
+                    restName: this.restuarant.name,
+                    delivery: this.restuarant.delivery,
                 });
                 this.showDish = false
             }
@@ -689,11 +691,11 @@ export default {
             this.showDeliveryOption = false
         },
         checkout() {
-			if (this.getUserPhoneNumber) {
-				this.$router.push('/checkout')
-			} else {
-				this.showSmsForm = !this.showSmsForm
-			}
+            if (this.getUserPhoneNumber) {
+                this.$router.push('/checkout')
+            } else {
+                this.showSmsForm = !this.showSmsForm
+            }
         },
         goToBasketPage() {
             this.$router.push(`/cart`)
@@ -756,8 +758,8 @@ export default {
             getUserLocation: "user/getUserLocation",
             getSelectedDishs: "basket/getSelectedDishs",
             getTotalPrice: "basket/getTotalPrice",
-			getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
-			getUserPhoneNumber: "user/getUserPhoneNumber",
+            getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
+            getUserPhoneNumber: "user/getUserPhoneNumber",
         }),
         sortDeliverFee() {
             let listt = this.restuarant.delivery.fee
@@ -832,80 +834,80 @@ export default {
 
 <style>
 .mobile-rest-info-modal {
-  border-radius: 10px 10px 0 0 !important;
+    border-radius: 10px 10px 0 0 !important;
 }
 
 .mobile-rest-info-modal__top {
-  display: flex;
-  justify-content: space-between;
-  padding: 16px;
-  border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid #ddd;
 }
 
 .mobile-rest-info-modal__title {
-  font-size: 20px;
-  font-weight: 600;
+    font-size: 20px;
+    font-weight: 600;
 }
 
 .rest-ship-modal {
-  border-radius: 10px 10px 0 0 !important;
-  padding-bottom: 14px;
+    border-radius: 10px 10px 0 0 !important;
+    padding-bottom: 14px;
 }
 
 .rest-ship-modal__top {
-  display: flex;
-  align-items: center;
-  padding: 16px;
-  margin-bottom: 14px;
-  justify-content: space-between;
-  border-bottom: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    margin-bottom: 14px;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
 }
 
 .rest-ship-modal__title {
-  font-size: 20px;
-  font-weight: 600;
+    font-size: 20px;
+    font-weight: 600;
 }
 
 .rest-ship-modal__item {
-  width: 100%;
-  padding: 6px 16px 0;
+    width: 100%;
+    padding: 6px 16px 0;
 }
 
 .rest-ship-modal__item-box {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  width: 100%;
-  padding: 0 0 6px;
-  border-bottom: 1px solid #ddd;
-  font-size: 14px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+    padding: 0 0 6px;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
 }
 
 .rest-ship-modal__item:last-child .rest-ship-modal__item-box {
-  border-bottom: none;
+    border-bottom: none;
 }
 
 .rest-ship-modal__item-icon {
-  margin-right: 10px;
+    margin-right: 10px;
 }
 
 .rest-ship-modal__descr {
-  color: #b0b0b0;
-  font-size: 12px;
-  margin: 0;
-  padding: 12px 16px 2px;
+    color: #b0b0b0;
+    font-size: 12px;
+    margin: 0;
+    padding: 12px 16px 2px;
 }
 
 .rest-ship-modal__rating {
-  padding: 0px 16px 28px;
-  color: #3f3f3f;
-  font-size: 36px;
-  font-weight: 600;
-  line-height: 1em;
+    padding: 0px 16px 28px;
+    color: #3f3f3f;
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1em;
 }
 
 .rest-cotainer .right #desctop_btn_confirm_order.v-btn--disabled {
-  background-color: #4ca647 !important;
+    background-color: #4ca647 !important;
 }
 
 .v-input--selection-controls__input .v-icon {
@@ -1004,59 +1006,61 @@ export default {
 .options-list div[role=radiogroup] .v-radio {
     width: 50% !important;
 }
-</style>
-<style scoped>
+</style><style scoped>
 .modal-change-products__title {
-  padding-top: 6px;
-  margin-bottom: 20px !important;
-  font-size: 24px;
-  font-weight: bold;
-  white-space: pre-line;
-  line-height: 36px;
+    padding-top: 6px;
+    margin-bottom: 20px !important;
+    font-size: 24px;
+    font-weight: bold;
+    white-space: pre-line;
+    line-height: 36px;
 }
 
 .modal-change-products .select-option-card {
-  max-width: 600px;
+    max-width: 600px;
 }
 
-.rest-info-wrapper, .delivery-modal-wrapper {
-  overflow-y: visible !important;
-  overflow-x: visible;
-  contain: none;
-  z-index: 10 !important;
-  box-shadow: none !important;
+.rest-info-wrapper,
+.delivery-modal-wrapper {
+    overflow-y: visible !important;
+    overflow-x: visible;
+    contain: none;
+    z-index: 10 !important;
+    box-shadow: none !important;
 }
 
-.rest-info-modal, .delivery-modal {
-  position: relative;
-  overflow: visible;
+.rest-info-modal,
+.delivery-modal {
+    position: relative;
+    overflow: visible;
 }
 
-.rest-info-modal:before, .delivery-modal:before {
-  content: "";
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  border-left: 25px solid transparent;
-  border-right: 25px solid transparent;
-  border-bottom: 17px solid #fff;
-  width: 10%;
-  margin: auto;
-  z-index: 200;
+.rest-info-modal:before,
+.delivery-modal:before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    border-bottom: 17px solid #fff;
+    width: 10%;
+    margin: auto;
+    z-index: 200;
 }
 
 .modal-title {
-  font-size: 20px;
-  font-weight: 600;
-  padding: 20px 20px 0;
-  margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 20px 20px 0;
+    margin-bottom: 10px;
 }
 
 .modal-text-gray {
-  padding: 3px 20px;
-  font-size: 14px;
-  color: #a0a0a0;
+    padding: 3px 20px;
+    font-size: 14px;
+    color: #a0a0a0;
 }
 
 .bgGray {
@@ -1127,7 +1131,7 @@ export default {
 }
 
 .restaurant-rating {
-  margin-bottom: 16px;
+    margin-bottom: 16px;
 }
 
 .restaurant-rating .restaurant-rating__icon {
@@ -1577,9 +1581,9 @@ export default {
 }
 
 .selected-dish-top {
-  display: flex;
-  height: 280px;
-  overflow: hidden;
+    display: flex;
+    height: 280px;
+    overflow: hidden;
 }
 
 .selected-dish-composition {
