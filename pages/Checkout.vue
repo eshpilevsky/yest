@@ -260,11 +260,16 @@ export default {
 
 .mini-header_logo {
     width: 125px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .mini-header {
     display: flex;
     flex-direction: row;
+    position: relative;
 }
 
 .authFormSheet {

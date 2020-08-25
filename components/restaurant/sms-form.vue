@@ -1,143 +1,148 @@
 <template>
-<v-card class="sms-modal">
+  <v-card class="sms-modal">
     <img class="sms-modal__logo" src="@/assets/logo.svg" alt="Logo">
     <v-card-title class="sms-modal__title">
-        Пожалуйста, укажите <br> свой телефон
+      Пожалуйста, укажите <br> свой телефон
     </v-card-title>
     <v-icon class="sms-modal__close" @click="closeForm()" v-show="currentRouteName !== 'cart'">
-        close
+      close
     </v-icon>
-    <v-text-field class="sms-modal__field" label="Ваш номер телефона" outlined v-model="phone" v-mask="mask" :disabled="smsSuccess"></v-text-field>
+    <v-text-field class="sms-modal__field" label="Ваш номер телефона" outlined v-model="phone" v-mask="mask"
+                  :disabled="smsSuccess"></v-text-field>
     <div class="sms-modal__link" v-show="smsSuccess" @click="changePhoneNumber()">
-        Изменить номер телефона
+      Изменить номер телефона
     </div>
     <div v-show="smsSuccess">
-        <v-text-field class="sms-modal__field" label="Код из смс" outlined v-model="code" :error-messages='this.badCode == true ? this.errorMsg : null'></v-text-field>
-        <div class="sms-modal__link" v-show="smsSuccess" @click="sendSmsAgain()">
-            Отправить смс повторно
-        </div>
+      <v-text-field class="sms-modal__field" label="Код из смс" outlined v-model="code"
+                    :error-messages='this.badCode == true ? this.errorMsg : null'></v-text-field>
+      <div class="sms-modal__link" v-show="smsSuccess" @click="sendSmsAgain()">
+        Отправить смс повторно
+      </div>
     </div>
-    <v-btn class="sms-modal__submit" id="send-sms-modal-btn" block color="primary" :disabled="phone.length < 17" :loading="loadingSendSms" @click="sendSms()" v-show="!smsSuccess">
-        Получить код
+    <v-btn class="sms-modal__submit" id="send-sms-modal-btn" block color="primary" :disabled="phone.length < 17"
+           :loading="loadingSendSms" @click="sendSms()" v-show="!smsSuccess">
+      Получить код
     </v-btn>
-    <v-btn class="sms-modal__submit" block color="primary" :disabled="code.length < 5" @click="auth()" :loading="checkCode" v-show="smsSuccess">
-        Дальше
+    <v-btn class="sms-modal__submit" block color="primary" :disabled="code.length < 5" @click="auth()"
+           :loading="checkCode" v-show="smsSuccess">
+      Дальше
     </v-btn>
-</v-card>
+  </v-card>
 </template>
 
 <script>
-import ApiService from "~/common/api.service";
-import {
+  import ApiService from "~/common/api.service";
+  import {
     mapGetters
-} from "vuex";
-export default {
+  } from "vuex";
+
+  export default {
     data() {
-        return {
-            phone: ' ',
-            mask: ['+375', '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/, ],
-            code: ' ',
-            loadingSendSms: false,
-            smsSuccess: false,
-            checkCode: false,
-            badCode: false,
-            currentRouteName: null,
-            errorMsg: '',
-        }
+      return {
+        phone: ' ',
+        mask: ['+375', '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/,],
+        code: ' ',
+        loadingSendSms: false,
+        smsSuccess: false,
+        checkCode: false,
+        badCode: false,
+        currentRouteName: null,
+        errorMsg: '',
+      }
     },
     methods: {
-		changePhoneNumber(){
-            console.log('changePhoneNumber -> changePhoneNumber')
-			this.smsSuccess = false
-		},
-		sendSmsAgain(){
-            console.log('sendSmsAgain -> sendSmsAgain')
-			this.sendSms()
-		},
-        closeForm() {
-            this.$emit('closeForm')
-        },
-        sendSms() {
-            this.loadingSendSms = true
-            ApiService.post('/user/send_sms', {
-                phone: parseInt(this.phone.replace(/[^\d]/g, '')),
-            }).then((response) => {
-                this.loadingSendSms = false
-                this.smsSuccess = true
-                if (response.data.status == 'err') {
-                    this.badCode = true
-                    this.errorMsg = response.data.errors[0]
-                }
-            }).catch((error) => {
-                console.error(error)
-            })
-        },
-        auth() {
-            this.checkCode = true
-            ApiService.post('/user/auth', {
-                phone: parseInt(this.phone.replace(/[^\d]/g, '')),
-                code: parseInt(this.code),
-            }).then((response) => {
-                if (response.data.status == 'err') {
-                    this.badCode = true
-                    this.checkCode = false
-                    this.errorMsg = response.data.error[0]
-                } else {
-                    this.goToCheckout()
-                }
-            }).catch((error) => {
-                console.error(error)
-            })
-        },
-        goToCheckout() {
-            this.$store.dispatch('user/setUserPhoneNumber', parseInt(this.phone.replace(/[^\d]/g, '')));
-            if (this.currentRouteName !== 'cart') {
-                this.$router.push('/checkout')
-                console.error('push to checkout');
-            } else {
-                console.error('need close');
-                this.$emit('closeFormShowOrderForm')
-            }
-        },
+      changePhoneNumber() {
+        console.log('changePhoneNumber -> changePhoneNumber')
+        this.smsSuccess = false
+      },
+      sendSmsAgain() {
+        console.log('sendSmsAgain -> sendSmsAgain')
+        this.sendSms()
+      },
+      closeForm() {
+        this.$emit('closeForm')
+      },
+      sendSms() {
+        this.loadingSendSms = true
+        ApiService.post('/user/send_sms', {
+          phone: parseInt(this.phone.replace(/[^\d]/g, '')),
+        }).then((response) => {
+          this.loadingSendSms = false
+          this.smsSuccess = true
+          if (response.data.status == 'err') {
+            this.badCode = true
+            this.errorMsg = response.data.errors[0]
+          }
+        }).catch((error) => {
+          console.error(error)
+        })
+      },
+      auth() {
+        this.checkCode = true
+        ApiService.post('/user/auth', {
+          phone: parseInt(this.phone.replace(/[^\d]/g, '')),
+          code: parseInt(this.code),
+        }).then((response) => {
+          if (response.data.status == 'err') {
+            this.badCode = true
+            this.checkCode = false
+            this.errorMsg = response.data.error[0]
+          } else {
+            this.goToCheckout()
+          }
+        }).catch((error) => {
+          console.error(error)
+        })
+      },
+      goToCheckout() {
+        this.$store.dispatch('user/setUserPhoneNumber', parseInt(this.phone.replace(/[^\d]/g, '')));
+        if (this.currentRouteName !== 'cart') {
+          this.$router.push('/checkout')
+          console.error('push to checkout');
+        } else {
+          console.error('need close');
+          this.$emit('closeFormShowOrderForm')
+        }
+      },
     },
     watch: {
-        phone(newValue, oldValue) {
-            return newValue
-        }
-	},
-	computed: {
-		...mapGetters({
-            getUserPhoneNumber: "user/getUserPhoneNumber",
-        }),
-	},
-    mounted() {
-		this.currentRouteName = this.$route.name
-            console.log('mounted -> this.getUserPhoneNumber', this.getUserPhoneNumber)
-		if (this.getUserPhoneNumber) {
-			this.$router.push('/checkout')
-		}
+      phone(newValue, oldValue) {
+        return newValue
+      }
     },
-}
+    computed: {
+      ...mapGetters({
+        getUserPhoneNumber: "user/getUserPhoneNumber",
+      }),
+    },
+    mounted() {
+      this.currentRouteName = this.$route.name
+      console.log('mounted -> this.getUserPhoneNumber', this.getUserPhoneNumber)
+      if (this.getUserPhoneNumber) {
+        this.$router.push('/checkout')
+      }
+    },
+  }
 </script>
 
 <style>
-.sms-modal #send-sms-modal-btn.sms-modal__send-sms.v-btn--disabled {
+  .sms-modal #send-sms-modal-btn.sms-modal__send-sms.v-btn--disabled {
     background-color: #4ca647 !important;
-}
+  }
 
-.sms-modal__field .v-input__slot {
+  .sms-modal__field .v-input__slot {
     margin-bottom: 0;
-}
+  }
 
-.sms-modal__field .v-text-field__details {
+  .sms-modal__field .v-text-field__details {
     min-height: initial !important;
     margin-top: 4px !important;
     padding: 0 4px !important;
-}
+  }
 </style>
 
 <style lang="scss" scoped>
-.sms-modal {
+  .sms-modal {
     padding: 20px;
     position: relative;
     max-width: 440px;
@@ -145,25 +150,25 @@ export default {
     width: 100%;
 
     &__logo {
-        max-width: 120px;
-        display: block;
-        margin: 0 auto 20px;
+      max-width: 120px;
+      display: block;
+      margin: 0 auto 20px;
     }
 
     &__title {
-        padding: 0;
-        margin-bottom: 20px;
-        font-size: 20px;
-        font-weight: 600;
-        justify-content: center;
-        text-align: center;
-        line-height: 24px;
+      padding: 0;
+      margin-bottom: 20px;
+      font-size: 20px;
+      font-weight: 600;
+      justify-content: center;
+      text-align: center;
+      line-height: 24px;
     }
 
     &__close {
-        position: absolute !important;
-        top: 10px;
-        right: 10px;
+      position: absolute !important;
+      top: 10px;
+      right: 10px;
     }
 
     &__field {
@@ -171,20 +176,30 @@ export default {
     }
 
     &__submit {
-        text-transform: initial;
-        font-size: 16px !important;
-        font-weight: 600;
-        height: 50px !important;
+      text-transform: initial;
+      font-size: 16px !important;
+      font-weight: 600;
+      height: 50px !important;
     }
 
     &__link {
-        font-size: 13px;
-        text-decoration: underline;
-        cursor: pointer;
-        margin-bottom: 30px;
-        margin-left: 4px;
-        width: fit-content;
-        color: #646464;
+      font-size: 13px;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-bottom: 30px;
+      margin-left: 4px;
+      width: fit-content;
+      color: #646464;
     }
-}
+
+    @media screen and (max-width: 992px) {
+      min-width: initial;
+      max-width: initial;
+      box-shadow: none;
+
+      &__logo {
+        display: none;
+      }
+    }
+  }
 </style>
