@@ -521,6 +521,7 @@ export default {
             showRestInfo: false,
             showRestName: false,
             lastPath: null,
+            calcPath: '',
         }
     },
     methods: {
@@ -719,7 +720,7 @@ export default {
             this.selectedDishCounter++
         },
         goBack() {
-            this.$router.back()
+            this.$router.push(`${this.calcPath}`)
         },
         closeOptionMenu() {
             this.showOptionsmenu = false
@@ -751,6 +752,15 @@ export default {
             let visibleCategory = entries[0].target.id.split('_')
             this.tab = parseInt(visibleCategory[1])
         }
+    },
+    beforeRouteEnter(to, from, next) {
+        next(vm => {
+            if (from.path !== '/') {
+                vm.calcPath = from.path
+            } else {
+                vm.calcPath = `/${to.params.region}`
+            }
+        })
     },
     computed: {
         ...mapGetters({

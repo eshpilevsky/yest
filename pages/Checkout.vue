@@ -217,7 +217,7 @@ export default {
             this.showAuthForm = true
         },
         goBack() {
-            this.$router.go(-1)
+			this.$router.go(-1)
         },
         showDropBasketForm() {
             this.dropBasketForm = true
