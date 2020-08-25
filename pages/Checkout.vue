@@ -274,6 +274,7 @@ export default {
     display: flex;
     flex-direction: row;
     position: relative;
+    border-bottom: 1px solid #ddd;
 }
 
 .authFormSheet {
