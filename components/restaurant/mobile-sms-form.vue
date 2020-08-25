@@ -2,13 +2,13 @@
 <div class="sms-form">
     <div :class="{active:current}" class="sms-form__first">
         <v-text-field class="sms-modal__field" label="Ваш номер телефона" outlined v-model="phone" v-mask="mask" ></v-text-field>
-        <v-btn class="sms-modal__submit" block color="primary" @click="auth()">
+        <v-btn class="sms-modal__submit" block color="primary" @click="showCurrnet()">
             Получить код
         </v-btn>
     </div>
     <div :class="{active:!current}" class="sms-form__second">
         <v-text-field class="sms-modal__field" label="Код из смс" outlined v-model="code"></v-text-field>
-        <v-btn class="sms-modal__submit" block color="primary"  @click="auth()">
+        <v-btn class="sms-modal__submit" block color="primary"  @click="showCurrnet()">
             Готово
         </v-btn>
     </div>
@@ -16,20 +16,13 @@
 </template>
 
 <script>
+  import ApiService from "~/common/api.service";
+  import SmsMixin from "./mixins/sms";
+  import {
+    mapGetters
+  } from "vuex";
 export default {
-    data() {
-        return {
-			code: ' ',
-            phone: ' ',
-			mask: ['+375', '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/, ],
-			current: true,
-        }
-	},
-	methods: {
-		auth() {
-			this.current = !this.current
-		}
-	},
+	mixins:[SmsMixin],
 }
 </script>
 
