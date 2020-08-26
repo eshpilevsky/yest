@@ -3,7 +3,7 @@
     <setAdress :currentZone='currentZone' :currentCategory='this.currentCategory' :categoryInfoData='categoryInfoData' :class="{hide: showSetAdress == false}" />
     <specialOffers :offers="specilaOffers" v-show="showSpecialOffer" />
     <categories v-show="categoriesList.length > 1" :currentZone='currentZone' :categoriesList='categoriesList' :currentCategory='this.currentCategory' />
-    <restuarantsList :restaurantsList='restaurantsList' :currentCategory='this.currentCategory' :currentZone='currentZone'/>
+    <restuarantsList :restaurantsList='restaurantsList' :currentCategory='this.currentCategory' :currentZone='currentZone' />
 </div>
 </template>
 
@@ -102,7 +102,7 @@ export default {
                     city: currentZone.name,
                     background: 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png',
                 }
-			}
+            }
             store.dispatch('user/selectCategory', currentCategory)
         } else {
             if (params.alias) {
@@ -110,8 +110,8 @@ export default {
             } else {
                 categoryInfoData = {
                     header: 'Быстрая доставка',
-					city: currentZone.name,
-					background: 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png',
+                    city: currentZone.name,
+                    background: 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png',
                 }
                 currentCategory = categoryAll[0]
                 store.dispatch('user/selectCategory', currentCategory)
@@ -242,7 +242,7 @@ export default {
             }
         }
 
-		console.log('END ASYNC DATA');
+        console.log('END ASYNC DATA');
         return {
             restaurantsList: filtByTime,
             categoriesList: categoryAll.concat(categoriesListData),
@@ -253,8 +253,25 @@ export default {
             showSpecialOffer: showSpecialOffer,
         }
     },
+    methods: {
+        async getSpecialOffer() {
+            await axios.post('https://yestapi.xyz/restaurants/special-offers', {
+                zone_id: parseInt(this.getSelectedZone.id),
+                latitude: parseFloat(this.getCurrentCoords[0]),
+                longitude: parseFloat(this.getCurrentCoords[1]),
+            }).then((res) => {
+                if (res.data.length == 0) {
+                    this.showSpecialOffer = false
+                } else {
+                    this.showSpecialOffer = true
+                    this.specilaOffers = res.data
+                }
+            })
+        }
+    },
     watch: {
         getCurrentAddress(newValue, oldValue) {
+            this.getSpecialOffer()
             if (window.innerWidth < 450) {
                 if (newValue.length > 0) {
                     this.showSetAdress = false
@@ -262,17 +279,17 @@ export default {
                     this.showSetAdress = true
                 }
             }
-		},
-		restaurantsList(newValue){
-			return newValue
-		}
+        },
+        restaurantsList(newValue) {
+            return newValue
+        }
     },
     computed: {
         ...mapGetters({
             getSelectedZone: 'zone/getSelectedZone',
             getZoneList: 'zone/getZoneList',
             getCategoryList: 'user/getCategoryList',
-            getUserCoordinate: 'user/getUserCoordinate',
+            getCurrentCoords: 'map/getCurrentCoords',
             getCurrentAddress: "map/getCurrentAddress",
         })
     },

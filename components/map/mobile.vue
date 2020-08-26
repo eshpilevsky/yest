@@ -119,7 +119,7 @@ export default {
                     coords,
                     ymaps
                 })
-                await this.hideMap()
+				await this.hideMap()
             })
             if (this.getCurrentCoords.length === 0) {
                 await this.getLocation()
