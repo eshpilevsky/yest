@@ -111,7 +111,7 @@
                 <div class="catalog-list">
                     <div v-for="(category, index) in restuarant.menu" :key="category.cat_id">
                         <div class="category-title">
-                            <h2 v-intersect="categoryNameIntersect" :id='`desktop_${index}`'>
+                            <h2 v-intersect="{handler:categoryNameIntersect, options: {threshold: [1.0]}}" :id='`desktop_${index}`'>
                                 {{category.name}}
                             </h2>
                             <span class="category-list-counter">
@@ -278,7 +278,7 @@
             </div>
             <div class="mobile-catalog">
                 <div v-for="(category, index) in restuarant.menu" :key="category.id">
-                    <h2 v-intersect="categoryNameIntersect" :id="`mob_${index}`" class="category-title">
+                    <h2 v-intersect="{handler:categoryNameIntersect, options: {threshold: [1.0]}}" :id="`mob_${index}`" class="category-title">
                         {{category.name}}
                     </h2>
                     <div class="dishs-list-mobile">
@@ -498,7 +498,7 @@ export default {
     },
     data() {
         return {
-            tab: null,
+            tab: 0,
             showRatingSheet: false,
             showDeliveryOption: false,
             selectedDish: {
@@ -737,7 +737,6 @@ export default {
         dropBasket() {
             this.$store.dispatch('basket/dropBasket');
         },
-
         scroll(id) {
             const element = document.getElementById(id);
             const yOffset = window.innerWidth < 992 ? 80 : 140;
@@ -748,9 +747,12 @@ export default {
             });
             this.tab = id
         },
-        categoryNameIntersect(entries, observer) {
-            let visibleCategory = entries[0].target.id.split('_')
-            this.tab = parseInt(visibleCategory[1])
+        categoryNameIntersect(entries, observer, isIntersecting) {
+			if (isIntersecting) {
+				let visibleCategory = entries[0].target.id.split('_')
+				this.tab = parseInt(visibleCategory[1])
+				console.log('categoryNameIntersect -> this.tab', this.tab)
+			}
         }
     },
     beforeRouteEnter(to, from, next) {
