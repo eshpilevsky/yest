@@ -1,22 +1,21 @@
 <template>
-<div class="d-flex justify-center align-center paymant-status-container" >
-    <v-card class="status-card">
-        <v-card-title>
+<div class="d-flex justify-center align-center payment-status">
+    <v-card class="payment-status__container">
+        <v-card-title class="payment-status__title">
             {{this.currentStatus.text.title}}
-            <v-icon color="primary">
+            <v-icon class="payment-status__icon" color="primary">
                 {{this.currentStatus.icon}}
             </v-icon>
         </v-card-title>
-        <v-card-text>
+        <v-card-text class="payment-status__description">
             {{this.currentStatus.text.subTitle}}
         </v-card-text>
         <v-card-actions class="d-flex align-center justify-center">
-            <v-btn color="primary" outlined>
+            <v-btn class="payment-status__btn" color="primary" outlined>
                 На главную
             </v-btn>
         </v-card-actions>
     </v-card>
-
 </div>
 </template>
 
@@ -94,8 +93,40 @@ export default {
 }
 </script>
 
-<style scoped>
-.paymant-status-container{
+<style scoped lang="scss">
+.payment-status {
 	height: 80vh;
+
+  &__container {
+    box-shadow: none;
+    border: none;
+  }
+
+  &__title {
+    margin: 0 auto 14px !important;
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    padding: 0;
+    justify-content: center;
+  }
+
+  &__description {
+    margin-bottom: 18px !important;
+    padding: 0;
+    text-align: center;
+  }
+
+  &__icon {
+    margin-left: 6px;
+  }
+
+  &__btn {
+    text-transform: initial !important;
+    height: 41px !important;
+    min-width: 160px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+  }
 }
 </style>
