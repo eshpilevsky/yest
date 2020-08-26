@@ -83,7 +83,6 @@ export default {
         let categoryInfo;
         let categoryInfoData;
 
-            console.log('currentCategory', currentCategory)
         if (currentCategory !== undefined) {
             categoryInfo = await axios.post('https://yestapi.xyz/categories/info', {
                 zone_id: currentZone.id,
@@ -92,6 +91,7 @@ export default {
 
             if (categoryInfo.status != 404) {
                 categoryInfoData = categoryInfo.data
+                console.log('categoryInfoData', categoryInfoData)
                 if (categoryInfoData.background == '') {
                     categoryInfoData.background = 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png'
                 }
@@ -243,7 +243,7 @@ export default {
         }
 
 		console.log('END ASYNC DATA');
-
+	console.log(categoryInfoData);
         return {
             restaurantsList: filtByTime,
             categoriesList: categoryAll.concat(categoriesListData),
@@ -285,7 +285,7 @@ export default {
         window.scrollTo(0, 0);
         setTimeout(() => {
             if (window.innerWidth < 992) {
-                document.getElementById('bgImg').setAttribute('style', 'background: #fff;')
+                document.getElementById('bgImg').setAttribute('style', 'background-image: url("' + this.categoryInfoData.category_icon + '");')
             } else {
                 document.getElementById('bgImg').setAttribute('style', 'background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.4))), url("' + this.categoryInfoData.background + '");')
             }
