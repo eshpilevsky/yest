@@ -1,5 +1,5 @@
 <template>
-<v-btn class="set-you-address" :class="{active : this.getCurrentAddress.length > 0}" height="40" width="245" color="primary" dense rounded depressed @click="showMap">
+<v-btn class="set-you-address" :class="{active : this.getCurrentAddress.length > 0, ad50:isHeader}" height="40" width="245" color="primary" dense rounded depressed @click="showMap">
     <i class="material-icons near_me_icon">near_me</i>
     <span class="address">
         {{this.text}}
@@ -13,7 +13,10 @@ import {
     mapMutations
 } from 'vuex'
 export default {
-    name: 'map-btn',
+	name: 'map-btn',
+	props: {
+		isHeader: Boolean,
+	},
     data() {
         return {
 			putAddress: 'Укажите адрес'
@@ -40,6 +43,10 @@ export default {
 </script>
 
 <style>
+
+.ad50{
+	top: 50%;
+}
 
 .set-you-address {
     position: relative !important;

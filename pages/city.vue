@@ -243,7 +243,6 @@ export default {
         }
 
 		console.log('END ASYNC DATA');
-	console.log(categoryInfoData);
         return {
             restaurantsList: filtByTime,
             categoriesList: categoryAll.concat(categoriesListData),

@@ -91,7 +91,7 @@
         </v-navigation-drawer>
         <nuxt-link v-show="!showSidebar" :to="`/${this.getSelectedZone.alias}`" class="mobileLogo">
             <img src="@/assets/logo.svg" class="burger-logo-img" :class="{hideLogo : this.getCurrentAddress.length > 0}" alt="logodesktop">
-            <map-btn v-show="showSetAdressBtn" class="header-map-btn" />
+            <map-btn v-show="showSetAdressBtn" :isHeader='true' class="header-map-btn" />
         </nuxt-link>
         <div v-show="showSidebar" class="logo-img">
             <map-btn v-show="canDisplayMap" />
