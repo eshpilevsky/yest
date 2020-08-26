@@ -43,7 +43,6 @@ export default {
 
 .set-you-address {
     position: relative !important;
-    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 70%;
