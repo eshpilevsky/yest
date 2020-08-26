@@ -625,8 +625,12 @@ export default {
         showSelectedDish(dish) {
             this.selectedDish = dish
             this.selectedDishCounter = 1
-            this.sizesRadioBtn = dish.sizes[0]
-            this.showDish = true
+			this.sizesRadioBtn = dish.sizes[0]
+			if (dish.sizes.length>1) {
+				this.showDish = true
+			} else{
+				this.saveBasket()
+			}
         },
         addToBasketMobile() {
             if (this.getLatetestRestInfoWithOrder !== null) {
