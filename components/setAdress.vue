@@ -17,7 +17,7 @@
             </nuxt-link>
         </span>
         <h1 class="info-title">
-            {{this.categoryInfoData.header }} <br /> в {{ this.categoryInfoData.city }}
+            {{this.categoryInfoData.header }} <br /> в {{ this.currentZone.accusative }}
         </h1>
         <span class="info-setPlace">
             Укажите ваше местоположение, чтобы мы смогли предложить вам список доступных ресторанов

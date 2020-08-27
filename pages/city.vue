@@ -75,9 +75,7 @@ export default {
         }]
 
         let currentCategory = categoriesListData.find((category) => {
-            if (category.alias == params.alias) {
-                return category
-            }
+            return category.alias == params.alias
         })
 
         let categoryInfo;

@@ -17,8 +17,8 @@
                                 <span class="white--text">
                                     •
                                 </span>
-                                <nuxt-link :to="`/${this.getSelectedZone.alias}`" class="info-delivery">
-                                    {{this.getSelectedZone.name}}
+                                <nuxt-link :to="`/${this.currentZone.alias}`" class="info-delivery">
+                                    {{this.currentZone.name}}
                                 </nuxt-link>
                             </div>
                             <h1 class="restuarant-name white--text pb-3">
@@ -133,7 +133,7 @@
             <client-only>
                 <v-overlay :dark='false' z-index="999" v-model="showOptionsmenu">
                     <v-card width="50vw" class="select-option-card">
-                        <div class="d-flex flex-row justify-space-between pb-3" >
+                        <div class="d-flex flex-row justify-space-between pb-3">
                             <div class="select-option-title" color="secondary">
                                 Выберите опции
                             </div>
@@ -454,12 +454,12 @@ export default {
         app,
         context,
         store,
-        params
+		params,
+		redirect,
     }) {
         console.log('START REST ASYNC');
         let restParams = params.resName
         let id = restParams.split('-')
-        var currentZone = store.getters['zone/getSelectedZone']
         var lastRest = store.getters['basket/getLatetestRestInfoWithOrder']
         var orderList = store.getters['basket/getSelectedDishs']
         var totalPrice = store.getters['basket/getTotalPrice']
@@ -467,18 +467,18 @@ export default {
         let zoneList = await axios.get('https://yestapi.xyz/get-zones')
         const zoneListData = zoneList.data
         store.dispatch('zone/setZone', zoneListData)
-        let currentZoneNew = zoneListData.find((zones) => {
-            if (zones.alias == params.region) {
-                return zones
-            }
+        let currentZone = zoneListData.find((zones) => {
+            return zones.alias == params.region
         })
-
-        if (currentZoneNew == undefined) {
-            currentZoneNew = zoneListData[0]
-        }
-
+		
+        if (currentZone !== undefined) {
+            store.dispatch('zone/setSelectedZone', currentZone)
+        } else {
+            redirect('/')
+		}
+		
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
-            zone_id: currentZoneNew.id
+            zone_id: currentZone.id
         })
 
         let categoriesListData = categoriesList.data
@@ -489,11 +489,12 @@ export default {
         app.orderList = orderList
         app.totalPrice = totalPrice
         let restuarant = await axios.post(`https://yestapi.xyz/restaurant/${id[0]}`, {
-            zone_id: currentZoneNew.id,
+            zone_id: currentZone.id,
         })
 
         return {
             restuarant: restuarant.data,
+            currentZone: currentZone,
         }
     },
     data() {
@@ -536,9 +537,7 @@ export default {
             let deliveryMass = this.sortDeliverFee
             let price = parseInt(this.getTotalPrice)
             let finded = deliveryMass.find((cost) => {
-                if (cost.min <= price && price <= cost.max) {
-                    return cost
-                }
+                return cost.min <= price && price <= cost.max
             })
             if (finded !== undefined) {
                 return finded
@@ -625,19 +624,19 @@ export default {
         showSelectedDish(dish) {
             this.selectedDish = dish
             this.selectedDishCounter = 1
-			this.sizesRadioBtn = dish.sizes[0]
-			this.showDish = true
-		},
-		momentAdd(dish){
+            this.sizesRadioBtn = dish.sizes[0]
+            this.showDish = true
+        },
+        momentAdd(dish) {
             this.selectedDish = dish
             this.selectedDishCounter = 1
-			this.sizesRadioBtn = dish.sizes[0]
-			if (dish.sizes.length > 1) {
-				this.showDish = true
-			} else {
-				this.saveBasket()
-			}
-		},
+            this.sizesRadioBtn = dish.sizes[0]
+            if (dish.sizes.length > 1) {
+                this.showDish = true
+            } else {
+                this.saveBasket()
+            }
+        },
         addToBasketMobile() {
             if (this.getLatetestRestInfoWithOrder !== null) {
                 if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
@@ -758,11 +757,11 @@ export default {
             this.tab = id
         },
         categoryNameIntersect(entries, observer, isIntersecting) {
-			if (isIntersecting) {
-				let visibleCategory = entries[0].target.id.split('_')
-				this.tab = parseInt(visibleCategory[1])
-				console.log('categoryNameIntersect -> this.tab', this.tab)
-			}
+            if (isIntersecting) {
+                let visibleCategory = entries[0].target.id.split('_')
+                this.tab = parseInt(visibleCategory[1])
+                console.log('categoryNameIntersect -> this.tab', this.tab)
+            }
         }
     },
     beforeRouteEnter(to, from, next) {

@@ -10,7 +10,8 @@
                 delete_forever
             </v-icon>
         </div>
-        <div v-if="this.orderList.length > 0" class="my-order-dishes-desktop">
+		
+        <div v-if="this.orderList.length > 0 && this.getLatetestRestInfoWithOrder.params.resName == this.currentRoute" class="my-order-dishes-desktop">
             <div v-for="order in this.orderList" :key="order.selectSize.id" class="order-item">
                 <div class="d-flex flex-column order-item__title">
                     <div class="d-flex flex-column order-item-info">
@@ -96,6 +97,7 @@ export default {
 				min: 0,
 				max: 0,
 			},
+			currentRoute: null,
 		}
 	},
     props: {
@@ -138,9 +140,7 @@ export default {
 			// }
             let price = parseInt(this.getTotalPrice)
             let finded = deliveryMass.find((cost) => {
-                if (cost.min < price && price < cost.max) {
-                    return cost
-                }
+                return cost.min < price && price < cost.max
             })
             if (finded !== undefined) {
 				if (finded.hasOwnProperty('delivery')) {
@@ -200,13 +200,13 @@ export default {
 		}
 	},
 	async beforeMount () {
-		// if (this.getLatetestRestInfoWithOrder !== null) {
-		// 	console.log('get from vuex');
-		// 	this.time = this.getLatetestRestInfoWithOrder.delivery.time
-		// 	this.checkParams = this.getLatetestRestInfoWithOrder.params
-		// } else {
-			this.time = this.delivery.time ? this.delivery.time : this.delivery.delivery.time
-		// }
+		console.log(this.currentRoute);
+		if (this.getLatetestRestInfoWithOrder !== null) {
+			this.currentRoute = this.$route.params.resName
+			this.checkParams = this.getLatetestRestInfoWithOrder.params
+		} else {
+		}
+		this.time = this.delivery.time ? this.delivery.time : this.delivery.delivery.time
 		this.deliveryString = await this.computedFreeDeliveryCost();
 		this.deliveryCost = await this.computedDeliveryCost();
 	},

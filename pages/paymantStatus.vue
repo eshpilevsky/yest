@@ -26,7 +26,8 @@ export default {
     async asyncData({
         params,
 		store,
-		app
+		app,
+		redirect,
     }) {
         let statusList= [{
                 name: 'success',
@@ -68,13 +69,13 @@ export default {
         const zoneListData = zoneList.data
         store.dispatch('zone/setZone', zoneListData)
         let currentZone = zoneListData.find((zones) => {
-            if (zones.alias == params.region) {
-                return zones
-            }
+            return zones.alias == params.region
         })
 
-        if (currentZone == undefined) {
-            currentZone = zoneListData[0]
+        if (currentZone !== undefined) {
+            store.dispatch('zone/setSelectedZone', currentZone)
+        } else {
+            redirect('/')
         }
         app.currentZone = currentZone
 

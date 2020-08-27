@@ -117,7 +117,7 @@
                 </span>
             </v-btn>
             <client-only>
-                <v-btn v-if="this.getTotalPrice > 0" color="primary" @click='goToLatestReset()' class="header-cart-btn">
+                <v-btn v-if="this.getTotalPrice > 0" color="primary" @click='goToLatestReset()' class="header-cart-btn"  :class="{'btn--rounded' : this.getCurrentAddress.length == 0}">
                     <v-icon class="header-cart-icon">shopping_cart</v-icon>
                     {{this.getTotalPrice}} BYN
                 </v-btn>
@@ -128,7 +128,7 @@
             <v-menu offset-y>
                 <template v-slot:activator="{ on }">
                     <v-btn small rounded outlined class="zone-btn country-zone-btn btn--rounded" color="primary" v-on="on">
-                        {{ getSelectedZone.name }}
+                        {{ getSelectedZone.name }}                        
                     </v-btn>
                 </template>
                 <v-list>
