@@ -302,7 +302,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="info-price" v-show="checkInbasket(item)">
+                                    <div class="info-price" v-show="checkInbasket(item)" @click='momentAdd(item)'>
                                         {{item.sizes[0] ? item.sizes[0].price.toFixed(1) : ''}} BYN
                                     </div>
                                     <div v-show="!checkInbasket(item)" class="dish-conter-mobile">
@@ -337,7 +337,7 @@
                                 <div class="selected-dish-composition">
                                     {{selectedDish.description}}
                                 </div>
-                                <div class="bgGray">
+                                <div class="bgGray" v-show="selectedDish.sizes.length>1">
                                     <div class="sizes px-3">
                                         <div class="multi-title">
                                             Размер на выбор
@@ -626,12 +626,18 @@ export default {
             this.selectedDish = dish
             this.selectedDishCounter = 1
 			this.sizesRadioBtn = dish.sizes[0]
-			if (dish.sizes.length>1) {
+			this.showDish = true
+		},
+		momentAdd(dish){
+            this.selectedDish = dish
+            this.selectedDishCounter = 1
+			this.sizesRadioBtn = dish.sizes[0]
+			if (dish.sizes.length > 1) {
 				this.showDish = true
-			} else{
+			} else {
 				this.saveBasket()
 			}
-        },
+		},
         addToBasketMobile() {
             if (this.getLatetestRestInfoWithOrder !== null) {
                 if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
