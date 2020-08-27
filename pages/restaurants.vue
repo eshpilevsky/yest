@@ -133,7 +133,7 @@
             <client-only>
                 <v-overlay :dark='false' z-index="999" v-model="showOptionsmenu">
                     <v-card width="50vw" class="select-option-card">
-                        <div class="d-flex flex-row justify-space-between pb-3">
+                        <div class="d-flex flex-row justify-space-between pb-3" >
                             <div class="select-option-title" color="secondary">
                                 Выберите опции
                             </div>
@@ -142,7 +142,7 @@
                             </div>
                         </div>
                         <div class="options-list">
-                            <div class="sizes">
+                            <div class="sizes" v-show="selectedDish.sizes.length > 0">
                                 <div class="multi-title">
                                     Размер на выбор
                                 </div>
@@ -150,7 +150,7 @@
                                     <v-radio v-for="size in selectedDish.sizes" :key="size.id" :label="size.name" :value="size" color="primary"></v-radio>
                                 </v-radio-group>
                             </div>
-                            <div class="options">
+                            <div class="options" v-show="selectedDish.options.length > 0">
                                 <div class="multi-title">
                                     Дополнительниые ингреденеты
                                 </div>
@@ -346,7 +346,7 @@
                                             <v-radio v-for="size in selectedDish.sizes" :key="size.id" :label="size.name" :value="size" color="primary"></v-radio>
                                         </v-radio-group>
                                     </div>
-                                    <div class="options px-3">
+                                    <div class="options px-3" v-show="selectedDish.options.length > 1">
                                         <div class="multi-title">
                                             Дополнительниые ингреденеты
                                         </div>
