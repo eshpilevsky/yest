@@ -1,10 +1,10 @@
 <template>
 <div class="sms-form">
     <div :class="{active:current}" class="sms-form__first">
-        <p class="sms-form__title">Введите номер телефона</p>
+        <p class="sms-form__title">Введите номер телефона </p>
         <div class="sms-form__container">
             <v-text-field class="sms-form__field" label="Ваш номер телефона" outlined v-model="phone" v-mask="mask"></v-text-field>
-            <v-btn class="sms-form__submit" block color="primary" @click="showCurrnet()">Далее</v-btn>
+            <v-btn class="sms-form__submit" block color="primary" :disabled="phone.length <17" @click="showCurrnet()">Далее</v-btn>
         </div>
         <p class="sms-form__terms">Нажимая кнопку «Далее», Вы принимаете условия
 		 	<nuxt-link to='/' target="_blank" class="link"> пользовательского соглашения </nuxt-link>
@@ -15,10 +15,15 @@
         <p class="sms-form__description">Код подтверждения был отправлен <br> на номер {{this.phone}}</p>
         <div class="sms-form__container">
             <v-text-field class="sms-form__field" label="Код из смс" outlined v-model="code"></v-text-field>
-            <v-btn class="sms-form__submit" block color="primary"  @click="auth()">Готово</v-btn>
+            <v-btn class="sms-form__submit" block color="primary" :disabled="code.length <4" @click="auth()">Готово</v-btn>
         </div>
-        <div class="sms-form__send-sms" v-show="timer > 0">Отправить код повторно <span class="time">0:{{this.timer}}</span></div>
-		<v-btn @click="sendSms()" v-show="timer == 0">Отправить код повторно</v-btn>
+		<div v-show="this.errorMsg.length > 0" class="sms-form__error">
+			{{this.errorMsg}}
+		</div>
+		<div v-show="this.errorMsg.length == 0">
+			<div class="sms-form__send-sms" v-show="timer > 0">Отправить код повторно <span class="time">0:{{this.timer}}</span></div>
+			<v-btn @click="sendSms()" v-show="timer == 0">Отправить код повторно</v-btn>
+		</div>
     </div>
 </div>
 </template>
@@ -68,6 +73,13 @@ export default {
       font-weight: 600;
       text-align: center;
       margin-bottom: 12px !important;
+    }
+
+    &__error {
+      font-size: 16px;
+      font-weight: 600;
+      text-align: center;
+	  color: red;
     }
 
     &__container {

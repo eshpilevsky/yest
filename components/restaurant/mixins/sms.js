@@ -16,8 +16,9 @@ export default {
       badCode: false,
       currentRouteName: null,
       errorMsg: '',
-	  current: true,
-	  timer: 59
+      current: true,
+      timer: 59,
+      showAuthForm: false,
     }
   },
   methods: {
@@ -39,7 +40,7 @@ export default {
       this.$emit('closeForm')
     },
     sendSms() {
-		this.timer = 59
+      this.timer = 59
       this.loadingSendSms = true
       ApiService.post('/user/send_sms', {
         phone: parseInt(this.phone.replace(/[^\d]/g, '')),
@@ -52,15 +53,12 @@ export default {
         }
       }).catch((error) => {
         console.error(error)
-	  })
-	  
-	  setInterval(() => {
-		  if (this.timer !== 0) {
-			this.timer--
-		  } else {
-
-		  }
-	  }, 1000);
+      })
+      setInterval(() => {
+        if (this.timer !== 0) {
+          this.timer--
+        }
+      }, 1000);
     },
     auth() {
       this.checkCode = true
@@ -81,13 +79,7 @@ export default {
     },
     goToCheckout() {
       this.$store.dispatch('user/setUserPhoneNumber', parseInt(this.phone.replace(/[^\d]/g, '')));
-      if (this.currentRouteName !== 'cart') {
-        this.$router.push('/checkout')
-        console.error('push to checkout');
-      } else {
-        console.error('need close');
-        this.$emit('closeFormShowOrderForm')
-      }
+      this.$emit('closeFormShowOrderForm')
     },
   },
   watch: {
@@ -102,9 +94,5 @@ export default {
   },
   mounted() {
     this.currentRouteName = this.$route.name
-    console.log('mounted -> this.getUserPhoneNumber', this.getUserPhoneNumber)
-    if (this.getUserPhoneNumber) {
-      this.$router.push('/checkout')
-    }
   },
 }

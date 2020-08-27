@@ -123,7 +123,7 @@
                         <img src="@/assets/logo.svg" alt="logo" class="mini-header_logo">
                     </div>
                 </div>
-				    <mobileSmsForm />
+				    <mobileSmsForm @closeFormShowOrderForm='closeFormShowOrderForm()'/>
             </v-sheet>
         </v-bottom-sheet>
     </div>
@@ -190,10 +190,12 @@ export default {
         }
     },
     methods: {
+		
         closeFormShowOrderForm() {
             this.showAuthForm = false
             this.showBasket = false
             this.showOrderForm = true
+            console.log('closeFormShowOrderForm -> this.showOrderForm', this.showOrderForm)
         },
         closeSmsForm() {
             this.showAuthForm = false
