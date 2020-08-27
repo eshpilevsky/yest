@@ -63,7 +63,7 @@
                 </div>
                 <div class="order-knifes">
                     <div class="d-flex flex-row">
-                        <img class="order-knifes__icon" src="../assets/orderKnifesIcon.svg" alt="knifes">
+                        <img class="order-knifes__icon" src="@/assets/orderKnifesIcon.svg" alt="knifes">
                         <div class="d-flex flex-row align-center" v-if="addKnifes">
                             <v-btn icon class="rounded-xl main-mobile-cart__count-btn" @click="removeCutlery()">
                                 <v-icon>remove</v-icon>
@@ -83,7 +83,7 @@
                 </div>
                 <h1 class="order-delivery-info__title">Доставка</h1>
                 <div class="order-delivery-info">
-                    <img class="order-delivery-info__icon" src="../assets/deliverPersonIcon.svg" alt="delivery">
+                    <img class="order-delivery-info__icon" src="@/assets/deliverPersonIcon.svg" alt="delivery">
                     <span class="order-delivery-info__text">Доставка yest.by</span>
                 </div>
                 <div class="confirm-order" v-show="getSelectedDishs.length > 0">
@@ -123,8 +123,7 @@
                         <img src="@/assets/logo.svg" alt="logo" class="mini-header_logo">
                     </div>
                 </div>
-                <!-- <smsForm @closeForm='closeSmsForm()' @closeFormShowOrderForm='closeFormShowOrderForm()' class='' /> -->
-				        <mobileSmsForm />
+				    <mobileSmsForm />
             </v-sheet>
         </v-bottom-sheet>
     </div>
@@ -243,6 +242,7 @@ export default {
     },
     watch: {
         getTotalPrice(newValue) {
+			this.totalPrice = newValue
             return newValue
         },
         cutleryCounter(newValue) {
