@@ -133,7 +133,7 @@
                     </p>
                 </div>
                 <v-card-actions class="mobile-form__actions">
-                    <v-btn class="mobile-form__submit" block color="primary" @click="sendOrder()" :disabled="delivery.address.length == 0" :loadingSendOrder="loadingSendOrder">
+                    <v-btn class="mobile-form__submit" block color="primary" @click="sendOrder()" :disabled="delivery.address.length == 0" :loading="loadingSendOrder">
 						{{payment_method == 0 ? 'Оформить заказ' : 'Перейти к оплате'}}
                         <span class="mobile-form__submit-total">{{this.getTotalPrice}} BYN</span>
                     </v-btn>

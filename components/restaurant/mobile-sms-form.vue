@@ -15,7 +15,7 @@
         <p class="sms-form__description">Код подтверждения был отправлен <br> на номер {{this.phone}}</p>
         <div class="sms-form__container">
             <v-text-field class="sms-form__field" label="Код из смс" outlined v-model="code"></v-text-field>
-            <v-btn class="sms-form__submit" block color="primary" :disabled="code.length <4" @click="auth()">Готово</v-btn>
+            <v-btn class="sms-form__submit" block color="primary" :disabled="code.length <4" @click="auth()" @keydown.enter="auth()">Готово</v-btn>
         </div>
 		<div v-show="this.errorMsg.length > 0" class="sms-form__error">
 			{{this.errorMsg}}
