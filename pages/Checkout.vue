@@ -61,6 +61,10 @@
                         </div>
                     </client-only>
                 </div>
+                <div class="order-deliv-block">
+                  <span>Доставка yest.by</span>
+                  <span>3 BYN</span>
+                </div>
                 <div class="order-knifes">
                     <div class="d-flex flex-row">
                         <img class="order-knifes__icon" src="@/assets/orderKnifesIcon.svg" alt="knifes">
@@ -79,7 +83,7 @@
                             Приборы и салфетки
                         </div>
                     </div>
-                    <v-switch v-model="addKnifes" inset></v-switch>
+                    <v-switch class="order-knifes__switch" v-model="addKnifes" inset></v-switch>
                 </div>
                 <h1 class="order-delivery-info__title">Доставка</h1>
                 <div class="order-delivery-info">
@@ -336,6 +340,7 @@ export default {
 
     .main-mobile-cart {
         padding-top: 30px;
+        padding-bottom: 84px;
     }
 
     .clear-cart-modal {
@@ -381,7 +386,7 @@ export default {
     }
 
     .main-mobile-cart__title {
-        margin: 20px 0 10px 16px;
+        margin: 10px 0 14px 16px;
         font-size: 32px;
         font-weight: 600;
     }
@@ -505,9 +510,9 @@ export default {
         left: 0;
         background: #ffffff;
         box-shadow: 0 -4px 20px rgba(117, 115, 111, 0.2);
-        height: 72px;
+        height: 84px;
         display: flex;
-        padding: 8px 16px 8px;
+        padding: 8px 16px 20px;
         z-index: 1;
     }
 
@@ -538,6 +543,15 @@ export default {
         width: 30%;
         max-width: 104px;
         max-height: 104px;
+    }
+
+    .order-deliv-block {
+      padding: 14px 18px 15px;
+      border-bottom: 1px solid #f5f5f5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 17px;
     }
 
     .order-knifes {
@@ -610,4 +624,26 @@ export default {
         margin: 20px;
     }
 }
+</style>
+
+<style>
+  .order-knifes__switch {
+    margin-right: -16px !important;
+  }
+
+  .order-knifes__switch .v-input--switch__track {
+    height: 32px !important;
+    width: 54px !important;
+    border-radius: 16px !important;
+  }
+
+  .order-knifes__switch .v-input--switch__thumb {
+    top: calc(50% - 11px) !important;
+    height: 26px !important;
+    width: 26px !important;
+  }
+
+  .order-knifes__switch .v-input--selection-controls__ripple {
+    display: none !important;
+  }
 </style>
