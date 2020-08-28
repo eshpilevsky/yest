@@ -751,8 +751,9 @@ export default {
             this.showOptionsmenu = false
         },
         decrement(dish) {
-            this.showDish = false
-            this.$store.dispatch('basket/decrementDishCounter', dish);
+			this.showDish = false
+			dish.selectSize = dish.sizes[0]
+			this.$store.dispatch('basket/decrementDishCounter', dish);
         },
         increment(dish) {
             dish.selectSize = dish.sizes[0]

@@ -39,8 +39,8 @@ export const actions = {
   incrementDishCounter(context, id) {
     context.commit('INCREMENT_DISH', id)
   },
-  decrementDishCounter(context, id) {
-    context.commit('DECREMENT_DISH', id)
+  decrementDishCounter(context, payload) {
+    context.commit('DECREMENT_DISH', payload)
   },
   removeFromBasket(context, id) {
     context.commit('REMOVE_FROM_BASKET', id)
@@ -98,16 +98,14 @@ export const mutations = {
     })
     let dishSizes;
     if (findDish !== undefined) {
-
       dishSizes = state.data.dishs[findDish].selectSize
-
       let findSize;
       if (dishSizes.id == payload.selectSize.id) {
         findSize = true
       } else {
         findSize = undefined
-      }
-
+	  }
+	  
       let wellBe = state.data.dishs[findDish].selectSize.count - 1
       if (findSize !== undefined) {
         if (wellBe < 1) {
