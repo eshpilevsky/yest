@@ -143,7 +143,6 @@ export default {
             } else {
                 return deliveryMass[deliveryMass.length - 1].deliveryFee
             }
-
         },
         dropBasket() {
             this.$store.dispatch('basket/dropBasket');
@@ -173,7 +172,6 @@ export default {
         getTotalPrice(newValue) {
             this.deliveryString = this.computedFreeDeliveryCost();
             this.deliveryCost = this.computedDeliveryCost();
-            console.log('getTotalPrice -> this.deliveryCost', this.deliveryCost)
         },
         orderList(newValue) {
             return newValue

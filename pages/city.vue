@@ -3,7 +3,6 @@
     <setAdress :currentZone='currentZone' :currentCategory='this.currentCategory' :categoryInfoData='categoryInfoData' :class="{hide: showSetAdress == false}" />
     <specialOffers :offers="specilaOffers" v-show="showSpecialOffer" />
     <categories v-show="categoriesList.length > 1" :currentZone='currentZone' :categoriesList='categoriesList' :currentCategory='this.currentCategory' />
-	{{this.showSpecialOffer}}ss
     <restuarantsList :restaurantsList='restaurantsList' :currentCategory='this.currentCategory' :currentZone='currentZone' />
 </div>
 </template>
@@ -62,10 +61,9 @@ export default {
 
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
             zone_id: currentZone.id
-        }).catch((err)=>{
-        console.log('err', err)
-			
-		})
+        })
+        console.log('categoriesList', categoriesList)
+        console.log('currentZone.id', currentZone.id)
 
         let categoriesListData = categoriesList.data
 
@@ -234,15 +232,12 @@ export default {
                     longitude: parseFloat(longitude),
                 })
                 specialOfferData = specialOffer.data
-                console.log('specialOffer', specialOffer)
                 if (specialOfferData.length == 0) {
-					showSpecialOffer = false
+                    showSpecialOffer = false
                 } else {
                     showSpecialOffer = true
                 }
-            } else {
-				console.error(req.headers.cookie);
-			}
+            }
         }
         console.log('END ASYNC DATA');
         return {
@@ -262,7 +257,6 @@ export default {
                 latitude: parseFloat(this.getCurrentCoords[0]),
                 longitude: parseFloat(this.getCurrentCoords[1]),
             }).then((res) => {
-				console.log('getSpecialOffer -> res.data', res.data)
                 if (res.data.length == 0) {
                     this.showSpecialOffer = false
                 } else {
@@ -301,7 +295,10 @@ export default {
         this.$store.dispatch('user/selectCategory', this.currentCategory)
     },
     mounted() {
-        window.scrollTo(0, 0);
+		window.scrollTo(0, 0);
+		if (this.getCurrentAddress.length >0) {
+			this.getSpecialOffer()
+		}
         setTimeout(() => {
             if (window.innerWidth < 992) {
                 document.getElementById('bgImg').setAttribute('style', 'background-image: url("' + this.categoryInfoData.category_icon + '");')

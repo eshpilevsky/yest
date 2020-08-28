@@ -170,7 +170,7 @@ export default {
         showModalWindow() {
             this.showModalOverlay = !this.showModalOverlay
         },
-        selectCategory(item, boll) {
+        selectCategory(item) {
 			if (this.currentCategory.id == item.id) {
 				this.$router.push(`/${this.currentZone.alias}`)
 			} else {

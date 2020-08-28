@@ -61,9 +61,9 @@
                         </div>
                     </client-only>
                 </div>
-                <div class="order-deliv-block">
-                  <span>Доставка yest.by</span>
-                  <span>3 BYN</span>
+                <div class="order-deliv-block" v-if="getSelectedDishs.length > 0">
+                    <span>Доставка yest.by</span>
+                    <span >{{this.deliveryCost}} BYN</span>
                 </div>
                 <div class="order-knifes">
                     <div class="d-flex flex-row">
@@ -157,7 +157,6 @@ export default {
         params,
         req
     }) {
-        var lastRest = await store.getters['basket/getLatetestRestInfoWithOrder']
         var orderList = await store.getters['basket/getSelectedDishs']
         var totalPrice = await store.getters['basket/getTotalPrice']
         var currentZone = await store.getters['zone/getSelectedZone']
@@ -172,6 +171,9 @@ export default {
         let categoriesListData = categoriesList.data
         store.dispatch('user/allCategory', categoriesListData)
 
+		if (process.client) {
+			var lastRest = await store.getters['basket/getLatetestRestInfoWithOrder']
+		}
         return {
             lastRest: lastRest,
         }
@@ -191,10 +193,29 @@ export default {
             sheet: false,
             time: 0,
             LatetestRestInfoWithOrder: {},
+            deliveryCost: 0,
         }
     },
     methods: {
-
+        computedDeliveryCost(mass) {
+            // let deliveryMass = this.sortDeliverFee(mass)
+			// let deliveryMass = mass
+			console.log(mass);
+			let price = parseInt(this.getTotalPrice)
+            console.log('computedDeliveryCost -> price', price)
+				let finded = mass.find((cost) => {
+					return cost.min < price && price < cost.max
+				})
+				if (finded !== undefined) {
+					if (finded.hasOwnProperty('delivery')) {
+						return finded.delivery
+					} else {
+						return finded.deliveryFee
+					}
+				} else {
+					return mass[mass.length - 1].deliveryFee
+				}
+        },
         closeFormShowOrderForm() {
             this.showAuthForm = false
             this.showBasket = false
@@ -249,12 +270,16 @@ export default {
     },
     watch: {
         getTotalPrice(newValue) {
-            this.totalPrice = newValue
+			this.totalPrice = newValue
+			this.deliveryCost = this.computedDeliveryCost(this.getLatetestRestInfoWithOrder.delivery.fee);
             return newValue
         },
         cutleryCounter(newValue) {
             return newValue
-        }
+        },
+        deliveryCost(newValue) {
+            return newValue
+        },
     },
     computed: {
         ...mapGetters({
@@ -266,10 +291,12 @@ export default {
     created() {
         this.totalPrice = this.getTotalPrice
     },
-    mounted() {
+    async beforeMount() {
         window.scrollTo(0, 0);
         if (process.client) {
-            this.LatetestRestInfoWithOrder = this.getLatetestRestInfoWithOrder;
+			this.LatetestRestInfoWithOrder = this.getLatetestRestInfoWithOrder;
+            console.log('beforeMount -> this.getLatetestRestInfoWithOrder', this.getLatetestRestInfoWithOrder)
+			// this.deliveryCost = await this.computedDeliveryCost(this.getLatetestRestInfoWithOrder.delivery.fee);
         }
     },
 }
@@ -546,12 +573,12 @@ export default {
     }
 
     .order-deliv-block {
-      padding: 14px 18px 15px;
-      border-bottom: 1px solid #f5f5f5;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 17px;
+        padding: 14px 18px 15px;
+        border-bottom: 1px solid #f5f5f5;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 17px;
     }
 
     .order-knifes {
@@ -624,26 +651,24 @@ export default {
         margin: 20px;
     }
 }
-</style>
-
-<style>
-  .order-knifes__switch {
+</style><style>
+.order-knifes__switch {
     margin-right: -16px !important;
-  }
+}
 
-  .order-knifes__switch .v-input--switch__track {
+.order-knifes__switch .v-input--switch__track {
     height: 32px !important;
     width: 54px !important;
     border-radius: 16px !important;
-  }
+}
 
-  .order-knifes__switch .v-input--switch__thumb {
+.order-knifes__switch .v-input--switch__thumb {
     top: calc(50% - 11px) !important;
     height: 26px !important;
     width: 26px !important;
-  }
+}
 
-  .order-knifes__switch .v-input--selection-controls__ripple {
+.order-knifes__switch .v-input--selection-controls__ripple {
     display: none !important;
-  }
+}
 </style>

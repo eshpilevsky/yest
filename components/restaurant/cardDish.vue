@@ -45,7 +45,6 @@ export default {
     },
     computed: {
         computedPrice() {
-			console.log('computedPrice -> this.dishinfo', this.dishinfo)
             if (this.dishinfo.length == 0) {
                 return 'Нет цены'
             } else if (this.dishinfo.length > 1) {
