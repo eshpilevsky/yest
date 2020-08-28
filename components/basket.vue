@@ -10,8 +10,6 @@
                     delete_forever
                 </v-icon>
             </div>
-
-            <!-- <div v-if="this.orderList.length > 0 && this.getLatetestRestInfoWithOrder.params.resName == this.currentRoute" class="my-order-dishes-desktop"> -->
             <div v-if="this.orderList.length > 0 && basketListVisible" class="my-order-dishes-desktop">
                 <div v-for="order in this.orderList" :key="order.selectSize.id" class="order-item">
                     <div class="d-flex flex-column order-item__title">
@@ -196,7 +194,7 @@ export default {
     },
     async beforeMount() {
         if (this.getLatetestRestInfoWithOrder !== null) {
-            if (this.getLatetestRestInfoWithOrder.params.resName == this.$route.params.resName || this.$route.name == 'checkout') {
+            if (this.getLatetestRestInfoWithOrder.params.resName == this.$route.params.resName && this.getSelectedDishs.length > 0  || this.$route.name == 'checkout') {
 				this.basketListVisible = true
 			} else {
 				this.basketListVisible = false

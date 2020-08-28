@@ -119,9 +119,6 @@ export const mutations = {
         state.data.dishs.push(payload)
       }
     }
-	if(dishList.length == 0){
-		state.data.restuarantUrl = null
-	}
   },
   REMOVE_FROM_BASKET(state, id) {
     state.status = '200'
