@@ -10,7 +10,7 @@
                 delete_forever
             </v-icon>
         </div>
-		
+
         <div v-if="this.orderList.length > 0 && this.getLatetestRestInfoWithOrder.params.resName == this.currentRoute" class="my-order-dishes-desktop">
             <div v-for="order in this.orderList" :key="order.selectSize.id" class="order-item">
                 <div class="d-flex flex-column order-item__title">
@@ -221,7 +221,7 @@ export default {
 }
 
 .delivery-info-text {
-  padding: 0 20px;
+  padding: 6px 20px 0;
   font-size: 12px;
   margin-bottom: 10px !important;
 }

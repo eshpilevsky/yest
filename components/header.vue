@@ -128,7 +128,7 @@
             <v-menu offset-y>
                 <template v-slot:activator="{ on }">
                     <v-btn small rounded outlined class="zone-btn country-zone-btn btn--rounded" color="primary" v-on="on">
-                        {{ getSelectedZone.name }}                        
+                        {{ getSelectedZone.name }}
                     </v-btn>
                 </template>
                 <v-list>
@@ -410,6 +410,7 @@ export default {
 .technical-Btns {
     display: flex;
     flex-direction: row;
+    justify-content: flex-end;
     align-items: center;
     min-width: 228px;
 }

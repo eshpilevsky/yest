@@ -272,8 +272,23 @@ export default {
     height: 40px !important;
 }
 
+.form-input .v-input__append-inner {
+    margin-top: 4px !important;
+    margin-right: -8px !important;
+}
+
 .form-textarea {
-    margin-top: 0;
+    margin-top: 0 !important;
+    margin-bottom: 6px !important;
+}
+
+.form-textarea .v-text-field__details {
+  display: none !important;
+}
+
+.form-textarea .v-text-field__slot {
+  width: 100%;
+  min-width: 100%;
 }
 
 .form-textarea .v-input__slot {
@@ -288,6 +303,10 @@ export default {
     content: none;
 }
 
+.form-textarea.v-input--is-focused {
+  margin-bottom: 4px !important;
+}
+
 .form-textarea.v-input--is-focused .v-input__slot {
     border: 2px solid #4ca647 !important;
 }
@@ -297,7 +316,7 @@ export default {
 }
 
 .form-textarea textarea {
-    padding: 0 10px;
+    padding: 0 10px !important;
     height: 80px;
 }
 
@@ -316,7 +335,7 @@ export default {
 
 <style scoped>
 .desktop-form__wrapper {
-    padding-top: 40px;
+    padding-top: 22px;
     border-radius: 4px;
     background-color: #f2f2f2;
     margin-bottom: 10px;
@@ -355,7 +374,7 @@ export default {
 }
 
 .form-title {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     font-size: 20px;
     font-weight: 600;
     letter-spacing: 0.1px;
@@ -376,7 +395,7 @@ export default {
 .form-promo {
     display: flex;
     align-items: flex-start;
-    margin-bottom: 23px;
+    margin-bottom: 16px;
 }
 
 .form-promo__button {
@@ -422,7 +441,7 @@ export default {
 }
 
 .form-actions__wrapper {
-    padding: 20px 40px;
+    padding: 16px 40px;
     align-items: center;
     border-right: 1px solid #e5e5e5;
 }
@@ -430,7 +449,7 @@ export default {
 .form-additional {
     display: flex;
     align-items: center;
-    padding: 20px 40px 20px 30px;
+    padding: 16px 40px 16px 30px;
     justify-content: space-between;
 }
 
