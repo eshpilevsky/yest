@@ -295,7 +295,7 @@
                                             </h3>
                                         </div>
                                         <div class="dish-info">
-                                            <span class="dish-info__price">23.40 BYN</span>
+                                            <span class="dish-info__price" v-show="!checkInbasket(item)">{{computedPrice(item.sizes)}} BYN</span>
                                             <span class="info-weight">
                                                 {{item.sizes[0] ? item.sizes[0].weight : ''}}
                                             </span>
@@ -311,7 +311,6 @@
                                             remove
                                         </v-icon>
                                         <div class="dish-counter-mob">
-                                            <!-- {{item.selectSize ? item.selectSize.count : '0'}}-->
                                             {{computedCount(item)}}
                                         </div>
                                         <v-icon class="info-price px-3" @click="increment(item)">
@@ -527,6 +526,22 @@ export default {
         }
     },
     methods: {
+		computedPrice(prices) {
+            if (prices.length == 0) {
+                return 'Нет цены'
+            } else if (prices.length > 1) {
+                let chekDiffrentPrice = prices.find((dish, index, arr) => {
+                    return dish.price == arr[index - 1]
+                })
+                if (chekDiffrentPrice !== undefined) {
+                    return `От ${prices[0].price}`
+                } else {
+                    return `${prices[0].price}`
+                }
+            } else {
+                return `${prices[0].price}`
+            }
+        },
         closeFormShowOrderForm() {
             this.showSmsForm = false
             this.showSmsForm = false
