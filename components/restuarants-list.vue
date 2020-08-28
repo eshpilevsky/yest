@@ -500,6 +500,10 @@ export default {
 }
 
 @media screen and (max-width: 992px) {
+    .show-btn-block {
+        padding: 0 20px;
+    }
+
     .restorane-list {
         padding: 0;
     }

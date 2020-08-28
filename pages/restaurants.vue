@@ -295,9 +295,10 @@
                                             </h3>
                                         </div>
                                         <div class="dish-info">
-                                            <div class="info-weight">
+                                            <span class="dish-info__price">23.40 BYN</span>
+                                            <span class="info-weight">
                                                 {{item.sizes[0] ? item.sizes[0].weight : ''}}
-                                            </div>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -470,13 +471,13 @@ export default {
         let currentZone = zoneListData.find((zones) => {
             return zones.alias == params.region
         })
-		
+
         if (currentZone !== undefined) {
             store.dispatch('zone/setSelectedZone', currentZone)
         } else {
             redirect('/')
 		}
-		
+
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
             zone_id: currentZone.id
         })
@@ -1658,7 +1659,8 @@ export default {
     height: 23px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    padding-bottom: 8px;
 }
 
 .info-price {
@@ -1678,12 +1680,30 @@ export default {
     margin: 0 9px 8px;
 }
 
+.dish-info__price {
+    color: #c2c0be;
+    font-size: 13px;
+    margin-right: 14px;
+    position: relative;
+}
+
+.dish-info__price:after {
+  content: "";
+  position: absolute;
+  left: calc(100% + 7px);
+  top: 50%;
+  transform: translateY(-50%);
+  display: block;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background-color: #c2c0be;
+}
+
 .info-weight {
     color: #c2c0be;
     font-size: 13px;
     text-align: center;
-    display: block;
-    margin: 0 auto 5px;
 }
 
 .dish-card {
