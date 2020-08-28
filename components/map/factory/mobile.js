@@ -167,7 +167,7 @@ export const getPlace = (
     options: {
       float: 'none',
       position: {
-        top: '48vh',
+        top: '45vh',
         left: '45vw'
       }
     }

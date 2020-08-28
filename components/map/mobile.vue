@@ -257,6 +257,10 @@ ymaps .customMapBtn {
     text-align: center;
 }
 
+ymaps .customMapBtn.place {
+    padding: 1vw;
+}
+
 ymaps .customMapBtn,
 ymaps .customMapBtn i.material-icons {
     font-size: 7vw;
