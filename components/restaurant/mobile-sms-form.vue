@@ -3,8 +3,8 @@
     <div :class="{active:current}" class="sms-form__first">
         <p class="sms-form__title">Введите номер телефона </p>
         <div class="sms-form__container">
-            <v-text-field class="sms-form__field" label="Ваш номер телефона" outlined v-model="phone" v-mask="mask"></v-text-field>
-            <v-btn class="sms-form__submit" block color="primary" :disabled="phone.length <17" @click="showCurrnet()">Далее</v-btn>
+            <v-text-field class="sms-form__field" label="Ваш номер телефона" outlined v-model="phone" v-mask="mask" @keydown.enter="showCurrnet()"></v-text-field>
+            <v-btn class="sms-form__submit" block color="primary" :disabled="phone.length <17" @click="showCurrnet()" >Далее</v-btn>
         </div>
         <p class="sms-form__terms">Нажимая кнопку «Далее», Вы принимаете условия
 		 	<nuxt-link to='/' target="_blank" class="link"> пользовательского соглашения </nuxt-link>

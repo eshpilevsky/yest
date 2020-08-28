@@ -40,7 +40,6 @@ export default {
     },
     data() {
         return {
-            isSelected: false,
             counter: 0,
         }
     },
@@ -67,7 +66,11 @@ export default {
     },
     watch: {
         getSelectedDishs(newValue) {
-            this.checkInBasket(newValue)
+            if (newValue.length !== 0) {
+                this.checkInBasket(newValue)
+            } else {
+                this.counter = 0
+            }
         },
         count(newValue) {
             this.counter = newValue
@@ -79,30 +82,24 @@ export default {
             let searchDish = mass.find((dish) => {
                 return dish.id == this.id
             });
-            if (searchDish == undefined) {
-                this.isSelected = false
-            } else {
+            if (searchDish !== undefined) {
                 this.counter = searchDish.selectSize.count
-                this.isSelected = true
             }
         }
     },
     mounted() {
-        // console.error(this.id);
         this.$store.watch(
             (state) => {
-                return this.$store.state.basket.data.dishs // could also put a Getter here
+                return this.$store.state.basket.data.dishs
             },
             (newValue, oldValue) => {
                 let findDish = newValue.find((dish) => {
                     return dish.id == this.id
                 })
                 if (findDish !== undefined) {
-					this.counter = findDish.selectSize.count
+                    this.counter = findDish.selectSize.count
                 }
-            },
-            //Optional Deep if you need it
-            {
+            }, {
                 deep: true
             }
         )

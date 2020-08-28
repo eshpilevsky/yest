@@ -93,7 +93,7 @@
                         </span>
                         <span class="total-time">
                             <!-- {{`${this.LatetestRestInfoWithOrder.delivery.time.min} - ${this.LatetestRestInfoWithOrder.delivery.time.max} мин`}} -->
-							60-100 мин
+                            60-100 мин
                         </span>
                     </div>
                     <div class="next-btn-block">
@@ -123,7 +123,7 @@
                         <img src="@/assets/logo.svg" alt="logo" class="mini-header_logo">
                     </div>
                 </div>
-				    <mobileSmsForm @closeFormShowOrderForm='closeFormShowOrderForm()'/>
+                <mobileSmsForm @closeFormShowOrderForm='closeFormShowOrderForm()' />
             </v-sheet>
         </v-bottom-sheet>
     </div>
@@ -150,8 +150,8 @@ export default {
     async asyncData({
         app,
         store,
-		params,
-		req
+        params,
+        req
     }) {
         var lastRest = await store.getters['basket/getLatetestRestInfoWithOrder']
         var orderList = await store.getters['basket/getSelectedDishs']
@@ -166,11 +166,11 @@ export default {
             zone_id: 1
         })
         let categoriesListData = categoriesList.data
-		store.dispatch('user/allCategory', categoriesListData)
+        store.dispatch('user/allCategory', categoriesListData)
 
-		return {
-			lastRest : lastRest
-		}
+        return {
+            lastRest: lastRest,
+        }
 
     },
     data() {
@@ -185,12 +185,12 @@ export default {
             showAuthForm: false,
             showBasket: true,
             sheet: false,
-			time: 0,
-			LatetestRestInfoWithOrder: {},
+            time: 0,
+            LatetestRestInfoWithOrder: {},
         }
     },
     methods: {
-		
+
         closeFormShowOrderForm() {
             this.showAuthForm = false
             this.showBasket = false
@@ -215,10 +215,11 @@ export default {
             this.showOrderForm = false
         },
         goToForm() {
+            console.error('show auth forms');
             this.showAuthForm = true
         },
         goBack() {
-			this.$router.go(-1)
+            this.$router.go(-1)
         },
         showDropBasketForm() {
             this.dropBasketForm = true
@@ -244,7 +245,7 @@ export default {
     },
     watch: {
         getTotalPrice(newValue) {
-			this.totalPrice = newValue
+            this.totalPrice = newValue
             return newValue
         },
         cutleryCounter(newValue) {
@@ -259,15 +260,14 @@ export default {
         }),
     },
     created() {
-		this.totalPrice = this.getTotalPrice
-	},
-	mounted () {
-		if (process.client) {
-			
-			this.LatetestRestInfoWithOrder = this.getLatetestRestInfoWithOrder;
-        console.log('mounted -> this.LatetestRestInfoWithOrder', this.LatetestRestInfoWithOrder)
-		}
-	},
+        this.totalPrice = this.getTotalPrice
+    },
+    mounted() {
+        window.scrollTo(0, 0);
+        if (process.client) {
+            this.LatetestRestInfoWithOrder = this.getLatetestRestInfoWithOrder;
+        }
+    },
 }
 </script>
 

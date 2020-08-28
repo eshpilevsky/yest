@@ -3,6 +3,7 @@
     <setAdress :currentZone='currentZone' :currentCategory='this.currentCategory' :categoryInfoData='categoryInfoData' :class="{hide: showSetAdress == false}" />
     <specialOffers :offers="specilaOffers" v-show="showSpecialOffer" />
     <categories v-show="categoriesList.length > 1" :currentZone='currentZone' :categoriesList='categoriesList' :currentCategory='this.currentCategory' />
+	{{this.showSpecialOffer}}ss
     <restuarantsList :restaurantsList='restaurantsList' :currentCategory='this.currentCategory' :currentZone='currentZone' />
 </div>
 </template>
@@ -59,11 +60,12 @@ export default {
             redirect('/')
         }
 
-        app.currentZone = currentZone
-
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
             zone_id: currentZone.id
-        })
+        }).catch((err)=>{
+        console.log('err', err)
+			
+		})
 
         let categoriesListData = categoriesList.data
 
@@ -232,14 +234,16 @@ export default {
                     longitude: parseFloat(longitude),
                 })
                 specialOfferData = specialOffer.data
+                console.log('specialOffer', specialOffer)
                 if (specialOfferData.length == 0) {
-                    showSpecialOffer = false
+					showSpecialOffer = false
                 } else {
                     showSpecialOffer = true
                 }
-            }
+            } else {
+				console.error(req.headers.cookie);
+			}
         }
-
         console.log('END ASYNC DATA');
         return {
             restaurantsList: filtByTime,
@@ -258,6 +262,7 @@ export default {
                 latitude: parseFloat(this.getCurrentCoords[0]),
                 longitude: parseFloat(this.getCurrentCoords[1]),
             }).then((res) => {
+				console.log('getSpecialOffer -> res.data', res.data)
                 if (res.data.length == 0) {
                     this.showSpecialOffer = false
                 } else {

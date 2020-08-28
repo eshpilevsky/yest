@@ -702,11 +702,11 @@ export default {
             this.showDeliveryOption = false
         },
         checkout() {
-            if (this.getUserPhoneNumber) {
-                this.$router.push('/checkout')
-            } else {
+            // if (this.getUserPhoneNumber) {
+            //     this.$router.push('/checkout')
+            // } else {
                 this.showSmsForm = !this.showSmsForm
-            }
+            // }
         },
         goToBasketPage() {
             this.$router.push(`/cart`)
@@ -760,7 +760,6 @@ export default {
             if (isIntersecting) {
                 let visibleCategory = entries[0].target.id.split('_')
                 this.tab = parseInt(visibleCategory[1])
-                console.log('categoryNameIntersect -> this.tab', this.tab)
             }
         }
     },
