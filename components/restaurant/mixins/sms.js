@@ -7,7 +7,7 @@ import {
 export default {
   data() {
     return {
-      phone: ' 2955535042',
+      phone: ' ',
       mask: ['+375', '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/, ],
       code: ' ',
       loadingSendSms: false,

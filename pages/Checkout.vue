@@ -97,7 +97,7 @@
                         </span>
                         <span class="total-time">
 							<client-only>
-							{{this.deliveryMin}} - {{this.deliveryMax}} мин
+								{{this.deliveryMin}} - {{this.deliveryMax}} мин
 							</client-only>
                         </span>
                     </div>
