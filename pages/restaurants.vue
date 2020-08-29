@@ -395,7 +395,7 @@
                 <div>
                     <v-btn height="56px" block color="primary" class="basket-btn" @click="goToBasketPage()">
                         <span class="btn-sub-text">
-                            20 - 30 мин
+							{{this.restuarant.delivery.time.min}} - {{this.restuarant.delivery.time.max}} мин
                         </span>
                         <span>
                             Корзина

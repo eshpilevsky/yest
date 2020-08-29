@@ -96,8 +96,9 @@
                             {{this.totalPrice}} BYN
                         </span>
                         <span class="total-time">
-                            <!-- {{`${this.LatetestRestInfoWithOrder.delivery.time.min} - ${this.LatetestRestInfoWithOrder.delivery.time.max} мин`}} -->
-                            60-100 мин
+							<client-only>
+							{{this.deliveryMin}} - {{this.deliveryMax}} мин
+							</client-only>
                         </span>
                     </div>
                     <div class="next-btn-block">
@@ -173,6 +174,7 @@ export default {
 
 		if (process.client) {
 			var lastRest = await store.getters['basket/getLatetestRestInfoWithOrder']
+            console.log('lastRest', lastRest)
 		}
         return {
             lastRest: lastRest,
@@ -194,6 +196,8 @@ export default {
             time: 0,
             LatetestRestInfoWithOrder: {},
             deliveryCost: 0,
+            deliveryMin: 0,
+            deliveryMax: 0,
         }
     },
     methods: {
@@ -290,13 +294,14 @@ export default {
     },
     created() {
         this.totalPrice = this.getTotalPrice
+        this.test = this.getLatetestRestInfoWithOrder
     },
     async beforeMount() {
         window.scrollTo(0, 0);
         if (process.client) {
 			this.LatetestRestInfoWithOrder = this.getLatetestRestInfoWithOrder;
-            console.log('beforeMount -> this.getLatetestRestInfoWithOrder', this.getLatetestRestInfoWithOrder)
-			// this.deliveryCost = await this.computedDeliveryCost(this.getLatetestRestInfoWithOrder.delivery.fee);
+			this.deliveryMin = this.getLatetestRestInfoWithOrder.delivery.time.min
+			this.deliveryMax = this.getLatetestRestInfoWithOrder.delivery.time.max
         }
     },
 }
