@@ -189,6 +189,7 @@ export default {
             let dishId;
             let dishOption = [];
             this.getSelectedDishs.forEach((dish) => {
+            	console.log('sendOrder -> dish', dish)
                 dishId = dish.selectSize.id
                 if (dish.hasOwnProperty('selectOption')) {
                     dish.selectOption.forEach((option) => {
@@ -199,17 +200,18 @@ export default {
                 if (dish.options.length == 0) {
                     result = {
                         id: dishId,
-                        count: dish.count,
+                        count: dish.selectSize.count,
                     }
                 } else {
                     let result = {
                         id: dishId,
                         options: dishOption,
-                        count: dish.count,
+                        count: dish.selectSize.count,
                     }
                 }
                 this.order.push(result)
             })
+                console.log('sendOrder -> this.order', this.order)
 
             ApiService.post('/create/order', {
                 phone: this.getUserPhoneNumber,
