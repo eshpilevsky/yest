@@ -2,7 +2,8 @@ export const state = () => ({
   data: {
     restuarantUrl: null,
     dishs: [],
-    totalPrice: 0,
+	totalPrice: 0,
+	orderId: 0,
   },
   status: 0
 })
@@ -47,6 +48,9 @@ export const actions = {
   },
   saveRestuarantUrl(context, url) {
     context.commit('SAVE_RESTRUARNT_URL', url)
+  },
+  setOrderId(context, id) {
+    context.commit('SET_ORDER_ID', id)
   },
 };
 
@@ -124,9 +128,16 @@ export const mutations = {
       return dish !== id
     })
   },
+  SET_ORDER_ID(state, id) {
+    state.status = '200'
+    state.data.orderId = id
+  },
 };
 
 export const getters = {
+  getOrderId(state) {
+    return state.data.orderId
+  },
   getLatetestRestInfoWithOrder(state) {
     return state.data.restuarantUrl
   },

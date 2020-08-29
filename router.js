@@ -7,6 +7,7 @@ import city2 from './pages/city.vue'
 import notFound from './pages/notFound.vue'
 import restaurants from './pages/restaurants.vue'
 import Checkout from './pages/Checkout.vue'
+import CheckoutSuccess from './pages/checkoutSuccess.vue'
 import paymantStatus from './pages/paymantStatus.vue'
 
 Vue.use(Router)
@@ -24,6 +25,11 @@ export function createRouter() {
         path: '/checkout',
         name: 'checkout',
         component: Checkout,
+      },
+		{
+        path: '/checkout/success',
+        name: 'CheckoutSuccess',
+        component: CheckoutSuccess,
       },
       {
         path: '/',
