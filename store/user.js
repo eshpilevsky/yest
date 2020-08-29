@@ -17,11 +17,16 @@ export const state = () => ({
     },
 	language: null,
 	userNumber: null,
+	smsTimer: 0,
   },
   status: 0
 })
 
 export const actions = {
+
+  setSmsTimer(context, time) {
+    context.commit('SET_SMS_TIMER', time)
+  },
 
   setUserPhoneNumber(context, payload) {
     context.commit('SET_USER_PHONE_NUMBER', payload)
@@ -58,7 +63,12 @@ export const actions = {
 };
 
 export const mutations = {
-	SET_USER_PHONE_NUMBER(state, payload) {
+	SET_SMS_TIMER(state, time) {
+    state.status = '200'
+    state.data.smsTimer = time
+  },
+
+  SET_USER_PHONE_NUMBER(state, payload) {
     state.status = '200'
     state.data.userNumber = payload
   },
@@ -106,6 +116,9 @@ export const mutations = {
 };
 
 export const getters = {
+  getSmsTimer(state) {
+    return state.data.smsTimer
+  },
   getSelectedCategory(state) {
     return state.data.selectedCategory
   },

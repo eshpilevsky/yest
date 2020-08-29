@@ -7,7 +7,7 @@ import {
 export default {
   data() {
     return {
-      phone: ' ',
+      phone: ' 2955535042',
       mask: ['+375', '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/, ],
       code: ' ',
       loadingSendSms: false,
@@ -17,11 +17,19 @@ export default {
       currentRouteName: null,
       errorMsg: '',
       current: true,
-      timer: 59,
+      timer: '',
+      calcTime: 0,
       showAuthForm: false,
     }
   },
   methods: {
+    expiresTimer() {
+      var currentTime = new Date().getTime()
+      this.calcTime = this.getSmsTimer - currentTime
+      var min = Math.floor((this.calcTime / 1000 / 60) << 0)
+      var sec = Math.floor((this.calcTime / 1000) % 60)
+      this.timer = `${min}:${sec > 10 ? `${sec}`: `0${sec}`}`
+    },
     showCurrnet() {
       this.current = !this.current
       if (this.current) {
@@ -40,25 +48,31 @@ export default {
       this.$emit('closeForm')
     },
     sendSms() {
-      this.timer = 59
+      var currentTimee = new Date().getTime()
+
       this.loadingSendSms = true
       ApiService.post('/user/send_sms', {
         phone: parseInt(this.phone.replace(/[^\d]/g, '')),
       }).then((response) => {
         this.loadingSendSms = false
         this.smsSuccess = true
+
         if (response.data.status == 'err') {
           this.badCode = true
           this.errorMsg = response.data.errors[0]
-        }
+          setInterval(() => {
+            if (currentTimee < this.getSmsTimer) {
+              this.expiresTimer()
+            }
+          }, 1000);
+        } else {
+			let currentTime = new Date(new Date().getTime() + 5 * 60000).getTime();
+			this.$store.dispatch('user/setSmsTimer', currentTime);
+		}
       }).catch((error) => {
         console.error(error)
       })
-      setInterval(() => {
-        if (this.timer !== 0) {
-          this.timer--
-        }
-      }, 1000);
+
     },
     auth() {
       this.checkCode = true
@@ -88,15 +102,16 @@ export default {
       }
     },
   },
+  computed: {
+    ...mapGetters({
+      getUserPhoneNumber: "user/getUserPhoneNumber",
+      getSmsTimer: "user/getSmsTimer",
+    }),
+  },
   watch: {
     phone(newValue, oldValue) {
       return newValue
     }
-  },
-  computed: {
-    ...mapGetters({
-      getUserPhoneNumber: "user/getUserPhoneNumber",
-    }),
   },
   mounted() {
     this.currentRouteName = this.$route.name

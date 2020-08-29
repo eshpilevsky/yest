@@ -20,8 +20,13 @@
 		<div v-show="this.errorMsg.length > 0" class="sms-form__error">
 			{{this.errorMsg}}
 		</div>
-		<div v-show="this.errorMsg.length == 0">
-			<div class="sms-form__send-sms" v-show="timer > 0">Отправить код повторно <span class="time">0:{{this.timer}}</span></div>
+		<!-- <div v-show="this.errorMsg.length == 0"> -->
+		<div v-show="this.errorMsg.length > 0">
+			<div class="sms-form__send-sms" v-show="calcTime > 0">Отправить код повторно 
+				<span class="time">
+					{{this.timer}}
+				</span>
+				</div>
 			<v-btn @click="sendSms()" v-show="timer == 0">Отправить код повторно</v-btn>
 		</div>
     </div>
