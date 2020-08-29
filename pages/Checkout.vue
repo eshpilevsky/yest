@@ -63,7 +63,7 @@
                 </div>
                 <div class="order-deliv-block" v-if="getSelectedDishs.length > 0">
                     <span>Доставка yest.by</span>
-                    <span >{{this.deliveryCost}} BYN</span>
+                    <span>{{this.deliveryCost}} BYN</span>
                 </div>
                 <div class="order-knifes">
                     <div class="d-flex flex-row">
@@ -96,9 +96,9 @@
                             {{this.totalPrice}} BYN
                         </span>
                         <span class="total-time">
-							<client-only>
-								{{this.deliveryMin}} - {{this.deliveryMax}} мин
-							</client-only>
+                            <client-only>
+                                {{this.deliveryMin}} - {{this.deliveryMax}} мин
+                            </client-only>
                         </span>
                     </div>
                     <div class="next-btn-block">
@@ -172,10 +172,9 @@ export default {
         let categoriesListData = categoriesList.data
         store.dispatch('user/allCategory', categoriesListData)
 
-		if (process.client) {
-			var lastRest = await store.getters['basket/getLatetestRestInfoWithOrder']
-            console.log('lastRest', lastRest)
-		}
+        if (process.client) {
+            var lastRest = await store.getters['basket/getLatetestRestInfoWithOrder']
+        }
         return {
             lastRest: lastRest,
         }
@@ -203,22 +202,22 @@ export default {
     methods: {
         computedDeliveryCost(mass) {
             // let deliveryMass = this.sortDeliverFee(mass)
-			// let deliveryMass = mass
-			console.log(mass);
-			let price = parseInt(this.getTotalPrice)
+            // let deliveryMass = mass
+            console.log(mass);
+            let price = parseInt(this.getTotalPrice)
             console.log('computedDeliveryCost -> price', price)
-				let finded = mass.find((cost) => {
-					return cost.min < price && price < cost.max
-				})
-				if (finded !== undefined) {
-					if (finded.hasOwnProperty('delivery')) {
-						return finded.delivery
-					} else {
-						return finded.deliveryFee
-					}
-				} else {
-					return mass[mass.length - 1].deliveryFee
-				}
+            let finded = mass.find((cost) => {
+                return cost.min < price && price < cost.max
+            })
+            if (finded !== undefined) {
+                if (finded.hasOwnProperty('delivery')) {
+                    return finded.delivery
+                } else {
+                    return finded.deliveryFee
+                }
+            } else {
+                return mass[mass.length - 1].deliveryFee
+            }
         },
         closeFormShowOrderForm() {
             this.showAuthForm = false
@@ -244,8 +243,13 @@ export default {
             this.showOrderForm = false
         },
         goToForm() {
-            console.error('show auth forms');
-            this.showAuthForm = true
+            if (this.getUserPhoneNumber !== undefined) {
+                this.showAuthForm = false
+				this.showOrderForm = true
+				this.showBasket = false
+            } else {
+                this.showAuthForm = true
+            }
         },
         goBack() {
             this.$router.go(-1)
@@ -274,8 +278,8 @@ export default {
     },
     watch: {
         getTotalPrice(newValue) {
-			this.totalPrice = newValue
-			this.deliveryCost = this.computedDeliveryCost(this.getLatetestRestInfoWithOrder.delivery.fee);
+            this.totalPrice = newValue
+            this.deliveryCost = this.computedDeliveryCost(this.getLatetestRestInfoWithOrder.delivery.fee);
             return newValue
         },
         cutleryCounter(newValue) {
@@ -289,6 +293,7 @@ export default {
         ...mapGetters({
             getSelectedDishs: "basket/getSelectedDishs",
             getTotalPrice: "basket/getTotalPrice",
+            getUserPhoneNumber: "user/getUserPhoneNumber",
             getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
         }),
     },
@@ -299,9 +304,9 @@ export default {
     async beforeMount() {
         window.scrollTo(0, 0);
         if (process.client) {
-			this.LatetestRestInfoWithOrder = this.getLatetestRestInfoWithOrder;
-			this.deliveryMin = this.getLatetestRestInfoWithOrder.delivery.time.min
-			this.deliveryMax = this.getLatetestRestInfoWithOrder.delivery.time.max
+            this.LatetestRestInfoWithOrder = this.getLatetestRestInfoWithOrder;
+            this.deliveryMin = this.getLatetestRestInfoWithOrder.delivery.time.min
+            this.deliveryMax = this.getLatetestRestInfoWithOrder.delivery.time.max
         }
     },
 }

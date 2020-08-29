@@ -718,11 +718,11 @@ export default {
             this.showDeliveryOption = false
         },
         checkout() {
-            // if (this.getUserPhoneNumber) {
-            //     this.$router.push('/checkout')
-            // } else {
+            if (this.getUserPhoneNumber) {
+                this.$router.push('/checkout')
+            } else {
                 this.showSmsForm = !this.showSmsForm
-            // }
+            }
         },
         goToBasketPage() {
             this.$router.push(`/cart`)
