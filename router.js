@@ -9,16 +9,12 @@ import restaurants from './pages/restaurants.vue'
 import Checkout from './pages/Checkout.vue'
 import CheckoutSuccess from './pages/checkoutSuccess.vue'
 import paymantStatus from './pages/paymantStatus.vue'
+import Cookie from 'js-cookie'
 
 Vue.use(Router)
 
-import userStore from '@/store/user'
-if (process.client) {
-	
-	console.log('store', userStore.getters['getUserPhoneNumber'])
-}
-
 const ifAuthenticated = (to, from, next) => {
+	console.log(Cookie);
 	// if (store.getters['user/isAuthenticated']) {
 	// 	next()
 	// 	return
@@ -39,7 +35,7 @@ export function createRouter() {
         path: '/checkout',
         name: 'checkout',
 		component: Checkout,
-		// beforeEnter: ifAuthenticated,
+		beforeEnter: ifAuthenticated,
       },
 		{
         path: '/checkout/success',
@@ -69,7 +65,7 @@ export function createRouter() {
         component: restaurants,
       },
       {
-        path: '/order/onliner_payment/:status',
+        path: '/order/online_payment/:status',
         name: 'paymantStatus',
         component: paymantStatus,
       },
