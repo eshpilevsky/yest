@@ -45,11 +45,21 @@ export default {
     },
     computed: {
         computedPrice() {
+            this.dishinfo = this.dishinfo.sort(function (a, b) {
+                if (a.price > b.price) {
+                    return 1;
+                }
+                if (a.price < b.price) {
+                    return -1;
+                }
+                return 0;
+			});
+			
             if (this.dishinfo.length == 0) {
                 return 'Нет цены'
             } else if (this.dishinfo.length > 1) {
                 let chekDiffrentPrice = this.dishinfo.find((dish, index, arr) => {
-                    return dish.price == arr[index - 1]
+                    return dish.price == arr[index - 1] !== undefined ? arr[index - 1] : 0
                 })
                 if (chekDiffrentPrice !== undefined) {
                     return `От ${this.dishinfo[0].price}`

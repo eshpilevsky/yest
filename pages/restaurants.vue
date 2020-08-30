@@ -147,7 +147,7 @@
                                     Размер на выбор
                                 </div>
                                 <v-radio-group v-model="sizesRadioBtn" :mandatory="false" class="d-flex flex-row">
-                                    <v-radio v-for="size in selectedDish.sizes" :key="size.id" :label="size.name" :value="size" color="primary"></v-radio>
+                                    <v-radio v-for="size in selectedDish.sizes" :key="size.id" :label="`${size.name} ${size.price-selectedDish.sizes[0].price == 0 ? `` : `+${size.price-selectedDish.sizes[0].price} BYN`} `" :value="size" color="primary"></v-radio>
                                 </v-radio-group>
                             </div>
                             <div class="options" v-show="selectedDish.options.length > 0">
@@ -395,7 +395,7 @@
                 <div>
                     <v-btn height="56px" block color="primary" class="basket-btn" @click="goToBasketPage()">
                         <span class="btn-sub-text">
-							{{this.restuarant.delivery.time.min}} - {{this.restuarant.delivery.time.max}} мин
+                            {{this.restuarant.delivery.time.min}} - {{this.restuarant.delivery.time.max}} мин
                         </span>
                         <span>
                             Корзина
@@ -454,8 +454,8 @@ export default {
         app,
         context,
         store,
-		params,
-		redirect,
+        params,
+        redirect,
     }) {
         console.log('START REST ASYNC');
         let restParams = params.resName
@@ -475,7 +475,7 @@ export default {
             store.dispatch('zone/setSelectedZone', currentZone)
         } else {
             redirect('/')
-		}
+        }
 
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
             zone_id: currentZone.id
@@ -493,7 +493,7 @@ export default {
         })
 
         return {
-            restuarant: restuarant.data,
+			restuarant: restuarant.data,
             currentZone: currentZone,
         }
     },
@@ -526,7 +526,7 @@ export default {
         }
     },
     methods: {
-		computedPrice(prices) {
+        computedPrice(prices) {
             if (prices.length == 0) {
                 return 'Нет цены'
             } else if (prices.length > 1) {
@@ -749,9 +749,9 @@ export default {
             this.showOptionsmenu = false
         },
         decrement(dish) {
-			this.showDish = false
-			dish.selectSize = dish.sizes[0]
-			this.$store.dispatch('basket/decrementDishCounter', dish);
+            this.showDish = false
+            dish.selectSize = dish.sizes[0]
+            this.$store.dispatch('basket/decrementDishCounter', dish);
         },
         increment(dish) {
             dish.selectSize = dish.sizes[0]
@@ -1702,16 +1702,16 @@ export default {
 }
 
 .dish-info__price:after {
-  content: "";
-  position: absolute;
-  left: calc(100% + 7px);
-  top: 50%;
-  transform: translateY(-50%);
-  display: block;
-  width: 2px;
-  height: 2px;
-  border-radius: 50%;
-  background-color: #c2c0be;
+    content: "";
+    position: absolute;
+    left: calc(100% + 7px);
+    top: 50%;
+    transform: translateY(-50%);
+    display: block;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background-color: #c2c0be;
 }
 
 .info-weight {
