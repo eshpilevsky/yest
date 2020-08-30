@@ -306,7 +306,7 @@
                             <v-card class="dish-card">
                                 <div @click="showSelectedDish(item)">
                                     <div class="card-dish-top">
-                                        <span class="dash-info-compare">%</span>
+                                        <span class="dash-info-compare" v-show="item.sizes[0].discount !== null">%</span>
                                         <img :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" :alt="item.name" class="dish-img-mobile" />
                                     </div>
                                     <div class="card-dish-bottom">
