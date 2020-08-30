@@ -343,7 +343,7 @@
                                             Размер на выбор
                                         </div>
                                         <v-radio-group v-model="sizesRadioBtn" :mandatory="false" class="d-flex flex-row">
-                                            <v-radio v-for="size in selectedDish.sizes" :key="size.id" :label="size.name" :value="size" color="primary"></v-radio>
+                                            <v-radio v-for="size in selectedDish.sizes" :key="size.id" :label="`${size.name} ${size.price-selectedDish.sizes[0].price == 0 ? `` : `+${size.price-selectedDish.sizes[0].price} BYN`} `" :value="size" color="primary"></v-radio>
                                         </v-radio-group>
                                     </div>
                                     <div class="options px-3" v-show="selectedDish.options.length > 1">
