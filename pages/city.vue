@@ -158,6 +158,7 @@ export default {
         }
 
         var filtByTime;
+            console.log('restaurantsListData', restaurantsList.data)
         if (restaurantsList.data.status == 404) {
             restaurantsListData = [404]
         } else {
