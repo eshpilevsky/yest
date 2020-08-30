@@ -73,7 +73,11 @@ export default {
       text-align: center;
       font-size: 16px;
       line-height: 20px;
-      margin-bottom: 20px;
+      margin-bottom: 40px;
+
+      @media screen and (max-width: 992px) {
+        margin-bottom: 20px;
+      }
     }
 
     &__link {
