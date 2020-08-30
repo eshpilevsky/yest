@@ -4,7 +4,7 @@
       <div class="swiper-wrapper specialOffer-wrapper">
         <a class="swiper-slide specialOffer-slide" :href="item.link" v-for='(item, index) in this.offers' :key='index'
            @click="openLink(item)">
-          <img :src='item.image' class="specialOfferImg"/>
+          <img :src='item.image' :alt="`specialOffer${index}`" class="specialOfferImg"/>
         </a>
       </div>
       <div class="customBtnPrev" slot="button-prev">

@@ -85,7 +85,7 @@
                                                 <p class="info-btn-text">
                                                     Информация <br /> о ресторане
                                                 </p>
-                                                <img src="../assets/restaurantInfoIcon.svg" alt="restaurant info">
+                                                <img src="@/assets/restaurantInfoIcon.svg" alt="restaurant info" >
                                             </v-btn>
                                         </template>
                                         <div class="rest-info-modal">

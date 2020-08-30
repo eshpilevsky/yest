@@ -4,7 +4,7 @@
     <v-flex cols-12 wrap class="restorane-list">
         <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in this.restaurants" :key="index" class="restorane-list-item" @click="goToRes(item)">
             <div class="list-item-block">
-                <img contain :lazy-src="notFindImg" :src="item.cover" class="restorane-logo" :class="{closeRestorane:item.is_open == false }" />
+                <img contain :lazy-src="notFindImg" :alt="item.name" :src="item.cover" class="restorane-logo" :class="{closeRestorane:item.is_open == false }" />
                 <div class="block-bottom">
                     <div class="card-time" v-show="checkAddress">
                         <p class="card-time__quantity">{{item.time.min}} &mdash; {{item.time.max}}</p>
@@ -18,13 +18,13 @@
                         </v-chip>
                     </div>
                     <div class="card-options">
-                        <img class="card-options__delivery" src="@/assets/deliveryIcon.svg" />
+                        <img class="card-options__delivery" src="@/assets/deliveryIcon.svg" alt="deliveryIcon" />
                         <span class="card-options__rating">
                             <v-icon class="rating-icon" color="#FFFADF">star</v-icon>
                             <span>{{ item.rating }}</span>
                         </span>
                         <span class="card-options__currency">
-                            <img class="currency-icon" src="@/assets/purseIcon.svg" />
+                            <img class="currency-icon" src="@/assets/purseIcon.svg" alt="purseIcon" />
                             BYN
                         </span>
                     </div>
