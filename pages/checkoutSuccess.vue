@@ -1,9 +1,11 @@
 <template>
-<div class="pt-5">
-    <h1>Ваш заказ №{{this.orderId}} успешно сформирован!</h1>
-    <div>
+<div class="success-order">
+    <h1 class="success-order__title">Ваш заказ №{{this.orderId}} успешно сформирован!</h1>
+    <div class="success-order__descr">
         С вами свяжутся сотрудники контакт центра в ближайшее время для подтверждения заказа.
     </div>
+
+    <a class="success-order__link" href="/minsk">На главную</a>
 </div>
 </template>
 
@@ -52,5 +54,44 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .success-order {
+    padding: 80px 20px 60px;
 
+    @media screen and (max-width: 992px) {
+      padding: 60px 20px;
+    }
+
+    &__title {
+      text-align: center;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 24px;
+      margin-bottom: 20px;
+    }
+
+    &__descr {
+      text-align: center;
+      font-size: 16px;
+      line-height: 20px;
+      margin-bottom: 20px;
+    }
+
+    &__link {
+      display: block;
+      text-align: center;
+      margin: 0 auto;
+      max-width: 200px;
+      color: #fff;
+      font-weight: bold;
+      text-transform: none;
+      height: 40px;
+      line-height: 40px;
+      font-size: 16px;
+      padding: 0 20px;
+      background-color: #4ca647;
+      text-decoration: none;
+      border-radius: 3px;
+      box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    }
+  }
 </style>
