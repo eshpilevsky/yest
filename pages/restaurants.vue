@@ -548,11 +548,18 @@ export default {
     head() {
         return {
             title: this.restuarant.seo.title,
-            meta: [{
-                hid: this.restuarant.seo.keywords,
-                name: 'description',
-                content: `${this.restuarant.seo.description}`
-            }]
+            meta: [
+				{
+                    hid: 'description',
+                    name: 'description',
+                    content: this.restuarant.seo.description
+                },
+                {
+                    hid: 'keywords',
+                    name: 'keywords',
+                    content: this.restuarant.seo.keywords
+                },
+            ]
         }
     },
     methods: {
