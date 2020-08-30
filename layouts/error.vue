@@ -6,7 +6,7 @@
           Упс, 404
         </h1>
         <p class="notFound__descr">Страница не найдна</p>
-        <v-btn class="notFound__btn" :to="`/${getSelectedZone.alias}`" color="primary" outlined>
+        <v-btn class="notFound__btn" to="/" color="primary" outlined>
           Вернуться на главную
         </v-btn>
       </v-col>

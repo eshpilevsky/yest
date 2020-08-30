@@ -226,15 +226,14 @@ export default {
                 comment: this.comment,
                 order: this.order,
             }).then((response) => {
-            console.log('sendOrder -> response', response.data)
                 if (response.data.hasOwnProperty('checkout')) {
-                    window.location = response.data.checkout.redirect_url
+					window.open(response.data.checkout.redirect_url, '_blank');
                 } else {
 					this.$store.dispatch('basket/setOrderId', response.data.order_id);
 				}
                 this.$store.dispatch('basket/dropBasket');
-                this.$router.push('/order/onliner_payment/success')
                 this.loadingSendOrder = false
+                this.$router.push('/order/onliner_payment/success')
             }).catch((error) => {
 				this.$router.push('/order/onliner_payment/fail')
                 console.error(error)

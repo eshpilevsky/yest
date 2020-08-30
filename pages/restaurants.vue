@@ -591,11 +591,9 @@ export default {
             }
         },
         saveBasket() {
-            console.log('SAVE BASKET');
             let find = this.orderList.find((el) => {
                 return el.id == this.selectedDish.id
             })
-            console.log('saveBasket -> find', find)
             if (find == undefined) {
 
                 this.selectOption = this.selectedDish.options ? this.selectedDish.options[0] : []

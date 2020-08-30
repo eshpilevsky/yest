@@ -11,7 +11,7 @@
             {{this.currentStatus.text.subTitle}}
         </v-card-text>
         <v-card-actions class="d-flex align-center justify-center">
-            <v-btn class="payment-status__btn" color="primary" outlined>
+            <v-btn class="payment-status__btn" to="/" color="primary" outlined>
                 На главную
             </v-btn>
         </v-card-actions>
@@ -25,11 +25,11 @@ import axios from 'axios'
 export default {
     async asyncData({
         params,
-		store,
-		app,
-		redirect,
+        store,
+        app,
+        redirect,
     }) {
-        let statusList= [{
+        let statusList = [{
                 name: 'success',
                 text: {
                     title: 'Оплата прошла успешно',
@@ -53,11 +53,11 @@ export default {
                 },
                 icon: 'cancel',
             },
-		]
-		let currentStatus ={}
+        ]
+        let currentStatus = {}
         let findStatus = statusList.findIndex((stat) => {
             return stat.name == params.status
-		})
+        })
 
         if (findStatus == undefined) {
             currentStatus = statusList[1]
@@ -68,19 +68,9 @@ export default {
         let zoneList = await axios.get('https://yestapi.xyz/get-zones')
         const zoneListData = zoneList.data
         store.dispatch('zone/setZone', zoneListData)
-        let currentZone = zoneListData.find((zones) => {
-            return zones.alias == params.region
-        })
-
-        if (currentZone !== undefined) {
-            store.dispatch('zone/setSelectedZone', currentZone)
-        } else {
-            redirect('/')
-        }
-        app.currentZone = currentZone
 
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
-            zone_id: currentZone.id
+            zone_id: 1
         })
 
         let categoriesListData = categoriesList.data
@@ -94,40 +84,40 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .payment-status {
-	height: 80vh;
+    height: 80vh;
 
-  &__container {
-    box-shadow: none;
-    border: none;
-  }
+    &__container {
+        box-shadow: none;
+        border: none;
+    }
 
-  &__title {
-    margin: 0 auto 14px !important;
-    font-size: 20px;
-    font-weight: 600;
-    text-align: center;
-    padding: 0;
-    justify-content: center;
-  }
+    &__title {
+        margin: 0 auto 14px !important;
+        font-size: 20px;
+        font-weight: 600;
+        text-align: center;
+        padding: 0;
+        justify-content: center;
+    }
 
-  &__description {
-    margin-bottom: 18px !important;
-    padding: 0;
-    text-align: center;
-  }
+    &__description {
+        margin-bottom: 18px !important;
+        padding: 0;
+        text-align: center;
+    }
 
-  &__icon {
-    margin-left: 6px;
-  }
+    &__icon {
+        margin-left: 6px;
+    }
 
-  &__btn {
-    text-transform: initial !important;
-    height: 41px !important;
-    min-width: 160px !important;
-    font-size: 16px !important;
-    font-weight: 600 !important;
-  }
+    &__btn {
+        text-transform: initial !important;
+        height: 41px !important;
+        min-width: 160px !important;
+        font-size: 16px !important;
+        font-weight: 600 !important;
+    }
 }
 </style>

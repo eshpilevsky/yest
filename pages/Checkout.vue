@@ -202,10 +202,7 @@ export default {
     methods: {
         computedDeliveryCost(mass) {
             // let deliveryMass = this.sortDeliverFee(mass)
-            // let deliveryMass = mass
-            console.log(mass);
             let price = parseInt(this.getTotalPrice)
-            console.log('computedDeliveryCost -> price', price)
             let finded = mass.find((cost) => {
                 return cost.min < price && price < cost.max
             })
