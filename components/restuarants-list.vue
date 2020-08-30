@@ -213,7 +213,6 @@ export default {
         }
     },
     created() {
-		console.log('created -> this.restaurantsList', this.restaurantsList[0])
         if (this.restaurantsList[0] !== '404') {
             this.restOverlay = true
             setTimeout(() => {

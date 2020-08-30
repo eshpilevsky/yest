@@ -4,6 +4,16 @@
     <specialOffers :offers="specilaOffers" v-show="showSpecialOffer" />
     <categories v-show="categoriesList.length > 1" :currentZone='currentZone' :categoriesList='categoriesList' :currentCategory='this.currentCategory' />
     <restuarantsList :restaurantsList='restaurantsList' :currentCategory='this.currentCategory' :currentZone='currentZone' />
+    <div class="basket-btn__block" v-show="this.getTotalPrice > 0">
+        <v-btn block color='primary' class="d-flex flex-row justify-space-between rounded-xl" height="60px" @click="goToRestuarant()">
+            <span>
+                {{this.restInfo ? this.restInfo.restName : ''}}
+            </span>
+            <span>
+                {{this.getTotalPrice}} BYN
+            </span>
+        </v-btn>
+    </div>
 </div>
 </template>
 
@@ -33,7 +43,9 @@ export default {
             showSetAdress: true,
             rest: [],
             categoryInfoData: null,
-            currentZone: null,
+			currentZone: null,
+			restName: '',
+			totalPrice: 0,
         }
     },
     async asyncData({
@@ -158,7 +170,7 @@ export default {
         }
 
         var filtByTime;
-            console.log('restaurantsListData', restaurantsList.data)
+        console.log('restaurantsListData', restaurantsList.data)
         if (restaurantsList.data.status == 404) {
             restaurantsListData = [404]
         } else {
@@ -249,6 +261,9 @@ export default {
         }
     },
     methods: {
+		goToRestuarant(){
+			this.$router.push(`/${this.restInfo.params.region}/restaurant/${this.restInfo.params.resName}`)
+		},
         async getSpecialOffer() {
             await axios.post('https://yestapi.xyz/restaurants/special-offers', {
                 zone_id: parseInt(this.getSelectedZone.id),
@@ -286,17 +301,22 @@ export default {
             getCategoryList: 'user/getCategoryList',
             getCurrentCoords: 'map/getCurrentCoords',
             getCurrentAddress: "map/getCurrentAddress",
+            getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
+            getTotalPrice: "basket/getTotalPrice",
         })
     },
     created() {
         this.$store.dispatch('zone/setSelectedZone', this.currentZone)
-        this.$store.dispatch('user/selectCategory', this.currentCategory)
+		this.$store.dispatch('user/selectCategory', this.currentCategory)
+		if (this.getLatetestRestInfoWithOrder) {
+			this.restInfo = this.getLatetestRestInfoWithOrder
+		}
     },
     mounted() {
-		window.scrollTo(0, 0);
-		if (this.getCurrentAddress.length >0) {
-			this.getSpecialOffer()
-		}
+        window.scrollTo(0, 0);
+        if (this.getCurrentAddress.length > 0) {
+            this.getSpecialOffer()
+        }
         setTimeout(() => {
             if (window.innerWidth < 992) {
                 document.getElementById('bgImg').setAttribute('style', 'background-image: url("' + this.categoryInfoData.category_icon + '");')
@@ -316,7 +336,24 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.basket-btn__block {
+    display: none;
+}
+
+@media screen and (max-width: 992px) {
+    .basket-btn__block {
+        display: flex;
+        position: fixed;
+		z-index: 99;
+        bottom: 0px;
+		height: 88px;
+		width: 100%;
+		background: #fff;
+    }
+
+}
+</style><style>
 html {
     overflow-x: hidden !important;
 }
