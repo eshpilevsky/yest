@@ -230,8 +230,8 @@ export default {
 					window.open(response.data.checkout.redirect_url, '_blank');
 					this.$router.push('/order/onliner_payment/success')
                 } else {
-					this.$router.push('/checkout/success')
 					this.$store.dispatch('basket/setOrderId', response.data.order_id);
+					this.$router.push('/checkout/success')
 				}
                 this.$store.dispatch('basket/dropBasket');
                 this.loadingSendOrder = false
