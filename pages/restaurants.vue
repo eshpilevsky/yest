@@ -306,6 +306,7 @@
                             <v-card class="dish-card">
                                 <div @click="showSelectedDish(item)">
                                     <div class="card-dish-top">
+                                        <span class="dash-info-compare">%</span>
                                         <img :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" :alt="item.name" class="dish-img-mobile" />
                                     </div>
                                     <div class="card-dish-bottom">
@@ -1314,6 +1315,23 @@ export default {
 .card-dish-top {
     height: 167px;
     width: 45vw;
+    position: relative;
+}
+
+.dash-info-compare {
+    position: absolute;
+    top: 7px;
+    left: 8px;
+    background-color: #4ca647;
+    width: 40px;
+    height: 28px;
+    display: flex;
+    justify-content: center;
+    line-height: 28px;
+    color: #fff;
+    font-weight: 400;
+    font-size: 20px;
+    border-radius: 16px;
 }
 
 .close-block {
