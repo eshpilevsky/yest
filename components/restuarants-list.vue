@@ -213,7 +213,8 @@ export default {
         }
     },
     created() {
-        if (this.restaurantsList[0] !== 404) {
+		console.log('created -> this.restaurantsList', this.restaurantsList[0])
+        if (this.restaurantsList[0] !== '404') {
             this.restOverlay = true
             setTimeout(() => {
                 this.counterRest = this.restaurantsList.length

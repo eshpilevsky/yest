@@ -21,6 +21,7 @@
 
 <script>
 import axios from 'axios'
+import Cookie from 'js-cookie'
 
 export default {
     async asyncData({
@@ -28,7 +29,38 @@ export default {
         store,
         app,
         redirect,
+        req,
+        res,
+        query,
     }) {
+
+        console.log(req.headers.cookie);
+        console.log(query);
+        let order_id
+
+        if (query.hasOwnProperty('order_id')) {
+            if (req.headers.cookie) {
+                order_id = getCookie('order_id', req.headers.cookie)
+
+                function getCookie(cookieName, stringCookie) {
+                    let strCookie = new RegExp('' + cookieName + '[^;]+').exec(stringCookie)[0]
+                    return unescape(strCookie ? strCookie.toString().replace(/^[^=]+./, '') : '')
+                }
+                if (order_id == undefined) {
+                    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+                    res.setHeader('Access-Control-Allow-Credentials', 'true');
+                    res.setHeader('Set-Cookie', [`order_id=${order_id}`]);
+                }
+                redirect('/checkout/success')
+            } else {
+                res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+                res.setHeader('Access-Control-Allow-Credentials', 'true');
+                res.setHeader('Set-Cookie', [`order_id=${query.order_id}`]);
+                redirect('/checkout/success')
+            }
+
+        }
+
         let statusList = [{
                 name: 'success',
                 text: {
