@@ -51,7 +51,6 @@ module.exports = {
   /*
    ** Global CSS
    */
-  router: { middleware: ['check-route'] },
   css: [
     'material-design-icons-iconfont/dist/material-design-icons.css',
   ],
@@ -81,6 +80,9 @@ module.exports = {
     },
     {
       src: '@/plugins/mask'
+    },
+    {
+      src: '@/plugins/check-route'
     },
   ],
   /*
