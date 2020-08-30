@@ -22,7 +22,9 @@ export default {
         req,
     }) {
         console.log('START ASYNC DATA HOME PAGE');
-        let getCurrentCoords = store.getters['map/getCurrentCoords']
+		let getCurrentCoords = store.getters['map/getCurrentCoords']
+		let baskett = store.getters['bakset/getOrderId']
+        console.log('baskett', baskett)
         let zoneList = await axios.get('https://yestapi.xyz/get-zones')
         const zoneListData = zoneList.data
         store.dispatch('zone/setZone', zoneListData)
@@ -30,7 +32,8 @@ export default {
             zone_id: 1
         })
         let categoriesListData = categoriesList.data
-        store.dispatch('user/allCategory', categoriesListData)
+		store.dispatch('user/allCategory', categoriesListData)
+
     },
     data() {
         return {
