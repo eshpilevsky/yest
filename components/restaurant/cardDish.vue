@@ -108,7 +108,9 @@ export default {
                 })
                 if (findDish !== undefined) {
                     this.counter = findDish.selectSize.count
-                }
+                } else {
+					this.counter = 0
+				}
             }, {
                 deep: true
             }
