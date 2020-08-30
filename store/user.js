@@ -1,4 +1,4 @@
-export const state = () => ({
+const state = () => ({
   data: {
     name: null,
     selectedCategory: {
@@ -15,15 +15,20 @@ export const state = () => ({
         longitude: 0
       }
     },
-	language: null,
-	userNumber: null,
-	smsTimer: 0,
+    language: null,
+    userNumber: null,
+    smsTimer: 0,
   },
   status: 0
 })
 
-export const actions = {
+const actions = {
 
+  checkUserPhonemuber(context) {
+    return new Promise((resolve, reject) => {
+      resolve(context.state.data.userNumber)
+    });
+  },
   setSmsTimer(context, time) {
     context.commit('SET_SMS_TIMER', time)
   },
@@ -62,8 +67,8 @@ export const actions = {
 
 };
 
-export const mutations = {
-	SET_SMS_TIMER(state, time) {
+const mutations = {
+  SET_SMS_TIMER(state, time) {
     state.status = '200'
     state.data.smsTimer = time
   },
@@ -115,7 +120,7 @@ export const mutations = {
   }
 };
 
-export const getters = {
+const getters = {
   getSmsTimer(state) {
     return state.data.smsTimer
   },
@@ -157,4 +162,11 @@ export const getters = {
   }
 };
 
-export const strict = false
+// export const strict = false
+
+export default {
+  state,
+  actions,
+  mutations,
+  getters,
+}

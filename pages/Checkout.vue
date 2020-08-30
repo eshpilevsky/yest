@@ -200,6 +200,9 @@ export default {
         }
     },
     methods: {
+        check() {
+            return this.getUserPhoneNumber
+        },
         computedDeliveryCost(mass) {
             // let deliveryMass = this.sortDeliverFee(mass)
             let price = parseInt(this.getTotalPrice)
@@ -242,8 +245,8 @@ export default {
         goToForm() {
             if (this.getUserPhoneNumber !== undefined) {
                 this.showAuthForm = false
-				this.showOrderForm = true
-				this.showBasket = false
+                this.showOrderForm = true
+                this.showBasket = false
             } else {
                 this.showAuthForm = true
             }
@@ -306,6 +309,20 @@ export default {
             this.deliveryMax = this.getLatetestRestInfoWithOrder.delivery.time.max
         }
     },
+    beforeRouteEnter(to, from, next) {
+        // this.$store.dispatch('user/check').then(res => {
+        // 	console.log(res);
+        // 	next()} )
+        next(vm => {
+            vm.$store.dispatch('user/checkUserPhonemuber').then(phone => {
+				console.error(phone);
+				if (phone == null) {
+					console.error(from);
+					next(from.fullPath)
+				}
+            })
+        })
+    }
 }
 </script>
 

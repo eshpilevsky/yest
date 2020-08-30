@@ -12,6 +12,20 @@ import paymantStatus from './pages/paymantStatus.vue'
 
 Vue.use(Router)
 
+import userStore from '@/store/user'
+if (process.client) {
+	
+	console.log('store', userStore.getters['getUserPhoneNumber'])
+}
+
+const ifAuthenticated = (to, from, next) => {
+	// if (store.getters['user/isAuthenticated']) {
+	// 	next()
+	// 	return
+	// }
+	// next('/');
+}
+
 export function createRouter() {
   return new Router({
     mode: 'history',
@@ -24,7 +38,8 @@ export function createRouter() {
 		{
         path: '/checkout',
         name: 'checkout',
-        component: Checkout,
+		component: Checkout,
+		// beforeEnter: ifAuthenticated,
       },
 		{
         path: '/checkout/success',

@@ -81,9 +81,6 @@ module.exports = {
     {
       src: '@/plugins/mask'
     },
-    {
-      src: '@/plugins/check-route'
-    },
   ],
   /*
    ** Nuxt.js dev-modules
