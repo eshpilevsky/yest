@@ -109,7 +109,7 @@ export default {
     }),
   },
   watch: {
-    phone(newValue, oldValue) {
+    phone(newValue) {
       return newValue
     }
   },

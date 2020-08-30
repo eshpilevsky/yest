@@ -171,14 +171,6 @@ export default {
         })
         let categoriesListData = categoriesList.data
         store.dispatch('user/allCategory', categoriesListData)
-
-        if (process.client) {
-            var lastRest = await store.getters['basket/getLatetestRestInfoWithOrder']
-        }
-        return {
-            lastRest: lastRest,
-        }
-
     },
     data() {
         return {
@@ -309,20 +301,6 @@ export default {
             this.deliveryMax = this.getLatetestRestInfoWithOrder.delivery.time.max
         }
     },
-    beforeRouteEnter(to, from, next) {
-        // this.$store.dispatch('user/check').then(res => {
-        // 	console.log(res);
-        // 	next()} )
-        next(vm => {
-            vm.$store.dispatch('user/checkUserPhonemuber').then(phone => {
-				console.error(phone);
-				if (phone == null) {
-					console.error(from);
-					next(from.fullPath)
-				}
-            })
-        })
-    }
 }
 </script>
 

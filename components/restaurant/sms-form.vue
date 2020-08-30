@@ -7,17 +7,17 @@
     <v-icon class="sms-modal__close" @click="closeForm()" v-show="currentRouteName !== 'cart'">
         close
     </v-icon>
-    <v-text-field class="sms-modal__field" label="Ваш номер телефона" outlined v-model="phone" v-mask="mask" :disabled="smsSuccess"></v-text-field>
+    <v-text-field class="sms-modal__field" label="Ваш номер телефона" outlined v-model="phone" v-mask="mask" :disabled="smsSuccess" @keydown.enter="auth()"></v-text-field>
     <div class="sms-modal__link" v-show="smsSuccess" @click="changePhoneNumber()">
         Изменить номер телефона
     </div>
     <div v-show="smsSuccess">
-        <v-text-field class="sms-modal__field" label="Код из смс" outlined v-model="code" :error-messages='this.badCode == true ? this.errorMsg : null'></v-text-field>
+        <v-text-field class="sms-modal__field" label="Код из смс" outlined v-model="code" :error-messages='this.badCode == true ? this.errorMsg : null'  @keydown.enter="sendSms()"></v-text-field>
         <div class="sms-modal__link" v-show="smsSuccess" @click="sendSmsAgain()">
             Отправить смс повторно
         </div>
     </div>
-    <v-btn class="sms-modal__submit" id="send-sms-modal-btn" block color="primary" :disabled="phone.length < 17" :loading="loadingSendSms" @click="sendSms()" v-show="!smsSuccess">
+    <v-btn ref='getCode' class="sms-modal__submit" id="send-sms-modal-btn" block color="primary" :disabled="phone.length < 17" :loading="loadingSendSms" @click="sendSms()" v-show="!smsSuccess">
         Получить код
     </v-btn>
     <v-btn class="sms-modal__submit" block color="primary" :disabled="code.length < 5" @click="auth()" :loading="checkCode" v-show="smsSuccess">
