@@ -147,7 +147,16 @@
                                     Размер на выбор
                                 </div>
                                 <v-radio-group v-model="sizesRadioBtn" :mandatory="false" class="d-flex flex-row">
-                                    <v-radio v-for="size in selectedDish.sizes" :key="size.id" :label="`${size.name} ${size.price-selectedDish.sizes[0].price == 0 ? `` : `+${size.price-selectedDish.sizes[0].price} BYN`} `" :value="size" color="primary"></v-radio>
+                                    <v-radio v-for="size in selectedDish.sizes" :key="size.id" :value="size" color="primary">
+                                        <template v-slot:label>
+                                            <span>
+                                                {{size.name}}
+                                            </span>
+                                            <span class="ROMAN">
+                                                {{size.price-selectedDish.sizes[0].price == 0 ? `` : `+${size.price-selectedDish.sizes[0].price} BYN`}}
+                                            </span>
+                                        </template>
+                                    </v-radio>
                                 </v-radio-group>
                             </div>
                             <div class="options" v-show="selectedDish.options.length > 0">
@@ -343,7 +352,16 @@
                                             Размер на выбор
                                         </div>
                                         <v-radio-group v-model="sizesRadioBtn" :mandatory="false" class="d-flex flex-row">
-                                            <v-radio v-for="size in selectedDish.sizes" :key="size.id" :label="`${size.name} ${size.price-selectedDish.sizes[0].price == 0 ? `` : `+${size.price-selectedDish.sizes[0].price} BYN`} `" :value="size" color="primary"></v-radio>
+                                            <v-radio v-for="size in selectedDish.sizes" :key="size.id" :value="size" color="primary">
+                                                <template v-slot:label>
+                                                    <span>
+                                                        {{size.name}}
+                                                    </span>
+                                                    <span class="ROMAN">
+                                                        {{size.price-selectedDish.sizes[0].price == 0 ? `` : `+${size.price-selectedDish.sizes[0].price} BYN`}}
+                                                    </span>
+                                                </template>
+                                            </v-radio>
                                         </v-radio-group>
                                     </div>
                                     <div class="options px-3" v-show="selectedDish.options.length > 1">
@@ -491,9 +509,11 @@ export default {
         let restuarant = await axios.post(`https://yestapi.xyz/restaurant/${id[0]}`, {
             zone_id: currentZone.id,
         })
+        let restuarantData = restuarant.data
+        console.log('restuarantData', restuarantData)
 
         return {
-			restuarant: restuarant.data,
+            restuarant: restuarantData,
             currentZone: currentZone,
         }
     },
@@ -523,6 +543,16 @@ export default {
             showRestName: false,
             lastPath: null,
             calcPath: '',
+        }
+    },
+    head() {
+        return {
+            title: this.restuarant.seo.title,
+            meta: [{
+                hid: this.restuarant.seo.keywords,
+                name: 'description',
+                content: `${this.restuarant.seo.description}`
+            }]
         }
     },
     methods: {
