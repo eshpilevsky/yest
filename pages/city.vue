@@ -62,8 +62,6 @@ export default {
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
             zone_id: currentZone.id
         })
-        console.log('categoriesList', categoriesList)
-        console.log('currentZone.id', currentZone.id)
 
         let categoriesListData = categoriesList.data
 
@@ -89,7 +87,6 @@ export default {
 
             if (categoryInfo.status != 404) {
                 categoryInfoData = categoryInfo.data
-                console.log('categoryInfoData', categoryInfoData)
                 if (categoryInfoData.background == '') {
                     categoryInfoData.background = 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png'
                 }

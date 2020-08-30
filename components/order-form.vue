@@ -227,8 +227,7 @@ export default {
                 order: this.order,
             }).then((response) => {
                 if (response.data.hasOwnProperty('checkout')) {
-					window.open(response.data.checkout.redirect_url, '_blank');
-					this.$router.push('/order/onliner_payment/success')
+					window.open(`${response.data.checkout.redirect_url}`, '_blank');
                 } else {
 					this.$store.dispatch('basket/setOrderId', response.data.order_id);
 					this.$router.push('/checkout/success')
