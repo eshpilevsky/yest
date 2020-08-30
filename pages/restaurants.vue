@@ -149,10 +149,10 @@
                                 <v-radio-group v-model="sizesRadioBtn" :mandatory="false" class="d-flex flex-row">
                                     <v-radio v-for="size in selectedDish.sizes" :key="size.id" :value="size" color="primary">
                                         <template v-slot:label>
-                                            <span>
+                                            <span class="option-main-text">
                                                 {{size.name}}
                                             </span>
-                                            <span class="ROMAN">
+                                            <span class="option-main-price">
                                                 {{size.price-selectedDish.sizes[0].price == 0 ? `` : `+${size.price-selectedDish.sizes[0].price} BYN`}}
                                             </span>
                                         </template>
@@ -169,7 +169,18 @@
                                     </div>
                                     <div class="d-flex flex-row justify-start">
                                         <v-radio-group v-model="selectOption" :mandatory="false" class="d-flex flex-row">
-                                            <v-radio v-for="optionV in option.variants" :key="optionV.id" :label="`${optionV.name} +${optionV.price[0] != undefined ? optionV.price[0].price : 0} BYN`" :value="optionV" color="primary"></v-radio>
+                                            <v-radio v-for="optionV in option.variants" :key="optionV.id" :value="optionV" color="primary">
+                                                <template v-slot:label>
+                                                    <p class="option-main">
+                                                        <span class="option-main-text">
+                                                            {{optionV.name}}
+                                                        </span>
+                                                        <span class="option-main-price">
+                                                            {{optionV.price[0] != undefined ? optionV.price[0].price : 0}} BYN
+                                                        </span>
+                                                    </p>
+                                                </template>
+                                            </v-radio>
                                         </v-radio-group>
                                     </div>
                                 </div>
@@ -352,14 +363,16 @@
                                             Размер на выбор
                                         </div>
                                         <v-radio-group v-model="sizesRadioBtn" :mandatory="false" class="d-flex flex-row">
-                                            <v-radio v-for="size in selectedDish.sizes" :key="size.id" :value="size" color="primary">
+                                            <v-radio class="radio-button" v-for="size in selectedDish.sizes" :key="size.id" :value="size" color="primary">
                                                 <template v-slot:label>
-                                                    <span>
-                                                        {{size.name}}
-                                                    </span>
-                                                    <span class="ROMAN">
-                                                        {{size.price-selectedDish.sizes[0].price == 0 ? `` : `+${size.price-selectedDish.sizes[0].price} BYN`}}
-                                                    </span>
+                                                    <p class="option-main">
+                                                        <span class="option-main-text">
+                                                            {{size.name}}
+                                                        </span>
+                                                        <span class="option-main-price">
+                                                            {{size.price-selectedDish.sizes[0].price == 0 ? `` : `+${size.price-selectedDish.sizes[0].price} BYN`}}
+                                                        </span>
+                                                    </p>
                                                 </template>
                                             </v-radio>
                                         </v-radio-group>
@@ -374,7 +387,18 @@
                                             </div>
                                             <div class="d-flex flex-row justify-start">
                                                 <v-radio-group v-model="selectOption" :mandatory="false" class="d-flex flex-row">
-                                                    <v-radio v-for="optionV in option.variants" :key="optionV.id" :label="`${optionV.name} +${optionV.price[0] != undefined ? optionV.price[0].price : 0} BYN`" :value="optionV" color="primary"></v-radio>
+                                                    <v-radio class="radio-button" v-for="optionV in option.variants" :key="optionV.id" :value="optionV" color="primary">
+                                                        <template v-slot:label>
+                                                            <p class="option-main">
+                                                                <span class="option-main-text">
+                                                                    {{optionV.name}}
+                                                                </span>
+                                                                <span class="option-main-price">
+                                                                    {{optionV.price[0] != undefined ? optionV.price[0].price : 0}} BYN
+                                                                </span>
+                                                            </p>
+                                                        </template>
+                                                    </v-radio>
                                                 </v-radio-group>
                                             </div>
                                         </div>
@@ -1081,7 +1105,29 @@ export default {
 .options-list div[role=radiogroup] .v-radio {
     width: 50% !important;
 }
-</style><style scoped>
+</style>
+<style scoped>
+  .radio-button {
+    margin-bottom: 0 !important;
+  }
+
+  .option-main {
+    padding: 10px 0 !important;
+    margin-bottom: 0 !important;
+    border-bottom: 1px solid #f5f5f5;
+    width: 100% !important;
+  }
+
+  .option-main-text {
+    font-size: 14px;
+  }
+
+  .option-main-price {
+    color: #b0b0b0;
+    font-size: 14px;
+    margin-left: 10px;
+    white-space: nowrap;
+  }
 .modal-change-products__title {
     padding-top: 6px;
     margin-bottom: 20px !important;
