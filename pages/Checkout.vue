@@ -235,7 +235,8 @@ export default {
             this.showOrderForm = false
         },
         goToForm() {
-            if (this.getUserPhoneNumber !== undefined) {
+			console.log('goToForm -> this.getUserPhoneNumber', this.getUserPhoneNumber)
+            if (this.getUserPhoneNumber !== null) {
                 this.showAuthForm = false
                 this.showOrderForm = true
                 this.showBasket = false
