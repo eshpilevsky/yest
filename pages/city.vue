@@ -43,9 +43,9 @@ export default {
             showSetAdress: true,
             rest: [],
             categoryInfoData: null,
-			currentZone: null,
-			restName: '',
-			totalPrice: 0,
+            currentZone: null,
+            restName: '',
+            totalPrice: 0,
         }
     },
     async asyncData({
@@ -107,8 +107,8 @@ export default {
                 categoryInfoData = {
                     header: 'Быстрая доставка',
                     city: currentZone.accusative,
-					background: 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png',
-					category_icon: 'https://menu-menu.by/images/category_background/mobile/pizza.jpg',
+                    background: 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png',
+                    category_icon: 'https://menu-menu.by/images/category_background/mobile/pizza.jpg',
                 }
             }
             store.dispatch('user/selectCategory', currentCategory)
@@ -120,12 +120,18 @@ export default {
                     header: 'Быстрая доставка',
                     city: currentZone.accusative,
                     background: 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png',
-                    category_icon: 'https://menu-menu.by/images/category_background/mobile/pizza.jpg',
+					category_icon: 'https://menu-menu.by/images/category_background/mobile/pizza.jpg',
+					meta:{
+						title: 'Категория все',
+						description: 'Описание',
+						keywords: 'Ключевые слова',
+					}
                 }
                 currentCategory = categoryAll[0]
                 store.dispatch('user/selectCategory', currentCategory)
             }
-        }
+		}
+        console.log('categoryInfoData', categoryInfoData)
 
         let latitude
         let longitude
@@ -261,9 +267,9 @@ export default {
         }
     },
     methods: {
-		goToRestuarant(){
-			this.$router.push(`/${this.restInfo.params.region}/restaurant/${this.restInfo.params.resName}`)
-		},
+        goToRestuarant() {
+            this.$router.push(`/${this.restInfo.params.region}/restaurant/${this.restInfo.params.resName}`)
+        },
         async getSpecialOffer() {
             await axios.post('https://yestapi.xyz/restaurants/special-offers', {
                 zone_id: parseInt(this.getSelectedZone.id),
@@ -307,10 +313,10 @@ export default {
     },
     created() {
         this.$store.dispatch('zone/setSelectedZone', this.currentZone)
-		this.$store.dispatch('user/selectCategory', this.currentCategory)
-		if (this.getLatetestRestInfoWithOrder) {
-			this.restInfo = this.getLatetestRestInfoWithOrder
-		}
+        this.$store.dispatch('user/selectCategory', this.currentCategory)
+        if (this.getLatetestRestInfoWithOrder) {
+            this.restInfo = this.getLatetestRestInfoWithOrder
+        }
     },
     mounted() {
         window.scrollTo(0, 0);
@@ -333,6 +339,22 @@ export default {
             }
         }
     },
+    head() {
+        return {
+            title: this.categoryInfoData.meta.title !== undefined? this.categoryInfoData.meta.title : 'Все',
+            meta: [{
+                    hid: 'description',
+                    name: 'description',
+                    content: this.categoryInfoData.meta.description !== undefined? this.categoryInfoData.meta.description : ''
+                },
+                {
+                    hid: 'keywords',
+                    name: 'keywords',
+                    content: this.categoryInfoData.meta.keywords !== undefined? this.categoryInfoData.meta.keywords : ''
+                },
+            ]
+        }
+    },
 }
 </script>
 
@@ -345,11 +367,11 @@ export default {
     .basket-btn__block {
         display: flex;
         position: fixed;
-		z-index: 99;
+        z-index: 99;
         bottom: 0px;
-		height: 88px;
-		width: 100%;
-		background: #fff;
+        height: 88px;
+        width: 100%;
+        background: #fff;
     }
 
 }
