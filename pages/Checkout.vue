@@ -123,7 +123,7 @@
         <v-bottom-sheet v-model="showAuthForm" :eager=true :fullscreen=true>
             <v-sheet class="text-center authFormSheet">
                 <div class="mini-header">
-                    <v-icon class="mobile-mode_header-btn " @click="goBack()">arrow_back</v-icon>
+                    <v-icon class="mobile-mode_header-btn " @click="showAuthForm = false">arrow_back</v-icon>
                     <div class="logo-block">
                         <img src="@/assets/logo.svg" alt="logo" class="mini-header_logo">
                     </div>
@@ -231,7 +231,8 @@ export default {
             this.cutleryCounter++
         },
         closeOrderForm() {
-            this.showOrderForm = false
+			this.showOrderForm = false
+			this.showBasket = true
         },
         goToForm() {
             if (this.getUserPhoneNumber !== null) {
@@ -243,7 +244,13 @@ export default {
             }
         },
         goBack() {
-            this.$router.go(-1)
+            if (this.$route.name == 'cart') {
+                if (this.getLatetestRestInfoWithOrder !== null) {
+                    this.$router.push(`/${this.getLatetestRestInfoWithOrder.params.region}/restaurant/${this.getLatetestRestInfoWithOrder.params.resName}`)
+                } else {
+                    this.$route.go(-1)
+                }
+            }
         },
         showDropBasketForm() {
             this.dropBasketForm = !this.dropBasketForm
@@ -286,6 +293,8 @@ export default {
             getTotalPrice: "basket/getTotalPrice",
             getUserPhoneNumber: "user/getUserPhoneNumber",
             getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
+            getSelectedCategory: "user/getSelectedCategory",
+            getSelectedZone: "zone/getSelectedZone",
         }),
     },
     created() {

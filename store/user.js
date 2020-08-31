@@ -3,19 +3,11 @@ const state = () => ({
     name: null,
     selectedCategory: {
       id: null,
-      alias: null
+	  alias: null,
+	  name: null,
     },
-    selectedCategoryTitle: '',
     searchNameKitchenDish: null,
     categoryList: {},
-    userLocation: {
-      locationAdress: null,
-      coords: {
-        latitude: 0,
-        longitude: 0
-      }
-    },
-    language: null,
     userNumber: null,
     smsTimer: 0,
   },
@@ -41,14 +33,6 @@ const actions = {
     context.commit('SELECT_CATEGORY', payload)
   },
 
-  setLanguage(context, payload) {
-    context.commit('SET_LANGUAGE', payload)
-  },
-
-  setSelectedCategoryTitle(context, payload) {
-    context.commit('SET_CATEGORY_TITLE', payload)
-  },
-
   setSearchNameKitchenDish(context, payload) {
     context.commit('SEARCH_NAME_KITCHEN_DISH', payload)
   },
@@ -56,14 +40,6 @@ const actions = {
   allCategory(context, payload) {
     context.commit('CATEGOTY_LIST', payload)
   },
-
-  setUserLocation(context, payload) {
-    context.commit('SET_USER_LOCATION', payload)
-  },
-
-  dropUserLocation(context) {
-    context.commit('DROP_USER_LOCATION')
-  }
 
 };
 
@@ -83,20 +59,6 @@ const mutations = {
     state.data.selectedCategory = payload
   },
 
-  SET_LANGUAGE(state, payload) {
-    state.status = '200'
-    state.data.language = payload
-  },
-
-  SET_CATEGORY_TITLE(state, payload) {
-    state.status = '200'
-    if (payload == null) {
-      state.data.selectedCategoryTitle = 'Быстрая и бесплатная доставка'
-    } else {
-      state.data.selectedCategoryTitle = payload
-    }
-  },
-
   CATEGOTY_LIST(state, payload) {
     state.status = '200'
     state.data.categoryList = payload
@@ -106,18 +68,7 @@ const mutations = {
     state.status = '200'
     state.data.searchNameKitchenDish = payload
   },
-  SET_USER_LOCATION(state, payload) {
-    state.status = '200'
-    state.data.userLocation.coords.latitude = payload.coords.latitude
-    state.data.userLocation.coords.longitude = payload.coords.longitude
-    state.data.userLocation.locationAdress = payload.locationAdress
-  },
-  DROP_USER_LOCATION(state) {
-    state.status = '200'
-    state.data.userLocation.coords.latitude = 0
-    state.data.userLocation.coords.longitude = 0
-    state.data.userLocation.locationAdress = null
-  }
+
 };
 
 const getters = {
@@ -126,16 +77,6 @@ const getters = {
   },
   getSelectedCategory(state) {
     return state.data.selectedCategory
-  },
-  getUserCoordinate(state) {
-    const mass = {
-      latitude: state.data.userLocation.coords.latitude,
-      longitude: state.data.userLocation.coords.longitude
-    }
-    return mass
-  },
-  getSelectedCategoryTitle(state) {
-    return state.data.selectedCategoryTitle
   },
   getCategoryList(state) {
     return state.data.categoryList
@@ -153,9 +94,6 @@ const getters = {
       }
     }
     return test
-  },
-  getUserLocation(state) {
-    return state.data.userLocation
   },
   getUserPhoneNumber(state) {
     return state.data.userNumber

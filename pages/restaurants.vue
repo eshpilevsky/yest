@@ -713,13 +713,21 @@ export default {
             this.selectedDishCounter = 1
             this.sizesRadioBtn = dish.sizes[0]
 
-            if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
-                this.showWarning = true
-            } else {
+            if (this.getLatetestRestInfoWithOrder == null) {
                 if (dish.sizes.length > 1) {
                     this.showDish = true
                 } else {
                     this.saveBasket()
+                }
+            } else {
+                if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
+                    this.showWarning = true
+                } else {
+                    if (dish.sizes.length > 1) {
+                        this.showDish = true
+                    } else {
+                        this.saveBasket()
+                    }
                 }
             }
         },
@@ -815,7 +823,12 @@ export default {
             this.selectedDishCounter++
         },
         goBack() {
-            this.$router.push(`${this.calcPath}`)
+            console.log('goBack -> this.getSelectedCategory', this.getSelectedCategory)
+            if (this.getSelectedCategory.hasOwnProperty('alias')) {
+                this.$router.push(`/${this.currentZone.alias}/restaurants/category/${this.getSelectedCategory.alias}`)
+            } else {
+                this.$router.push(`/${this.currentZone.alias}`)
+            }
         },
         closeOptionMenu() {
             this.showOptionsmenu = false
@@ -864,7 +877,6 @@ export default {
             getSelectedZone: "zone/getSelectedZone",
             getSelectedCategory: "user/getSelectedCategory",
             getCurrentCoords: "map/getCurrentCoords",
-            getUserLocation: "user/getUserLocation",
             getSelectedDishs: "basket/getSelectedDishs",
             getTotalPrice: "basket/getTotalPrice",
             getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
@@ -1116,10 +1128,7 @@ export default {
 .options-list div[role=radiogroup] .v-radio {
     width: 50% !important;
 }
-</style>
-<style scoped>
-
-
+</style><style scoped>
 .radio-button {
     margin-bottom: 0 !important;
 }

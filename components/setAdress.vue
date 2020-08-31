@@ -89,7 +89,6 @@ export default {
     computed: {
         ...mapGetters({
             getSelectedZone: 'zone/getSelectedZone',
-            getSelectedCategoryTitle: 'user/getSelectedCategoryTitle',
             getSelectedCategoryName: 'user/getSelectedCategoryName',
             // getSelectedCategory: 'user/getSelectedCategory',
             canDisplayMap: 'device/isMobile',
@@ -97,11 +96,6 @@ export default {
         })
     },
     watch: {
-        getSelectedCategoryTitle(newValue) {
-            let newTitle = this.computedTitle(this.getSelectedCategoryTitle)
-            this.categoryInfoData.header = newTitle[0]
-            this.categoryInfoData.city = newTitle[1]
-        },
         searchAddress(newValue, oldValue) {
             if (newValue !== null && newValue.length > 1 && oldValue !== '') {
                 this.showAdressList = false

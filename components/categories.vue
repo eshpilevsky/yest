@@ -161,7 +161,6 @@ export default {
         ...mapGetters({
             getSelectedZone: 'zone/getSelectedZone',
             // currentCategory: 'user/currentCategory',
-            getUserCoordinate: 'user/getUserCoordinate',
             getCurrentAddress: 'map/getCurrentAddress',
             getSearchNameKitchenDish: 'user/getSearchNameKitchenDish',
         }),
