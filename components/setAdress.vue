@@ -182,7 +182,6 @@ export default {
                 ]
             }).then((items) => {
                 component.suggestions = items
-                console.log('getSuggest -> items', items)
                 component.loadingSuggest = false
             });
         },

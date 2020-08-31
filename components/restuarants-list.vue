@@ -119,7 +119,6 @@ export default {
             return newValue
         },
         getCurrentAddress(newValue) {
-			console.log('getCurrentAddress -> newValue', newValue)
 			this.getRestWithCoords()
 
         }

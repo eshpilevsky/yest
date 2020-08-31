@@ -34,8 +34,7 @@ export default {
         query,
     }) {
 
-        console.log(req.headers.cookie);
-        console.log(query);
+
         let order_id
 
         if (query.hasOwnProperty('order_id')) {

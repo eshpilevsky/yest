@@ -106,8 +106,9 @@ export default {
             } else {
                 categoryInfoData = {
                     header: 'Быстрая доставка',
-                    city: currentZone.name,
-                    background: 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png',
+                    city: currentZone.accusative,
+					background: 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png',
+					category_icon: 'https://menu-menu.by/images/category_background/mobile/pizza.jpg',
                 }
             }
             store.dispatch('user/selectCategory', currentCategory)
@@ -117,12 +118,12 @@ export default {
             } else {
                 categoryInfoData = {
                     header: 'Быстрая доставка',
-                    city: currentZone.name,
+                    city: currentZone.accusative,
                     background: 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png',
+                    category_icon: 'https://menu-menu.by/images/category_background/mobile/pizza.jpg',
                 }
                 currentCategory = categoryAll[0]
                 store.dispatch('user/selectCategory', currentCategory)
-
             }
         }
 
@@ -170,7 +171,6 @@ export default {
         }
 
         var filtByTime;
-        console.log('restaurantsListData', restaurantsList.data)
         if (restaurantsList.data.status == 404) {
             restaurantsListData = [404]
         } else {

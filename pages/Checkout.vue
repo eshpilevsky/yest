@@ -215,7 +215,6 @@ export default {
             this.showAuthForm = false
             this.showBasket = false
             this.showOrderForm = true
-            console.log('closeFormShowOrderForm -> this.showOrderForm', this.showOrderForm)
         },
         closeSmsForm() {
             this.showAuthForm = false
@@ -235,7 +234,6 @@ export default {
             this.showOrderForm = false
         },
         goToForm() {
-			console.log('goToForm -> this.getUserPhoneNumber', this.getUserPhoneNumber)
             if (this.getUserPhoneNumber !== null) {
                 this.showAuthForm = false
                 this.showOrderForm = true

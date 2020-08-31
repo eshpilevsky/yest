@@ -542,7 +542,6 @@ export default {
             zone_id: currentZone.id,
         })
         let restuarantData = restuarant.data
-        console.log('restuarantData', restuarantData.menu[0].dishes[0].sizes[0])
 
         return {
             restuarant: restuarantData,

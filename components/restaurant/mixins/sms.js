@@ -93,7 +93,6 @@ export default {
     },
     goToCheckout() {
       this.$store.dispatch('user/setUserPhoneNumber', parseInt(this.phone.replace(/[^\d]/g, '')));
-      console.log('goToCheckout -> this.currentRouteName', this.currentRouteName)
       if (this.currentRouteName == 'restik') {
         this.$router.push('/checkout')
       } else {
