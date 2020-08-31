@@ -1,20 +1,20 @@
 <template>
 <div>
-    <div class="desktop-rest-info-compared">
-        <div class="desktop-rest-info-compared__row">
-            <span class="desktop-rest-info-compared__logo">%</span>
-            <p class="desktop-rest-info-compared__box">
-                <span class="desktop-rest-info-compared__title">Скидка 20%</span>
-                <span class="desktop-rest-info-compared__descr">На ряд блюд</span>
+    <div class="rest-info-compared">
+        <div class="rest-info-compared__row">
+            <span class="rest-info-compared__logo">%</span>
+            <p class="rest-info-compared__box">
+                <span class="rest-info-compared__title">Скидка 20%</span>
+                <span class="rest-info-compared__descr">На ряд блюд</span>
             </p>
         </div>
-        <div class="desktop-rest-info-compared__row">
-            <span class="desktop-rest-info-compared__logo">
+        <div class="rest-info-compared__row">
+            <span class="rest-info-compared__logo">
                 <v-icon color="#fff">card_giftcard</v-icon>
             </span>
-            <p class="desktop-rest-info-compared__box">
-                <span class="desktop-rest-info-compared__title">Блюдо в подарок</span>
-                <span class="desktop-rest-info-compared__descr">При первом заказе от (сумма) BYN из этого ресторана (блюдо) бесплатно</span>
+            <p class="rest-info-compared__box">
+                <span class="rest-info-compared__title">Блюдо в подарок</span>
+                <span class="rest-info-compared__descr">При первом заказе от (сумма) BYN из этого ресторана (блюдо) бесплатно</span>
             </p>
         </div>
     </div>
@@ -28,12 +28,12 @@ export default {
 </script>
 
 <style scoped>
-.desktop-rest-info-compared {
+.rest-info-compared {
     padding: 40px 80px 20px;
     background-image: linear-gradient(to bottom, #ffffff, hsl(0deg 0% 29% / 14%) 480px);
 }
 
-.desktop-rest-info-compared__row {
+.rest-info-compared__row {
     display: flex;
     align-items: center;
     padding: 10px;
@@ -44,7 +44,7 @@ export default {
     margin-bottom: 20px;
 }
 
-.desktop-rest-info-compared__logo {
+.rest-info-compared__logo {
     color: #fff;
     font-size: 30px;
     font-weight: 600;
@@ -62,35 +62,43 @@ export default {
     justify-content: center;
 }
 
-.desktop-rest-info-compared__box {
+.rest-info-compared__box {
     display: flex;
     flex-direction: column;
 }
 
-.desktop-rest-info-compared__title {
+.rest-info-compared__title {
     font-size: 18px;
     line-height: 1.3;
 }
 
-.desktop-rest-info-compared__descr {
+.rest-info-compared__descr {
     color: #b0b0b0;
     font-size: 14px;
     margin-top: 1px;
     line-height: 1.43;
 }
 
-.rest-info-compared__row {
+@media screen and (max-width: 992px) {
+  .rest-info-compared {
+    padding: 0;
+    background-image: none;
+  }
+
+  .rest-info-compared__row {
     display: flex;
     align-items: center;
     border-bottom: 1px solid #f5f5f5;
     padding: 10px 0;
-}
+    box-shadow: none;
+    margin-bottom: 0;
+  }
 
-.rest-info-compared__row:last-child {
+  .rest-info-compared__row:last-child {
     border-bottom: none;
-}
+  }
 
-.rest-info-compared__logo {
+  .rest-info-compared__logo {
     color: #fff;
     font-size: 20px;
     font-weight: 600;
@@ -107,30 +115,24 @@ export default {
     margin-right: 12px;
     border-radius: 999px;
     justify-content: center;
-}
+  }
 
-.rest-info-compared__box {
+  .rest-info-compared__box {
     display: flex;
     flex-direction: column;
-}
+  }
 
-.rest-info-compared__title {
+  .rest-info-compared__title {
     font-size: 14px;
     line-height: 1.43;
-}
+  }
 
-.rest-info-compared__descr {
+  .rest-info-compared__descr {
     color: #b0b0b0;
     font-size: 12px;
     margin-top: 1px;
     line-height: 1.16;
+  }
 }
-
-/* @media screen and (max-width: 992px) {
-
-.desktop-rest-info-compared {
-    padding: 0px;
-}
-} */
 
 </style>
