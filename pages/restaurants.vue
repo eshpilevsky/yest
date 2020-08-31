@@ -108,24 +108,7 @@
                     </v-tabs>
                     <v-divider />
                 </div>
-                <div class="desktop-rest-info-compared">
-                    <div class="desktop-rest-info-compared__row">
-                        <span class="desktop-rest-info-compared__logo">%</span>
-                        <p class="desktop-rest-info-compared__box">
-                            <span class="desktop-rest-info-compared__title">Скидка 20%</span>
-                            <span class="desktop-rest-info-compared__descr">На ряд блюд</span>
-                        </p>
-                    </div>
-                    <div class="desktop-rest-info-compared__row">
-                        <span class="desktop-rest-info-compared__logo">
-                            <v-icon color="#fff">card_giftcard</v-icon>
-                        </span>
-                        <p class="desktop-rest-info-compared__box">
-                            <span class="desktop-rest-info-compared__title">Блюдо в подарок</span>
-                            <span class="desktop-rest-info-compared__descr">При первом заказе от (сумма) BYN из этого ресторана (блюдо) бесплатно</span>
-                        </p>
-                    </div>
-                </div>
+                <specOffer />
 
                 <div class="catalog-list">
                     <div v-for="(category, index) in restuarant.menu" :key="category.cat_id">
@@ -305,24 +288,8 @@
                         </v-sheet>
                     </v-bottom-sheet>
                 </div>
-                <div class="rest-info-compared">
-                    <div class="rest-info-compared__row">
-                        <span class="rest-info-compared__logo">%</span>
-                        <p class="rest-info-compared__box">
-                            <span class="rest-info-compared__title">Скидка 20%</span>
-                            <span class="rest-info-compared__descr">На ряд блюд</span>
-                        </p>
-                    </div>
-                    <div class="rest-info-compared__row">
-                        <span class="rest-info-compared__logo">
-                            <v-icon color="#fff">card_giftcard</v-icon>
-                        </span>
-                        <p class="rest-info-compared__box">
-                            <span class="rest-info-compared__title">Блюдо в подарок</span>
-                            <span class="rest-info-compared__descr">При первом заказе от (сумма) BYN из этого ресторана (блюдо) бесплатно</span>
-                        </p>
-                    </div>
-                </div>
+                <specOffer />
+
             </div>
             <div class="rest-info-bottom">
                 <v-tabs hide-slider z-index='1' v-model="tab" class="catalog-tabs catalog-tabs-mobile">
@@ -516,6 +483,7 @@ import cardDish from '@/components/restaurant/cardDish'
 import basket from '@/components/basket'
 import restuarantInfo from '@/components/restaurant/restuarantInfo'
 import smsForm from '@/components/restaurant/sms-form'
+import specOffer from '@/components/restaurant/spec-offer'
 import axios from 'axios'
 
 import {
@@ -530,6 +498,7 @@ export default {
         restuarantInfo,
         basket,
         smsForm,
+        specOffer,
     },
     async asyncData({
         app,
@@ -743,8 +712,8 @@ export default {
         momentAdd(dish) {
             this.selectedDish = dish
             this.selectedDishCounter = 1
-			this.sizesRadioBtn = dish.sizes[0]
-			
+            this.sizesRadioBtn = dish.sizes[0]
+
             if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
                 this.showWarning = true
             } else {
@@ -1148,104 +1117,9 @@ export default {
 .options-list div[role=radiogroup] .v-radio {
     width: 50% !important;
 }
-</style><style scoped>
-.desktop-rest-info-compared {
-    padding: 40px 80px 20px;
-    background-image: linear-gradient(to bottom, #ffffff, hsl(0deg 0% 29% / 14%) 480px);
-}
+</style>
+<style scoped>
 
-.desktop-rest-info-compared__row {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    overflow: hidden;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.05);
-    background: #ffffff;
-    border-radius: 4px;
-    margin-bottom: 20px;
-}
-
-.desktop-rest-info-compared__logo {
-    color: #fff;
-    font-size: 30px;
-    font-weight: 600;
-    line-height: 70px;
-    flex: 0 0 auto;
-    width: 70px;
-    height: 70px;
-    display: flex;
-    background: #4ca647;
-    box-shadow: 0 2px 16px 0px rgba(0, 0, 0, 0.07);
-    box-sizing: content-box;
-    align-items: center;
-    margin-right: 20px;
-    border-radius: 4px;
-    justify-content: center;
-}
-
-.desktop-rest-info-compared__box {
-    display: flex;
-    flex-direction: column;
-}
-
-.desktop-rest-info-compared__title {
-    font-size: 18px;
-    line-height: 1.3;
-}
-
-.desktop-rest-info-compared__descr {
-    color: #b0b0b0;
-    font-size: 14px;
-    margin-top: 1px;
-    line-height: 1.43;
-}
-
-.rest-info-compared__row {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #f5f5f5;
-    padding: 10px 0;
-}
-
-.rest-info-compared__row:last-child {
-    border-bottom: none;
-}
-
-.rest-info-compared__logo {
-    color: #fff;
-    font-size: 20px;
-    font-weight: 600;
-    line-height: 42px;
-    flex: 0 0 auto;
-    width: 42px;
-    height: 42px;
-    border: 5px solid #fff;
-    display: flex;
-    background: #4ca647;
-    box-shadow: 0 2px 16px 0px rgba(0, 0, 0, 0.07);
-    box-sizing: content-box;
-    align-items: center;
-    margin-right: 12px;
-    border-radius: 999px;
-    justify-content: center;
-}
-
-.rest-info-compared__box {
-    display: flex;
-    flex-direction: column;
-}
-
-.rest-info-compared__title {
-    font-size: 14px;
-    line-height: 1.43;
-}
-
-.rest-info-compared__descr {
-    color: #b0b0b0;
-    font-size: 12px;
-    margin-top: 1px;
-    line-height: 1.16;
-}
 
 .radio-button {
     margin-bottom: 0 !important;
