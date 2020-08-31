@@ -246,7 +246,7 @@ export default {
             this.$router.go(-1)
         },
         showDropBasketForm() {
-            this.dropBasketForm = true
+            this.dropBasketForm = !this.dropBasketForm
         },
         dropBasket() {
             this.$store.dispatch('basket/dropBasket');

@@ -131,7 +131,6 @@ export default {
                 store.dispatch('user/selectCategory', currentCategory)
             }
 		}
-        console.log('categoryInfoData', categoryInfoData)
 
         let latitude
         let longitude
