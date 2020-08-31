@@ -4,12 +4,12 @@
     <specialOffers :offers="specilaOffers" v-show="showSpecialOffer" />
     <categories v-show="categoriesList.length > 1" :currentZone='currentZone' :categoriesList='categoriesList' :currentCategory='this.currentCategory' />
     <restuarantsList :restaurantsList='restaurantsList' :currentCategory='this.currentCategory' :currentZone='currentZone' />
-    <div class="basket-btn__block" v-show="this.getTotalPrice > 0">
-        <v-btn block color='primary' class="d-flex flex-row justify-space-between rounded-xl" height="60px" @click="goToRestuarant()">
-            <span>
+    <div class="basket-home-btn" v-show="this.getTotalPrice > 0">
+        <v-btn block color='primary' class="basket-home-btn__box d-flex flex-row justify-space-between rounded-xl" height="60px" @click="goToRestuarant()">
+            <span class="basket-home-btn__name">
                 {{this.restInfo ? this.restInfo.restName : ''}}
             </span>
-            <span>
+            <span class="basket-home-btn__price">
                 {{this.getTotalPrice}} BYN
             </span>
         </v-btn>
@@ -358,21 +358,43 @@ export default {
 </script>
 
 <style scoped>
-.basket-btn__block {
+.basket-home-btn {
     display: none;
 }
 
 @media screen and (max-width: 992px) {
-    .basket-btn__block {
+    .basket-home-btn {
         display: flex;
         position: fixed;
-        z-index: 99;
-        bottom: 0px;
-        height: 88px;
+        z-index: 2;
+        bottom: 0;
         width: 100%;
         background: #fff;
+        padding: 16px 16px 26px;
+        box-shadow: 0 -4px 8px 0 rgba(0, 0, 0, 0.05);
     }
 
+    .basket-home-btn__box {
+      border-radius: 16px !important;
+      display: flex;
+      height: 56px !important;
+      justify-content: space-between;
+      text-transform: initial;
+      font-size: 16px;
+    }
+
+    .basket-home-btn__name {
+        font-size: 16px;
+        letter-spacing: 0.1px;
+        text-transform: initial;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .basket-home-btn__price {
+      color: #fff;
+    }
 }
 </style><style>
 html {
