@@ -155,7 +155,7 @@
                                                 {{size.name}}
                                             </span>
                                             <span class="option-main-price">
-                                                {{size.price-selectedDish.sizes[0].price == 0 ? `` : `+${size.price-selectedDish.sizes[0].price} BYN`}}
+                                                {{size.price-selectedDish.sizes[0].price == 0 ? `` : `+${(size.price-selectedDish.sizes[0].price).toFixed(1)} BYN`}}
                                             </span>
                                         </template>
                                     </v-radio>
@@ -376,7 +376,7 @@
                                                             {{size.name}}
                                                         </span>
                                                         <span class="option-main-price">
-                                                            {{size.price-selectedDish.sizes[0].price == 0 ? `` : `+${size.price-selectedDish.sizes[0].price} BYN`}}
+                                                            {{size.price-selectedDish.sizes[0].price == 0 ? `` : `+${(size.price-selectedDish.sizes[0].price).toFixed(1)} BYN`}}
                                                         </span>
                                                     </p>
                                                 </template>
