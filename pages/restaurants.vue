@@ -85,7 +85,7 @@
                                                 <p class="info-btn-text">
                                                     Информация <br /> о ресторане
                                                 </p>
-                                                <img src="@/assets/restaurantInfoIcon.svg" alt="restaurant info" >
+                                                <img src="@/assets/restaurantInfoIcon.svg" alt="restaurant info">
                                             </v-btn>
                                         </template>
                                         <div class="rest-info-modal">
@@ -109,23 +109,23 @@
                     <v-divider />
                 </div>
                 <div class="desktop-rest-info-compared">
-                <div class="desktop-rest-info-compared__row">
-                  <span class="desktop-rest-info-compared__logo">%</span>
-                  <p class="desktop-rest-info-compared__box">
-                    <span class="desktop-rest-info-compared__title">Скидка 20%</span>
-                    <span class="desktop-rest-info-compared__descr">На ряд блюд</span>
-                  </p>
+                    <div class="desktop-rest-info-compared__row">
+                        <span class="desktop-rest-info-compared__logo">%</span>
+                        <p class="desktop-rest-info-compared__box">
+                            <span class="desktop-rest-info-compared__title">Скидка 20%</span>
+                            <span class="desktop-rest-info-compared__descr">На ряд блюд</span>
+                        </p>
+                    </div>
+                    <div class="desktop-rest-info-compared__row">
+                        <span class="desktop-rest-info-compared__logo">
+                            <v-icon color="#fff">card_giftcard</v-icon>
+                        </span>
+                        <p class="desktop-rest-info-compared__box">
+                            <span class="desktop-rest-info-compared__title">Блюдо в подарок</span>
+                            <span class="desktop-rest-info-compared__descr">При первом заказе от (сумма) BYN из этого ресторана (блюдо) бесплатно</span>
+                        </p>
+                    </div>
                 </div>
-                <div class="desktop-rest-info-compared__row">
-                    <span class="desktop-rest-info-compared__logo">
-                      <v-icon color="#fff">card_giftcard</v-icon>
-                    </span>
-                  <p class="desktop-rest-info-compared__box">
-                    <span class="desktop-rest-info-compared__title">Блюдо в подарок</span>
-                    <span class="desktop-rest-info-compared__descr">При первом заказе от (сумма) BYN из этого ресторана (блюдо) бесплатно</span>
-                  </p>
-                </div>
-              </div>
 
                 <div class="catalog-list">
                     <div v-for="(category, index) in restuarant.menu" :key="category.cat_id">
@@ -306,22 +306,22 @@
                     </v-bottom-sheet>
                 </div>
                 <div class="rest-info-compared">
-                  <div class="rest-info-compared__row">
-                    <span class="rest-info-compared__logo">%</span>
-                    <p class="rest-info-compared__box">
-                      <span class="rest-info-compared__title">Скидка 20%</span>
-                      <span class="rest-info-compared__descr">На ряд блюд</span>
-                    </p>
-                  </div>
-                  <div class="rest-info-compared__row">
-                    <span class="rest-info-compared__logo">
-                      <v-icon color="#fff">card_giftcard</v-icon>
-                    </span>
-                    <p class="rest-info-compared__box">
-                      <span class="rest-info-compared__title">Блюдо в подарок</span>
-                      <span class="rest-info-compared__descr">При первом заказе от (сумма) BYN из этого ресторана (блюдо) бесплатно</span>
-                    </p>
-                  </div>
+                    <div class="rest-info-compared__row">
+                        <span class="rest-info-compared__logo">%</span>
+                        <p class="rest-info-compared__box">
+                            <span class="rest-info-compared__title">Скидка 20%</span>
+                            <span class="rest-info-compared__descr">На ряд блюд</span>
+                        </p>
+                    </div>
+                    <div class="rest-info-compared__row">
+                        <span class="rest-info-compared__logo">
+                            <v-icon color="#fff">card_giftcard</v-icon>
+                        </span>
+                        <p class="rest-info-compared__box">
+                            <span class="rest-info-compared__title">Блюдо в подарок</span>
+                            <span class="rest-info-compared__descr">При первом заказе от (сумма) BYN из этого ресторана (блюдо) бесплатно</span>
+                        </p>
+                    </div>
                 </div>
             </div>
             <div class="rest-info-bottom">
@@ -343,7 +343,8 @@
                             <v-card class="dish-card">
                                 <div @click="showSelectedDish(item)">
                                     <div class="card-dish-top">
-                                        <span class="dash-info-compare" v-show="item.sizes[0].discount !== null">%</span>
+                                        <span class="dash-info-compare" v-if="item.sizes[0]" v-show="item.sizes[0].discount !== null">%</span>
+                                        <!-- <span class="dash-info-compare" >%</span> -->
                                         <img :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" :alt="item.name" class="dish-img-mobile" />
                                     </div>
                                     <div class="card-dish-bottom">
@@ -572,7 +573,7 @@ export default {
             zone_id: currentZone.id,
         })
         let restuarantData = restuarant.data
-        console.log('restuarantData', restuarantData)
+        console.log('restuarantData', restuarantData.menu[0].dishes[0].sizes[0])
 
         return {
             restuarant: restuarantData,
@@ -610,8 +611,7 @@ export default {
     head() {
         return {
             title: this.restuarant.seo.title,
-            meta: [
-				{
+            meta: [{
                     hid: 'description',
                     name: 'description',
                     content: this.restuarant.seo.description
@@ -743,11 +743,16 @@ export default {
         momentAdd(dish) {
             this.selectedDish = dish
             this.selectedDishCounter = 1
-            this.sizesRadioBtn = dish.sizes[0]
-            if (dish.sizes.length > 1) {
-                this.showDish = true
+			this.sizesRadioBtn = dish.sizes[0]
+			
+            if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
+                this.showWarning = true
             } else {
-                this.saveBasket()
+                if (dish.sizes.length > 1) {
+                    this.showDish = true
+                } else {
+                    this.saveBasket()
+                }
             }
         },
         addToBasketMobile() {
@@ -1143,14 +1148,13 @@ export default {
 .options-list div[role=radiogroup] .v-radio {
     width: 50% !important;
 }
-</style>
-<style scoped>
-  .desktop-rest-info-compared {
+</style><style scoped>
+.desktop-rest-info-compared {
     padding: 40px 80px 20px;
     background-image: linear-gradient(to bottom, #ffffff, hsl(0deg 0% 29% / 14%) 480px);
-  }
+}
 
-  .desktop-rest-info-compared__row {
+.desktop-rest-info-compared__row {
     display: flex;
     align-items: center;
     padding: 10px;
@@ -1159,9 +1163,9 @@ export default {
     background: #ffffff;
     border-radius: 4px;
     margin-bottom: 20px;
-  }
+}
 
-  .desktop-rest-info-compared__logo {
+.desktop-rest-info-compared__logo {
     color: #fff;
     font-size: 30px;
     font-weight: 600;
@@ -1177,37 +1181,37 @@ export default {
     margin-right: 20px;
     border-radius: 4px;
     justify-content: center;
-  }
+}
 
-  .desktop-rest-info-compared__box {
+.desktop-rest-info-compared__box {
     display: flex;
     flex-direction: column;
-  }
+}
 
-  .desktop-rest-info-compared__title {
+.desktop-rest-info-compared__title {
     font-size: 18px;
     line-height: 1.3;
-  }
+}
 
-  .desktop-rest-info-compared__descr {
+.desktop-rest-info-compared__descr {
     color: #b0b0b0;
     font-size: 14px;
     margin-top: 1px;
     line-height: 1.43;
-  }
+}
 
-  .rest-info-compared__row {
+.rest-info-compared__row {
     display: flex;
     align-items: center;
     border-bottom: 1px solid #f5f5f5;
     padding: 10px 0;
-  }
+}
 
-  .rest-info-compared__row:last-child {
+.rest-info-compared__row:last-child {
     border-bottom: none;
-  }
+}
 
-  .rest-info-compared__logo {
+.rest-info-compared__logo {
     color: #fff;
     font-size: 20px;
     font-weight: 600;
@@ -1224,46 +1228,47 @@ export default {
     margin-right: 12px;
     border-radius: 999px;
     justify-content: center;
-  }
+}
 
-  .rest-info-compared__box {
+.rest-info-compared__box {
     display: flex;
     flex-direction: column;
-  }
+}
 
-  .rest-info-compared__title {
+.rest-info-compared__title {
     font-size: 14px;
     line-height: 1.43;
-  }
+}
 
-  .rest-info-compared__descr {
+.rest-info-compared__descr {
     color: #b0b0b0;
     font-size: 12px;
     margin-top: 1px;
     line-height: 1.16;
-  }
+}
 
-  .radio-button {
+.radio-button {
     margin-bottom: 0 !important;
-  }
+}
 
-  .option-main {
+.option-main {
     padding: 10px 0 !important;
     margin-bottom: 0 !important;
     border-bottom: 1px solid #f5f5f5;
     width: 100% !important;
-  }
+}
 
-  .option-main-text {
+.option-main-text {
     font-size: 14px;
-  }
+}
 
-  .option-main-price {
+.option-main-price {
     color: #b0b0b0;
     font-size: 14px;
     margin-left: 10px;
     white-space: nowrap;
-  }
+}
+
 .modal-change-products__title {
     padding-top: 6px;
     margin-bottom: 20px !important;
