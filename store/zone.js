@@ -14,6 +14,14 @@ export const actions = {
   },
   setSelectedZone(context, payload) {
     context.commit('SET_SELECTED_ZONE', payload)
+  },
+  async checkDeliveryAddress(context, payload) {
+	await ApiService.post('/check_delivery_address', payload).then((res)=>{
+    	console.log('checkDeliveryAddress -> res', res)
+
+	}).catch((err)=>{
+		console.error(err);
+	})
   }
 };
 
