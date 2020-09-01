@@ -30,9 +30,9 @@
             </v-text-field>
             <div v-show="showAdressList && searchAddress.length > 2" class="adressList">
                 <v-list>
-                    <v-list-item v-for="(item, index) in suggestions" :key="'adres'+index" class="itemAdress" @click="selectAdress(item)">
+                    <v-list-item v-for="(item, index) in suggestions" :key="'address'+index" class="itemAdress" @click="selectAdress(item)">
                         <v-list-item-content>
-                            <v-list-item-title>{{item.displayName}}</v-list-item-title>
+                            <v-list-item-title>{{item.displayName}} a</v-list-item-title>
                             <v-list-item-subtitle class="itemAdress-sub">{{item.value}}</v-list-item-subtitle>
                         </v-list-item-content>
                     </v-list-item>
@@ -89,6 +89,7 @@ export default {
     computed: {
         ...mapGetters({
             getSelectedZone: 'zone/getSelectedZone',
+            getZoneList: 'zone/getZoneList',
             getSelectedCategoryName: 'user/getSelectedCategoryName',
             // getSelectedCategory: 'user/getSelectedCategory',
             canDisplayMap: 'device/isMobile',
@@ -142,18 +143,26 @@ export default {
             }, 500);
         },
         async showRestuarants() {
-            const component = this
+            const app = this
             await ymaps.geocode(this.searchAddress, {
                 results: 1,
-                boundedBy: [
-                    [51.753588, 23.148098],
-                    [55.591263, 31.491889]
-                ]
             }).then((geo) => {
-                const geoObjects = geo.geoObjects.get(0)
-                component.coords = geoObjects.geometry.getCoordinates()
-                component.setCurrentCoords(geoObjects.geometry.getCoordinates())
-                component.setCurrentAddress(component.searchAddress)
+				let getCityGeocoder = geo.geoObjects.get(0).properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.Locality.LocalityName')
+				if (app.getSelectedZone.name !== getCityGeocoder) {
+					let findCity = app.getZoneList.find((zone)=>{
+						return zone.name == getCityGeocoder
+					})
+					if (findCity !== undefined) {
+						app.$router.push(`/${findCity.alias}`)
+					} else{
+						app.$router.push(`/`)
+					}
+				} else {
+					const geoObjects = geo.geoObjects.get(0)
+					app.coords = geoObjects.geometry.getCoordinates()
+					app.setCurrentCoords(geoObjects.geometry.getCoordinates())
+					app.setCurrentAddress(app.searchAddress)
+				}
             });
             const id = 'restTitle';
             const yOffset = -70;
@@ -167,7 +176,7 @@ export default {
         async getSuggest(str) {
             this.showAdressList = true
             this.loadingSuggest = true
-            const component = this
+            const app = this
             await ymaps.suggest(str, {
                 results: 5,
                 boundedBy: [
@@ -175,8 +184,8 @@ export default {
                     [55.591263, 31.491889]
                 ]
             }).then((items) => {
-                component.suggestions = items
-                component.loadingSuggest = false
+                app.suggestions = items
+                app.loadingSuggest = false
             });
         },
         clearAdress() {
@@ -196,7 +205,7 @@ export default {
                 headContainer.style.visibility = 'visible'
             }
         },
-        selectAdress(address) {
+        selectAdress(address) {			
             var adv = address.value
             var addressSplit = adv.split('Беларусь,')
             this.searchAddress = addressSplit[1]

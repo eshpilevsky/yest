@@ -18,7 +18,7 @@ export function createRouter() {
     mode: 'history',
     routes: [{
         path: '/contacts',
-        name: 'cart',
+        name: 'contacts',
         component: multipage,
       },
       {

@@ -1,17 +1,17 @@
 <template>
-    <v-overlay class="mobile-map-wrapper" :dark='false' :value="isMapVisible">
-        <div v-if="this.getMapLoading" class="map-loading">
-            <v-progress-circular indeterminate size="40" color="grey"></v-progress-circular>
+<v-overlay class="mobile-map-wrapper" :dark='false' :value="isMapVisible">
+    <div v-if="this.getMapLoading" class="map-loading">
+        <v-progress-circular indeterminate size="40" color="grey"></v-progress-circular>
+    </div>
+    <div v-else class="map-search-wrapper">
+        <div class="currentAddress" v-show="!isInputAddressMode">
+            <h2 class="currentAddress-title">{{address}}</h2>
+            <div class="currentAddress-put" @click="switchToAddressMode">Изменить адрес доставки</div>
         </div>
-        <div v-else class="map-search-wrapper">
-            <div class="currentAddress" v-show="!isInputAddressMode">
-                <h2 class="currentAddress-title">{{address}}</h2>
-                <div class="currentAddress-put" @click="switchToAddressMode">Изменить адрес доставки</div>
-            </div>
-            <yandex-map v-show="!isInputAddressMode" :coords="coords" :zoom="17" @click.stop="onClick" @map-was-initialized="onInit" :controls="controls" :options="options" @boundschange="onBoundsChange" />
-            <map-suggest v-show="isInputAddressMode" @select="onSelect" @selectedPlace='selectedPlace' />
-        </div>
-    </v-overlay>
+        <yandex-map v-show="!isInputAddressMode" :coords="coords" :zoom="17" @click.stop="onClick" @map-was-initialized="onInit" :controls="controls" :options="options" @boundschange="onBoundsChange" />
+        <map-suggest v-show="isInputAddressMode" @select="onSelect" @selectedPlace='selectedPlace' />
+    </div>
+</v-overlay>
 </template>
 
 <script>
@@ -62,13 +62,15 @@ export default {
         }
     },
     computed: {
-        ...mapGetters('map', {
-            isMapVisible: 'isMapVisible',
-            getCurrentCoords: 'getCurrentCoords',
-            getCurrentAddress: 'getCurrentAddress',
-            isInputAddressMode: 'isInputAddressMode',
-            geolocationAvailable: 'geolocationAvailable',
-            getMapLoading: 'getMapLoading',
+        ...mapGetters({
+            isMapVisible: 'map/isMapVisible',
+            getCurrentCoords: 'map/getCurrentCoords',
+            getCurrentAddress: 'map/getCurrentAddress',
+            isInputAddressMode: 'map/isInputAddressMode',
+            geolocationAvailable: 'map/geolocationAvailable',
+            getMapLoading: 'map/getMapLoading',
+            getSelectedZone: 'zone/getSelectedZone',
+            getZoneList: 'zone/getZoneList',
         }),
         currentAddress() {
             return this.getCurrentAddress
@@ -82,7 +84,7 @@ export default {
     async mounted() {
         if (performance.navigation.type == 1) {
             this.hideMap()
-		}
+        }
     },
     methods: {
         ...mapMutations({
@@ -119,13 +121,13 @@ export default {
                     coords,
                     ymaps
                 })
-				await this.hideMap()
+                await this.hideMap()
             })
             if (this.getCurrentCoords.length === 0) {
                 await this.getLocation()
             }
-			this.coords = this.getCurrentCoords
-			await this.loadf()
+            this.coords = this.getCurrentCoords
+            await this.loadf()
             console.error('onInit -> this.coords', this.coords)
         },
         onClick(e) {
@@ -133,22 +135,35 @@ export default {
             this.setCurrentCoords(this.coords)
         },
         selectedPlace(place) {
-            const component = this
+            const app = this
             ymaps.geocode(place.value, {
                 results: 1,
                 boundedBy: [
                     [51.753588, 23.148098],
                     [55.591263, 31.491889]
-                ]
+                ],
+                kind: 'Минск'
             }).then((geo) => {
-                const geoObjects = geo.geoObjects.get(0)
-                component.coords = geoObjects.geometry.getCoordinates()
-                component.mapInstance.setCenter(geoObjects.geometry.getCoordinates(), 17)
+                let getCityGeocoder = geo.geoObjects.get(0).properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.Locality.LocalityName')
+                if (app.getSelectedZone.name !== getCityGeocoder) {
+                    let findCity = app.getZoneList.find((zone) => {
+                        return zone.name == getCityGeocoder
+                    })
+                    if (findCity !== undefined) {
+                        app.$router.push(`/${findCity.alias}`)
+                    } else {
+                        app.$router.push(`/`)
+                    }
+                } else {
+                    const geoObjects = geo.geoObjects.get(0)
+                    app.coords = geoObjects.geometry.getCoordinates()
+                    app.mapInstance.setCenter(geoObjects.geometry.getCoordinates(), 17)
+                }
             });
         },
         onSelect(e) {
             const mapInstance = this.mapInstance
-            const component = this
+            const app = this
             if (mapInstance !== null) {
                 const selectedValue = e.get('item').value
                 ymaps.geocode(selectedValue, {
@@ -156,23 +171,35 @@ export default {
                         boundedBy: [
                             [51.753588, 23.148098],
                             [55.591263, 31.491889]
-                        ]
+                        ],
                     })
                     .then((res) => {
-                        const geoObjects = res.geoObjects.get(0)
-                        component.coords = geoObjects.geometry.getCoordinates()
-                        if (component.geolocationAvailable) {
-                            component.address = getAddressFromString(selectedValue)
-                            mapInstance.setCenter(component.coords, 17)
-                            this.switchToMapMode()
-                            return
+                        let getCityGeocoder = geo.geoObjects.get(0).properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.Locality.LocalityName')
+                        if (app.getSelectedZone.name !== getCityGeocoder) {
+                            let findCity = app.getZoneList.find((zone) => {
+                                return zone.name == getCityGeocoder
+                            })
+                            if (findCity !== undefined) {
+                                app.$router.push(`/${findCity.alias}`)
+                            } else {
+                                app.$router.push(`/`)
+                            }
+                        } else {
+                            const geoObjects = res.geoObjects.get(0)
+                            app.coords = geoObjects.geometry.getCoordinates()
+                            if (app.geolocationAvailable) {
+                                app.address = getAddressFromString(selectedValue)
+                                mapInstance.setCenter(app.coords, 17)
+                                this.switchToMapMode()
+                                return
+                            }
+                            const bounds = geoObjects.properties.get('boundenBy')
+                            mapInstance.setBounds(bounds, {
+                                checkZoomRange: true
+                            })
+                            mapInstance.setCenter()
+                            app.address = getAddresFromGeoobject(res.geoObjects.get(0))
                         }
-                        const bounds = geoObjects.properties.get('boundenBy')
-                        mapInstance.setBounds(bounds, {
-                            checkZoomRange: true
-                        })
-                        mapInstance.setCenter()
-                        component.address = getAddresFromGeoobject(res.geoObjects.get(0))
                     })
             }
         },
@@ -184,34 +211,33 @@ export default {
 };
 </script>
 
-
 <style lang="scss">
 $size: 7vw;
 $header: 65px;
 
 [class*=copyrights-pane] {
-  z-index: 3000;
+    z-index: 3000;
 }
 
 .map-search-wrapper {
-  height: 100% !important;
-  overflow: hidden !important;
-  -webkit-overflow-scrolling: touch !important;
-  padding-bottom: calc(0px + var(--safe-area-inset-bottom, 0px));
+    height: 100% !important;
+    overflow: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-bottom: calc(0px + var(--safe-area-inset-bottom, 0px));
 }
 
 .mobile-map-wrapper .v-overlay__content {
-  height: 100%;
-  overflow: hidden;
+    height: 100%;
+    overflow: hidden;
 }
 
 .mobile-map-wrapper {
-  height: 100% !important;
-  overflow: hidden;
+    height: 100% !important;
+    overflow: hidden;
 }
 
 .mobile-map-wrapper .ymap-container {
-  height: 100% !important;
+    height: 100% !important;
 }
 
 ymaps {
@@ -271,11 +297,11 @@ ymaps .customMapBtn i.material-icons {
 }
 
 ymaps .customMapBtn.place i {
-  font-size: 40px;
+    font-size: 40px;
 }
 
 ymaps .customMapBtn .close {
-  box-shadow: 0 2px 4px 0 rgba(96, 96, 96, 0.15) !important;
+    box-shadow: 0 2px 4px 0 rgba(96, 96, 96, 0.15) !important;
 }
 
 ymaps .customMapBtn {
@@ -283,20 +309,22 @@ ymaps .customMapBtn {
     height: 8vw;
 }
 
-ymaps .customMapBtn.plus, ymaps .customMapBtn.minus {
+ymaps .customMapBtn.plus,
+ymaps .customMapBtn.minus {
     box-shadow: 0 2px 4px 0 rgba(96, 96, 96, 0.15) !important;
 }
 
 ymaps .customMapBtn.plus {
-  margin-top: -38px;
-  border-bottom: 1px solid #ddd !important;
+    margin-top: -38px;
+    border-bottom: 1px solid #ddd !important;
 }
 
 ymaps .customMapBtn.minus {
-  border-top: 1px solid #ddd !important;
+    border-top: 1px solid #ddd !important;
 }
 
-ymaps .customMapBtn.plus i, ymaps .customMapBtn.minus i {
+ymaps .customMapBtn.plus i,
+ymaps .customMapBtn.minus i {
     font-size: 20px !important;
 }
 
@@ -385,8 +413,7 @@ h2.currentAddress-title {
     pointer-events: auto;
     background-color: rgba(255, 255, 255, 0.8);
 }
-</style>
-<style scoped>
+</style><style scoped>
 .v-overlay__content {
     width: 100vw;
     height: 100vh;

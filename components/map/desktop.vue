@@ -18,14 +18,14 @@
                 <div class="map-actions-container">
                     <v-text-field @focus="focusInput" @blur="blurInput" height='40' dense placeholder="Укажите адрес доставки..." v-model="address" filled outlined clearable background-color="primary" class="address-input btnFz"></v-text-field>
                     <div v-show="showSuggestList" class="map-actions-bottom">
-                    <v-list class="sugList" max-width="505px">
-                      <v-list-item v-for="(item, index) in suggestList" :key="'sug'+index" class="itemAdress" @click="selectAdress(item)">
-                        <v-list-item-content>
-                          <v-list-item-title>{{item.value}}</v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-                    </v-list>
-                  </div>
+                        <v-list class="sugList" max-width="505px">
+                            <v-list-item v-for="(item, index) in suggestList" :key="'sug'+index" class="itemAdress" @click="selectAdress(item)">
+                                <v-list-item-content>
+                                    <v-list-item-title>{{item.value}}</v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-list>
+                    </div>
                 </div>
                 <v-btn height='40' color="primary" class="ml-2 map-actions-ok-btn" @click="confirmPosition()">
                     Ok
@@ -111,9 +111,11 @@ export default {
             switchToMapMode: 'map/UNSET_INPUT_ADDRESS_MODE',
             switchToAddressMode: 'map/SET_INPUT_ADDRESS_MODE',
         }),
-        ...mapActions('map', {
-            getLocation: 'getLocation',
-            getGeoObjects: 'getGeoObjects'
+        ...mapActions({
+            getLocation: 'map/getLocation',
+            getGeoObjects: 'map/getGeoObjects',
+            getSelectedZone: 'zone/getSelectedZone',
+            getZoneList: 'zone/getZoneList',
         }),
         focusInput() {
             setTimeout(() => {
@@ -126,24 +128,36 @@ export default {
             }, 500);
         },
         async selectAdress(address) {
-            const component = this
+            const app = this
             ymaps.geocode(address.value, {
                 results: 1,
                 boundedBy: [
                     [51.753588, 23.148098],
                     [55.591263, 31.491889]
-                ]
+                ],
             }).then((geo) => {
-                const geoObjects = geo.geoObjects.get(0)
-                component.coords = geoObjects.geometry.getCoordinates()
-                component.setCurrentCoords(geoObjects.geometry.getCoordinates())
-                component.setCurrentAddress(address.value)
-                component.mapInstance.setCenter(geoObjects.geometry.getCoordinates(), 17)
+                let getCityGeocoder = geo.geoObjects.get(0).properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.Locality.LocalityName')
+                if (app.getSelectedZone.name !== getCityGeocoder) {
+                    let findCity = app.getZoneList.find((zone) => {
+                        return zone.name == getCityGeocoder
+                    })
+                    if (findCity !== undefined) {
+                        app.$router.push(`/${findCity.alias}`)
+                    } else {
+                        app.$router.push(`/`)
+                    }
+                } else {
+                    const geoObjects = geo.geoObjects.get(0)
+                    app.coords = geoObjects.geometry.getCoordinates()
+                    app.setCurrentCoords(geoObjects.geometry.getCoordinates())
+                    app.setCurrentAddress(address.value)
+                    app.mapInstance.setCenter(geoObjects.geometry.getCoordinates(), 17)
+                }
             });
 
         },
         suggestPlaces(str) {
-            const component = this
+            const app = this
             ymaps.suggest(str, {
                 results: 6,
                 boundedBy: [
@@ -151,7 +165,7 @@ export default {
                     [55.591263, 31.491889]
                 ]
             }).then((items) => {
-                component.suggestList = items
+                app.suggestList = items
             });
         },
         getMyGeo() {
@@ -189,27 +203,39 @@ export default {
         onSelect(e) {
             const mapInstance = this.mapInstance
             const ymaps = this.ymaps
-            const component = this
+            const app = this
             if (mapInstance !== null) {
                 const selectedValue = e.get('item').value
                 ymaps.geocode(selectedValue, {
                         results: 1
                     })
                     .then((res) => {
-                        const geoObjects = res.geoObjects.get(0)
-                        component.coords = geoObjects.geometry.getCoordinates()
-                        if (component.geolocationAvailable) {
-                            component.address = getAddressFromString(selectedValue)
-                            mapInstance.setCenter(component.coords, 17)
-                            this.switchToMapMode()
-                            return
+                        let getCityGeocoder = geo.geoObjects.get(0).properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.Locality.LocalityName')
+                        if (app.getSelectedZone.name !== getCityGeocoder) {
+                            let findCity = app.getZoneList.find((zone) => {
+                                return zone.name == getCityGeocoder
+                            })
+                            if (findCity !== undefined) {
+                                app.$router.push(`/${findCity.alias}`)
+                            } else {
+                                app.$router.push(`/`)
+                            }
+                        } else {
+                            const geoObjects = res.geoObjects.get(0)
+                            app.coords = geoObjects.geometry.getCoordinates()
+                            if (app.geolocationAvailable) {
+                                app.address = getAddressFromString(selectedValue)
+                                mapInstance.setCenter(app.coords, 17)
+                                this.switchToMapMode()
+                                return
+                            }
+                            const bounds = geoObjects.properties.get('boundenBy')
+                            mapInstance.setBounds(bounds, {
+                                checkZoomRange: true
+                            })
+                            mapInstance.setCenter()
+                            app.address = getAddresFromGeoobject(res.geoObjects.get(0))
                         }
-                        const bounds = geoObjects.properties.get('boundenBy')
-                        mapInstance.setBounds(bounds, {
-                            checkZoomRange: true
-                        })
-                        mapInstance.setCenter()
-                        component.address = getAddresFromGeoobject(res.geoObjects.get(0))
                     })
             }
         },
@@ -252,12 +278,12 @@ export default {
 }
 
 .map-actions-container {
-  position: relative;
-  width: 100%;
+    position: relative;
+    width: 100%;
 }
 
 .map-actions-container input {
-  color: #fff !important;
+    color: #fff !important;
 }
 
 .map-actions-bottom {
@@ -310,7 +336,7 @@ export default {
 }
 
 .address-input [aria-label="clear icon"] {
-  color: #fff !important;
+    color: #fff !important;
 }
 
 .close-icon {
@@ -382,7 +408,7 @@ $header: 65px;
     background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIHN0cm9rZT0iIzQ0M0MwRiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjYiIGQ9Ik01LjAwMiAxMC44OEwxOCA2bC00Ljg3MiAxMy0xLjYyOC02LjV6Ii8+PC9zdmc+);
     border-radius: 100%;
     margin: .5rem;
-	visibility: hidden;
+    visibility: hidden;
 }
 
 .map-loading-desktop {
@@ -448,6 +474,6 @@ ymaps [title="Определить ваше местоположение"] {
     background-color: transparent;
     box-shadow: none;
     font-size: 20px !important;
-	padding-left: 20px;
+    padding-left: 20px;
 }
 </style>
