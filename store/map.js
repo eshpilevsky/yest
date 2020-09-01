@@ -2,6 +2,7 @@ import {
   getAddresFromGeoobject,
   getAddresByCoords
 } from '@/common/lib/map'
+
 import * as Cookie from 'js-cookie'
 
 export const state = () => ({

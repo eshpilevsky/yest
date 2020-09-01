@@ -1,4 +1,4 @@
-import ApiService from '~/common/api.service'
+import axios from 'axios'
 
 export const state = () => ({
   data: {
@@ -16,12 +16,13 @@ export const actions = {
     context.commit('SET_SELECTED_ZONE', payload)
   },
   async checkDeliveryAddress(context, payload) {
-	await ApiService.post('/check_delivery_address', payload).then((res)=>{
-    	console.log('checkDeliveryAddress -> res', res)
+	return await axios.post('https://yestapi.xyz/check_delivery_address',payload)
 
-	}).catch((err)=>{
-		console.error(err);
-	})
+    // return ApiService.post('/check_delivery_address', payload).then((res) => {
+    //   return res.data
+    // }).catch((err) => {
+    //   console.error(err);
+    // })
   }
 };
 
@@ -31,7 +32,7 @@ export const mutations = {
     state.data.zone = payload
   },
   SET_SELECTED_ZONE(state, payload) {
-	  state.status = '200'
+    state.status = '200'
     state.data.selectedZoneId = payload
   }
 };
@@ -41,10 +42,10 @@ export const getters = {
     const zones = state.data.zone
 
     if (zones !== null) {
-		return state.data.selectedZoneId
-	} else {
-		return zones[0];
-	}
+      return state.data.selectedZoneId
+    } else {
+      return zones[0];
+    }
 
   },
   getZoneList(state) {

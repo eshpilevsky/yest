@@ -54,6 +54,7 @@ import {
 } from 'vuex'
 import MapBtn from '@/components/map/map-btn'
 import MapDesktop from '@/components/map/desktop'
+import axios from 'axios'
 
 import {
     settings
@@ -84,6 +85,8 @@ export default {
             coords: [],
             showDesktopMap: false,
             ymaps: null,
+            city_id: null,
+            massa: null,
         }
     },
     computed: {
@@ -134,35 +137,57 @@ export default {
         focusInput() {
             setTimeout(() => {
                 this.showAdressList = true
-			}, 500);
-			this.getSuggest(this.searchAddress)
+            }, 500);
+            this.getSuggest(this.searchAddress)
         },
         blurInput() {
             setTimeout(() => {
                 this.showAdressList = false
             }, 500);
-        },
+		},
         async showRestuarants() {
             const app = this
             await ymaps.geocode(this.searchAddress, {
                 results: 1,
             }).then((geo) => {
-				let getCityGeocoder = geo.geoObjects.get(0).properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.Locality.LocalityName')
-				if (app.getSelectedZone.name !== getCityGeocoder) {
-					let findCity = app.getZoneList.find((zone)=>{
-						return zone.name == getCityGeocoder
-					})
-					if (findCity !== undefined) {
-						app.$router.push(`/${findCity.alias}`)
-					} else{
-						app.$router.push(`/`)
-					}
-				} else {
-					const geoObjects = geo.geoObjects.get(0)
-					app.coords = geoObjects.geometry.getCoordinates()
-					app.setCurrentCoords(geoObjects.geometry.getCoordinates())
-					app.setCurrentAddress(app.searchAddress)
-				}
+                let addressMass = geo.geoObjects.get(0).properties.get('metaDataProperty.GeocoderMetaData.Address.Components')
+				// console.log('showRestuarants -> geo.geoObjects.get(0)', geo.geoObjects.get(0).properties.get('metaDataProperty.GeocoderMetaData.Address'))
+				
+				// app.testa(addressMass)
+				
+let qwe
+				axios.post('https://yestapi.xyz/check_delivery_address', addressMass).then(res => {
+					return res.data
+				})
+console.error(qwe);
+
+                // let findCity = app.getZoneList.find((zone) => {
+                // 	return zone.id == app.city_id
+                // })
+                // console.log('showRestuarants -> findCity', findCity)
+
+                // if (findCity !== undefined) {
+                // app.$router.push(`/${findCity.alias}`)
+                // } else {
+                //     app.$router.push(`/`)
+                // }
+
+                // let getCityGeocoder = geo.geoObjects.get(0).properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.Locality.LocalityName')
+                // if (app.getSelectedZone.name !== getCityGeocoder) {
+                // 	let findCity = app.getZoneList.find((zone)=>{
+                // 		return zone.name == getCityGeocoder
+                // 	})
+                // 	if (findCity !== undefined) {
+                // 		app.$router.push(`/${findCity.alias}`)
+                // 	} else{
+                // 		app.$router.push(`/`)
+                // 	}
+                // } else {
+                const geoObjects = geo.geoObjects.get(0)
+                app.coords = geoObjects.geometry.getCoordinates()
+                app.setCurrentCoords(geoObjects.geometry.getCoordinates())
+                app.setCurrentAddress(app.searchAddress)
+                // }
             });
             const id = 'restTitle';
             const yOffset = -70;
@@ -205,13 +230,13 @@ export default {
                 headContainer.style.visibility = 'visible'
             }
         },
-        selectAdress(address) {			
+        selectAdress(address) {
             var adv = address.value
             var addressSplit = adv.split('Беларусь,')
             this.searchAddress = addressSplit[1]
         },
     },
-    async beforeMount() {
+    async created() {
         await loadYmap({
             ...settings,
             debug: true
