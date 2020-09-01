@@ -152,6 +152,7 @@ export default {
             return `${openTime.slice(0, 5)} - ${closeTime.slice(0, 5)}`;
         },
         translite(str) {
+			str = str.replace(/\s+/g, ' ').trim()
             var ru = {
                     'а': 'a',
                     'б': 'b',
@@ -197,6 +198,7 @@ export default {
                 );
             }
 
+            console.log('translite -> n_str', n_str)
             return n_str.join('');
         },
         goToRes(info) {
