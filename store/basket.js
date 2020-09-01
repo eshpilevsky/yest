@@ -92,7 +92,8 @@ export const mutations = {
   },
   DROP_BASKET(state) {
     state.status = '200'
-    state.data.dishs = []
+	state.data.dishs = []
+	state.data.restuarantUrl = null
   },
   DECREMENT_DISH(state, payload) {
     state.status = '200'

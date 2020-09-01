@@ -163,13 +163,15 @@ export default {
     },
     watch: {
         getSelectedDishs(newValue) {
-			this.orderList = newValue
-			this.basketListVisible = true
+            this.orderList = newValue
+            this.basketListVisible = true
             return newValue
         },
         getTotalPrice(newValue) {
-            this.deliveryString = this.computedFreeDeliveryCost();
-            this.deliveryCost = this.computedDeliveryCost();
+			if (newValue !== 0 && this.delvery !== undefined) {
+				this.deliveryString = this.computedFreeDeliveryCost();
+				this.deliveryCost = this.computedDeliveryCost();
+			}
         },
         orderList(newValue) {
             return newValue
@@ -193,15 +195,15 @@ export default {
     },
     async beforeMount() {
         if (this.getLatetestRestInfoWithOrder !== null) {
-            if (this.getLatetestRestInfoWithOrder.params.resName == this.$route.params.resName && this.getSelectedDishs.length > 0  || this.$route.name == 'checkout') {
-				this.basketListVisible = true
-			} else {
-				this.basketListVisible = false
-			}
+            if (this.getLatetestRestInfoWithOrder.params.resName == this.$route.params.resName && this.getSelectedDishs.length > 0 || this.$route.name == 'checkout') {
+                this.basketListVisible = true
+            } else {
+                this.basketListVisible = false
+            }
+            this.time = this.delivery.time ? this.delivery.time : this.delivery.delivery.time
+            this.deliveryString = await this.computedFreeDeliveryCost();
+            this.deliveryCost = await this.computedDeliveryCost();
         }
-        this.time = this.delivery.time ? this.delivery.time : this.delivery.delivery.time
-        this.deliveryString = await this.computedFreeDeliveryCost();
-        this.deliveryCost = await this.computedDeliveryCost();
     },
 
 }

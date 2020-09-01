@@ -231,8 +231,8 @@ export default {
             this.cutleryCounter++
         },
         closeOrderForm() {
-			this.showOrderForm = false
-			this.showBasket = true
+            this.showOrderForm = false
+            this.showBasket = true
         },
         goToForm() {
             if (this.getUserPhoneNumber !== null) {
@@ -248,7 +248,7 @@ export default {
                 if (this.getLatetestRestInfoWithOrder !== null) {
                     this.$router.push(`/${this.getLatetestRestInfoWithOrder.params.region}/restaurant/${this.getLatetestRestInfoWithOrder.params.resName}`)
                 } else {
-                    this.$route.go(-1)
+                    this.$router.go(-1)
                 }
             }
         },
@@ -277,7 +277,9 @@ export default {
     watch: {
         getTotalPrice(newValue) {
             this.totalPrice = newValue
-            this.deliveryCost = this.computedDeliveryCost(this.getLatetestRestInfoWithOrder.delivery.fee);
+            if (this.getLatetestRestInfoWithOrder !== null) {
+                this.deliveryCost = this.computedDeliveryCost(this.getLatetestRestInfoWithOrder.delivery.fee);
+            }
             return newValue
         },
         cutleryCounter(newValue) {
@@ -304,9 +306,14 @@ export default {
     async beforeMount() {
         window.scrollTo(0, 0);
         if (process.client) {
-            this.LatetestRestInfoWithOrder = this.getLatetestRestInfoWithOrder;
-            this.deliveryMin = this.getLatetestRestInfoWithOrder.delivery.time.min
-            this.deliveryMax = this.getLatetestRestInfoWithOrder.delivery.time.max
+			if (this.getLatetestRestInfoWithOrder !== null) {
+				this.LatetestRestInfoWithOrder = this.getLatetestRestInfoWithOrder;
+				this.deliveryMin = this.getLatetestRestInfoWithOrder.delivery.time.min
+				this.deliveryMax = this.getLatetestRestInfoWithOrder.delivery.time.max
+			} else {
+				this.deliveryMin = 0
+				this.deliveryMax = 0
+			}
         }
     },
 }

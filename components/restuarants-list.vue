@@ -197,8 +197,6 @@ export default {
                     })
                 );
             }
-
-            console.log('translite -> n_str', n_str)
             return n_str.join('');
         },
         goToRes(info) {

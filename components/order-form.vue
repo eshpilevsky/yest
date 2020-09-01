@@ -252,7 +252,11 @@ export default {
         }),
     },
     mounted() {
-        this.time = this.getLatetestRestInfoWithOrder.delivery.time
+		if (this.getLatetestRestInfoWithOrder !== null) {
+			this.time = this.getLatetestRestInfoWithOrder.delivery.time
+		} else {
+			this.time = {max:0,min:0}
+		}
         if (this.getCurrentAddress.length > 0) {
             this.delivery.address = this.getCurrentAddress
         }

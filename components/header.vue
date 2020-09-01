@@ -196,7 +196,11 @@ export default {
         }),
         goToLatestReset() {
             setTimeout(() => {
-                this.$router.push(`/${this.getLatetestRestInfoWithOrder.params.region}/restaurant/${this.getLatetestRestInfoWithOrder.params.resName}`)
+				if (this.getLatetestRestInfoWithOrder !== null) {
+					this.$router.push(`/${this.getLatetestRestInfoWithOrder.params.region}/restaurant/${this.getLatetestRestInfoWithOrder.params.resName}`)
+				} else {
+					this.$router.push(`/${this.getSelectedZone.alias}`)
+				}
             }, 100);
         },
         onClick(e) {
