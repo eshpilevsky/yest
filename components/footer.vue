@@ -50,27 +50,27 @@
                         <div class="bottom-title ">
                             О компании
                         </div>
-                        <router-link to="/" class="bottom-items">
+                        <nuxt-link to="/contacts" class="bottom-items">
                             Контакты
-                        </router-link>
-                        <router-link to="/" class="bottom-items">
+                        </nuxt-link>
+                        <nuxt-link to="/delivery" class="bottom-items">
                             Доставка
-                        </router-link>
-                        <router-link to="/" class="bottom-items">
+                        </nuxt-link>
+                        <nuxt-link to="/terms-of-use" class="bottom-items">
                             Пользоватльское соглашние
-                        </router-link>
-                        <router-link to="/" class="bottom-items">
+                        </nuxt-link>
+                        <nuxt-link to="/faq" class="bottom-items">
                             Вопросы и ответы
-                        </router-link>
-                        <router-link to="/" class="bottom-items">
+                        </nuxt-link>
+                        <nuxt-link to="/partner" class="bottom-items">
                             Стать партнёром
-                        </router-link>
-                        <router-link to="/" class="bottom-items">
+                        </nuxt-link>
+                        <nuxt-link to="/rabota" class="bottom-items">
                             Стать курьером
-                        </router-link>
-                        <router-link to="/" class="bottom-items">
+                        </nuxt-link>
+                        <nuxt-link to="/business" class="bottom-items">
                             Еда для бизнеса
-                        </router-link>
+                        </nuxt-link>
                     </div>
                 </div>
             </div>
