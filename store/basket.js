@@ -114,7 +114,10 @@ export const mutations = {
       let wellBe = state.data.dishs[findDish].selectSize.count - 1
       if (findSize !== undefined) {
         if (wellBe < 1) {
-          state.data.dishs.splice(findDish, 1)
+		  state.data.dishs.splice(findDish, 1)
+		  if(state.data.dishs.length == 0){
+			state.data.restuarantUrl = null
+		  }
         } else {
           state.data.dishs[findDish].selectSize.count--
         }
