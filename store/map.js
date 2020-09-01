@@ -43,11 +43,15 @@ export const actions = {
   },
   async getGeoObjects({
     commit
-  }, {
-    ymaps,
-    coords
-  }) {
-    const currentAddress = await getAddresByCoords(ymaps, coords)
+}, {
+	ymaps,
+	coords,
+	getZoneList,
+	getSelectedZone,
+	router,
+}) {
+    const currentAddress = await getAddresByCoords(ymaps, coords, getZoneList, getSelectedZone, router)
+    console.log('currentAddress', currentAddress)
     commit('SET_CURRENT_ADDRESS', currentAddress)
     commit('SET_CURRENT_COORDS', coords)
     commit('HIDE_MAP')

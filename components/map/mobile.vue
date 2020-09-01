@@ -94,9 +94,9 @@ export default {
             switchToAddressMode: 'map/SET_INPUT_ADDRESS_MODE',
             loadf: 'map/LOADF',
         }),
-        ...mapActions('map', {
-            getLocation: 'getLocation',
-            getGeoObjects: 'getGeoObjects'
+        ...mapActions({
+            getLocation: 'map/getLocation',
+            getGeoObjects: 'map/getGeoObjects'
         }),
         async onInit(mapInstance) {
             if (this.getCurrentAddress !== '') {
@@ -114,13 +114,16 @@ export default {
             getZoomIn(ymaps, mapInstance)
             getZoomOut(ymaps, mapInstance)
             getPlace(ymaps, mapInstance)
-            getGeo(ymaps, mapInstance)
+			getGeo(ymaps, mapInstance)
+			
+			let getZoneList = this.getZoneList
+			let getSelectedZone = this.getSelectedZone
+			let router = this.$router
             getIamHere(ymaps, mapInstance, async (e) => {
                 const coords = mapInstance.getCenter()
                 await this.getGeoObjects({
-                    coords,
-                    ymaps
-                })
+					ymaps, coords, getZoneList, getSelectedZone, router
+                }, {root:true})
                 await this.hideMap()
             })
             if (this.getCurrentCoords.length === 0) {
@@ -205,7 +208,7 @@ export default {
         },
         async onBoundsChange() {
             const coords = this.mapInstance.getCenter()
-            this.address = await getAddresByCoords(ymaps, coords)
+            this.address = await getAddresByCoords(ymaps, coords, this.getZoneList, this.getSelectedZone, this.$router)
         }
     },
 };

@@ -113,7 +113,6 @@ export default {
         }),
         ...mapActions({
             getLocation: 'map/getLocation',
-            getGeoObjects: 'map/getGeoObjects',
             getSelectedZone: 'zone/getSelectedZone',
             getZoneList: 'zone/getZoneList',
         }),
@@ -241,7 +240,7 @@ export default {
         },
         async onBoundsChange() {
             const coords = this.mapInstance.getCenter()
-            this.address = await getAddresByCoords(ymaps, coords)
+            this.address = await getAddresByCoords(ymaps, coords, this.getZoneList, this.getSelectedZone, this.$router)
             await this.$emit('selectAddress', this.address)
         }
     },
