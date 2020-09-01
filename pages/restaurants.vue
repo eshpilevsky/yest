@@ -178,7 +178,7 @@
                                                             {{optionV.name}}
                                                         </span>
                                                         <span class="option-main-price">
-                                                            {{optionV.price[0] != undefined ? optionV.price[0].price : 0}} BYN
+                                                            {{optionV.price[0] != undefined ? (optionV.price[0].price == null ? `ошибка` : optionV.price[0].price) : 0}} BYN
                                                         </span>
                                                     </p>
                                                 </template>
@@ -684,7 +684,8 @@ export default {
             }
         },
         addToBasket(dish) {
-            if (dish.sizes.length > 1 || dish.options.length > 1) {
+			console.log('addToBasket -> dish.options', dish.options)
+            if (dish.sizes.length > 1 || dish.options.length > 0) {
                 this.selectedDish = dish
                 this.selectedDishCounter = 1
                 this.showOptionsmenu = true
