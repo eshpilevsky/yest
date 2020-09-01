@@ -97,13 +97,13 @@
             <map-btn v-show="canDisplayMap" />
         </div>
         <div class="links-list">
-            <nuxt-link to="/">
+            <nuxt-link to="/partner">
                 Ресторанам
             </nuxt-link>
-            <nuxt-link to="/">
+            <nuxt-link to="/rabota">
                 Курьерам
             </nuxt-link>
-            <nuxt-link to="/">
+            <nuxt-link to="/business">
                 Компаниям
             </nuxt-link>
         </div>
