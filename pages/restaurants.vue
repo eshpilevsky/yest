@@ -108,8 +108,7 @@
                     </v-tabs>
                     <v-divider />
                 </div>
-                <specOffer />
-
+                <specOffer v-show="this.showSpecOffer" />
                 <div class="catalog-list">
                     <div v-for="(category, index) in restuarant.menu" :key="category.cat_id">
                         <div class="category-title">
@@ -542,10 +541,23 @@ export default {
             zone_id: currentZone.id,
         })
         let restuarantData = restuarant.data
+        let showSpecOffer = restuarantData.menu.find(cat => {
+            return cat.dishes.find(dish => {
+                console.log('dish', dish)
+                return dish.sizes[0].sale == 2
+            })
+		})
+		if (showSpecOffer !== undefined) {
+			showSpecOffer = true
+		} else {
+			showSpecOffer = false
+		}
+            console.log('showSpecOffer', showSpecOffer)
 
         return {
             restuarant: restuarantData,
             currentZone: currentZone,
+            showSpecOffer: showSpecOffer,
         }
     },
     data() {
@@ -684,7 +696,7 @@ export default {
             }
         },
         addToBasket(dish) {
-			console.log('addToBasket -> dish.options', dish.options)
+            console.log('addToBasket -> dish.options', dish.options)
             if (dish.sizes.length > 1 || dish.options.length > 0) {
                 this.selectedDish = dish
                 this.selectedDishCounter = 1
