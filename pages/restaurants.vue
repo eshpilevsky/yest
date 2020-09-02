@@ -143,7 +143,7 @@
                             </div>
                         </div>
                         <div class="options-list">
-                            <div class="sizes" v-show="selectedDish.sizes.length > 0">
+                            <div class="sizes" v-show="selectedDish.sizes.length > 1">
                                 <div class="multi-title">
                                     Размер на выбор
                                 </div>
@@ -162,7 +162,8 @@
                             </div>
                             <div class="options" v-show="selectedDish.options.length > 0">
                                 <div class="multi-title">
-                                    Дополнительниые ингреденеты
+                                    Дополнительниые ингреденеты 
+									<!-- {{this.selectedDish.options}} -->
                                 </div>
                                 <div v-for="option in selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
                                     <div>
@@ -177,7 +178,7 @@
                                                             {{optionV.name}}
                                                         </span>
                                                         <span class="option-main-price">
-                                                            {{optionV.price[0] != undefined ? (optionV.price[0].price == null ? `ошибка` : optionV.price[0].price) : 0}} BYN
+                                                            {{optionV.price[0] != undefined ? (optionV.price[0].price == null ? `0` : optionV.price[0].price) : 0}} BYN
                                                         </span>
                                                     </p>
                                                 </template>
@@ -552,7 +553,7 @@ export default {
 		} else {
 			showSpecOffer = false
 		}
-            console.log('showSpecOffer', showSpecOffer)
+            // console.log('showSpecOffer', showSpecOffer)
 
         return {
             restuarant: restuarantData,
