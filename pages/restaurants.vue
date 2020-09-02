@@ -162,8 +162,8 @@
                             </div>
                             <div class="options" v-show="selectedDish.options.length > 0">
                                 <div class="multi-title">
-                                    Дополнительниые ингреденеты 
-									<!-- {{this.selectedDish.options}} -->
+                                    Дополнительниые ингреденеты
+                                    <!-- {{this.selectedDish.options}} -->
                                 </div>
                                 <div v-for="option in selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
                                     <div>
@@ -288,7 +288,7 @@
                         </v-sheet>
                     </v-bottom-sheet>
                 </div>
-                <specOffer />
+                <specOffer v-show="this.showSpecOffer"/>
 
             </div>
             <div class="rest-info-bottom">
@@ -310,8 +310,7 @@
                             <v-card class="dish-card">
                                 <div @click="showSelectedDish(item)">
                                     <div class="card-dish-top">
-                                        <span class="dash-info-compare" v-if="item.sizes[0]" v-show="item.sizes[0].discount !== null">%</span>
-                                        <!-- <span class="dash-info-compare" >%</span> -->
+                                        <span class="dash-info-compare" v-if="item.sizes[0]" v-show="item.sizes[0].sale == 2">%</span>
                                         <img :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" :alt="item.name" class="dish-img-mobile" />
                                     </div>
                                     <div class="card-dish-bottom">
@@ -321,16 +320,23 @@
                                             </h3>
                                         </div>
                                         <div class="dish-info">
-                                            <span class="dish-info__price" v-show="!checkInbasket(item)">{{computedPrice(item.sizes)}} BYN</span>
-                                            <span class="info-weight">
-                                                {{item.sizes[0] ? item.sizes[0].weight : ''}}
-                                            </span>
+                                            <div class="d-flex flex-column">
+                                                <span class="dish-info__price" v-show="!checkInbasket(item)">{{computedPrice(item.sizes)}} BYN</span>
+                                                <span class="info-weight">
+                                                    {{item.sizes[0] ? item.sizes[0].weight : ''}}
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div>
                                     <div class="info-price" v-show="checkInbasket(item)" @click='momentAdd(item)'>
-                                        {{item.sizes[0] ? item.sizes[0].price.toFixed(1) : ''}} BYN
+                                        <span>
+                                            {{item.sizes[0] ? item.sizes[0].price.toFixed(1) : ''}} BYN
+                                        </span>
+                                        <span class="dish-info__price-old" v-show="item.sizes[0].sale == 2">
+                                            {{(item.sizes[0].price + item.sizes[0].discount).toFixed(1)}} BYN
+                                        </span>
                                     </div>
                                     <div v-show="!checkInbasket(item)" class="dish-conter-mobile">
                                         <v-icon class="info-price px-3" @click="decrement(item)">
@@ -547,13 +553,13 @@ export default {
                 console.log('dish', dish)
                 return dish.sizes[0].sale == 2
             })
-		})
-		if (showSpecOffer !== undefined) {
-			showSpecOffer = true
-		} else {
-			showSpecOffer = false
-		}
-            // console.log('showSpecOffer', showSpecOffer)
+        })
+        if (showSpecOffer !== undefined) {
+            showSpecOffer = true
+        } else {
+            showSpecOffer = false
+        }
+        // console.log('showSpecOffer', showSpecOffer)
 
         return {
             restuarant: restuarantData,
@@ -1829,6 +1835,8 @@ export default {
     justify-content: center;
     background-color: #F1F0ED;
     margin: 0 9px 8px;
+    display: flex;
+    flex-direction: column;
 }
 
 .dish-info__price {
@@ -1839,6 +1847,28 @@ export default {
 }
 
 .dish-info__price:after {
+    content: "";
+    position: absolute;
+    left: calc(100% + 7px);
+    top: 50%;
+    transform: translateY(-50%);
+    display: block;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background-color: #c2c0be;
+}
+
+.dish-info__price-old {
+    color: #9E9B98;
+    font-size: 11px;
+    margin-top: 2px;
+    text-decoration: line-through;
+    margin-right: 14px;
+    position: relative;
+}
+
+.dish-info__price-old:after {
     content: "";
     position: absolute;
     left: calc(100% + 7px);

@@ -8,7 +8,7 @@
                 <span class="rest-info-compared__descr">На ряд блюд</span>
             </p>
         </div>
-        <div class="rest-info-compared__row">
+        <!-- <div class="rest-info-compared__row">
             <span class="rest-info-compared__logo">
                 <v-icon color="#fff">card_giftcard</v-icon>
             </span>
@@ -16,7 +16,7 @@
                 <span class="rest-info-compared__title">Блюдо в подарок</span>
                 <span class="rest-info-compared__descr">При первом заказе от (сумма) BYN из этого ресторана (блюдо) бесплатно</span>
             </p>
-        </div>
+        </div> -->
     </div>
 </div>
 </template>
