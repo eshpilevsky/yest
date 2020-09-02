@@ -9,6 +9,7 @@
                             <v-chip color="primary" class="restaurant-rating">
                                 <v-icon class="restaurant-rating__icon" color="#FFFADF">star</v-icon>
                                 <div>{{restuarant.rating ? restuarant.rating: 'Мало оценок'}}</div>
+								
                             </v-chip>
                             <div>
                                 <nuxt-link to="/" class="info-delivery">
@@ -90,7 +91,7 @@
                                         </template>
                                         <div class="rest-info-modal">
                                             <v-card max-width='460' class="restuarants-legal-info">
-                                                <restuarantInfo :restuarant='this.restuarant' />
+                                                <leagalInfo :restuarant='this.restuarant' />
                                             </v-card>
                                         </div>
                                     </v-menu>
@@ -255,7 +256,7 @@
                                 <p class="mobile-rest-info-modal__title">{{restuarant.name}}</p>
                                 <v-icon @click="showHideRestInfo()" color="#000">close</v-icon>
                             </div>
-                            <restuarantInfo :restuarant='this.restuarant' />
+                            <leagalInfo :restuarant='this.restuarant' />
                         </v-sheet>
                     </v-bottom-sheet>
                 </div>
@@ -502,7 +503,7 @@ import MapBtn from '@/components/map/map-btn'
 import orderForm from '@/components/order-form'
 import cardDish from '@/components/restaurant/cardDish'
 import basket from '@/components/basket'
-import restuarantInfo from '@/components/restaurant/restuarantInfo'
+import leagalInfo from '@/components/restaurant/legalInfo'
 import smsForm from '@/components/restaurant/sms-form'
 import specOffer from '@/components/restaurant/spec-offer'
 import axios from 'axios'
@@ -516,7 +517,7 @@ export default {
         MapBtn,
         cardDish,
         orderForm,
-        restuarantInfo,
+        leagalInfo,
         basket,
         smsForm,
         specOffer,
