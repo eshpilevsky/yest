@@ -19,10 +19,15 @@
                                 <span class="order-item-subbtitle">
                                     {{order.selectSize.weight}}
                                 </span>
+                                <div class="order-item-subbtitle">
+                                    {{order.selectSize.name}}
+                                </div>
+                                <div v-show="order.selectOption.length > 0" class="d-flex flex-column">
+                                    <span v-for="opt in order.selectOption" :key="opt.selected.id" class="order-item-subbtitle">
+                                        {{opt.selected.name}}
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="order-item-subbtitle">
-                            {{order.selectSize.name}}
                         </div>
                     </div>
                     <div class="d-flex flex-column my-counter">
@@ -168,10 +173,10 @@ export default {
             return newValue
         },
         getTotalPrice(newValue) {
-			if (newValue !== 0 && this.delvery !== undefined) {
-				this.deliveryString = this.computedFreeDeliveryCost();
-				this.deliveryCost = this.computedDeliveryCost();
-			}
+            if (newValue !== 0 && this.delvery !== undefined) {
+                this.deliveryString = this.computedFreeDeliveryCost();
+                this.deliveryCost = this.computedDeliveryCost();
+            }
         },
         orderList(newValue) {
             return newValue

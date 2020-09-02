@@ -155,11 +155,11 @@ export default {
         return {
             phone: Number,
             delivery: {
-                address: '',
-                room: '',
-                enterence: '',
-                intercom: '',
-                flor: '',
+                address: 'Цнянская',
+                room: '1',
+                enterence: '1',
+                intercom: '1',
+                flor: '1',
             },
             payment_method: 0,
             promocode: '',
@@ -192,17 +192,23 @@ export default {
                 dishId = dish.selectSize.id
                 if (dish.hasOwnProperty('selectOption')) {
                     dish.selectOption.forEach((option) => {
-                        dishOption.push(option.id)
+						if (option.selected.dish_option_id !== undefined) {
+							let id = {
+								id: option.selected.dish_option_id
+							}
+							dishOption.push(id)
+						}
                     })
-                }
+				}
+				
                 let result;
-                if (dish.options.length == 0) {
+                if (dishOption == []) {
                     result = {
                         id: dishId,
                         count: dish.selectSize.count,
                     }
                 } else {
-                    let result = {
+                    result = {
                         id: dishId,
                         options: dishOption,
                         count: dish.selectSize.count,
@@ -210,7 +216,6 @@ export default {
                 }
                 this.order.push(result)
             })
-
             ApiService.post('/create/order', {
                 phone: this.getUserPhoneNumber,
                 delivery: {
@@ -236,7 +241,6 @@ export default {
                 this.loadingSendOrder = false
 
             }).catch((error) => {
-				this.$router.push('/order/onliner_payment/fail')
                 console.error(error)
             })
         }
