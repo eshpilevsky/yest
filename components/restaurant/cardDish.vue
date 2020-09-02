@@ -202,6 +202,8 @@ export default {
 }
 
 .dish-price {
+    display: flex;
+    justify-content: flex-end;
     float: right;
     min-width: 80px;
     text-align: right;
