@@ -54,7 +54,7 @@
                                     </div>
                                 </div>
                             </template>
-                            <v-sheet class="text-start rounding" height="420px">
+                            <v-sheet class="text-start rounding" height="450px">
                                 <div class="contact-title">
                                     <span>
                                         Связаться с нами
