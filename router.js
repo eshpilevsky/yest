@@ -16,7 +16,8 @@ Vue.use(Router)
 export function createRouter() {
   return new Router({
     mode: 'history',
-    routes: [{
+    routes: [
+      {
         path: '/contacts',
         name: 'contacts',
         component: multipage,

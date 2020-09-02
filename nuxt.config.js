@@ -92,7 +92,8 @@ module.exports = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/pwa'
+	'@nuxtjs/pwa',
+	 ['@nuxtjs/google-tag-manager', { id: 'GTM-WDRSHHG' }]
   ],
   /*
    ** Axios module configuration
@@ -135,11 +136,12 @@ module.exports = {
      ** You can extend webpack config here
      */
     extend(config, ctx) {
-      config.resolve.symlinks = false
+	  config.resolve.symlinks = false
     },
     // vendor: [
     //   'vuelidate'
-    // ]
+	// ]
+
   },
   vue: {
     config: {
