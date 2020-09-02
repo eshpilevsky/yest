@@ -98,7 +98,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="catalog">
                     <v-tabs hide-slider v-model="tab" class="catalog-tabs catalog-tabs--desktop" center-active>
@@ -164,12 +163,13 @@
                                 <div class="multi-title">
                                     Дополнительниые ингреденеты
                                     <!-- {{this.selectedDish.options}} -->
+
                                 </div>
                                 <div v-for="option in selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
                                     <div>
-                                        {{option.title}}
+                                        {{option}}
                                     </div>
-                                    <div class="d-flex flex-row justify-start">
+                                    <div v-if="option.multi_data !==1" class="d-flex flex-row justify-start">
                                         <v-radio-group v-model="selectOption" :mandatory="false" class="d-flex flex-row">
                                             <v-radio v-for="optionV in option.variants" :key="optionV.id" :value="optionV" color="primary">
                                                 <template v-slot:label>
@@ -184,6 +184,21 @@
                                                 </template>
                                             </v-radio>
                                         </v-radio-group>
+                                    </div>
+                                    <div v-else>
+                                        {{selectedOption}}
+                                        <v-checkbox v-for="optionV in option.variants" :key="optionV.id" v-model="selectedOption" :value="optionV">
+                                            <template v-slot:label>
+                                                <p class="option-main">
+                                                    <span class="option-main-text">
+                                                        {{optionV.name}}
+                                                    </span>
+                                                    <span class="option-main-price">
+                                                        {{optionV.price[0] != undefined ? (optionV.price[0].price == null ? `0` :( optionV.price[0].price > 0 ? `+ ${optionV.price[0].price}`:`${optionV.price[0].price}`)) : 0}} BYN
+                                                    </span>
+                                                </p>
+                                            </template>
+                                        </v-checkbox>
                                     </div>
                                 </div>
                             </div>
@@ -288,7 +303,7 @@
                         </v-sheet>
                     </v-bottom-sheet>
                 </div>
-                <specOffer v-show="this.showSpecOffer"/>
+                <specOffer v-show="this.showSpecOffer" />
 
             </div>
             <div class="rest-info-bottom">
@@ -593,6 +608,7 @@ export default {
             showRestName: false,
             lastPath: null,
             calcPath: '',
+            selectedOption: [],
         }
     },
     head() {
