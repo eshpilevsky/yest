@@ -46,92 +46,100 @@
                                         {{order.selectSize.price}} BYN
                                     </div>
                                 </div>
-                                <div class="d-flex flex-row align-center">
-                                    <v-btn icon @click="decrement(order)" class="rounded-xl main-mobile-cart__count-btn">
-                                        <v-icon>remove</v-icon>
-                                    </v-btn>
-                                    <div class="main-mobile-cart__order-qty">
-                                        {{order.selectSize.count}}
+                                <div class="d-flex flex-column">
+									<div>{{order.selectSize.name}}</div>
+                                    <div v-show="order.selectOption.length > 0" class="d-flex flex-column">
+                                        <span v-for="opt in order.selectOption" :key="opt.selected.id" class="order-item-subbtitle">
+                                            {{opt.selected.name}}
+                                        </span>
                                     </div>
-                                    <v-btn icon @click="increment(order)" class="rounded-xl main-mobile-cart__count-btn">
-                                        <v-icon>add</v-icon>
-                                    </v-btn>
                                 </div>
                             </div>
-                        </div>
-                    </client-only>
-                </div>
-                <div class="order-deliv-block" v-if="getSelectedDishs.length > 0">
-                    <span>Доставка yest.by</span>
-                    <span>{{this.deliveryCost}} BYN</span>
-                </div>
-                <div class="order-knifes">
-                    <div class="d-flex flex-row">
-                        <img class="order-knifes__icon" src="@/assets/orderKnifesIcon.svg" alt="knifes">
-                        <div class="d-flex flex-row align-center" v-if="addKnifes">
-                            <v-btn icon class="rounded-xl main-mobile-cart__count-btn" @click="removeCutlery()">
-                                <v-icon>remove</v-icon>
-                            </v-btn>
-                            <div class="main-mobile-cart__order-qty">
-                                {{cutleryCounter}}
+                            <div class="d-flex flex-row align-center">
+                                <v-btn icon @click="decrement(order)" class="rounded-xl main-mobile-cart__count-btn">
+                                    <v-icon>remove</v-icon>
+                                </v-btn>
+                                <div class="main-mobile-cart__order-qty">
+                                    {{order.selectSize.count}}
+                                </div>
+                                <v-btn icon @click="increment(order)" class="rounded-xl main-mobile-cart__count-btn">
+                                    <v-icon>add</v-icon>
+                                </v-btn>
                             </div>
-                            <v-btn icon class="rounded-xl main-mobile-cart__count-btn" @click="addCutlery()">
-                                <v-icon>add</v-icon>
-                            </v-btn>
                         </div>
-                        <div v-else>
-                            Приборы и салфетки
-                        </div>
-                    </div>
-                    <v-switch class="order-knifes__switch" v-model="addKnifes" inset></v-switch>
-                </div>
-                <h1 class="order-delivery-info__title">Доставка</h1>
-                <div class="order-delivery-info">
-                    <img class="order-delivery-info__icon" src="@/assets/deliverPersonIcon.svg" alt="delivery">
-                    <span class="order-delivery-info__text">Доставка yest.by</span>
-                </div>
-                <div class="confirm-order" v-show="getSelectedDishs.length > 0">
-                    <div class="total-info-block">
-                        <span class="total-price">
-                            {{this.totalPrice}} BYN
-                        </span>
-                        <span class="total-time">
-                            <client-only>
-                                {{this.deliveryMin}} - {{this.deliveryMax}} мин
-                            </client-only>
-                        </span>
-                    </div>
-                    <div class="next-btn-block">
-                        <v-btn block color="primary" @click="goToForm()">Далее</v-btn>
-                    </div>
-                </div>
+                </client-only>
             </div>
-            <div v-show="getSelectedDishs.length == 0" class="empty">
-                <div class="empty-basket-img"></div>
-                <div class="empty-basket-title">
-                    Корзина пуста
+            <div class="order-deliv-block" v-if="getSelectedDishs.length > 0">
+                <span>Доставка yest.by</span>
+                <span>{{this.deliveryCost}} BYN</span>
+            </div>
+            <div class="order-knifes">
+                <div class="d-flex flex-row">
+                    <img class="order-knifes__icon" src="@/assets/orderKnifesIcon.svg" alt="knifes">
+                    <div class="d-flex flex-row align-center" v-if="addKnifes">
+                        <v-btn icon class="rounded-xl main-mobile-cart__count-btn" @click="removeCutlery()">
+                            <v-icon>remove</v-icon>
+                        </v-btn>
+                        <div class="main-mobile-cart__order-qty">
+                            {{cutleryCounter}}
+                        </div>
+                        <v-btn icon class="rounded-xl main-mobile-cart__count-btn" @click="addCutlery()">
+                            <v-icon>add</v-icon>
+                        </v-btn>
+                    </div>
+                    <div v-else>
+                        Приборы и салфетки
+                    </div>
                 </div>
-                <div class="empty-basket-subtitle">
-                    Перейдите к списку мест, чтобы оформить заказ заново
+                <v-switch class="order-knifes__switch" v-model="addKnifes" inset></v-switch>
+            </div>
+            <h1 class="order-delivery-info__title">Доставка</h1>
+            <div class="order-delivery-info">
+                <img class="order-delivery-info__icon" src="@/assets/deliverPersonIcon.svg" alt="delivery">
+                <span class="order-delivery-info__text">Доставка yest.by</span>
+            </div>
+            <div class="confirm-order" v-show="getSelectedDishs.length > 0">
+                <div class="total-info-block">
+                    <span class="total-price">
+                        {{this.totalPrice}} BYN
+                    </span>
+                    <span class="total-time">
+                        <client-only>
+                            {{this.deliveryMin}} - {{this.deliveryMax}} мин
+                        </client-only>
+                    </span>
+                </div>
+                <div class="next-btn-block">
+                    <v-btn block color="primary" @click="goToForm()">Далее</v-btn>
                 </div>
             </div>
         </div>
-        <div class="mobile-cart__form" v-show="showOrderForm">
-            <orderForm @closeCheckout='closeOrderForm()' />
+        <div v-show="getSelectedDishs.length == 0" class="empty">
+            <div class="empty-basket-img"></div>
+            <div class="empty-basket-title">
+                Корзина пуста
+            </div>
+            <div class="empty-basket-subtitle">
+                Перейдите к списку мест, чтобы оформить заказ заново
+            </div>
         </div>
-
-        <v-bottom-sheet v-model="showAuthForm" :eager=true :fullscreen=true>
-            <v-sheet class="text-center authFormSheet">
-                <div class="mini-header">
-                    <v-icon class="mobile-mode_header-btn " @click="showAuthForm = false">arrow_back</v-icon>
-                    <div class="logo-block">
-                        <img src="@/assets/logo.svg" alt="logo" class="mini-header_logo">
-                    </div>
-                </div>
-                <mobileSmsForm @closeFormShowOrderForm='closeFormShowOrderForm()' />
-            </v-sheet>
-        </v-bottom-sheet>
     </div>
+    <div class="mobile-cart__form" v-show="showOrderForm">
+        <orderForm @closeCheckout='closeOrderForm()' />
+    </div>
+
+    <v-bottom-sheet v-model="showAuthForm" :eager=true :fullscreen=true>
+        <v-sheet class="text-center authFormSheet">
+            <div class="mini-header">
+                <v-icon class="mobile-mode_header-btn " @click="showAuthForm = false">arrow_back</v-icon>
+                <div class="logo-block">
+                    <img src="@/assets/logo.svg" alt="logo" class="mini-header_logo">
+                </div>
+            </div>
+            <mobileSmsForm @closeFormShowOrderForm='closeFormShowOrderForm()' />
+        </v-sheet>
+    </v-bottom-sheet>
+</div>
 </div>
 </template>
 
@@ -306,14 +314,14 @@ export default {
     async beforeMount() {
         window.scrollTo(0, 0);
         if (process.client) {
-			if (this.getLatetestRestInfoWithOrder !== null) {
-				this.LatetestRestInfoWithOrder = this.getLatetestRestInfoWithOrder;
-				this.deliveryMin = this.getLatetestRestInfoWithOrder.delivery.time.min
-				this.deliveryMax = this.getLatetestRestInfoWithOrder.delivery.time.max
-			} else {
-				this.deliveryMin = 0
-				this.deliveryMax = 0
-			}
+            if (this.getLatetestRestInfoWithOrder !== null) {
+                this.LatetestRestInfoWithOrder = this.getLatetestRestInfoWithOrder;
+                this.deliveryMin = this.getLatetestRestInfoWithOrder.delivery.time.min
+                this.deliveryMax = this.getLatetestRestInfoWithOrder.delivery.time.max
+            } else {
+                this.deliveryMin = 0
+                this.deliveryMax = 0
+            }
         }
     },
 }

@@ -168,7 +168,6 @@
                                 <div v-for="(option, opindex) in selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
                                     <div>
                                         {{option.title}}
-										{{optionsCounter[opindex].selected}}
                                     </div>
                                     <div v-if="option.multi_data !==1" class="d-flex flex-row justify-start">
                                         <v-radio-group v-model="optionsCounter[opindex].selected" :mandatory="false" class="d-flex flex-row">
@@ -187,7 +186,6 @@
                                         </v-radio-group>
                                     </div>
                                     <div v-else>
-                                        <!-- {{optionsCounter}} -->
                                         <v-checkbox v-for="optionV in option.variants" :key="optionV.id" v-model="optionsCounter[opindex].selected" :value="optionV.price[0]">
                                             <template v-slot:label>
                                                 <p class="option-main">
@@ -385,8 +383,8 @@
                                 <div class="selected-dish-composition">
                                     {{selectedDish.description}}
                                 </div>
-                                <div class="bgGray" v-show="selectedDish.sizes.length>1">
-                                    <div class="sizes px-3">
+                                <div class="bgGray">
+                                    <div class="sizes px-3" v-show="selectedDish.sizes.length>1">
                                         <div class="multi-title">
                                             Размер на выбор
                                         </div>
@@ -409,25 +407,37 @@
                                         <div class="multi-title">
                                             Дополнительниые ингреденеты
                                         </div>
-                                        <div v-for="option in selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
-                                            <div>
-                                                {{option.title}}
-                                            </div>
-                                            <div class="d-flex flex-row justify-start">
-                                                <v-radio-group v-model="selectOption" :mandatory="false" class="d-flex flex-row">
-                                                    <v-radio class="radio-button" v-for="optionV in option.variants" :key="optionV.id" :value="optionV" color="primary">
+                                        <div v-for="(option, opindex) in selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
+											{{option.title}}
+                                            <div v-if="option.multi_data !==1" class="d-flex flex-row justify-start">
+                                                <v-radio-group v-model="optionsCounter[opindex].selected" :mandatory="false" class="d-flex flex-row">
+                                                    <v-radio v-for="optionV in option.variants" :key="optionV.id" :value="optionV" color="primary">
                                                         <template v-slot:label>
                                                             <p class="option-main">
                                                                 <span class="option-main-text">
                                                                     {{optionV.name}}
                                                                 </span>
-                                                                <span class="option-main-price">
-                                                                    {{optionV.price[0] != undefined ? optionV.price[0].price : 0}} BYN
+                                                                <span class="option-main-price" v-show="!option.free">
+                                                                    {{optionV.price[0] != undefined ? (optionV.price[0].price == null ? `0` : optionV.price[0].price) : 0}} BYN
                                                                 </span>
                                                             </p>
                                                         </template>
                                                     </v-radio>
                                                 </v-radio-group>
+                                            </div>
+                                            <div v-else>
+                                                <v-checkbox v-for="optionV in option.variants" :key="optionV.id" v-model="optionsCounter[opindex].selected" :value="optionV.price[0]">
+                                                    <template v-slot:label>
+                                                        <p class="option-main">
+                                                            <span class="option-main-text">
+                                                                {{optionV.name}}
+                                                            </span>
+                                                            <span class="option-main-price">
+                                                                {{optionV.price[0] != undefined ? (optionV.price[0].price == null ? `0` :( optionV.price[0].price > 0 ? `+ ${optionV.price[0].price}`:`${optionV.price[0].price}`)) : 0}} BYN
+                                                            </span>
+                                                        </p>
+                                                    </template>
+                                                </v-checkbox>
                                             </div>
                                         </div>
                                     </div>
@@ -683,7 +693,7 @@ export default {
             }
         },
         addCraftDish() {
-			console.error(this.optionsCounter);
+            console.error(this.optionsCounter);
             if (this.getLatetestRestInfoWithOrder !== null) {
                 if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
                     this.showWarning = true
@@ -727,11 +737,7 @@ export default {
                 this.selectedDish = dish
                 this.selectedDishCounter = 1
 
-                console.log(dish.options);
-
                 dish.options.forEach((opt, index) => {
-					let multi 
-                console.log('addToBasket -> opt', opt)
                     this.optionsCounter.push({
                         name: `option${index}`,
                         selected: opt.multi_data == 0 ? opt.variants[0] : [],
@@ -756,8 +762,16 @@ export default {
         },
         showSelectedDish(dish) {
             this.selectedDish = dish
+            console.log('showSelectedDish -> this.selectedDish ', this.selectedDish )
             this.selectedDishCounter = 1
             this.sizesRadioBtn = dish.sizes[0]
+
+            dish.options.forEach((opt, index) => {
+                this.optionsCounter.push({
+                    name: `option${index}`,
+                    selected: opt.multi_data == 0 ? opt.variants[0] : [],
+                })
+            })
             this.showDish = true
         },
         momentAdd(dish) {
@@ -788,7 +802,7 @@ export default {
                 if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
                     this.showWarning = true
                 } else {
-                    this.selectedDish.selectOption = this.selectOption
+                    this.selectedDish.selectOption = this.optionsCounter
                     this.selectedDish.selectSize = this.sizesRadioBtn
                     this.selectedDish.selectSize.count = this.selectedDishCounter
                     this.$store.dispatch('basket/addToBasket', this.selectedDish);
@@ -800,7 +814,7 @@ export default {
                     this.showDish = false
                 }
             } else {
-                this.selectedDish.selectOption = this.selectOption
+                this.selectedDish.selectOption = this.optionsCounter
                 this.selectedDish.selectSize = this.sizesRadioBtn
                 this.selectedDish.selectSize.count = this.selectedDishCounter
                 this.$store.dispatch('basket/addToBasket', this.selectedDish);
