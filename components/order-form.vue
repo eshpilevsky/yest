@@ -155,11 +155,11 @@ export default {
         return {
             phone: Number,
             delivery: {
-                address: 'Цнянская',
-                room: '1',
-                enterence: '1',
-                intercom: '1',
-                flor: '1',
+                address: '',
+                room: '',
+                enterence: '',
+                intercom: '',
+                flor: '',
             },
             payment_method: 0,
             promocode: '',
