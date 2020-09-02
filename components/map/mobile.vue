@@ -115,7 +115,7 @@ export default {
             getZoomOut(ymaps, mapInstance)
             getPlace(ymaps, mapInstance)
 			getGeo(ymaps, mapInstance)
-			
+
 			let getZoneList = this.getZoneList
 			let getSelectedZone = this.getSelectedZone
 			let router = this.$router
@@ -287,6 +287,10 @@ ymaps .customMapBtn {
 }
 
 ymaps .customMapBtn.place {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     padding: 1vw;
 }
 
