@@ -414,7 +414,7 @@
                                             </v-radio>
                                         </v-radio-group>
                                     </div>
-                                    <div class="options px-3" v-show="selectedDish.options.length > 1">
+                                    <div class="options px-3" v-show="selectedDish.options.length > 0">
                                         <div class="multi-title">
                                             Дополнительниые ингреденеты
                                         </div>
@@ -648,7 +648,6 @@ export default {
             showRestInfo: false,
             showRestName: false,
             lastPath: null,
-            calcPath: '',
             selectedOption: [],
             optionsCounter: [],
             showDesktopMap: false,
@@ -771,7 +770,8 @@ export default {
                 } else {
                     this.selectedDish = dish
                     this.selectedDishCounter = 1
-                    this.sizesRadioBtn = dish.sizes[0]
+					this.sizesRadioBtn = dish.sizes[0]
+					this.optionsCounter = []
                     if (this.getLatetestRestInfoWithOrder == null) {
                         this.saveBasket()
                     } else if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
@@ -959,15 +959,6 @@ export default {
                 this.tab = parseInt(visibleCategory[1])
             }
         }
-    },
-    beforeRouteEnter(to, from, next) {
-        next(vm => {
-            if (from.path !== '/') {
-                vm.calcPath = from.path
-            } else {
-                vm.calcPath = `/${to.params.region}`
-            }
-        })
     },
     computed: {
         ...mapGetters({

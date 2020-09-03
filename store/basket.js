@@ -2,8 +2,8 @@ export const state = () => ({
   data: {
     restuarantUrl: null,
     dishs: [],
-	totalPrice: 0,
-	orderId: 0,
+    totalPrice: 0,
+    orderId: 0,
   },
   status: 0
 })
@@ -82,9 +82,9 @@ export const mutations = {
   },
   SAVE_RESTRUARNT_URL(state, url) {
     state.status = '200'
-	state.data.restuarantUrl = url
-	// state.data.restuarantUrl = url
-	
+    state.data.restuarantUrl = url
+    // state.data.restuarantUrl = url
+
   },
   SAVE_TO_BASKET(state, payload) {
     state.status = '200'
@@ -92,8 +92,8 @@ export const mutations = {
   },
   DROP_BASKET(state) {
     state.status = '200'
-	state.data.dishs = []
-	state.data.restuarantUrl = null
+    state.data.dishs = []
+    state.data.restuarantUrl = null
   },
   DECREMENT_DISH(state, payload) {
     state.status = '200'
@@ -109,15 +109,15 @@ export const mutations = {
         findSize = true
       } else {
         findSize = undefined
-	  }
-	  
+      }
+
       let wellBe = state.data.dishs[findDish].selectSize.count - 1
       if (findSize !== undefined) {
         if (wellBe < 1) {
-		  state.data.dishs.splice(findDish, 1)
-		  if(state.data.dishs.length == 0){
-			state.data.restuarantUrl = null
-		  }
+          state.data.dishs.splice(findDish, 1)
+          if (state.data.dishs.length == 0) {
+            state.data.restuarantUrl = null
+          }
         } else {
           state.data.dishs[findDish].selectSize.count--
         }
@@ -149,12 +149,51 @@ export const getters = {
     return state.data.dishs
   },
   getTotalPrice(state) {
+	if (process.client) {
+
     let dl = state.data.dishs
     let totalPrice = 0
     dl.forEach(element => {
-      totalPrice += element.selectSize.price * element.selectSize.count
+	  totalPrice += element.selectSize.price * element.selectSize.count
+	  if (element.selectOption.length > 0) {
+		element.selectOption.forEach(option => {
+        	console.log('getTotalPrice -> option', option.selected.name)
+			if (option.selected.length > 1) {
+				option.selected.forEach(opti => {
+					totalPrice += opti.price == null ? 0 : opti.price[0].price
+				})
+			} else{
+				totalPrice += option.selected.price == null ? 0 : option.selected.price[0].price
+			}
+		})
+		console.error(totalPrice);
+	  }
     });
-    return totalPrice.toFixed(1)
+
+		
+	  let mass = state.data.restuarantUrl==null ? 0 : state.data.restuarantUrl.delivery.fee
+	  let addDeliveryPrice
+	  if (mass !== 0 ) {
+		  addDeliveryPrice = (mass) =>{
+			let finded = mass.find((cost) => {
+			  return cost.min < totalPrice && totalPrice < cost.max
+			})
+			if (finded !== undefined) {
+				if (finded.hasOwnProperty('delivery')) {
+					return parseInt(finded.delivery)
+				} else {
+					return parseInt(finded.deliveryFee)
+				}
+			} else {
+				return parseInt(mass[mass.length - 1].deliveryFee)
+			}
+	
+		  }
+	  } else {
+		addDeliveryPrice = 0
+	  }
+	  return  parseFloat(totalPrice) + parseFloat(addDeliveryPrice(mass))
+    }
   },
 };
 

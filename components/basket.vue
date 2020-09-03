@@ -87,7 +87,8 @@
             </div>
             <div class="total-price" v-show="this.$route.name !== 'checkout'">
                 <p class="total-title">Итого</p>
-                <p v-if="this.orderList.length > 0 && basketListVisible" class="price">{{this.getTotalPrice}} BYN</p>
+                <p v-if="this.orderList.length > 0 && basketListVisible" class="price">
+					{{parseFloat(this.getTotalPrice)}} BYN</p>
                 <p v-else class="price">0.0 BYN</p>
             </div>
         </div>
@@ -203,7 +204,12 @@ export default {
             getSelectedDishs: "basket/getSelectedDishs",
             getTotalPrice: "basket/getTotalPrice",
             getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
-        }),
+		}),
+		computedTotalPrice(){
+            console.log('computedTotalPrice -> this.getTotalPrice',typeof this.getTotalPrice)
+            console.log('computedTotalPrice -> this.deliveryCost',typeof this.deliveryCost)
+			return parseFloat(this.getTotalPrice) + this.deliveryCost
+		}
     },
     async beforeMount() {
         if (this.getLatetestRestInfoWithOrder !== null) {

@@ -101,7 +101,7 @@
             <div class="confirm-order" v-show="getSelectedDishs.length > 0">
                 <div class="total-info-block">
                     <span class="total-price">
-                        {{this.totalPrice}} BYN
+						{{parseFloat(this.totalPrice) + this.deliveryCost}} BYN
                     </span>
                     <span class="total-time">
                         <client-only>
@@ -204,6 +204,7 @@ export default {
             return this.getUserPhoneNumber
         },
         computedDeliveryCost(mass) {
+            console.log('computedDeliveryCost -> mass', mass)
             // let deliveryMass = this.sortDeliverFee(mass)
             let price = parseInt(this.getTotalPrice)
             let finded = mass.find((cost) => {
@@ -317,7 +318,8 @@ export default {
             if (this.getLatetestRestInfoWithOrder !== null) {
                 this.LatetestRestInfoWithOrder = this.getLatetestRestInfoWithOrder;
                 this.deliveryMin = this.getLatetestRestInfoWithOrder.delivery.time.min
-                this.deliveryMax = this.getLatetestRestInfoWithOrder.delivery.time.max
+				this.deliveryMax = this.getLatetestRestInfoWithOrder.delivery.time.max
+				this.deliveryCost = this.computedDeliveryCost(this.getLatetestRestInfoWithOrder.delivery.fee);
             } else {
                 this.deliveryMin = 0
                 this.deliveryMax = 0
