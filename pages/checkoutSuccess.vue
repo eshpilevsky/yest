@@ -1,6 +1,6 @@
 <template>
 <div class="success-order">
-    <h1 class="success-order__title">Ваш заказ №{{this.order_id}} успешно сформирован!</h1>
+    <h1 class="success-order__title">Ваш заказ №{{this.orderId}} успешно сформирован!</h1>
     <div class="success-order__descr">
         С вами свяжутся сотрудники контакт центра в ближайшее время для подтверждения заказа.
     </div>
@@ -49,9 +49,9 @@ export default {
 		// } else {
 		// 	order_id = 0
 		// }
-		return{
-			order_id: order_id
-		}
+		// return{
+		// 	order_id: order_id
+		// }
 
     },
     data() {
@@ -67,6 +67,7 @@ export default {
     },
     created() {
         console.error(this.getSelectedZone);
+        console.log('created -> this.getOrderId', this.getOrderId)
         this.orderId = this.getOrderId;
     },
 }

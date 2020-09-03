@@ -128,12 +128,12 @@
                 <div class="mobile-form__shipping">
                     <p class="mobile-form__shipping-title">Доставка</p>
                     <p class="mobile-form__shipping-time">
-						{{`${time.min} - ${this.time.max}`}} мин
+                        {{`${time.min} - ${this.time.max}`}} мин
                     </p>
                 </div>
                 <v-card-actions class="mobile-form__actions">
                     <v-btn class="mobile-form__submit" block color="primary" @click="sendOrder()" :disabled="delivery.address.length == 0" :loading="loadingSendOrder">
-						{{payment_method == 0 ? 'Оформить заказ' : 'Перейти к оплате'}}
+                        {{payment_method == 0 ? 'Оформить заказ' : 'Перейти к оплате'}}
                     </v-btn>
                 </v-card-actions>
             </form>
@@ -191,15 +191,24 @@ export default {
                 dishId = dish.selectSize.id
                 if (dish.hasOwnProperty('selectOption')) {
                     dish.selectOption.forEach((option) => {
-						if (option.selected.dish_option_id !== undefined) {
-							let id = {
-								id: option.selected.dish_option_id
-							}
-							dishOption.push(id)
-						}
+                        if (option.selected.length > 1) {
+                            option.selected.forEach((opt) => {
+                                if (opt.id !== undefined) {
+                                    dishOption.push({
+                                        id: opt.id
+                                    })
+                                }
+                            })
+                        } else {
+                            if (option.selected.id !== undefined) {
+                                dishOption.push({
+                                    id: option.selected.id
+                                })
+                            }
+                        }
                     })
-				}
-				
+                }
+
                 let result;
                 if (dishOption == []) {
                     result = {
@@ -215,6 +224,7 @@ export default {
                 }
                 this.order.push(result)
             })
+            console.log(this.order);
             ApiService.post('/create/order', {
                 phone: this.getUserPhoneNumber,
                 delivery: {
@@ -231,11 +241,11 @@ export default {
                 order: this.order,
             }).then((response) => {
                 if (response.data.hasOwnProperty('checkout')) {
-					window.location = response.data.checkout.redirect_url
+            		window.location = response.data.checkout.redirect_url
                 } else {
-					this.$store.dispatch('basket/setOrderId', response.data.order_id);
-					this.$router.push('/checkout/success')
-				}
+            		this.$store.dispatch('basket/setOrderId', response.data.order_id);
+            		this.$router.push('/checkout/success')
+            	}
                 this.$store.dispatch('basket/dropBasket');
                 this.loadingSendOrder = false
 
@@ -255,11 +265,14 @@ export default {
         }),
     },
     mounted() {
-		if (this.getLatetestRestInfoWithOrder !== null) {
-			this.time = this.getLatetestRestInfoWithOrder.delivery.time
-		} else {
-			this.time = {max:0,min:0}
-		}
+        if (this.getLatetestRestInfoWithOrder !== null) {
+            this.time = this.getLatetestRestInfoWithOrder.delivery.time
+        } else {
+            this.time = {
+                max: 0,
+                min: 0
+            }
+        }
         if (this.getCurrentAddress.length > 0) {
             this.delivery.address = this.getCurrentAddress
         }
@@ -292,12 +305,12 @@ export default {
 }
 
 .form-textarea .v-text-field__details {
-  display: none !important;
+    display: none !important;
 }
 
 .form-textarea .v-text-field__slot {
-  width: 100%;
-  min-width: 100%;
+    width: 100%;
+    min-width: 100%;
 }
 
 .form-textarea .v-input__slot {
@@ -313,7 +326,7 @@ export default {
 }
 
 .form-textarea.v-input--is-focused {
-  margin-bottom: 4px !important;
+    margin-bottom: 4px !important;
 }
 
 .form-textarea.v-input--is-focused .v-input__slot {
@@ -340,9 +353,7 @@ export default {
 .fs16 {
     font-size: 16px;
 }
-</style>
-
-<style scoped>
+</style><style scoped>
 .desktop-form__wrapper {
     padding-top: 22px;
     border-radius: 4px;

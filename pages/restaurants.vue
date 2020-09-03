@@ -186,7 +186,7 @@
                                         </v-radio-group>
                                     </div>
                                     <div v-else>
-                                        <v-checkbox v-for="optionV in option.variants" :key="optionV.id" v-model="optionsCounter[opindex].selected" :value="optionV.price[0]">
+                                        <v-checkbox v-for="optionV in option.variants" :key="optionV.id" v-model="optionsCounter[opindex].selected" :value="optionV">
                                             <template v-slot:label>
                                                 <p class="option-main">
                                                     <span class="option-main-text">
@@ -426,7 +426,7 @@
                                                 </v-radio-group>
                                             </div>
                                             <div v-else>
-                                                <v-checkbox v-for="optionV in option.variants" :key="optionV.id" v-model="optionsCounter[opindex].selected" :value="optionV.price[0]">
+                                                <v-checkbox v-for="optionV in option.variants" :key="optionV.id" v-model="optionsCounter[opindex].selected" :value="optionV">
                                                     <template v-slot:label>
                                                         <p class="option-main">
                                                             <span class="option-main-text">
@@ -693,7 +693,6 @@ export default {
             }
         },
         addCraftDish() {
-            console.error(this.optionsCounter);
             if (this.getLatetestRestInfoWithOrder !== null) {
                 if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
                     this.showWarning = true
@@ -718,11 +717,11 @@ export default {
                 this.selectedDishCounter = 1
                 this.selectedDish.selectSize = []
                 this.selectedDish.selectSize = this.sizesRadioBtn
-                this.selectedDish.selectOption = this.optionsCounter
-
+				this.selectedDish.selectOption = this.optionsCounter
+				
                 this.$store.dispatch('basket/addToBasket', this.selectedDish);
                 this.$store.dispatch('basket/saveRestuarantUrl', {
-                    params: this.$router.currentRoute.params,
+					params: this.$router.currentRoute.params,
                     restName: this.restuarant.name,
                     delivery: this.restuarant.delivery,
                 });
@@ -736,14 +735,13 @@ export default {
             if (dish.sizes.length > 1 || dish.options.length > 0) {
                 this.selectedDish = dish
                 this.selectedDishCounter = 1
-
+				this.optionsCounter = []
                 dish.options.forEach((opt, index) => {
                     this.optionsCounter.push({
                         name: `option${index}`,
                         selected: opt.multi_data == 0 ? opt.variants[0] : [],
                     })
                 })
-                console.log('addToBasket -> this.optionsCounter', this.optionsCounter)
                 this.showOptionsmenu = true
                 this.sizesRadioBtn = dish.sizes[0]
                 // this.sizesRadioBtn = dish.sizes[0]
@@ -765,7 +763,6 @@ export default {
             console.log('showSelectedDish -> this.selectedDish ', this.selectedDish )
             this.selectedDishCounter = 1
             this.sizesRadioBtn = dish.sizes[0]
-
             dish.options.forEach((opt, index) => {
                 this.optionsCounter.push({
                     name: `option${index}`,
@@ -897,7 +894,7 @@ export default {
             }
         },
         closeOptionMenu() {
-            this.showOptionsmenu = false
+			this.showOptionsmenu = false
         },
         decrement(dish) {
             this.showDish = false

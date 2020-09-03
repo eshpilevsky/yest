@@ -24,7 +24,14 @@
                                 </div>
                                 <div v-show="order.selectOption.length > 0" class="d-flex flex-column">
                                     <span v-for="opt in order.selectOption" :key="opt.selected.id" class="order-item-subbtitle">
-                                        {{opt.selected.name}}
+										<div v-if="opt.selected.length > 1">
+											<div v-for="opti in opt.selected" :key="opti.id">
+												{{opti.name}}
+											</div>
+										</div>
+										<div v-else>
+                                        	{{opt.selected[0] ? opt.selected[0].name : opt.selected.name }}
+										</div>
                                     </span>
                                 </div>
                             </div>
