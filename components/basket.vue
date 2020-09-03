@@ -75,7 +75,7 @@
                 <p class="total-title">Время доставки</p>
                 <p class="price">
                     {{`${this.time.min} &#8212; ${this.time.max} мин`}}
-                    <img class="price__icon" src="../assets/editIcon.svg" alt="Edit">
+                    <!-- <img class="price__icon" src="../assets/editIcon.svg" alt="Edit"> -->
                 </p>
             </div>
             <div class="total-price" v-show="this.$route.name !== 'checkout'">
