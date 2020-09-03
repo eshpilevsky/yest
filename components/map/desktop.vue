@@ -85,12 +85,14 @@ export default {
         showSuggestList: false,
     }),
     computed: {
-        ...mapGetters('map', {
-            isMapVisible: 'isMapVisible',
-            getCurrentCoords: 'getCurrentCoords',
-            getCurrentAddress: 'getCurrentAddress',
-            isInputAddressMode: 'isInputAddressMode',
-            geolocationAvailable: 'geolocationAvailable'
+        ...mapGetters({
+            isMapVisible: 'map/isMapVisible',
+            getCurrentCoords: 'map/getCurrentCoords',
+            getCurrentAddress: 'map/getCurrentAddress',
+            isInputAddressMode: 'map/isInputAddressMode',
+			geolocationAvailable: 'map/geolocationAvailable',
+            getSelectedZone: 'zone/getSelectedZone',
+            getZoneList: 'zone/getZoneList',
         }),
     },
     watch: {
@@ -113,8 +115,6 @@ export default {
         }),
         ...mapActions({
             getLocation: 'map/getLocation',
-            getSelectedZone: 'zone/getSelectedZone',
-            getZoneList: 'zone/getZoneList',
         }),
         focusInput() {
             setTimeout(() => {
@@ -127,7 +127,8 @@ export default {
             }, 500);
         },
         async selectAdress(address) {
-            const app = this
+			const app = this
+			this.address = address.value
             ymaps.geocode(address.value, {
                 results: 1,
                 boundedBy: [
@@ -240,6 +241,9 @@ export default {
         },
         async onBoundsChange() {
             const coords = this.mapInstance.getCenter()
+            console.log('onBoundsChange -> this.getZoneList', this.getZoneList)
+            console.log('onBoundsChange -> this.getSelectedZone', this.getSelectedZone)
+            console.log('onBoundsChange -> this.$router', this.$router)
             this.address = await getAddresByCoords(ymaps, coords, this.getZoneList, this.getSelectedZone, this.$router)
             await this.$emit('selectAddress', this.address)
         }

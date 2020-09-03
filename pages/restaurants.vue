@@ -128,8 +128,19 @@
                 </div>
             </div>
             <div cols-2 xl8 class="right">
-                <basket :orderList="this.orderList" :delivery='this.restuarant.delivery' />
-                <v-btn :disabled="this.getTotalPrice <= 0" color="primary" class="desctop_btn_confirm_order" id="desctop_btn_confirm_order" @click="checkout()">Оформить заказ</v-btn>
+				<div v-show="this.getCurrentAddress.length > 0">
+					<basket :orderList="this.orderList" :delivery='this.restuarant.delivery' />
+					<v-btn :disabled="this.getTotalPrice <= 0" color="primary" class="desctop_btn_confirm_order" id="desctop_btn_confirm_order" @click="checkout()">Оформить заказ</v-btn>
+				</div>
+				<div v-show="this.getCurrentAddress.length == 0">
+					<div class="mapimg"></div>
+					<v-btn color="primary" block @click="visibleMap()">
+						<v-icon>
+							near_me
+						</v-icon>
+						Указать свой адрес
+					</v-btn>
+				</div>
             </div>
             <client-only>
                 <v-overlay :dark='false' z-index="999" v-model="showOptionsmenu">
@@ -504,6 +515,9 @@
             </v-card-actions>
         </v-card>
     </v-overlay>
+	    <v-overlay z-index="25" :dark='false' :value="showDesktopMap" :opacity=".5">
+        <MapDesktop @closeMap='visibleMap()'></MapDesktop>
+    </v-overlay>
 </div>
 </template>
 
@@ -516,6 +530,8 @@ import basket from '@/components/basket'
 import leagalInfo from '@/components/restaurant/legalInfo'
 import smsForm from '@/components/restaurant/sms-form'
 import specOffer from '@/components/restaurant/spec-offer'
+import MapDesktop from '@/components/map/desktop'
+
 import axios from 'axios'
 
 import {
@@ -530,7 +546,8 @@ export default {
         leagalInfo,
         basket,
         smsForm,
-        specOffer,
+		specOffer,
+		MapDesktop,
     },
     async asyncData({
         app,
@@ -619,26 +636,14 @@ export default {
             lastPath: null,
             calcPath: '',
             selectedOption: [],
-            optionsCounter: [],
-        }
-    },
-    head() {
-        return {
-            title: this.restuarant.seo.title,
-            meta: [{
-                    hid: 'description',
-                    name: 'description',
-                    content: this.restuarant.seo.description
-                },
-                {
-                    hid: 'keywords',
-                    name: 'keywords',
-                    content: this.restuarant.seo.keywords
-                },
-            ]
+			optionsCounter: [],
+			showDesktopMap: false,
         }
     },
     methods: {
+		visibleMap() {
+            this.showDesktopMap = !this.showDesktopMap
+        },
         computedPrice(prices) {
             if (prices.length == 0) {
                 return 'Нет цены'
@@ -731,36 +736,38 @@ export default {
             }
         },
         addToBasket(dish) {
-            console.log('addToBasket -> dish.options', dish.options)
-            if (dish.sizes.length > 1 || dish.options.length > 0) {
-                this.selectedDish = dish
-                this.selectedDishCounter = 1
-				this.optionsCounter = []
-                dish.options.forEach((opt, index) => {
-                    this.optionsCounter.push({
-                        name: `option${index}`,
-                        selected: opt.multi_data == 0 ? opt.variants[0] : [],
-                    })
-                })
-                this.showOptionsmenu = true
-                this.sizesRadioBtn = dish.sizes[0]
-                // this.sizesRadioBtn = dish.sizes[0]
-            } else {
-                this.selectedDish = dish
-                this.selectedDishCounter = 1
-                this.sizesRadioBtn = dish.sizes[0]
-                if (this.getLatetestRestInfoWithOrder == null) {
-                    this.saveBasket()
-                } else if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
-                    this.showWarning = true
-                } else {
-                    this.saveBasket()
-                }
-            }
+			if (this.getCurrentAddress.length > 0) {
+				if (dish.sizes.length > 1 || dish.options.length > 0) {
+					this.selectedDish = dish
+					this.selectedDishCounter = 1
+					this.optionsCounter = []
+					dish.options.forEach((opt, index) => {
+						this.optionsCounter.push({
+							name: `option${index}`,
+							selected: opt.multi_data == 0 ? opt.variants[0] : [],
+						})
+					})
+					this.showOptionsmenu = true
+					this.sizesRadioBtn = dish.sizes[0]
+					// this.sizesRadioBtn = dish.sizes[0]
+				} else {
+					this.selectedDish = dish
+					this.selectedDishCounter = 1
+					this.sizesRadioBtn = dish.sizes[0]
+					if (this.getLatetestRestInfoWithOrder == null) {
+						this.saveBasket()
+					} else if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
+						this.showWarning = true
+					} else {
+						this.saveBasket()
+					}
+				}
+			} else {
+				this.showDesktopMap = true
+			}
         },
         showSelectedDish(dish) {
             this.selectedDish = dish
-            console.log('showSelectedDish -> this.selectedDish ', this.selectedDish )
             this.selectedDishCounter = 1
             this.sizesRadioBtn = dish.sizes[0]
             dish.options.forEach((opt, index) => {
@@ -940,6 +947,7 @@ export default {
             getSelectedZone: "zone/getSelectedZone",
             getSelectedCategory: "user/getSelectedCategory",
             getCurrentCoords: "map/getCurrentCoords",
+            getCurrentAddress: "map/getCurrentAddress",
             getSelectedDishs: "basket/getSelectedDishs",
             getTotalPrice: "basket/getTotalPrice",
             getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
@@ -1013,6 +1021,22 @@ export default {
             }
             lastScrollTop = st <= 0 ? 0 : st
         })
+	},
+    head() {
+        return {
+            title: this.restuarant.seo.title,
+            meta: [{
+                    hid: 'description',
+                    name: 'description',
+                    content: this.restuarant.seo.description
+                },
+                {
+                    hid: 'keywords',
+                    name: 'keywords',
+                    content: this.restuarant.seo.keywords
+                },
+            ]
+        }
     },
 }
 </script>
@@ -2227,11 +2251,6 @@ export default {
 }
 
 .right {
-    width: 310px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
     position: sticky;
     top: 90px;
     height: calc(100vh - 100px);

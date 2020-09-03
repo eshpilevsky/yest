@@ -16,15 +16,16 @@ export const getAddresByCoords = async (ymaps, coords, zoneList, selectedZone, r
   }).then((res) => {
 	let address=''
     let getCityGeocoder = res.geoObjects.get(0).properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.Locality.LocalityName')
+
     if (selectedZone.name !== getCityGeocoder) {
-      let findCity = zoneList.find((zone) => {
-        return zone.name == getCityGeocoder
-      })
-      if (findCity !== undefined) {
-        router.push(`/${findCity.alias}`)
-      } else {
-        router.push(`/`)
-      }
+    //   let findCity = zoneList.find((zone) => {
+    //     return zone.name == getCityGeocoder
+    //   })
+    //   if (findCity !== undefined) {
+    //     router.push(`/${findCity.alias}`)
+    //   } else {
+    //     router.push(`/`)
+    //   }
     } else {
       address = getAddresFromGeoobject(res.geoObjects)
       console.log('getAddresByCoords -> address', address)

@@ -32,7 +32,7 @@
                 <v-list>
                     <v-list-item v-for="(item, index) in suggestions" :key="'address'+index" class="itemAdress" @click="selectAdress(item)">
                         <v-list-item-content>
-                            <v-list-item-title>{{item.displayName}} a</v-list-item-title>
+                            <v-list-item-title>{{item.displayName}}</v-list-item-title>
                             <v-list-item-subtitle class="itemAdress-sub">{{item.value}}</v-list-item-subtitle>
                         </v-list-item-content>
                     </v-list-item>
