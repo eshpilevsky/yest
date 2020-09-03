@@ -77,7 +77,8 @@ module.exports = {
       src: '@/plugins/mask'
     },
     {
-      src: '@/plugins/google-tag-manager'
+	  src: '@/plugins/google-tag-manager',
+	  ssr: false
     },
   ],
   /*

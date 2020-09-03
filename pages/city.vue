@@ -62,7 +62,7 @@ export default {
         const zoneListData = zoneList.data
         store.dispatch('zone/setZone', zoneListData)
         var currentZone = zoneListData.find((zones) => {
-            return zones.alias == params.region
+			return zones.alias == params.region
         })
 
         if (currentZone !== undefined) {
@@ -122,9 +122,9 @@ export default {
                     background: 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png',
 					category_icon: 'https://menu-menu.by/images/category_background/mobile/pizza.jpg',
 					meta:{
-						title: 'Категория все',
-						description: 'Описание',
-						keywords: 'Ключевые слова',
+						title: currentZone.seo.title,
+						description: currentZone.seo.description,
+						keywords: currentZone.seo.keywords,
 					}
                 }
                 currentCategory = categoryAll[0]
