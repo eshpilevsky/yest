@@ -128,19 +128,19 @@
                 </div>
             </div>
             <div cols-2 xl8 class="right">
-				<div v-show="this.getCurrentAddress.length > 0">
-					<basket :orderList="this.orderList" :delivery='this.restuarant.delivery' />
-					<v-btn :disabled="this.getTotalPrice <= 0" color="primary" class="desctop_btn_confirm_order" id="desctop_btn_confirm_order" @click="checkout()">Оформить заказ</v-btn>
-				</div>
-				<div v-show="this.getCurrentAddress.length == 0">
-					<div class="mapimg"></div>
-					<v-btn color="primary" block @click="visibleMap()">
-						<v-icon>
-							near_me
-						</v-icon>
-						Указать свой адрес
-					</v-btn>
-				</div>
+                <div v-show="this.getCurrentAddress.length > 0">
+                    <basket :orderList="this.orderList" :delivery='this.restuarant.delivery' />
+                    <v-btn :disabled="this.getTotalPrice <= 0" color="primary" class="desctop_btn_confirm_order" id="desctop_btn_confirm_order" @click="checkout()">Оформить заказ</v-btn>
+                </div>
+                <div v-show="this.getCurrentAddress.length == 0">
+                    <div class="mapimg"></div>
+                    <v-btn color="primary" block @click="visibleMap()">
+                        <v-icon>
+                            near_me
+                        </v-icon>
+                        Указать свой адрес
+                    </v-btn>
+                </div>
             </div>
             <client-only>
                 <v-overlay :dark='false' z-index="999" v-model="showOptionsmenu">
@@ -419,7 +419,7 @@
                                             Дополнительниые ингреденеты
                                         </div>
                                         <div v-for="(option, opindex) in selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
-											{{option.title}}
+                                            {{option.title}}
                                             <div v-if="option.multi_data !==1" class="d-flex flex-row justify-start">
                                                 <v-radio-group v-model="optionsCounter[opindex].selected" :mandatory="false" class="d-flex flex-row">
                                                     <v-radio v-for="optionV in option.variants" :key="optionV.id" :value="optionV" color="primary">
@@ -481,6 +481,20 @@
                         </v-card-text>
                     </v-card>
                 </v-bottom-sheet>
+                <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showSetAddressMobile" scrollable persistent no-click-animation z-index='999' :eager=true>
+                    <v-sheet class="rest-ship-modal">
+                        <div class="rest-ship-modal__top">
+                            <p class="rest-ship-modal__title">Укажите ваш адрес</p>
+                            <v-icon @click="setAddressMobile()" color="#000">close</v-icon>
+                        </div>
+                        <div class="rest-ship-modal__wrapper">
+                            Укажите адрес доставки, чтобы мы могли показать вам список доступных мест
+                        </div>
+                        <div @click="setAddressMobile()">
+                            <MapBtn :isHeader='true' />
+                        </div>
+                    </v-sheet>
+                </v-bottom-sheet>
             </div>
             <div class="basket-btn-block" v-show="this.getTotalPrice > 0">
                 <div>
@@ -515,7 +529,7 @@
             </v-card-actions>
         </v-card>
     </v-overlay>
-	    <v-overlay z-index="25" :dark='false' :value="showDesktopMap" :opacity=".5">
+    <v-overlay z-index="25" :dark='false' :value="showDesktopMap" :opacity=".5">
         <MapDesktop @closeMap='visibleMap()'></MapDesktop>
     </v-overlay>
 </div>
@@ -546,8 +560,8 @@ export default {
         leagalInfo,
         basket,
         smsForm,
-		specOffer,
-		MapDesktop,
+        specOffer,
+        MapDesktop,
     },
     async asyncData({
         app,
@@ -636,12 +650,16 @@ export default {
             lastPath: null,
             calcPath: '',
             selectedOption: [],
-			optionsCounter: [],
-			showDesktopMap: false,
+            optionsCounter: [],
+            showDesktopMap: false,
+            showSetAddressMobile: false,
         }
     },
     methods: {
-		visibleMap() {
+        setAddressMobile() {
+            this.showSetAddressMobile = !this.showSetAddressMobile
+        },
+        visibleMap() {
             this.showDesktopMap = !this.showDesktopMap
         },
         computedPrice(prices) {
@@ -722,11 +740,11 @@ export default {
                 this.selectedDishCounter = 1
                 this.selectedDish.selectSize = []
                 this.selectedDish.selectSize = this.sizesRadioBtn
-				this.selectedDish.selectOption = this.optionsCounter
-				
+                this.selectedDish.selectOption = this.optionsCounter
+
                 this.$store.dispatch('basket/addToBasket', this.selectedDish);
                 this.$store.dispatch('basket/saveRestuarantUrl', {
-					params: this.$router.currentRoute.params,
+                    params: this.$router.currentRoute.params,
                     restName: this.restuarant.name,
                     delivery: this.restuarant.delivery,
                 });
@@ -736,69 +754,78 @@ export default {
             }
         },
         addToBasket(dish) {
-			if (this.getCurrentAddress.length > 0) {
-				if (dish.sizes.length > 1 || dish.options.length > 0) {
-					this.selectedDish = dish
-					this.selectedDishCounter = 1
-					this.optionsCounter = []
-					dish.options.forEach((opt, index) => {
-						this.optionsCounter.push({
-							name: `option${index}`,
-							selected: opt.multi_data == 0 ? opt.variants[0] : [],
-						})
-					})
-					this.showOptionsmenu = true
-					this.sizesRadioBtn = dish.sizes[0]
-					// this.sizesRadioBtn = dish.sizes[0]
-				} else {
-					this.selectedDish = dish
-					this.selectedDishCounter = 1
-					this.sizesRadioBtn = dish.sizes[0]
-					if (this.getLatetestRestInfoWithOrder == null) {
-						this.saveBasket()
-					} else if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
-						this.showWarning = true
-					} else {
-						this.saveBasket()
-					}
-				}
-			} else {
-				this.showDesktopMap = true
-			}
-        },
-        showSelectedDish(dish) {
-            this.selectedDish = dish
-            this.selectedDishCounter = 1
-            this.sizesRadioBtn = dish.sizes[0]
-            dish.options.forEach((opt, index) => {
-                this.optionsCounter.push({
-                    name: `option${index}`,
-                    selected: opt.multi_data == 0 ? opt.variants[0] : [],
-                })
-            })
-            this.showDish = true
-        },
-        momentAdd(dish) {
-            this.selectedDish = dish
-            this.selectedDishCounter = 1
-            this.sizesRadioBtn = dish.sizes[0]
-
-            if (this.getLatetestRestInfoWithOrder == null) {
-                if (dish.sizes.length > 1) {
-                    this.showDish = true
+            if (this.getCurrentAddress.length > 0) {
+                if (dish.sizes.length > 1 || dish.options.length > 0) {
+                    this.selectedDish = dish
+                    this.selectedDishCounter = 1
+                    this.optionsCounter = []
+                    dish.options.forEach((opt, index) => {
+                        this.optionsCounter.push({
+                            name: `option${index}`,
+                            selected: opt.multi_data == 0 ? opt.variants[0] : [],
+                        })
+                    })
+                    this.showOptionsmenu = true
+                    this.sizesRadioBtn = dish.sizes[0]
+                    // this.sizesRadioBtn = dish.sizes[0]
                 } else {
-                    this.saveBasket()
+                    this.selectedDish = dish
+                    this.selectedDishCounter = 1
+                    this.sizesRadioBtn = dish.sizes[0]
+                    if (this.getLatetestRestInfoWithOrder == null) {
+                        this.saveBasket()
+                    } else if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
+                        this.showWarning = true
+                    } else {
+                        this.saveBasket()
+                    }
                 }
             } else {
-                if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
-                    this.showWarning = true
-                } else {
+                this.showDesktopMap = true
+            }
+        },
+        showSelectedDish(dish) {
+            if (this.getCurrentAddress.length > 0) {
+                this.selectedDish = dish
+                this.selectedDishCounter = 1
+                this.sizesRadioBtn = dish.sizes[0]
+                dish.options.forEach((opt, index) => {
+                    this.optionsCounter.push({
+                        name: `option${index}`,
+                        selected: opt.multi_data == 0 ? opt.variants[0] : [],
+                    })
+                })
+                this.showDish = true
+            } else {
+                this.showSetAddressMobile = true
+            }
+        },
+        momentAdd(dish) {
+            if (this.getCurrentAddress.length > 0) {
+
+                this.selectedDish = dish
+                this.selectedDishCounter = 1
+                this.sizesRadioBtn = dish.sizes[0]
+
+                if (this.getLatetestRestInfoWithOrder == null) {
                     if (dish.sizes.length > 1) {
                         this.showDish = true
                     } else {
                         this.saveBasket()
                     }
+                } else {
+                    if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
+                        this.showWarning = true
+                    } else {
+                        if (dish.sizes.length > 1) {
+                            this.showDish = true
+                        } else {
+                            this.saveBasket()
+                        }
+                    }
                 }
+            } else {
+                this.showSetAddressMobile = true
             }
         },
         addToBasketMobile() {
@@ -901,7 +928,7 @@ export default {
             }
         },
         closeOptionMenu() {
-			this.showOptionsmenu = false
+            this.showOptionsmenu = false
         },
         decrement(dish) {
             this.showDish = false
@@ -1021,7 +1048,7 @@ export default {
             }
             lastScrollTop = st <= 0 ? 0 : st
         })
-	},
+    },
     head() {
         return {
             title: this.restuarant.seo.title,
