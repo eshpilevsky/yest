@@ -37,11 +37,10 @@
                     <v-radio class="form-fields__radio-field" label="Наличными" :value=0></v-radio>
                     <v-radio class="form-fields__radio-field" label="Банковской картой на сайте" :value=1></v-radio>
                 </v-radio-group>
-                <div class="form-fields__container form-promo">
+                <!-- <div class="form-fields__container form-promo">
                     <v-text-field class="form-input" type="srting" v-model="promocode" placeholder="Промокод (если есть)" outlined></v-text-field>
-                    <!-- <button class="form-promo__button" >Применить</button> -->
                     <v-btn class="form-promo__button" height='32' dense color="primary" :disabled='promocode.length < 3'>Применить</v-btn>
-                </div>
+                </div> -->
             </div>
             <div class="form-actions">
                 <div class="form-actions__wrapper d-flex flex-row">

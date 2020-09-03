@@ -1,5 +1,8 @@
 <template>
 <v-app>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WDRSHHG" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <layout-header v-show="!isMapVisible && this.$route.name !=='cart'" :class="{'hide': this.$route.name =='restik'}" />
     <v-content v-show="!isMapVisible">
         <v-container class="main_cont">

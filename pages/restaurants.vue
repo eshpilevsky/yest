@@ -239,7 +239,7 @@
             <h1 class="info-top-title" v-show="showRestName">
                 {{restuarant.name}}
             </h1>
-            <v-icon class="mobile-mode_header-btn">search</v-icon>
+            <!-- <v-icon class="mobile-mode_header-btn">search</v-icon> -->
         </div>
         <div class="mobile-rest-info">
             <div class="rest-info-content">

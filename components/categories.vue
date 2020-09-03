@@ -51,11 +51,11 @@
         </v-menu> -->
     </div>
     <div class="category-list-mobile">
-        <button class="category-list-mobile-item" @click="showModalWindow()">
+        <!-- <button class="category-list-mobile-item" @click="showModalWindow()">
             <span class="item-name" style="width: 48px;">
                 <v-icon>search</v-icon>
             </span>
-        </button>
+        </button> -->
         <div v-for="(item, index) in allCategory" :key="'adaptiveCatList' + index" v-show="item.category_icon" class="category-list-mobile-item" @click="selectCategory(item)">
             <v-chip :class="{selected: item.id === currentCategory.id}" class="item-name">
                 {{ item.name }}
@@ -65,8 +65,8 @@
             <searchModal @closeModalWindow='showModalWindow()' />
         </v-overlay>
     </div>
-    <v-divider class="divider" />
-    <v-text-field placeholder="Название, кухня или блюдо" height="46" dense clearable prepend-inner-icon="search" outlined class="searchDesktop" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch"></v-text-field>
+    <!-- <v-divider class="divider" />
+    <v-text-field placeholder="Название, кухня или блюдо" height="46" dense clearable prepend-inner-icon="search" outlined class="searchDesktop" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch"></v-text-field> -->
     <!--    <v-text-field placeholder="Найти в Еде" height="48" clearable prepend-inner-icon="search" outlined dense filled class="searchMobile" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch">-->
     <!--        &lt;!&ndash; <template v-slot:append-outer v-show="this.getCurrentAddress.length > 0" >-->
     <!--            <v-btn rounded height="40px">-->

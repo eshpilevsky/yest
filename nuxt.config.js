@@ -76,6 +76,9 @@ module.exports = {
     {
       src: '@/plugins/mask'
     },
+    {
+      src: '@/plugins/google-tag-manager'
+    },
   ],
   /*
    ** Nuxt.js dev-modules
@@ -93,7 +96,6 @@ module.exports = {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
 	'@nuxtjs/pwa',
-	 ['@nuxtjs/google-tag-manager', { id: 'GTM-WDRSHHG' }]
   ],
   /*
    ** Axios module configuration
