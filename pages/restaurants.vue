@@ -39,7 +39,8 @@
                                                     Доставка Yest.by
                                                 </div>
                                                 <div class="description-price ">
-                                                    Доставка {{sortDeliverFee[sortDeliverFee.length-2].deliveryFee}} - {{sortDeliverFee[0].delivery}} BYN. Бесплатно при заказе от {{sortDeliverFee[sortDeliverFee.length-1].min}} BYN
+													<!-- {{sortDeliverFee}} -->
+                                                    Доставка {{sortDeliverFee[sortDeliverFee.length-1].delivery}} - {{sortDeliverFee[0].delivery}} BYN. Бесплатно при заказе от {{sortDeliverFee[sortDeliverFee.length-1].min}} BYN
                                                 </div>
                                             </div>
                                         </div>
@@ -66,12 +67,15 @@
                                                     <v-icon>
                                                         directions_run
                                                     </v-icon>
-                                                    <div>
-                                                        {{fee.delivery ? fee.delivery : fee.deliveryFee }} BYN
+                                                    <div v-if="fee.delivery">
+                                                        {{fee.delivery }} BYN
                                                         <span>
-                                                            На заказ от {{fee.min}} BYN
+                                                            на заказ от {{fee.min}} BYN
                                                         </span>
                                                     </div>
+													<div v-else>
+														Бесплатная доставка при заказе от {{fee.min}} BYN
+													</div>
                                                 </div>
                                                 <v-divider width='100%' class="mx-auto" />
                                             </div>
@@ -301,7 +305,7 @@
                                             directions_run
                                         </v-icon>
                                         <span>
-                                            {{fee.delivery ? fee.delivery : fee.deliveryFee }} BYN
+                                            {{fee.delivery}} BYN
                                             <span>на заказ от {{fee.min}} BYN</span>
                                         </span>
                                     </div>
@@ -708,7 +712,7 @@ export default {
                     return ``
                 } else {
                     let computedNextSum = deliveryMass[finded + 1].min - price
-                    return `Закажите ещё на ${computedNextSum.toFixed(1)} BYN для доставки за ${deliveryMass[finded+1].delivery ? deliveryMass[finded+1].delivery : deliveryMass[finded+1].deliveryFee} BYN`
+                    return `Закажите ещё на ${computedNextSum.toFixed(1)} BYN для доставки за ${deliveryMass[finded+1].delivery} BYN`
                 }
             } else {
                 return ``
@@ -975,7 +979,7 @@ export default {
         sortDeliverFee() {
             let listt = this.restuarant.delivery.fee
             let sorted = listt.sort((a, b) => {
-                return a.delivery ? a.delivery : a.deliveryFee > b.deliveryFee
+                return a.delivery > b.delivery
             })
             return sorted
         },
