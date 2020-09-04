@@ -193,7 +193,7 @@ export const getters = {
     //   addDeliveryPrice = 0
     // }
     // return parseFloat(totalPrice) + addDeliveryPrice
-    return totalPrice
+    return totalPrice.toFixed(1)
   },
 };
 

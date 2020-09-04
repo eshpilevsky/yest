@@ -89,7 +89,7 @@
                 </div>
             </v-list>
         </v-navigation-drawer>
-        <nuxt-link v-show="!showSidebar" :to="`/${this.getSelectedZone.alias}`" class="mobileLogo">
+        <nuxt-link v-show="!showSidebar" :to="this.getSelectedZone.alias !== undefined ? `/${this.getSelectedZone.alias}`: `/`" class="mobileLogo">
             <img src="@/assets/logo.svg" class="burger-logo-img" :class="{hideLogo : this.getCurrentAddress.length > 0}" alt="logodesktop">
             <map-btn v-show="showSetAdressBtn" :isHeader='true' class="header-map-btn" />
         </nuxt-link>

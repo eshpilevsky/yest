@@ -25,7 +25,7 @@
                         </span>
                         <span class="card-options__currency">
                             <img class="currency-icon" src="@/assets/purseIcon.svg" alt="purseIcon" />
-                            BYN
+                            0 BYN
                         </span>
                     </div>
                 </div>
@@ -119,21 +119,21 @@ export default {
             return newValue
         },
         getCurrentAddress(newValue) {
-			this.getRestWithCoords()
+            this.getRestWithCoords()
 
         }
     },
     methods: {
         async getRestWithCoords() {
-			let queryString;
-			if (this.currentCategory.id !== 0) {
-				queryString = `https://yestapi.xyz/restaurants`
-			} else {
-				queryString = `https://yestapi.xyz/restaurants/category/${this.currentCategory.id}`
-			}
+            let queryString;
+            if (this.currentCategory.id !== 0) {
+                queryString = `https://yestapi.xyz/restaurants`
+            } else {
+                queryString = `https://yestapi.xyz/restaurants/category/${this.currentCategory.id}`
+            }
 
-			let latitude = Cookie.get('latitude')
-			let longitude = Cookie.get('longitude')
+            let latitude = Cookie.get('latitude')
+            let longitude = Cookie.get('longitude')
             let restaurantsList = await axios.post(queryString, {
                 zone_id: parseInt(this.currentZone.id),
                 latitude: parseFloat(latitude),
@@ -152,7 +152,7 @@ export default {
             return `${openTime.slice(0, 5)} - ${closeTime.slice(0, 5)}`;
         },
         translite(str) {
-			str = str.replace(/[^A-Za-zА-Яа-яЁё]/g, "").trim()
+            str = str.replace(/[^A-Za-zА-Яа-яЁё]/g, "").trim()
             var ru = {
                     'а': 'a',
                     'б': 'b',
@@ -214,14 +214,12 @@ export default {
     created() {
         if (this.restaurantsList[0] !== '404') {
             this.restOverlay = true
+            this.counterRest = this.restaurantsList.length
+            this.restaurants = this.restaurantsList
             setTimeout(() => {
-                this.counterRest = this.restaurantsList.length
-                this.restaurants = this.restaurantsList
-                setTimeout(() => {
-                    this.restaurants = this.restaurantsList.slice(0, this.limit)
-                }, 100);
-                this.restOverlay = false
-            }, 250);
+                this.restaurants = this.restaurantsList.slice(0, this.limit)
+            }, 100);
+            this.restOverlay = false
         } else {
             this.restaurants = [];
             this.notFound = true;
