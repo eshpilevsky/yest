@@ -38,6 +38,10 @@ module.exports = {
         href: 'https://yastatic.net/s3/eda-front/prod-www/fonts/YSText-Regular.woff2'
       }
     ],
+    noscript: [{
+      innerHTML: '<!-- Google Tag Manager (noscript) --><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WDRSHHG"height="0" width="0" style="display:none;visibility:hidden"></iframe><!-- End Google Tag Manager (noscript) -->',
+      body: true
+	}],
   },
   /*
    ** Customize the progress-bar color
@@ -66,11 +70,13 @@ module.exports = {
     },
     {
       src: '~/plugins/is-mobile',
-      // mode: 'client',
-      // ssr: false
     },
     {
       src: '@/plugins/vue-awesome-swiper',
+      ssr: false
+    },
+    {
+      src: '@/plugins/google-tag-manager',
       ssr: false
     },
     {
@@ -92,7 +98,7 @@ module.exports = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-	'@nuxtjs/pwa',
+    '@nuxtjs/pwa',
   ],
   /*
    ** Axios module configuration
@@ -135,11 +141,11 @@ module.exports = {
      ** You can extend webpack config here
      */
     extend(config, ctx) {
-	  config.resolve.symlinks = false
+      config.resolve.symlinks = false
     },
     // vendor: [
     //   'vuelidate'
-	// ]
+    // ]
 
   },
   vue: {
