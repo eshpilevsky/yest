@@ -37,7 +37,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex flex-column my-counter">
+                    <div class="d-flex flex-column my-counter" :class="{'hidehover':$route.name == 'checkout'}">
                         <div class="counter-plus" @click="increment(order)">
                             <v-icon>
                                 add
@@ -46,7 +46,7 @@
                         <div class="counter-count">
                             {{order.selectSize.count}}
                         </div>
-                        <div class="counter-minus" @click="decrement(order)">
+                        <div class="counter-minus"  @click="decrement(order)">
                             <v-icon>
                                 {{order.selectSize.count == 1 ? 'close' : 'remove'}}
                             </v-icon>
@@ -73,7 +73,7 @@
                         {{deliveryCost}} <span class="delivery-count__text">BYN</span>
                     </span>
                 </div>
-                <p class="more-delivery delivery-info-text">
+                <p class="more-delivery delivery-info-text" v-show="$route.name !== 'checkout'">
                     {{this.deliveryString}}
                 </p>
             </div>
@@ -89,7 +89,7 @@
             <div class="total-price" v-show="this.$route.name !== 'checkout'">
                 <p class="total-title">Итого</p>
                 <p v-if="this.orderList.length > 0 && basketListVisible" class="price">
-					{{parseFloat(this.getTotalPrice)}} BYN</p>
+					{{parseFloat(this.getTotalPrice)+deliveryCost}} BYN</p>
                 <p v-else class="price">0.0 BYN</p>
             </div>
         </div>
@@ -223,7 +223,11 @@ export default {
         }
 	},
 	mounted () {
-		this.time = this.delivery.time ? this.delivery.time : this.delivery.delivery.time;
+		if (this.getLatetestRestInfoWithOrder !== null) {
+			this.time = this.getLatetestRestInfoWithOrder.delivery.time;
+		} else {
+			this.time = this.delivery.time ? this.delivery.time : this.delivery.delivery.time;
+		}
 	},
 
 }
@@ -434,6 +438,19 @@ export default {
     cursor: pointer;
     background-color: #fff !important;
 }
+
+.my-counter.hidehover:hover .counter-count{
+	border: none;
+	cursor: default;
+    background-color: #f2f2f2 !important;
+}
+
+.my-counter.hidehover:hover .counter-plus,
+.my-counter.hidehover:hover .counter-minus {
+    display: none;
+}
+
+
 
 .order-item__title {
     flex: 1 1 60%;

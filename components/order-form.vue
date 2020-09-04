@@ -54,7 +54,7 @@
                     </div>
                     <div class="form-options d-flex flex-column">
                         <p class="form-options__text form-options__description">Итого</p>
-                        <p class="form-options__text">{{this.getTotalPrice}} <span class="fs16">BYN</span></p>
+                        <p class="form-options__text">{{this.getTotalPriceWithDelivery}} <span class="fs16">BYN</span></p>
                     </div>
                 </div>
                 <div class="form-additional">
@@ -258,7 +258,8 @@ export default {
         ...mapGetters({
             getSelectedZone: "zone/getSelectedZone",
             getSelectedDishs: "basket/getSelectedDishs",
-            getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
+			getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
+			getTotalPriceWithDelivery: "basket/getTotalPriceWithDelivery",
             getTotalPrice: "basket/getTotalPrice",
             getCurrentAddress: "map/getCurrentAddress",
             getUserPhoneNumber: "user/getUserPhoneNumber",

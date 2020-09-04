@@ -504,7 +504,7 @@
                             Корзина
                         </span>
                         <span class="btn-sub-text">
-                            {{getTotalPrice}} BYN
+                            {{this.getTotalPriceWithDelivery}} BYN
                         </span>
                     </v-btn>
                 </div>
@@ -968,6 +968,7 @@ export default {
             getCurrentAddress: "map/getCurrentAddress",
             getSelectedDishs: "basket/getSelectedDishs",
             getTotalPrice: "basket/getTotalPrice",
+            getTotalPriceWithDelivery: "basket/getTotalPriceWithDelivery",
             getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
             getUserPhoneNumber: "user/getUserPhoneNumber",
         }),
