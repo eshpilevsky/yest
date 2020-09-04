@@ -112,7 +112,7 @@
                     </v-tabs>
                     <v-divider />
                 </div>
-                <specOffer v-show="this.showSpecOffer" />
+                <specOffer v-show="this.showSpecOffer" :salesText='restuarant.salesText'/>
                 <div class="catalog-list">
                     <div v-for="(category, index) in restuarant.menu" :key="category.cat_id">
                         <div class="category-title">
@@ -315,7 +315,7 @@
                         </v-sheet>
                     </v-bottom-sheet>
                 </div>
-                <specOffer v-show="this.showSpecOffer" />
+                <specOffer v-show="this.showSpecOffer" :salesText='restuarant.salesText' />
 
             </div>
             <div class="rest-info-bottom">
@@ -624,7 +624,7 @@ export default {
         return {
             restuarant: restuarantData,
             currentZone: currentZone,
-            showSpecOffer: showSpecOffer,
+			showSpecOffer: showSpecOffer,
         }
     },
     data() {

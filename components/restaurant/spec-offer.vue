@@ -1,11 +1,11 @@
 <template>
 <div>
     <div class="rest-info-compared">
-        <div class="rest-info-compared__row">
+        <div class="rest-info-compared__row" v-for="sale in this.salesText" :key="sale.id">
             <span class="rest-info-compared__logo">%</span>
             <p class="rest-info-compared__box">
-                <span class="rest-info-compared__title">Скидка 20%</span>
-                <span class="rest-info-compared__descr">На ряд блюд</span>
+                <span class="rest-info-compared__title">{{sale.header}}</span>
+                <span class="rest-info-compared__descr">{{sale.text}}</span>
             </p>
         </div>
         <!-- <div class="rest-info-compared__row">
@@ -23,7 +23,12 @@
 
 <script>
 export default {
-
+	props: {
+		salesText: Array,
+	},
+	mounted () {
+		console.log(this.salesText);
+	},
 }
 </script>
 
