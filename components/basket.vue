@@ -64,6 +64,7 @@
             </div>
             <div class="delivery-options" v-show="this.getTotalPrice > 0 && basketListVisible">
                 <v-divider />
+				
                 <div class="my-order-top__total d-flex flex-row justify-space-between align-center py-2" v-if="this.deliveryCost > 0">
                     <span class="delivery-title">
                         Доставка
@@ -140,7 +141,8 @@ export default {
             }
         },
         computedDeliveryCost() {
-            let deliveryMass = this.sortDeliverFee(this.delivery.fee ? this.delivery.fee : this.delivery.delivery.fee)
+			let deliveryMass = this.sortDeliverFee(this.delivery.fee ? this.delivery.fee : this.delivery.delivery.fee)
+			console.log(deliveryMass);
             let price = parseInt(this.getTotalPrice)
             let finded = deliveryMass.find((cost) => {
                 return cost.min < price && price < cost.max
@@ -181,7 +183,7 @@ export default {
             return newValue
         },
         getTotalPrice(newValue) {
-            if (newValue !== 0 && this.delvery !== undefined) {
+            if (newValue !== '0') {
                 this.deliveryString = this.computedFreeDeliveryCost();
                 this.deliveryCost = this.computedDeliveryCost();
             }
@@ -206,8 +208,6 @@ export default {
             getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
 		}),
 		computedTotalPrice(){
-            console.log('computedTotalPrice -> this.getTotalPrice',typeof this.getTotalPrice)
-            console.log('computedTotalPrice -> this.deliveryCost',typeof this.deliveryCost)
 			return parseFloat(this.getTotalPrice) + this.deliveryCost
 		}
 	},
