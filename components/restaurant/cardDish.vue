@@ -6,7 +6,7 @@
                 {{this.counter > 0 ? `${this.counter} х`: ''}}
             </span>
 			<div class="d-flex flex-column">
-				<span>
+				<span class="pl-1">
 					{{this.computedPrice}} BYN
 				</span>
 				<span class="old-price" v-show="this.dishinfo[0].sale == 2">

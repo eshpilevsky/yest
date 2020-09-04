@@ -76,10 +76,6 @@ module.exports = {
     {
       src: '@/plugins/mask'
     },
-    {
-	  src: '@/plugins/google-tag-manager',
-	  ssr: false
-    },
   ],
   /*
    ** Nuxt.js dev-modules
