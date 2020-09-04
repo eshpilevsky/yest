@@ -605,6 +605,7 @@ export default {
             zone_id: currentZone.id,
         })
         let restuarantData = restuarant.data
+        console.log('restuarantData', )
         let showSpecOffer = restuarantData.menu.find(cat => {
             return cat.dishes.find(dish => {
                 return dish.sizes[0].sale == 2

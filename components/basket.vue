@@ -210,7 +210,7 @@ export default {
             console.log('computedTotalPrice -> this.deliveryCost',typeof this.deliveryCost)
 			return parseFloat(this.getTotalPrice) + this.deliveryCost
 		}
-    },
+	},
     async beforeMount() {
         if (this.getLatetestRestInfoWithOrder !== null) {
             if (this.getLatetestRestInfoWithOrder.params.resName == this.$route.params.resName && this.getSelectedDishs.length > 0 || this.$route.name == 'checkout') {
@@ -218,11 +218,13 @@ export default {
             } else {
                 this.basketListVisible = false
             }
-            this.time = this.delivery.time ? this.delivery.time : this.delivery.delivery.time
             this.deliveryString = await this.computedFreeDeliveryCost();
             this.deliveryCost = await this.computedDeliveryCost();
         }
-    },
+	},
+	mounted () {
+		this.time = this.delivery.time ? this.delivery.time : this.delivery.delivery.time;
+	},
 
 }
 </script>

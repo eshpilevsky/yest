@@ -152,7 +152,7 @@ export default {
             return `${openTime.slice(0, 5)} - ${closeTime.slice(0, 5)}`;
         },
         translite(str) {
-			str = str.replace(/\s+/g, ' ').trim()
+			str = str.replace(/[^A-Za-zА-Яа-яЁё]/g, "").trim()
             var ru = {
                     'а': 'a',
                     'б': 'b',
