@@ -120,8 +120,8 @@
                             </span>
                         </div>
                         <div class="dishs-list">
-                            <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" v-show="item.status" class="dishs-list-item" @click="addToBasket(item)">
-                                <cardDish :id='item.id' :count='item.count' :name='item.name' :description='item.description' :img='item.image' :dishinfo='item.sizes' />
+                            <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" v-show="item !== null ? item.status : false" class="dishs-list-item" @click="addToBasket(item)">
+                                <cardDish v-if="item !== null" :id='item.id' :count='item.count' :name='item.name' :description='item.description' :img='item.image' :dishinfo='item.sizes' />
                             </div>
                         </div>
                     </div>
@@ -238,7 +238,6 @@
                     </v-card>
                 </v-overlay>
                 <v-overlay opacity="0.5" :dark='false' z-index="999" v-model="showSmsForm">
-                    <!-- <orderForm @closeCheckout='checkout()' /> -->
                     <smsForm @closeForm='closeSmsForm()' @closeFormShowOrderForm='closeFormShowOrderForm()' />
                 </v-overlay>
             </client-only>
@@ -250,7 +249,6 @@
             <h1 class="info-top-title" v-show="showRestName">
                 {{restuarant.name}}
             </h1>
-            <!-- <v-icon class="mobile-mode_header-btn">search</v-icon> -->
         </div>
         <div class="mobile-rest-info">
             <div class="rest-info-content">
@@ -331,8 +329,8 @@
                         {{category.name}}
                     </h2>
                     <div class="dishs-list-mobile">
-                        <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" v-show="item.status" class="dishs-list-mobile-item">
-                            <v-card class="dish-card">
+                        <div v-for="(item, index2) in category.dishes" v-show="item !== null ? item.status : false" :key="`dishCard${index2}`"  class="dishs-list-mobile-item">
+                            <v-card v-if="item !== null" class="dish-card">
                                 <div @click="showSelectedDish(item)">
                                     <div class="card-dish-top">
                                         <span class="dash-info-compare" v-if="item.sizes[0]" v-show="item.sizes[0].sale == 2">%</span>
@@ -604,11 +602,13 @@ export default {
         let restuarant = await axios.post(`https://yestapi.xyz/restaurant/${id[0]}`, {
             zone_id: currentZone.id,
         })
-        let restuarantData = restuarant.data
-        console.log('restuarantData', )
+		let restuarantData = restuarant.data
+
         let showSpecOffer = restuarantData.menu.find(cat => {
-            return cat.dishes.find(dish => {
-                return dish.sizes[0].sale == 2
+            return cat.dishes.find((dish, index, arr) => {
+				if (dish !== null) {
+					return dish.sizes[0].sale == 2
+				}
             })
         })
         if (showSpecOffer !== undefined) {
@@ -616,7 +616,6 @@ export default {
         } else {
             showSpecOffer = false
         }
-        // console.log('showSpecOffer', showSpecOffer)
 
         return {
             restuarant: restuarantData,
