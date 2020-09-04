@@ -7,7 +7,7 @@
             <v-btn class="sms-form__submit" block color="primary" :disabled="phone.length <17" @click="showCurrnet()" >Далее</v-btn>
         </div>
         <p class="sms-form__terms">Нажимая кнопку «Далее», Вы принимаете условия
-		 	<nuxt-link to='/' target="_blank" class="link"> пользовательского соглашения </nuxt-link>
+		 	<nuxt-link to='/terms-of-use' target="_blank" class="link"> пользовательского соглашения </nuxt-link>
 		</p>
     </div>
     <div :class="{active:!current}" class="sms-form__second">

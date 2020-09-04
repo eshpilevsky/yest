@@ -154,6 +154,7 @@ import mobileSmsForm from '@/components/restaurant/mobile-sms-form'
 import axios from 'axios'
 
 export default {
+	middleware: 'auth',
     components: {
         orderForm,
         basket,

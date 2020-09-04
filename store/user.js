@@ -1,3 +1,5 @@
+import * as Cookie from 'js-cookie'
+
 const state = () => ({
   data: {
     name: null,
@@ -50,7 +52,8 @@ const mutations = {
   },
 
   SET_USER_PHONE_NUMBER(state, payload) {
-    state.status = '200'
+	state.status = '200'
+	Cookie.set('phone', payload)
     state.data.userNumber = payload
   },
 
