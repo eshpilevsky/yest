@@ -204,20 +204,14 @@ export default {
             return this.getUserPhoneNumber
         },
         computedDeliveryCost(mass) {
-            console.log('computedDeliveryCost -> mass', mass)
-            // let deliveryMass = this.sortDeliverFee(mass)
             let price = parseInt(this.getTotalPrice)
             let finded = mass.find((cost) => {
                 return cost.min < price && price < cost.max
             })
             if (finded !== undefined) {
-                if (finded.hasOwnProperty('delivery')) {
-                    return finded.delivery
-                } else {
-                    return finded.deliveryFee
-                }
+                return finded.delivery
             } else {
-                return mass[mass.length - 1].deliveryFee
+                return mass[mass.length - 1].delivery
             }
         },
         closeFormShowOrderForm() {

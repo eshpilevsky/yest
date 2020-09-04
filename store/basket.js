@@ -196,15 +196,10 @@ export const getters = {
           return cost.min < totalPrice && totalPrice < cost.max
         })
         if (finded !== undefined) {
-          if (finded.hasOwnProperty('delivery')) {
             return parseInt(finded.delivery)
-          } else {
-            return parseInt(finded.deliveryFee)
-          }
         } else {
-          return parseInt(mass[mass.length - 1].deliveryFee)
+          return parseInt(mass[mass.length - 1].delivery)
         }
-
       }
       addDeliveryPrice = la(mass)
     } else {
