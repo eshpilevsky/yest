@@ -5,6 +5,9 @@ import {
 } from "vuex"
 
 export default {
+	props: {
+		smsFormCurrent: Boolean,
+	},
   data() {
     return {
       phone: ' ',
@@ -110,9 +113,19 @@ export default {
   watch: {
     phone(newValue) {
       return newValue
-    }
+    },
+    current(newValue) {
+	  this.$emit('currentForm', newValue)
+      return newValue
+    },
+    smsFormCurrent(newValue) {
+      this.current = newValue
+	  this.$emit('currentForm', newValue)
+      return newValue
+    },
   },
   mounted() {
+	  this.current = this.smsFormCurrent
     this.currentRouteName = this.$route.name
   },
 }

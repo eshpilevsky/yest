@@ -131,12 +131,12 @@
     <v-bottom-sheet v-model="showAuthForm" :eager=true :fullscreen=true>
         <v-sheet class="text-center authFormSheet">
             <div class="mini-header">
-                <v-icon class="mobile-mode_header-btn " @click="showAuthForm = false">arrow_back</v-icon>
+                <v-icon class="mobile-mode_header-btn " @click="showHideSms()" >arrow_back</v-icon>
                 <div class="logo-block">
                     <img src="@/assets/logo.svg" alt="logo" class="mini-header_logo">
                 </div>
             </div>
-            <mobileSmsForm @closeFormShowOrderForm='closeFormShowOrderForm()' />
+            <mobileSmsForm @closeFormShowOrderForm='closeFormShowOrderForm()' @currentForm='currentForm' :smsFormCurrent='this.smsFormCurrent'/>
         </v-sheet>
     </v-bottom-sheet>
 </div>
@@ -197,9 +197,20 @@ export default {
             deliveryCost: 0,
             deliveryMin: 0,
             deliveryMax: 0,
+            smsFormCurrent: true,
         }
     },
     methods: {
+		showHideSms(){
+			if (this.smsFormCurrent) {
+				this.showAuthForm = false
+			} else {
+				this.smsFormCurrent = true
+			}
+		},
+		currentForm(v){
+			this.smsFormCurrent = v
+		},
         check() {
             return this.getUserPhoneNumber
         },
@@ -289,6 +300,9 @@ export default {
             return newValue
         },
         deliveryCost(newValue) {
+            return newValue
+        },
+        smsFormCurrent(newValue) {
             return newValue
         },
     },
