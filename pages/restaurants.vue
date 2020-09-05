@@ -1023,7 +1023,6 @@ export default {
             this.$router.push(`/${this.getSelectedZone.alias}`)
         }
     },
-
     mounted() {
         window.scrollTo(0, 0);
         this.orderList = this.getSelectedDishs

@@ -6,10 +6,10 @@
                 <div class="footer-top-left">
                     <img src="@/assets/logo.svg" class="footer-logo" alt="logo">
                 </div>
-                <div class="footer-top-right">
+                <!-- <div class="footer-top-right">
                     <img src="@/assets/googlePlay.svg" class="footer-top-img" alt="googlePlay" />
                     <img src="@/assets/appStore.svg" class="footer-top-img" alt="appStore" />
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="footer-center">

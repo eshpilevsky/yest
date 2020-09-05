@@ -69,7 +69,10 @@ export default {
         console.error(this.getSelectedZone);
         console.log('created -> this.getOrderId', this.getOrderId)
         this.orderId = this.getOrderId;
-    },
+	},
+	mounted () {
+		window.scrollTo(0, 0);
+	},
 }
 </script>
 

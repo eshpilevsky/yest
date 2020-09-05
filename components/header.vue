@@ -12,7 +12,7 @@
                 </div>
                 <div class="primary-links">
                     <div>
-                        <nuxt-link to="/">
+                        <nuxt-link :to="`/${this.getSelectedZone.alias}`">
                             <v-icon>restaurant</v-icon>
                             Рестораны
                         </nuxt-link>
@@ -20,22 +20,22 @@
                 </div>
                 <div class="secondary-links">
                     <div>
-                        <nuxt-link to="/">
+                        <nuxt-link to="/contacts">
                             О сервисе
                         </nuxt-link>
-                        <nuxt-link to="/">
+                        <nuxt-link to="/rabota">
                             Стать курьером
                         </nuxt-link>
-                        <nuxt-link to="/">
+                        <nuxt-link to="/partner">
                             Стать партнёром
                         </nuxt-link>
-                        <nuxt-link to="/">
+                        <nuxt-link to="/faq">
                             Вопросы и ответы
                         </nuxt-link>
-                        <nuxt-link to="/">
+                        <nuxt-link to="/business">
                             Еда для бизнеса
                         </nuxt-link>
-                        <nuxt-link to="/">
+                        <nuxt-link to="/terms-of-use">
                             Пользовательское соглашение
                         </nuxt-link>
                     </div>
@@ -54,7 +54,7 @@
                                     </div>
                                 </div>
                             </template>
-                            <v-sheet class="text-start rounding" height="450px">
+                            <v-sheet class="text-start rounding" >
                                 <div class="contact-title">
                                     <span>
                                         Связаться с нами
@@ -63,15 +63,18 @@
                                         <v-icon>close</v-icon>
                                     </span>
                                 </div>
-                                <div class="contact-item">
+                                <!-- <div class="contact-item">
                                     <img src="@/assets/contactUs-mail.svg" alt="Электорнная почта">
                                     Электронная почта
-                                </div>
+                                </div> -->
                                 <div class="contact-item">
                                     <img src="@/assets/contactUs-phone.svg" alt="Позвонить нам">
-                                    Позвонить нам
+                                    <a href="tel:375339119312">
+										Позвонить нам
+                                    </a>
+									<!-- 375339119312 -->
                                 </div>
-                                <div class="contact-item">
+                                <!-- <div class="contact-item">
                                     <img src="@/assets/contactUs-vk.svg" alt="Вконтакте">
                                     Вконтакте
                                 </div>
@@ -82,7 +85,7 @@
                                 <div class="contact-item">
                                     <img src="@/assets/contactUs-telegram.svg" alt="Telegram">
                                     Telegram
-                                </div>
+                                </div> -->
                             </v-sheet>
                         </v-bottom-sheet>
                     </div>
@@ -448,6 +451,11 @@ export default {
     align-items: center;
     margin-left: 20px;
     border-bottom: 1px solid rgba(0, 0, 0, .05);
+}
+
+.contact-item a{
+	text-decoration: none;
+	color: black;
 }
 
 .contact-us-block {

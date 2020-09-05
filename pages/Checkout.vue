@@ -321,7 +321,6 @@ export default {
         this.test = this.getLatetestRestInfoWithOrder
     },
     async beforeMount() {
-        window.scrollTo(0, 0);
         if (process.client) {
             if (this.getLatetestRestInfoWithOrder !== null) {
                 this.LatetestRestInfoWithOrder = this.getLatetestRestInfoWithOrder;
@@ -333,7 +332,10 @@ export default {
                 this.deliveryMax = 0
             }
         }
-    },
+	},
+	mounted () {
+		window.scrollTo(0, 0);
+	},
 }
 </script>
 

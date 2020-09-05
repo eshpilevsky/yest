@@ -33,10 +33,7 @@ export default {
         res,
         query,
     }) {
-
-
         let order_id
-
         if (query.hasOwnProperty('order_id')) {
             if (req.headers.cookie) {
                 order_id = getCookie('order_id', req.headers.cookie)
@@ -111,7 +108,10 @@ export default {
         return {
             currentStatus: currentStatus,
         }
-    },
+	},
+	mounted () {
+		window.scrollTo(0, 0);
+	},
 }
 </script>
 

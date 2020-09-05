@@ -48,7 +48,10 @@ export default {
         ...mapGetters({
             getSelectedZone: 'zone/getSelectedZone'
         })
-    }
+    },
+    mounted() {
+        window.scrollTo(0, 0);
+    },
 }
 </script>
 
