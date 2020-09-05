@@ -148,6 +148,8 @@ export default {
     },
     watch: {
         getSelectedZone(newValue, oldValue) {
+            console.log('getSelectedZone -> newValue', newValue)
+            console.log('getSelectedZone -> oldValue', oldValue)
             if (newValue.id !== oldValue.id) {
                 this.getCategories()
                 this.selectedCategory = this.currentCategory
