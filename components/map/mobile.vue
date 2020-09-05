@@ -148,7 +148,7 @@ export default {
             this.coords = e.get('coords')
             this.setCurrentCoords(this.coords)
         },
-        selectedPlace(address) {
+        async selectedPlace(address) {
             const app = this
             this.address = address.value
             await ymaps.geocode(address.value, {
@@ -184,7 +184,7 @@ export default {
                 this.setCurrentAddress(this.addressBuffer)
             }
         },
-        onSelect(e) {
+        async onSelect(e) {
             const mapInstance = this.mapInstance
             const ymaps = this.ymaps
             const app = this
