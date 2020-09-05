@@ -23,7 +23,8 @@
             Укажите ваше местоположение, чтобы мы смогли предложить вам список доступных ресторанов
         </span>
         <div class="smart-search">
-            <v-text-field autocomplete="off" @focus="focusInput" @blur="blurInput()" class='search-me' max-width='500px' prepend-inner-icon="near_me" @click:prepend-inner="openMap()" label="Укажите адрес доставки..." v-model='searchAddress' solo clearable @click:clear="clearAdress">
+            <!-- <v-text-field autocomplete="off" @focus="focusInput" @blur="blurInput()" class='search-me' max-width='500px' prepend-inner-icon="near_me" @click:prepend-inner="openMap()" label="Укажите адрес доставки..." v-model='searchAddress' solo clearable @click:clear="clearAdress"> -->
+            <v-text-field autocomplete="off" class='search-me' max-width='500px' prepend-inner-icon="near_me" @click:prepend-inner="openMap()" label="Укажите адрес доставки..." v-model='searchAddress' solo clearable @click:clear="clearAdress">
                 <template v-slot:append-outer>
                     <v-btn class="showRest-block" color='primary' @click="showRestuarants()">Показать рестораны</v-btn>
                 </template>
@@ -54,6 +55,7 @@ import {
 } from 'vuex'
 import MapBtn from '@/components/map/map-btn'
 import MapDesktop from '@/components/map/desktop'
+import axios from 'axios'
 
 import {
     settings
@@ -81,9 +83,13 @@ export default {
             suggestions: [],
             filteredLocations: [],
             loadingSuggest: false,
-            coords: [],
             showDesktopMap: false,
             ymaps: null,
+            check_city_id: null,
+            addressMass: [],
+            getCityGeocoder: '',
+            currentCoordsBuffer: null,
+            currentAddress: null,
         }
     },
     computed: {
@@ -122,8 +128,8 @@ export default {
             setCurrentCoords: 'map/SET_CURRENT_COORDS',
         }),
         openMap() {
-			this.showDesktopMap = true
-			this.showAdressList = false
+            this.showDesktopMap = true
+            this.showAdressList = false
         },
         closeDesktopMap() {
             this.showDesktopMap = false
@@ -134,7 +140,7 @@ export default {
         },
         focusInput() {
             this.showAdressList = true
-			this.getSuggest(this.searchAddress)
+            this.getSuggest(this.searchAddress)
         },
         blurInput() {
             this.showAdressList = false
@@ -144,31 +150,39 @@ export default {
             await ymaps.geocode(this.searchAddress, {
                 results: 1,
             }).then((geo) => {
-				let getCityGeocoder = geo.geoObjects.get(0).properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.Locality.LocalityName')
-				if (app.getSelectedZone.name !== getCityGeocoder) {
-					let findCity = app.getZoneList.find((zone)=>{
-						return zone.name == getCityGeocoder
-					})
-					if (findCity !== undefined) {
-						app.$router.push(`/${findCity.alias}`)
-					} else{
-						app.$router.push(`/`)
-					}
-				} else {
-					const geoObjects = geo.geoObjects.get(0)
-					app.coords = geoObjects.geometry.getCoordinates()
-					app.setCurrentCoords(geoObjects.geometry.getCoordinates())
-					app.setCurrentAddress(app.searchAddress)
-				}
+                const geoObjects = geo.geoObjects.get(0)
+                app.getCityGeocoder = geoObjects.properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.Locality.LocalityName')
+                app.addressMass = geoObjects.properties.get('metaDataProperty.GeocoderMetaData.Address.Components')
+                app.currentCoordsBuffer = geoObjects.geometry.getCoordinates()
+                app.currentAddress = app.searchAddress
             });
-            const id = 'restTitle';
-            const yOffset = -70;
-            const element = document.getElementById(id);
-            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-            window.scrollTo({
-                top: y,
-                behavior: 'smooth'
-            });
+
+            let cityId = await axios.post('https://yestapi.xyz/check_delivery_address', this.addressMass).then(res => {
+                return res.data.city_id
+            })
+
+            if (app.getSelectedZone.id !== cityId) {
+                let findCity = app.getZoneList.find((zone) => {
+                    return zone.id == cityId
+                })
+                if (findCity !== undefined) {
+                    app.$router.push(`/${findCity.alias}`)
+                } else {
+                    app.$router.push(`/`)
+                }
+            } else {
+                this.setCurrentCoords(this.currentCoordsBuffer)
+                this.setCurrentAddress(this.currentAddress)
+                const id = 'restTitle';
+                const yOffset = -70;
+                const element = document.getElementById(id);
+                const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({
+                    top: y,
+                    behavior: 'smooth'
+                });
+            }
+
         },
         async getSuggest(str) {
             this.showAdressList = true
@@ -202,10 +216,11 @@ export default {
                 headContainer.style.visibility = 'visible'
             }
         },
-        selectAdress(address) {			
+        selectAdress(address) {
             var adv = address.value
             var addressSplit = adv.split('Беларусь,')
             this.searchAddress = addressSplit[1]
+            this.showAdressList = false
         },
     },
     async beforeMount() {
