@@ -209,7 +209,6 @@ export default {
             this.setCurrentCoords(this.coords)
         },
         async onSelect(e) {
-            console.log('onSelect -> e', e)
             const mapInstance = this.mapInstance
             const ymaps = this.ymaps
             const app = this

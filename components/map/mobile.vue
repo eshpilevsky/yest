@@ -56,6 +56,10 @@ export default {
         coords: [53.902515, 27.561456],
         mapInstance: null,
         ymaps: null,
+        getCityGeocoder: '',
+        addressMass: null,
+        addressBuffer: null,
+        coordsBuffer: null,
     }),
     watch: {
         getMapLoading(newValue, oldValue) {
@@ -115,16 +119,22 @@ export default {
             getZoomIn(ymaps, mapInstance)
             getZoomOut(ymaps, mapInstance)
             getPlace(ymaps, mapInstance)
-			getGeo(ymaps, mapInstance)
+            getGeo(ymaps, mapInstance)
 
-			let getZoneList = this.getZoneList
-			let getSelectedZone = this.getSelectedZone
-			let router = this.$router
+            let getZoneList = this.getZoneList
+            let getSelectedZone = this.getSelectedZone
+            let router = this.$router
             getIamHere(ymaps, mapInstance, async (e) => {
                 const coords = mapInstance.getCenter()
                 await this.getGeoObjects({
-					ymaps, coords, getZoneList, getSelectedZone, router
-                }, {root:true})
+                    ymaps,
+                    coords,
+                    getZoneList,
+                    getSelectedZone,
+                    router
+                }, {
+                    root: true
+                })
                 await this.hideMap()
             })
             if (this.getCurrentCoords.length === 0) {
@@ -138,73 +148,91 @@ export default {
             this.coords = e.get('coords')
             this.setCurrentCoords(this.coords)
         },
-        selectedPlace(place) {
+        selectedPlace(address) {
             const app = this
-            ymaps.geocode(place.value, {
+            this.address = address.value
+            await ymaps.geocode(address.value, {
                 results: 1,
                 boundedBy: [
                     [51.753588, 23.148098],
                     [55.591263, 31.491889]
                 ],
-                kind: 'Минск'
             }).then((geo) => {
-                let getCityGeocoder = geo.geoObjects.get(0).properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.Locality.LocalityName')
-                if (app.getSelectedZone.name !== getCityGeocoder) {
-                    let findCity = app.getZoneList.find((zone) => {
-                        return zone.name == getCityGeocoder
-                    })
-                    if (findCity !== undefined) {
-                        app.$router.push(`/${findCity.alias}`)
-                    } else {
-                        app.$router.push(`/`)
-                    }
-                } else {
-                    const geoObjects = geo.geoObjects.get(0)
-                    app.coords = geoObjects.geometry.getCoordinates()
-                    app.mapInstance.setCenter(geoObjects.geometry.getCoordinates(), 17)
-                }
+                const geoObjects = geo.geoObjects.get(0)
+                app.getCityGeocoder = geoObjects.properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.Locality.LocalityName')
+                app.addressMass = geoObjects.properties.get('metaDataProperty.GeocoderMetaData.Address.Components')
+                app.coordsBuffer = geoObjects.geometry.getCoordinates()
+                app.addressBuffer = address.value
+                app.coords = geoObjects.geometry.getCoordinates()
+                app.mapInstance.setCenter(geoObjects.geometry.getCoordinates(), 17)
             });
+            let cityId = await axios.post('https://yestapi.xyz/check_delivery_address', this.addressMass).then(res => {
+                return res.data.city_id
+            })
+
+            if (this.getSelectedZone.id !== cityId) {
+                let findCity = this.getZoneList.find((zone) => {
+                    return zone.id == cityId
+                })
+                if (findCity !== undefined) {
+                    this.$router.push(`/${findCity.alias}`)
+                } else {
+                    this.$router.push(`/`)
+                }
+            } else {
+                this.setCurrentCoords(this.coordsBuffer)
+                this.setCurrentAddress(this.addressBuffer)
+            }
         },
         onSelect(e) {
             const mapInstance = this.mapInstance
+            const ymaps = this.ymaps
             const app = this
             if (mapInstance !== null) {
                 const selectedValue = e.get('item').value
-                ymaps.geocode(selectedValue, {
-                        results: 1,
-                        boundedBy: [
-                            [51.753588, 23.148098],
-                            [55.591263, 31.491889]
-                        ],
+                await ymaps.geocode(selectedValue, {
+                        results: 1
                     })
                     .then((geo) => {
-                        let getCityGeocoder = geo.geoObjects.get(0).properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.Locality.LocalityName')
-                        if (app.getSelectedZone.name !== getCityGeocoder) {
-                            let findCity = app.getZoneList.find((zone) => {
-                                return zone.name == getCityGeocoder
-                            })
-                            if (findCity !== undefined) {
-                                app.$router.push(`/${findCity.alias}`)
-                            } else {
-                                app.$router.push(`/`)
-                            }
-                        } else {
-                            const geoObjects = geo.geoObjects.get(0)
-                            app.coords = geoObjects.geometry.getCoordinates()
-                            if (app.geolocationAvailable) {
-                                app.address = getAddressFromString(selectedValue)
-                                mapInstance.setCenter(app.coords, 17)
-                                this.switchToMapMode()
-                                return
-                            }
-                            const bounds = geoObjects.properties.get('boundenBy')
-                            mapInstance.setBounds(bounds, {
-                                checkZoomRange: true
-                            })
-                            mapInstance.setCenter()
-                            app.address = getAddresFromGeoobject(geo.geoObjects.get(0))
+                        const geoObjects = geo.geoObjects.get(0)
+                        app.getCityGeocoder = geoObjects.properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.Locality.LocalityName')
+                        app.addressMass = geoObjects.properties.get('metaDataProperty.GeocoderMetaData.Address.Components')
+                        app.coordsBuffer = geoObjects.geometry.getCoordinates()
+                        app.addressBuffer = address.value
+                        app.coords = geoObjects.geometry.getCoordinates()
+                        app.mapInstance.setCenter(geoObjects.geometry.getCoordinates(), 17)
+                        app.address = getAddresFromGeoobject(geoObjects)
+
+                        if (app.geolocationAvailable) {
+                            app.address = getAddressFromString(selectedValue)
+                            mapInstance.setCenter(app.coords, 17)
+                            this.switchToMapMode()
+                            return
                         }
+                        const bounds = geoObjects.properties.get('boundenBy')
+                        mapInstance.setBounds(bounds, {
+                            checkZoomRange: true
+                        })
+                        mapInstance.setCenter()
+                    });
+                let cityId = await axios.post('https://yestapi.xyz/check_delivery_address', this.addressMass).then(res => {
+                    return res.data.city_id
+                })
+
+                if (this.getSelectedZone.id !== cityId) {
+                    let findCity = this.getZoneList.find((zone) => {
+                        return zone.id == cityId
                     })
+                    if (findCity !== undefined) {
+                        this.$router.push(`/${findCity.alias}`)
+                    } else {
+                        this.$router.push(`/`)
+                    }
+                } else {
+                    this.setCurrentCoords(this.coordsBuffer)
+                    this.setCurrentAddress(this.addressBuffer)
+                    this.address = this.addressBuffer
+                }
             }
         },
         async onBoundsChange() {
