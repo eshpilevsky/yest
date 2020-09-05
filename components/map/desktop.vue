@@ -215,28 +215,32 @@ export default {
                 await ymaps.geocode(selectedValue, {
                         results: 1
                     })
-                    .then((res) => {
-                const geoObjects = geo.geoObjects.get(0)
-                app.getCityGeocoder = geoObjects.properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.Locality.LocalityName')
-                // app.addressMass = geoObjects.properties.get('metaDataProperty.GeocoderMetaData.Address.Components')
-                // app.coordsBuffer = geoObjects.geometry.getCoordinates()
-				// app.addressBuffer = address.value
-				
+                    .then((geo) => {
+                        const geoObjects = geo.geoObjects.get(0)
+                        app.getCityGeocoder = geoObjects.properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.Locality.LocalityName')
+                        app.addressMass = geoObjects.properties.get('metaDataProperty.GeocoderMetaData.Address.Components')
+                        app.coordsBuffer = geoObjects.geometry.getCoordinates()
+                        app.addressBuffer = address.value
                         app.coords = geoObjects.geometry.getCoordinates()
-                        if (app.geolocationAvailable) {
-                            app.address = getAddressFromString(selectedValue)
-                            mapInstance.setCenter(app.coords, 17)
-                            this.switchToMapMode()
-                            return
-                        }
-                        const bounds = geoObjects.properties.get('boundenBy')
-                        mapInstance.setBounds(bounds, {
-                            checkZoomRange: true
-                        })
-                        mapInstance.setCenter()
-                        app.address = getAddresFromGeoobject(res.geoObjects.get(0))
+                        app.mapInstance.setCenter(geoObjects.geometry.getCoordinates(), 17)
+                    });
+                let cityId = await axios.post('https://yestapi.xyz/check_delivery_address', this.addressMass).then(res => {
+                    return res.data.city_id
+                })
 
+                if (app.getSelectedZone.id !== cityId) {
+                    let findCity = app.getZoneList.find((zone) => {
+                        return zone.id == cityId
                     })
+                    if (findCity !== undefined) {
+                        app.$router.push(`/${findCity.alias}`)
+                    } else {
+                        app.$router.push(`/`)
+                    }
+                } else {
+                    this.setCurrentCoords(this.coordsBuffer)
+                    this.setCurrentAddress(this.addressBuffer)
+                }
             }
         },
         async onBoundsChange() {
