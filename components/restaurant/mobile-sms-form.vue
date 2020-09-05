@@ -22,12 +22,12 @@
 		</div>
 		<!-- <div v-show="this.errorMsg.length == 0"> -->
 		<div v-show="this.errorMsg.length > 0">
-			<div class="sms-form__send-sms" v-show="calcTime > 0">Отправить код повторно 
+			<div class="sms-form__send-sms" v-show="calcTime > 0">Отправить код повторно
 				<span class="time">
 					{{this.timer}}
 				</span>
 				</div>
-			<v-btn @click="sendSms()" v-show="timer == 0">Отправить код повторно</v-btn>
+			<v-btn class="sms-form__send-sms" @click="sendSms()" v-show="timer == 0">Отправить код повторно</v-btn>
 		</div>
     </div>
 </div>

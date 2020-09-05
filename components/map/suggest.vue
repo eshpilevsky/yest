@@ -12,7 +12,6 @@
             <div class="item-description">
                 {{item.value}}
             </div>
-            <v-divider />
         </div>
     </div>
     <div v-show="loading" class="suggets-loading">
@@ -153,7 +152,7 @@ input:focus {
 .cancel {
     font-size: 14px;
     margin: 5px;
-    padding: 5px;
+    padding: 5px 8px 5px 10px;
     border-left: 1px solid rgba(0, 0, 0, .1);
 }
 

@@ -47,24 +47,24 @@
                                     </div>
                                 </div>
                                 <div class="d-flex flex-column">
-									<div>{{order.selectSize.name}}</div>
+									                  <div class="cart-size-line">{{order.selectSize.name}}</div>
                                     <div v-show="order.selectOption.length > 0" class="d-flex flex-column">
                                         <span v-for="opt in order.selectOption" :key="opt.selected.id" class="order-item-subbtitle">
                                             {{opt.selected.name}}
                                         </span>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="d-flex flex-row align-center">
+                              <div class="d-flex flex-row align-center">
                                 <v-btn icon @click="decrement(order)" class="rounded-xl main-mobile-cart__count-btn">
-                                    <v-icon>remove</v-icon>
+                                  <v-icon>remove</v-icon>
                                 </v-btn>
                                 <div class="main-mobile-cart__order-qty">
-                                    {{order.selectSize.count}}
+                                  {{order.selectSize.count}}
                                 </div>
                                 <v-btn icon @click="increment(order)" class="rounded-xl main-mobile-cart__count-btn">
-                                    <v-icon>add</v-icon>
+                                  <v-icon>add</v-icon>
                                 </v-btn>
+                              </div>
                             </div>
                         </div>
                 </client-only>
@@ -340,6 +340,11 @@ export default {
 </script>
 
 <style scoped>
+  .cart-size-line {
+    font-size: 14px;
+    line-height: 1em;
+    margin: 0 0 8px;
+  }
 .logo-block {
     margin: auto;
     width: 100%;
