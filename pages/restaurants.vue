@@ -490,9 +490,11 @@
                             <v-icon @click="setAddressMobile()" color="#000">close</v-icon>
                         </div>
                         <div class="rest-ship-modal__wrapper">
+                          <div class="rest-ship-modal__item">
                             Укажите адрес доставки, чтобы мы могли показать вам список доступных мест
+                          </div>
                         </div>
-                        <div @click="setAddressMobile()">
+                        <div class="rest-ship-modal__map-block" @click="setAddressMobile()">
                             <MapBtn :isHeader='true' />
                         </div>
                     </v-sheet>
@@ -1122,6 +1124,23 @@ export default {
     margin-right: 10px;
 }
 
+.rest-ship-modal__map-block {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.rest-ship-modal__map-block .set-you-address {
+  position: initial;
+  top: auto;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  transform: initial;
+}
+
 .rest-ship-modal__descr {
     color: #b0b0b0;
     font-size: 12px;
@@ -1328,11 +1347,11 @@ export default {
 
 .mobile-addition__top {
     overflow: auto;
-    padding-bottom: 125px;
+    padding-bottom: 145px;
 }
 
 .mobile-addition__bottom {
-    padding: 16px;
+    padding: 16px 16px 26px;
     width: 100%;
     background-color: #fff;
     flex: 0 0 auto;
@@ -2048,7 +2067,7 @@ export default {
     background: #ffffff;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     box-sizing: border-box;
     width: calc(100% - 8px);
     overflow: hidden;
@@ -2056,6 +2075,9 @@ export default {
 }
 
 .mobile-mode_header-btn {
+    position: absolute !important;
+    top: 0;
+    left: 0;
     flex: 0 0 24px;
     width: 24px;
     height: 24px;
@@ -2389,6 +2411,6 @@ export default {
     font-size: 24px;
     line-height: 28px;
     font-weight: bold;
-    margin-right: 8px;
+    margin-left: 8px;
 }
 </style>
