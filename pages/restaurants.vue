@@ -347,7 +347,7 @@
                                             </h3>
                                         </div>
                                         <div class="dish-info">
-                                            <div class="d-flex flex-column">
+                                            <div class="d-flex">
                                                 <span class="dish-info__price" v-show="!checkInbasket(item)">{{computedPrice(item.sizes)}} BYN</span>
                                                 <span class="info-weight">
                                                     {{item.sizes[0] ? item.sizes[0].weight : ''}}
@@ -1953,22 +1953,22 @@ export default {
     font-size: 11px;
     margin-top: 2px;
     text-decoration: line-through;
-    margin-right: 14px;
-    position: relative;
+    /*margin-right: 14px;*/
+    /*position: relative;*/
 }
 
-.dish-info__price-old:after {
-    content: "";
-    position: absolute;
-    left: calc(100% + 7px);
-    top: 50%;
-    transform: translateY(-50%);
-    display: block;
-    width: 2px;
-    height: 2px;
-    border-radius: 50%;
-    background-color: #c2c0be;
-}
+/*.dish-info__price-old:after {*/
+/*    content: "";*/
+/*    position: absolute;*/
+/*    left: calc(100% + 7px);*/
+/*    top: 50%;*/
+/*    transform: translateY(-50%);*/
+/*    display: block;*/
+/*    width: 2px;*/
+/*    height: 2px;*/
+/*    border-radius: 50%;*/
+/*    background-color: #c2c0be;*/
+/*}*/
 
 .info-weight {
     color: #c2c0be;
