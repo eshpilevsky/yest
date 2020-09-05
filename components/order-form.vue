@@ -245,7 +245,8 @@ export default {
                 } else {
             		this.$store.dispatch('basket/setOrderId', response.data.order_id);
             		this.$router.push('/checkout/success')
-            	}
+				}
+				ym(67033669,'reachGoal','newOrder')
                 this.$store.dispatch('basket/dropBasket');
                 this.loadingSendOrder = false
 
