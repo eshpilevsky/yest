@@ -41,7 +41,7 @@
         </div>
         <map-btn v-show="this.canDisplayMap" class="map-btn" />
     </div>
-    <v-overlay z-index="25" :dark='false' :value="showDesktopMap" :opacity=".5">
+    <v-overlay z-index="999" :dark='false' :value="showDesktopMap" :opacity=".5">
         <MapDesktop @closeMap='closeDesktopMap()'></MapDesktop>
     </v-overlay>
 </div>
@@ -122,7 +122,8 @@ export default {
             setCurrentCoords: 'map/SET_CURRENT_COORDS',
         }),
         openMap() {
-            this.showDesktopMap = true
+			this.showDesktopMap = true
+			this.showAdressList = false
         },
         closeDesktopMap() {
             this.showDesktopMap = false
@@ -132,15 +133,11 @@ export default {
             return [b[0], b[1]]
         },
         focusInput() {
-            setTimeout(() => {
-                this.showAdressList = true
-			}, 500);
+            this.showAdressList = true
 			this.getSuggest(this.searchAddress)
         },
         blurInput() {
-            setTimeout(() => {
-                this.showAdressList = false
-            }, 500);
+            this.showAdressList = false
         },
         async showRestuarants() {
             const app = this

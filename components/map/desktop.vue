@@ -117,14 +117,10 @@ export default {
             getLocation: 'map/getLocation',
         }),
         focusInput() {
-            setTimeout(() => {
-                this.showSuggestList = true
-            }, 500);
+            this.showSuggestList = true
         },
         blurInput() {
-            setTimeout(() => {
-                this.showSuggestList = false
-            }, 500);
+            this.showSuggestList = false
         },
         async selectAdress(address) {
 			const app = this
@@ -173,6 +169,7 @@ export default {
             myGeoBtn.click()
         },
         emitClose() {
+			this.showSuggestList = false
             this.$emit('closeMap')
         },
         async confirmPosition() {
