@@ -222,7 +222,8 @@ export default {
                         app.coordsBuffer = geoObjects.geometry.getCoordinates()
                         app.addressBuffer = address.value
                         app.coords = geoObjects.geometry.getCoordinates()
-                        app.mapInstance.setCenter(geoObjects.geometry.getCoordinates(), 17)
+						app.mapInstance.setCenter(geoObjects.geometry.getCoordinates(), 17)
+						app.address = getAddresFromGeoobject(geoObjects)
                     });
                 let cityId = await axios.post('https://yestapi.xyz/check_delivery_address', this.addressMass).then(res => {
                     return res.data.city_id
@@ -239,7 +240,7 @@ export default {
                     }
                 } else {
                     this.setCurrentCoords(this.coordsBuffer)
-                    this.setCurrentAddress(this.addressBuffer)
+					this.setCurrentAddress(this.addressBuffer)
                 }
             }
         },
