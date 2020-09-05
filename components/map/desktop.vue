@@ -224,19 +224,31 @@ export default {
                         app.coords = geoObjects.geometry.getCoordinates()
 						app.mapInstance.setCenter(geoObjects.geometry.getCoordinates(), 17)
 						app.address = getAddresFromGeoobject(geoObjects)
+
+						 if (app.geolocationAvailable) {
+                            app.address = getAddressFromString(selectedValue)
+                            mapInstance.setCenter(app.coords, 17)
+                            this.switchToMapMode()
+                            return
+                        }
+                        const bounds = geoObjects.properties.get('boundenBy')
+                        mapInstance.setBounds(bounds, {
+                            checkZoomRange: true
+                        })
+                        mapInstance.setCenter()
                     });
                 let cityId = await axios.post('https://yestapi.xyz/check_delivery_address', this.addressMass).then(res => {
                     return res.data.city_id
                 })
 
-                if (app.getSelectedZone.id !== cityId) {
-                    let findCity = app.getZoneList.find((zone) => {
+                if (this.getSelectedZone.id !== cityId) {
+                    let findCity = this.getZoneList.find((zone) => {
                         return zone.id == cityId
                     })
                     if (findCity !== undefined) {
-                        app.$router.push(`/${findCity.alias}`)
+                        this.$router.push(`/${findCity.alias}`)
                     } else {
-                        app.$router.push(`/`)
+                        this.$router.push(`/`)
                     }
                 } else {
                     this.setCurrentCoords(this.coordsBuffer)
