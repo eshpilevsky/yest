@@ -40,6 +40,7 @@ import {
 import {
     settings as yMapSettings
 } from '@/plugins/ymapPlugin' // так сделал потому что из плагина переменная ymaps с первого открытия карты не доступна
+import axios from 'axios'
 
 export default {
     components: {
@@ -176,7 +177,7 @@ export default {
                             [55.591263, 31.491889]
                         ],
                     })
-                    .then((res) => {
+                    .then((geo) => {
                         let getCityGeocoder = geo.geoObjects.get(0).properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.Locality.LocalityName')
                         if (app.getSelectedZone.name !== getCityGeocoder) {
                             let findCity = app.getZoneList.find((zone) => {
@@ -188,7 +189,7 @@ export default {
                                 app.$router.push(`/`)
                             }
                         } else {
-                            const geoObjects = res.geoObjects.get(0)
+                            const geoObjects = geo.geoObjects.get(0)
                             app.coords = geoObjects.geometry.getCoordinates()
                             if (app.geolocationAvailable) {
                                 app.address = getAddressFromString(selectedValue)
@@ -201,7 +202,7 @@ export default {
                                 checkZoomRange: true
                             })
                             mapInstance.setCenter()
-                            app.address = getAddresFromGeoobject(res.geoObjects.get(0))
+                            app.address = getAddresFromGeoobject(geo.geoObjects.get(0))
                         }
                     })
             }

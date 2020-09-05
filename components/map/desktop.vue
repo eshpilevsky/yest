@@ -64,6 +64,7 @@ import {
 import {
     settings as yMapSettings
 } from '@/plugins/ymapPlugin' // так сделал потому что из плагина переменная ymaps с первого открытия карты не доступна
+import axios from 'axios'
 
 export default {
     components: {
@@ -84,6 +85,7 @@ export default {
         ymaps: null,
         showSuggestList: false,
         getCityGeocoder: '',
+        addressMass: null,
         addressBuffer: null,
         coordsBuffer: null,
     }),
@@ -147,14 +149,14 @@ export default {
                 return res.data.city_id
             })
 
-            if (app.getSelectedZone.id !== cityId) {
-                let findCity = app.getZoneList.find((zone) => {
+            if (this.getSelectedZone.id !== cityId) {
+                let findCity = this.getZoneList.find((zone) => {
                     return zone.id == cityId
                 })
                 if (findCity !== undefined) {
-                    app.$router.push(`/${findCity.alias}`)
+                    this.$router.push(`/${findCity.alias}`)
                 } else {
-                    app.$router.push(`/`)
+                    this.$router.push(`/`)
                 }
             } else {
                 this.setCurrentCoords(this.coordsBuffer)
@@ -207,6 +209,7 @@ export default {
             this.setCurrentCoords(this.coords)
         },
         async onSelect(e) {
+            console.log('onSelect -> e', e)
             const mapInstance = this.mapInstance
             const ymaps = this.ymaps
             const app = this
@@ -222,10 +225,10 @@ export default {
                         app.coordsBuffer = geoObjects.geometry.getCoordinates()
                         app.addressBuffer = address.value
                         app.coords = geoObjects.geometry.getCoordinates()
-						app.mapInstance.setCenter(geoObjects.geometry.getCoordinates(), 17)
-						app.address = getAddresFromGeoobject(geoObjects)
+                        app.mapInstance.setCenter(geoObjects.geometry.getCoordinates(), 17)
+                        app.address = getAddresFromGeoobject(geoObjects)
 
-						 if (app.geolocationAvailable) {
+                        if (app.geolocationAvailable) {
                             app.address = getAddressFromString(selectedValue)
                             mapInstance.setCenter(app.coords, 17)
                             this.switchToMapMode()
@@ -252,15 +255,13 @@ export default {
                     }
                 } else {
                     this.setCurrentCoords(this.coordsBuffer)
-					this.setCurrentAddress(this.addressBuffer)
+                    this.setCurrentAddress(this.addressBuffer)
+                    this.address = this.addressBuffer
                 }
             }
         },
         async onBoundsChange() {
             const coords = this.mapInstance.getCenter()
-            console.log('onBoundsChange -> this.getZoneList', this.getZoneList)
-            console.log('onBoundsChange -> this.getSelectedZone', this.getSelectedZone)
-            console.log('onBoundsChange -> this.$router', this.$router)
             this.address = await getAddresByCoords(ymaps, coords, this.getZoneList, this.getSelectedZone, this.$router)
             await this.$emit('selectAddress', this.address)
         }

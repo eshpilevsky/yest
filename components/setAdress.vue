@@ -161,14 +161,14 @@ export default {
                 return res.data.city_id
             })
 
-            if (app.getSelectedZone.id !== cityId) {
-                let findCity = app.getZoneList.find((zone) => {
+            if (this.getSelectedZone.id !== cityId) {
+                let findCity = this.getZoneList.find((zone) => {
                     return zone.id == cityId
                 })
                 if (findCity !== undefined) {
-                    app.$router.push(`/${findCity.alias}`)
+                    this.$router.push(`/${findCity.alias}`)
                 } else {
-                    app.$router.push(`/`)
+                    this.$router.push(`/`)
                 }
             } else {
                 this.setCurrentCoords(this.currentCoordsBuffer)
