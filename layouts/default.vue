@@ -61,7 +61,7 @@ i {
     display: flex;
 }
 
-@media screen and (max-width: 960px) {
+@media screen and (max-width: 992px) {
     .container {
         padding: 65px 0 0;
     }

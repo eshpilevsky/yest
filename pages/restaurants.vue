@@ -135,9 +135,9 @@
                     <basket :orderList="this.orderList" :delivery='this.restuarant.delivery' />
                     <v-btn :disabled="this.getTotalPrice <= 0" color="primary" class="desctop_btn_confirm_order" id="desctop_btn_confirm_order" @click="checkout()">Оформить заказ</v-btn>
                 </div>
-                <div v-show="this.getCurrentAddress.length == 0">
+                <div class="map-wrapper" v-show="this.getCurrentAddress.length == 0">
                     <div class="mapimg"></div>
-                    <v-btn color="primary" block @click="visibleMap()">
+                    <v-btn class="map-wrapper__button" color="primary" block @click="visibleMap()">
                         <v-icon>
                             near_me
                         </v-icon>
@@ -1989,7 +1989,6 @@ export default {
 }
 
 .dish-img-mobile {
-    width: 100%;
     height: 167px;
     object-fit: cover;
 }
@@ -2393,14 +2392,26 @@ export default {
     overflow: hidden;
 }
 
+.map-wrapper {
+  height: 100%;
+}
+
 .mapimg {
     background-image: url("https://static-maps.yandex.ru/1.x/?l=map&ll=30.309158,59.963836&size=620,1572&scale=2&z=16&key=AP5KxFsBAAAAr4rWXAIApROgjMkXM-bOIOmMi2amb4pKEysAAAAAAAAAAADynFDWdJDGB1mMpov177fEMLqcCA==");
     background-size: cover;
-    height: 83vh;
+    height: calc(100% - 54px);
     width: 100%;
-    margin-left: 1rem;
     margin-bottom: 1rem;
     border-radius: 5px;
+}
+
+.map-wrapper__button {
+  width: 100% !important;
+  text-transform: initial !important;
+}
+
+.map-wrapper__button i {
+  margin-right: 8px !important;
 }
 
 .rest-cotainer {
@@ -2469,6 +2480,12 @@ export default {
     }
 }
 
+@media screen and (max-width: 600px) {
+  .dish-img-mobile {
+    width: 100%;
+  }
+}
+
 .dish-name-container {
     height: 38px;
     margin: 8px 0 2px;
@@ -2500,7 +2517,7 @@ export default {
 
 .info-top-title {
     color: #3f3f3f;
-    font-size: 24px;
+    font-size: 16px;
     line-height: 28px;
     font-weight: bold;
     margin-left: 8px;
