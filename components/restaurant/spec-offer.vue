@@ -35,7 +35,8 @@ export default {
 <style scoped>
 .rest-info-compared {
     padding: 40px 80px 20px;
-    background-image: linear-gradient(to bottom, #ffffff, hsl(0deg 0% 29% / 14%) 480px);
+    /*background-image: linear-gradient(to bottom, #ffffff, hsl(0deg 0% 29% / 14%) 480px);*/
+    background-color: #f2f2f2;
 }
 
 .rest-info-compared__row {
