@@ -11,7 +11,7 @@ export const state = () => ({
     inputAddressMode: false,
     address: '',
     geolocationDenied: false,
-    loading: false,
+    loading: true,
   },
   status: 0
 })
@@ -66,7 +66,8 @@ export const actions = {
 
 export const mutations = {
   async SHOW_MAP(state) {
-    state.data.visible = true
+	state.data.visible = true
+
     await navigator.geolocation.getCurrentPosition((pos) => {
       const crd = pos.coords
       const latitude = crd.latitude

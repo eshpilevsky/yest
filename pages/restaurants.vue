@@ -9,7 +9,6 @@
                             <v-chip color="primary" class="restaurant-rating">
                                 <v-icon class="restaurant-rating__icon" color="#FFFADF">star</v-icon>
                                 <div>{{restuarant.rating ? restuarant.rating: 'Мало оценок'}}</div>
-
                             </v-chip>
                             <div>
                                 <nuxt-link to="/" class="info-delivery">
@@ -39,7 +38,7 @@
                                                     Доставка Yest.by
                                                 </div>
                                                 <div class="description-price ">
-                                                    Доставка {{delivery[1].delivery.min}} - {{delivery[delivery.length-1].min}} BYN. Бесплатно при заказе от {{delivery[delivery.length-1].min}} BYN
+                                                    Доставка {{delivery[1].delivery == 0 ? '' : `${delivery[1].delivery} -`}} {{delivery[0].delivery}} BYN. Бесплатно при заказе от {{delivery[delivery.length-1].min}} BYN
                                                 </div>
                                             </div>
                                         </div>
@@ -323,9 +322,12 @@
                                         <v-icon class="rest-ship-modal__item-icon">
                                             directions_run
                                         </v-icon>
-                                        <span>
+                                        <span v-if="fee.delivery">
                                             {{fee.delivery}} BYN
                                             <span>на заказ от {{fee.min}} BYN</span>
+                                        </span>
+                                        <span v-else>
+                                            Бесплатная доставка при заказе от {{fee.min}} BYN
                                         </span>
                                     </div>
                                 </div>
