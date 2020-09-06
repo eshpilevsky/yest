@@ -18,6 +18,63 @@ const state = () => ({
 
 const actions = {
 
+  caclWorkTime(context, payload) {
+    return new Promise((resolve, reject) => {
+		const openRestorants = [];
+		const closeRestorants = [];
+		const currentDay = new Date().getDay();
+		const currentTime = new Date().getTime();
+        console.log('caclWorkTime -> payload', payload)
+		payload.forEach((item, i, arr) => {
+			// const op = item.operation_time;
+			const op = item.time;
+			const buffer = [];
+			if (item.time.length > 6) {
+				op.forEach((optime, index, operationTimeArr) => {
+					if (optime.day === currentDay) {
+						buffer.push(optime);
+					}
+				});
+				let closeTime = buffer[0].close_time
+				const openTime =
+					buffer.length > 1 ? buffer[1].open_time : buffer[0].open_time;
+
+				const closeTimeHour = closeTime.slice(0, 2);
+				const closeTimeMin = closeTime.slice(3, 5);
+				const closeTimeSec = closeTime.slice(6, 8);
+				const closeTimeTimestamp = new Date();
+				closeTimeTimestamp.setHours(closeTimeHour);
+				closeTimeTimestamp.setMinutes(closeTimeMin);
+				closeTimeTimestamp.setSeconds(closeTimeSec);
+
+				const openTimeHour = openTime.slice(0, 2);
+				const openTimeMin = openTime.slice(3, 5);
+				const openTimeSec = openTime.slice(6, 8);
+				const openTimeTimestamp = new Date();
+
+				openTimeTimestamp.setHours(openTimeHour);
+				openTimeTimestamp.setMinutes(openTimeMin);
+				openTimeTimestamp.setSeconds(openTimeSec);
+
+				item.today_close_time = closeTimeTimestamp.getTime();
+				item.today_open_time = openTimeTimestamp.getTime();
+
+				if (buffer.length !== 1) {
+					item.today_close_time += 86400000;
+				}
+
+				if (currentTime < item.today_close_time) {
+					openRestorants.push(item);
+					item.is_open = true;
+				} else {
+					closeRestorants.push(item);
+					item.is_open = false;
+				}
+			}
+		});
+		resolve(openRestorants.concat(closeRestorants))
+    });
+  },
   checkUserPhonemuber(context) {
     return new Promise((resolve, reject) => {
       resolve(context.state.data.userNumber)

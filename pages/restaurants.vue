@@ -39,7 +39,7 @@
                                                     Доставка Yest.by
                                                 </div>
                                                 <div class="description-price ">
-													<!-- {{sortDeliverFee}} -->
+                                                    <!-- {{sortDeliverFee}} -->
                                                     Доставка {{sortDeliverFee[sortDeliverFee.length-1].delivery}} - {{sortDeliverFee[0].delivery}} BYN. Бесплатно при заказе от {{sortDeliverFee[sortDeliverFee.length-1].min}} BYN
                                                 </div>
                                             </div>
@@ -73,9 +73,9 @@
                                                             на заказ от {{fee.min}} BYN
                                                         </span>
                                                     </div>
-													<div v-else>
-														Бесплатная доставка при заказе от {{fee.min}} BYN
-													</div>
+                                                    <div v-else>
+                                                        Бесплатная доставка при заказе от {{fee.min}} BYN
+                                                    </div>
                                                 </div>
                                                 <v-divider width='100%' class="mx-auto" />
                                             </div>
@@ -112,7 +112,7 @@
                     </v-tabs>
                     <v-divider />
                 </div>
-                <specOffer v-show="this.showSpecOffer" :salesText='restuarant.salesText'/>
+                <specOffer v-show="this.showSpecOffer" :salesText='restuarant.salesText' />
                 <div class="catalog-list">
                     <div v-for="(category, index) in restuarant.menu" :key="category.cat_id">
                         <div class="category-title">
@@ -333,7 +333,7 @@
                         {{category.name}}
                     </h2>
                     <div class="dishs-list-mobile">
-                        <div v-for="(item, index2) in category.dishes" v-show="item !== null ? item.status : false" :key="`dishCard${index2}`"  class="dishs-list-mobile-item">
+                        <div v-for="(item, index2) in category.dishes" v-show="item !== null ? item.status : false" :key="`dishCard${index2}`" class="dishs-list-mobile-item">
                             <v-card v-if="item !== null" class="dish-card">
                                 <div @click="showSelectedDish(item)">
                                     <div class="card-dish-top">
@@ -490,9 +490,9 @@
                             <v-icon @click="setAddressMobile()" color="#000">close</v-icon>
                         </div>
                         <div class="rest-ship-modal__wrapper">
-                          <div class="rest-ship-modal__item">
-                            Укажите адрес доставки, чтобы мы могли показать вам список доступных мест
-                          </div>
+                            <div class="rest-ship-modal__item">
+                                Укажите адрес доставки, чтобы мы могли показать вам список доступных мест
+                            </div>
                         </div>
                         <div class="rest-ship-modal__map-block" @click="setAddressMobile()">
                             <MapBtn :isHeader='true' />
@@ -608,13 +608,13 @@ export default {
         let restuarant = await axios.post(`https://yestapi.xyz/restaurant/${id[0]}`, {
             zone_id: currentZone.id,
         })
-		let restuarantData = restuarant.data
+        let restuarantData = restuarant.data
 
         let showSpecOffer = restuarantData.menu.find(cat => {
             return cat.dishes.find((dish, index, arr) => {
-				if (dish !== null) {
-					return dish.sizes[0].sale == 2
-				}
+                if (dish !== null) {
+                    return dish.sizes[0].sale == 2
+                }
             })
         })
         if (showSpecOffer !== undefined) {
@@ -623,10 +623,21 @@ export default {
             showSpecOffer = false
         }
 
+        let calcWorkTimeRestuarant = await store.dispatch('user/caclWorkTime', [restuarantData])
+
+        // console.log('restuarantData', calcWorkTimeRestuarant)
+
+        //add for testing
+        restuarantData.today_close_time = 1599512399482
+        restuarantData.today_open_time = 1599339600482
+        restuarantData.is_open = true
+        //add for testing
+
         return {
+            // restuarant: calcWorkTimeRestuarant,
             restuarant: restuarantData,
             currentZone: currentZone,
-			showSpecOffer: showSpecOffer,
+            showSpecOffer: showSpecOffer,
         }
     },
     data() {
@@ -776,8 +787,8 @@ export default {
                 } else {
                     this.selectedDish = dish
                     this.selectedDishCounter = 1
-					this.sizesRadioBtn = dish.sizes[0]
-					this.optionsCounter = []
+                    this.sizesRadioBtn = dish.sizes[0]
+                    this.optionsCounter = []
                     if (this.getLatetestRestInfoWithOrder == null) {
                         this.saveBasket()
                     } else if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
@@ -979,6 +990,7 @@ export default {
             getUserPhoneNumber: "user/getUserPhoneNumber",
         }),
         sortDeliverFee() {
+            console.log('sortDeliverFee -> this.restuarant', this.restuarant)
             let listt = this.restuarant.delivery.fee
             let sorted = listt.sort((a, b) => {
                 return a.delivery > b.delivery
@@ -1125,20 +1137,20 @@ export default {
 }
 
 .rest-ship-modal__map-block {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px 0;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
 }
 
 .rest-ship-modal__map-block .set-you-address {
-  position: initial;
-  top: auto;
-  left: auto;
-  right: auto;
-  bottom: auto;
-  transform: initial;
+    position: initial;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    transform: initial;
 }
 
 .rest-ship-modal__descr {

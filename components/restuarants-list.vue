@@ -215,7 +215,9 @@ export default {
         if (this.restaurantsList[0] !== '404') {
             this.restOverlay = true
             this.counterRest = this.restaurantsList.length
-            this.restaurants = this.restaurantsList
+			this.restaurants = this.restaurantsList
+            console.log('created -> this.restaurants[0]', this.restaurants[0])
+			
             setTimeout(() => {
                 this.restaurants = this.restaurantsList.slice(0, this.limit)
             }, 100);
