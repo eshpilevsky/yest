@@ -116,11 +116,11 @@ export default {
             return newValue
         },
         restaurantsList(newValue) {
+			this.restaurants = newValue
             return newValue
         },
         getCurrentAddress(newValue) {
-            this.getRestWithCoords()
-
+            // this.getRestWithCoords()
         }
     },
     methods: {

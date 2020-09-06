@@ -146,6 +146,7 @@ export default {
             this.showAdressList = false
         },
         async showRestuarants() {
+			this.showAdressList = false
             const app = this
             await ymaps.geocode(this.searchAddress, {
                 results: 1,
@@ -174,7 +175,7 @@ export default {
                 this.setCurrentCoords(this.currentCoordsBuffer)
                 this.setCurrentAddress(this.currentAddress)
                 const id = 'restTitle';
-                const yOffset = -70;
+                const yOffset = -345;
                 const element = document.getElementById(id);
                 const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
                 window.scrollTo({
@@ -280,6 +281,7 @@ export default {
     right: 0;
     max-width: 100%;
     width: calc(100% - 220px);
+	z-index: 10;
     box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.15);
     border: none;
 }

@@ -62,7 +62,7 @@ export default {
         const zoneListData = zoneList.data
         store.dispatch('zone/setZone', zoneListData)
         var currentZone = zoneListData.find((zones) => {
-			return zones.alias == params.region
+            return zones.alias == params.region
         })
 
         if (currentZone !== undefined) {
@@ -109,11 +109,11 @@ export default {
                     city: currentZone.accusative,
                     background: 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png',
                     category_icon: 'https://menu-menu.by/images/category_background/mobile/pizza.jpg',
-					meta:{
-						title: currentZone.seo.title,
-						description: currentZone.seo.description,
-						keywords: currentZone.seo.keywords,
-					}
+                    meta: {
+                        title: currentZone.seo.title,
+                        description: currentZone.seo.description,
+                        keywords: currentZone.seo.keywords,
+                    }
                 }
             }
             store.dispatch('user/selectCategory', currentCategory)
@@ -125,17 +125,17 @@ export default {
                     header: 'Быстрая доставка',
                     city: currentZone.accusative,
                     background: 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png',
-					category_icon: 'https://menu-menu.by/images/category_background/mobile/pizza.jpg',
-					meta:{
-						title: currentZone.seo.title,
-						description: currentZone.seo.description,
-						keywords: currentZone.seo.keywords,
-					}
+                    category_icon: 'https://menu-menu.by/images/category_background/mobile/pizza.jpg',
+                    meta: {
+                        title: currentZone.seo.title,
+                        description: currentZone.seo.description,
+                        keywords: currentZone.seo.keywords,
+                    }
                 }
                 currentCategory = categoryAll[0]
                 store.dispatch('user/selectCategory', currentCategory)
             }
-		}
+        }
 
         let latitude
         let longitude
@@ -179,7 +179,6 @@ export default {
             restaurantsList = await axios.post(`https://yestapi.xyz/restaurants/category/${currentCategory.id}`, sortByCoord)
             restaurantsListData = restaurantsList.data.restaurants
         }
-            console.log('restaurantsListData', restaurantsListData)
 
         var filtByTime;
         if (restaurantsList.data.status == 404) {
@@ -234,11 +233,105 @@ export default {
                     this.specilaOffers = res.data
                 }
             })
+        },
+        async getRestList() {
+            var sortByCoord = {}
+            if (this.getCurrentCoords.length > 0) {
+                sortByCoord = {
+                    zone_id: parseInt(this.getSelectedZone.id),
+                    latitude: parseFloat(this.getCurrentCoords[0]),
+                    longitude: parseFloat(this.getCurrentCoords[1]),
+                    start: 0,
+                    limit: 100
+                }
+            } else {
+                sortByCoord = {
+                    zone_id: this.getSelectedZone.id,
+                    limit: 100,
+                    start: 0,
+                }
+            }
+
+            let url;
+            if (this.getSelectedCategory.id == 0) {
+                url = 'https://yestapi.xyz/restaurants'
+            } else {
+                url = `https://yestapi.xyz/restaurants/category/${this.getSelectedCategory.id}`
+            }
+
+            let rest = await axios.post(`${url}`, sortByCoord).then((res) => {
+                return res.data.restaurants
+            })
+
+            function name(params) {
+                const openRestorants = [];
+                const closeRestorants = [];
+                const currentDay = new Date().getDay();
+                const currentTime = new Date().getTime();
+                params.forEach((item, i, arr) => {
+                    const op = item.operation_time;
+                    const buffer = [];
+                    if (item.operation_time.length > 6) {
+                        op.forEach((optime, index, operationTimeArr) => {
+                            if (optime.day === currentDay) {
+                                buffer.push(optime);
+                            }
+                        });
+                        let closeTime = buffer[0].close_time
+                        const openTime =
+                            buffer.length > 1 ? buffer[1].open_time : buffer[0].open_time;
+
+                        const closeTimeHour = closeTime.slice(0, 2);
+                        const closeTimeMin = closeTime.slice(3, 5);
+                        const closeTimeSec = closeTime.slice(6, 8);
+                        const closeTimeTimestamp = new Date();
+                        closeTimeTimestamp.setHours(closeTimeHour);
+                        closeTimeTimestamp.setMinutes(closeTimeMin);
+                        closeTimeTimestamp.setSeconds(closeTimeSec);
+
+                        const openTimeHour = openTime.slice(0, 2);
+                        const openTimeMin = openTime.slice(3, 5);
+                        const openTimeSec = openTime.slice(6, 8);
+                        const openTimeTimestamp = new Date();
+
+                        openTimeTimestamp.setHours(openTimeHour);
+                        openTimeTimestamp.setMinutes(openTimeMin);
+                        openTimeTimestamp.setSeconds(openTimeSec);
+
+                        item.today_close_time = closeTimeTimestamp.getTime();
+                        item.today_open_time = openTimeTimestamp.getTime();
+
+                        if (buffer.length !== 1) {
+                            item.today_close_time += 86400000;
+                        }
+
+                        if (currentTime < item.today_close_time) {
+                            openRestorants.push(item);
+                            item.is_open = true;
+                        } else {
+                            closeRestorants.push(item);
+                            item.is_open = false;
+                        }
+                    }
+                    if (item.hasOwnProperty('delivery')) {
+                        // let mass = item.delivery.fee
+                        // mass.sort((a, b) => {
+                        // 	return a.delivery > b.delivery
+                        // })
+                    }
+                });
+                return openRestorants.concat(closeRestorants)
+            }
+			
+			this.restaurantsList = []
+            this.restaurantsList = name(rest)
+
         }
     },
     watch: {
-        getCurrentAddress(newValue, oldValue) {
+        getCurrentCoords(newValue, oldValue) {
             this.getSpecialOffer()
+            this.getRestList()
             if (window.innerWidth < 450) {
                 if (newValue.length > 0) {
                     this.showSetAdress = false
@@ -248,6 +341,7 @@ export default {
             }
         },
         restaurantsList(newValue) {
+			console.log('restaurantsList -> newValue', newValue[0].name)
             return newValue
         }
     },
@@ -256,6 +350,7 @@ export default {
             getSelectedZone: 'zone/getSelectedZone',
             getZoneList: 'zone/getZoneList',
             getCategoryList: 'user/getCategoryList',
+            getSelectedCategory: 'user/getSelectedCategory',
             getCurrentCoords: 'map/getCurrentCoords',
             getCurrentAddress: "map/getCurrentAddress",
             getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
@@ -292,16 +387,16 @@ export default {
     },
     head() {
         return {
-            title: this.categoryInfoData.meta.title !== undefined? this.categoryInfoData.meta.title : 'Все',
+            title: this.categoryInfoData.meta.title !== undefined ? this.categoryInfoData.meta.title : 'Все',
             meta: [{
                     hid: 'description',
                     name: 'description',
-                    content: this.categoryInfoData.meta.description !== undefined? this.categoryInfoData.meta.description : ''
+                    content: this.categoryInfoData.meta.description !== undefined ? this.categoryInfoData.meta.description : ''
                 },
                 {
                     hid: 'keywords',
                     name: 'keywords',
-                    content: this.categoryInfoData.meta.keywords !== undefined? this.categoryInfoData.meta.keywords : ''
+                    content: this.categoryInfoData.meta.keywords !== undefined ? this.categoryInfoData.meta.keywords : ''
                 },
             ]
         }
@@ -327,12 +422,12 @@ export default {
     }
 
     .basket-home-btn__box {
-      border-radius: 16px !important;
-      display: flex;
-      height: 56px !important;
-      justify-content: space-between;
-      text-transform: initial;
-      font-size: 16px;
+        border-radius: 16px !important;
+        display: flex;
+        height: 56px !important;
+        justify-content: space-between;
+        text-transform: initial;
+        font-size: 16px;
     }
 
     .basket-home-btn__name {
@@ -345,7 +440,7 @@ export default {
     }
 
     .basket-home-btn__price {
-      color: #fff;
+        color: #fff;
     }
 }
 </style><style>
