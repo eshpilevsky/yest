@@ -43,7 +43,7 @@ export default {
         await loadYmap({
             ...settings,
             debug: true
-		});
+        });
     },
     watch: {
         searchString(newValue, oldValue) {
@@ -70,8 +70,12 @@ export default {
             this.loading = true
             const component = this
             ymaps.suggest(str, {
-				results: 6,
-				boundedBy:[[51.753588, 23.148098], [55.591263, 31.491889]]
+                results: 6,
+                boundedBy: [
+                    [51.753588, 23.148098],
+                    [55.591263, 31.491889]
+                ],
+                strictBounds: true,
             }).then((items) => {
                 component.places = items
                 component.loading = false

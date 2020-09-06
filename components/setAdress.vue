@@ -29,7 +29,7 @@
                     <v-btn class="showRest-block" color='primary' @click="showRestuarants()">Показать рестораны</v-btn>
                 </template>
             </v-text-field>
-            <div v-show="showAdressList && searchAddress.length > 2" class="adressList">
+            <div v-show="showAdressList && searchAddress.length > 2 && suggestions.length > 0" class="adressList">
                 <v-list>
                     <v-list-item v-for="(item, index) in suggestions" :key="'address'+index" class="itemAdress" @click="selectAdress(item)">
                         <v-list-item-content>
@@ -193,7 +193,8 @@ export default {
                 boundedBy: [
                     [51.753588, 23.148098],
                     [55.591263, 31.491889]
-                ]
+				],
+				strictBounds: true,
             }).then((items) => {
                 app.suggestions = items
                 app.loadingSuggest = false

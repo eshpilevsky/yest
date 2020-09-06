@@ -17,7 +17,8 @@ export const getAddresByCoords = async (ymaps, coords, zoneList, selectedZone, r
     boundedBy: [
       [51.753588, 23.148098],
       [55.591263, 31.491889]
-    ],
+	],
+	strictBounds: true,
   }).then((geo) => {
     const geoObjects = geo.geoObjects.get(0)
     getCityGeocoder = geoObjects.properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.Locality.LocalityName')

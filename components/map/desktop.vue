@@ -135,7 +135,8 @@ export default {
                 boundedBy: [
                     [51.753588, 23.148098],
                     [55.591263, 31.491889]
-                ],
+				],
+				strictBounds: true,
             }).then((geo) => {
                 const geoObjects = geo.geoObjects.get(0)
                 app.getCityGeocoder = geoObjects.properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.Locality.LocalityName')
@@ -170,7 +171,8 @@ export default {
                 boundedBy: [
                     [51.753588, 23.148098],
                     [55.591263, 31.491889]
-                ]
+				],
+				strictBounds: true,
             }).then((items) => {
                 app.suggestList = items
             });
