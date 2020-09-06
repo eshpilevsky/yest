@@ -244,6 +244,26 @@
                 <v-overlay opacity="0.5" :dark='false' z-index="999" v-model="showSmsForm">
                     <smsForm @closeForm='closeSmsForm()' @closeFormShowOrderForm='closeFormShowOrderForm()' />
                 </v-overlay>
+                <v-overlay opacity="0.5" :dark='false' z-index="999" v-model="showPreorderDesktopForm">
+                    <v-card class="pa-3">
+                        <v-card-title class="d-flex flex-row justify-space-between align-start">
+                            <span>
+                                Ближайшее доступное время доставки — <br /> сегодня в 19:00
+                            </span>
+                            <span @click="showPreorderDesktopForm = false">
+                                <v-icon>close</v-icon>
+                            </span>
+                        </v-card-title>
+                        <v-card-actions>
+                            <v-btn color="primary" @click="confirmDesktopPreorder()">
+                                Оформить предзаказ
+                            </v-btn>
+                            <v-btn @click="goBack()">
+                                Оформить заказ в другом месте
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-overlay>
             </client-only>
         </div>
     </div>
@@ -499,6 +519,29 @@
                         </div>
                     </v-sheet>
                 </v-bottom-sheet>
+                <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showPreorderMobileForm" scrollable persistent no-click-animation z-index='999' :eager=true>
+                    <v-card class="pa-3">
+                        <v-card-title class="d-flex flex-row justify-space-between align-start">
+                            <span>
+                                Доставка недоступна
+                            </span>
+                            <span @click="showPreorderMobileForm = false">
+                                <v-icon>close</v-icon>
+                            </span>
+                        </v-card-title>
+                        <v-card-text>
+                            К сожалению, доставка к указанному времени недоступна. Ближайшее время - сегодня в 19:00
+                        </v-card-text>
+                        <v-card-actions class="d-flex flex-column">
+                            <v-btn color="primary" class="mb-2" @click="confirmMobliePreorder()">
+                                Доставить в ближайшее время
+                            </v-btn>
+                            <v-btn @click="goBack()">
+                                Посмотреть доступные места
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-bottom-sheet>
             </div>
             <div class="basket-btn-block" v-show="this.getTotalPrice > 0">
                 <div>
@@ -669,11 +712,36 @@ export default {
             optionsCounter: [],
             showDesktopMap: false,
             showSetAddressMobile: false,
+            showPreorderDesktopForm: false,
+            showPreorderMobileForm: false,
+            saveSelectPreorder: false,
         }
     },
     methods: {
         setAddressMobile() {
             this.showSetAddressMobile = !this.showSetAddressMobile
+        },
+        confirmMobliePreorder() {
+            this.showPreorderMobileForm = false
+            this.showDish = true
+        },
+        confirmDesktopPreorder() {
+            this.showPreorderDesktopForm = false
+
+            // this.showOptionsmenu = true
+            if (this.selectedDish.sizes.length > 1 || this.selectedDish.options.length > 0) {
+                this.showOptionsmenu = true
+
+            } else {
+                if (this.getLatetestRestInfoWithOrder == null) {
+                    this.saveBasket()
+                } else if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
+                    this.showWarning = true
+                } else {
+                    this.saveBasket()
+                }
+            }
+
         },
         visibleMap() {
             this.showDesktopMap = !this.showDesktopMap
@@ -712,7 +780,6 @@ export default {
             } else {
                 return deliveryMass[deliveryMass.length - 1]
             }
-
         },
         computedFreeDeliveryCost() {
             let deliveryMass = this.sortDeliverFee
@@ -781,21 +848,21 @@ export default {
                             selected: opt.multi_data == 0 ? opt.variants[0] : [],
                         })
                     })
-                    this.showOptionsmenu = true
                     this.sizesRadioBtn = dish.sizes[0]
-                    // this.sizesRadioBtn = dish.sizes[0]
                 } else {
                     this.selectedDish = dish
                     this.selectedDishCounter = 1
                     this.sizesRadioBtn = dish.sizes[0]
                     this.optionsCounter = []
-                    if (this.getLatetestRestInfoWithOrder == null) {
-                        this.saveBasket()
-                    } else if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
-                        this.showWarning = true
-                    } else {
-                        this.saveBasket()
-                    }
+                }
+                if (!this.restuarant.is_open && this.saveSelectPreorder == false) {
+                    this.showPreorderDesktopForm = true
+                    this.saveSelectPreorder = true
+                } else {
+                    this.selectedDish = dish
+                    this.selectedDishCounter = 1
+                    this.sizesRadioBtn = dish.sizes[0]
+                    this.optionsCounter = []
                 }
             } else {
                 this.showDesktopMap = true
@@ -812,32 +879,41 @@ export default {
                         selected: opt.multi_data == 0 ? opt.variants[0] : [],
                     })
                 })
-                this.showDish = true
+                if (!this.restuarant.is_open && this.saveSelectPreorder == false) {
+                    this.showPreorderMobileForm = true
+                    this.saveSelectPreorder = true
+                } else {
+                    this.showDish = true
+                }
             } else {
                 this.showSetAddressMobile = true
             }
         },
         momentAdd(dish) {
             if (this.getCurrentAddress.length > 0) {
-
-                this.selectedDish = dish
-                this.selectedDishCounter = 1
-                this.sizesRadioBtn = dish.sizes[0]
-
-                if (this.getLatetestRestInfoWithOrder == null) {
-                    if (dish.sizes.length > 1) {
-                        this.showDish = true
-                    } else {
-                        this.saveBasket()
-                    }
+                if (!this.restuarant.is_open && this.saveSelectPreorder == false) {
+                    this.showPreorderMobileForm = true
+                    this.saveSelectPreorder = true
                 } else {
-                    if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
-                        this.showWarning = true
-                    } else {
+                    this.selectedDish = dish
+                    this.selectedDishCounter = 1
+                    this.sizesRadioBtn = dish.sizes[0]
+
+                    if (this.getLatetestRestInfoWithOrder == null) {
                         if (dish.sizes.length > 1) {
                             this.showDish = true
                         } else {
                             this.saveBasket()
+                        }
+                    } else {
+                        if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
+                            this.showWarning = true
+                        } else {
+                            if (dish.sizes.length > 1) {
+                                this.showDish = true
+                            } else {
+                                this.saveBasket()
+                            }
                         }
                     }
                 }
