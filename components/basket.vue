@@ -141,7 +141,7 @@ export default {
             }
         },
         computedDeliveryCost() {
-			let deliveryMass = this.sortDeliverFee(this.delivery.fee ? this.delivery.fee : this.delivery.delivery.fee)
+            let deliveryMass = this.sortDeliverFee(this.delivery.fee ? this.delivery.fee : this.delivery.delivery.fee)
 			console.log(deliveryMass);
             let price = parseInt(this.getTotalPrice)
             let finded = deliveryMass.find((cost) => {

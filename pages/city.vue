@@ -179,12 +179,13 @@ export default {
             restaurantsList = await axios.post(`https://yestapi.xyz/restaurants/category/${currentCategory.id}`, sortByCoord)
             restaurantsListData = restaurantsList.data.restaurants
         }
+            console.log('restaurantsListData', restaurantsListData)
 
         var filtByTime;
         if (restaurantsList.data.status == 404) {
             restaurantsListData = [404]
         } else {
-            filtByTime = await store.dispatch('user/caclWorkTime',restaurantsListData)
+            filtByTime = await store.dispatch('user/caclWorkTime', restaurantsListData)
         }
 
         let specialOffer;

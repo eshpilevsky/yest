@@ -24,12 +24,10 @@ const actions = {
 		const closeRestorants = [];
 		const currentDay = new Date().getDay();
 		const currentTime = new Date().getTime();
-        console.log('caclWorkTime -> payload', payload)
 		payload.forEach((item, i, arr) => {
-			// const op = item.operation_time;
-			const op = item.time;
+			const op = item.operation_time;
 			const buffer = [];
-			if (item.time.length > 6) {
+			if (item.operation_time.length > 6) {
 				op.forEach((optime, index, operationTimeArr) => {
 					if (optime.day === currentDay) {
 						buffer.push(optime);
@@ -70,6 +68,12 @@ const actions = {
 					closeRestorants.push(item);
 					item.is_open = false;
 				}
+			}
+			if (item.hasOwnProperty('delivery')) {
+				// let mass = item.delivery.fee
+				// mass.sort((a, b) => {
+				// 	return a.delivery > b.delivery
+				// })
 			}
 		});
 		resolve(openRestorants.concat(closeRestorants))

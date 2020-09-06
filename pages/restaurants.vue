@@ -39,8 +39,7 @@
                                                     Доставка Yest.by
                                                 </div>
                                                 <div class="description-price ">
-                                                    <!-- {{sortDeliverFee}} -->
-                                                    Доставка {{sortDeliverFee[sortDeliverFee.length-1].delivery}} - {{sortDeliverFee[0].delivery}} BYN. Бесплатно при заказе от {{sortDeliverFee[sortDeliverFee.length-1].min}} BYN
+                                                    Доставка {{delivery[1].delivery.min}} - {{delivery[delivery.length-1].min}} BYN. Бесплатно при заказе от {{delivery[delivery.length-1].min}} BYN
                                                 </div>
                                             </div>
                                         </div>
@@ -49,7 +48,7 @@
                                                 Заказ от
                                             </p>
                                             <p>
-                                                {{sortDeliverFee[0].min}} BYN
+                                                {{delivery[0].min}} BYN
                                             </p>
                                         </div>
                                     </template>
@@ -62,7 +61,7 @@
                                                 Доставку выполнят партнёры Yest.by
                                             </v-card-subtitle>
 
-                                            <div v-for="fee in this.sortDeliverFee" :key="`deliveryFee${fee.min}`" class="d-flex flex-column">
+                                            <div v-for="fee in this.restuarant.delivery.fee" :key="`deliveryFee${fee.min}`" class="d-flex flex-column">
                                                 <div class="delivery-info">
                                                     <v-icon>
                                                         directions_run
@@ -319,7 +318,7 @@
                                 <v-icon @click="closeSheetDeliveryOprion()" color="#000">close</v-icon>
                             </div>
                             <div class="rest-ship-modal__wrapper">
-                                <div v-for="fee in this.sortDeliverFee" :key="`deliveryFee${fee.min}`" class="rest-ship-modal__item">
+                                <div v-for="fee in this.restuarant.delivery.fee" :key="`deliveryFee${fee.min}`" class="rest-ship-modal__item">
                                     <div class="rest-ship-modal__item-box">
                                         <v-icon class="rest-ship-modal__item-icon">
                                             directions_run
@@ -666,21 +665,65 @@ export default {
             showSpecOffer = false
         }
 
-        let calcWorkTimeRestuarant = await store.dispatch('user/caclWorkTime', [restuarantData])
+        const openRestorants = [];
+        const closeRestorants = [];
+        const currentDay = new Date().getDay();
+        const currentTime = new Date().getTime();
 
-        // console.log('restuarantData', calcWorkTimeRestuarant)
+        const op = restuarantData.operation_time;
+        const buffer = [];
+        let computedWorkTime = {}
+        if (op.length > 6) {
+            op.forEach((optime, index, operationTimeArr) => {
+                if (optime.day === currentDay) {
+                    buffer.push(optime);
+                }
+            });
+            let closeTime = buffer[0].close_time
+            const openTime =
+                buffer.length > 1 ? buffer[1].open_time : buffer[0].open_time;
 
-        //add for testing
-        restuarantData.today_close_time = 1599512399482
-        restuarantData.today_open_time = 1599339600482
-        restuarantData.is_open = true
-        //add for testing
+            const closeTimeHour = closeTime.slice(0, 2);
+            const closeTimeMin = closeTime.slice(3, 5);
+            const closeTimeSec = closeTime.slice(6, 8);
+            const closeTimeTimestamp = new Date();
+            closeTimeTimestamp.setHours(closeTimeHour);
+            closeTimeTimestamp.setMinutes(closeTimeMin);
+            closeTimeTimestamp.setSeconds(closeTimeSec);
+
+            const openTimeHour = openTime.slice(0, 2);
+            const openTimeMin = openTime.slice(3, 5);
+            const openTimeSec = openTime.slice(6, 8);
+            const openTimeTimestamp = new Date();
+
+            openTimeTimestamp.setHours(openTimeHour);
+            openTimeTimestamp.setMinutes(openTimeMin);
+            openTimeTimestamp.setSeconds(openTimeSec);
+
+            computedWorkTime.today_close_time = closeTimeTimestamp.getTime();
+            computedWorkTime.today_open_time = openTimeTimestamp.getTime();
+
+            if (buffer.length !== 1) {
+                computedWorkTime.today_close_time += 86400000;
+            }
+
+            if (currentTime < computedWorkTime.today_close_time) {
+                computedWorkTime.is_open = true;
+            } else {
+                computedWorkTime.is_open = false;
+            }
+        }
+        let deliveryMass = restuarantData.delivery.fee
+        deliveryMass.sort((a, b) => {
+			return a.delivery > b.delivery
+        })
 
         return {
-            // restuarant: calcWorkTimeRestuarant,
             restuarant: restuarantData,
             currentZone: currentZone,
             showSpecOffer: showSpecOffer,
+			workTime: computedWorkTime,
+			delivery: deliveryMass
         }
     },
     data() {
@@ -727,11 +770,8 @@ export default {
         },
         confirmDesktopPreorder() {
             this.showPreorderDesktopForm = false
-
-            // this.showOptionsmenu = true
             if (this.selectedDish.sizes.length > 1 || this.selectedDish.options.length > 0) {
                 this.showOptionsmenu = true
-
             } else {
                 if (this.getLatetestRestInfoWithOrder == null) {
                     this.saveBasket()
@@ -741,7 +781,6 @@ export default {
                     this.saveBasket()
                 }
             }
-
         },
         visibleMap() {
             this.showDesktopMap = !this.showDesktopMap
@@ -769,35 +808,7 @@ export default {
         closeSmsForm() {
             this.showSmsForm = false
         },
-        computedDeliveryCost() {
-            let deliveryMass = this.sortDeliverFee
-            let price = parseInt(this.getTotalPrice)
-            let finded = deliveryMass.find((cost) => {
-                return cost.min <= price && price <= cost.max
-            })
-            if (finded !== undefined) {
-                return finded
-            } else {
-                return deliveryMass[deliveryMass.length - 1]
-            }
-        },
-        computedFreeDeliveryCost() {
-            let deliveryMass = this.sortDeliverFee
-            let price = parseFloat(this.getTotalPrice)
-            let finded = deliveryMass.findIndex((cost) => {
-                return cost.min <= price && price <= cost.max
-            })
-            if (finded !== undefined) {
-                if (deliveryMass[deliveryMass.length - 1].min < price) {
-                    return ``
-                } else {
-                    let computedNextSum = deliveryMass[finded + 1].min - price
-                    return `Закажите ещё на ${computedNextSum.toFixed(1)} BYN для доставки за ${deliveryMass[finded+1].delivery} BYN`
-                }
-            } else {
-                return ``
-            }
-        },
+
         addCraftDish() {
             if (this.getLatetestRestInfoWithOrder !== null) {
                 if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
@@ -855,14 +866,16 @@ export default {
                     this.sizesRadioBtn = dish.sizes[0]
                     this.optionsCounter = []
                 }
-                if (!this.restuarant.is_open && this.saveSelectPreorder == false) {
+                    console.log('addToBasket -> this.workTime.is_open', this.workTime.is_open)
+                if (!this.workTime.is_open && this.saveSelectPreorder == false) {
                     this.showPreorderDesktopForm = true
                     this.saveSelectPreorder = true
                 } else {
                     this.selectedDish = dish
                     this.selectedDishCounter = 1
                     this.sizesRadioBtn = dish.sizes[0]
-                    this.optionsCounter = []
+					this.optionsCounter = []
+					this.confirmDesktopPreorder()
                 }
             } else {
                 this.showDesktopMap = true
@@ -879,7 +892,7 @@ export default {
                         selected: opt.multi_data == 0 ? opt.variants[0] : [],
                     })
                 })
-                if (!this.restuarant.is_open && this.saveSelectPreorder == false) {
+                if (!this.workTime.is_open && this.saveSelectPreorder == false) {
                     this.showPreorderMobileForm = true
                     this.saveSelectPreorder = true
                 } else {
@@ -891,7 +904,7 @@ export default {
         },
         momentAdd(dish) {
             if (this.getCurrentAddress.length > 0) {
-                if (!this.restuarant.is_open && this.saveSelectPreorder == false) {
+                if (!this.workTime.is_open && this.saveSelectPreorder == false) {
                     this.showPreorderMobileForm = true
                     this.saveSelectPreorder = true
                 } else {
@@ -1065,14 +1078,6 @@ export default {
             getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
             getUserPhoneNumber: "user/getUserPhoneNumber",
         }),
-        sortDeliverFee() {
-            console.log('sortDeliverFee -> this.restuarant', this.restuarant)
-            let listt = this.restuarant.delivery.fee
-            let sorted = listt.sort((a, b) => {
-                return a.delivery > b.delivery
-            })
-            return sorted
-        },
     },
     watch: {
         getSelectedZone(newValue) {
@@ -1089,7 +1094,6 @@ export default {
         },
         getSelectedDishs(newValue) {
             this.orderList = newValue
-            this.computedDeliveryCost()
             return newValue
         },
         getLatetestRestInfoWithOrder(newValue) {
