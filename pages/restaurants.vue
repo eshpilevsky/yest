@@ -275,7 +275,7 @@
         <div class="mobile-rest-info">
             <div class="rest-info-content">
                 <div class="rest-info-top">
-                    <h1 class="info-top-title">
+                    <h1 class="info-top-title large">
                         {{restuarant.name}}
                     </h1>
                     <v-icon @click="showHideRestInfo()">info</v-icon>
@@ -2523,5 +2523,10 @@ export default {
     line-height: 28px;
     font-weight: bold;
     margin-left: 8px;
+}
+
+.info-top-title.large {
+  font-size: 24px;
+  margin-right: 10px;
 }
 </style>
