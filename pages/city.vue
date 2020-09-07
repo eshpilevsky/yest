@@ -140,24 +140,36 @@ export default {
         let latitude
         let longitude
         if (process.server) {
+            console.log('req', req)
             if (req.headers.cookie) {
-				if (req.headers.cookie.indexOf('latitude') > 0 && req.headers.cookie.indexOf('longitude') > 0) {
-					latitude = getCookie('latitude', req.headers.cookie)
-					longitude = getCookie('longitude', req.headers.cookie)
-					
-					function getCookie(cookieName, stringCookie) {
-						let strCookie = new RegExp('' + cookieName + '[^;]+').exec(stringCookie)[0]
-						return unescape(strCookie ? strCookie.toString().replace(/^[^=]+./, '') : '')
-					}
-				} else{
-					latitude = null
-					longitude = null
-				}
+                console.log(req.headers.cookie.indexOf('latitude'));
+                console.log(req.headers.cookie.indexOf('longitude'));
+
+                if (req.headers.cookie.indexOf('latitude') > 0 && req.headers.cookie.indexOf('longitude') > 0) {
+                    latitude = await getCookie('latitude', req.headers.cookie)
+                    longitude = await getCookie('longitude', req.headers.cookie)
+
+                    function getCookie(cookieName, stringCookie) {
+                        let strCookie = new RegExp('' + cookieName + '[^;]+').exec(stringCookie)[0]
+                        return unescape(strCookie ? strCookie.toString().replace(/^[^=]+./, '') : '')
+                    }
+                } else {
+                    latitude = undefined
+                    longitude = undefined
+                }
             }
         }
 
         var sortByCoord = {}
-        if (latitude !==null && longitude !==null) {
+        console.log('latitude', latitude)
+        console.log('longitude', longitude)
+        if (latitude == undefined && longitude == undefined) {
+            sortByCoord = {
+                zone_id: currentZone.id,
+                limit: 100,
+                start: 0,
+            }
+        } else {
             sortByCoord = {
                 zone_id: parseInt(currentZone.id),
                 latitude: parseFloat(latitude),
@@ -165,19 +177,13 @@ export default {
                 start: 0,
                 limit: 100
             }
-        } else {
-            sortByCoord = {
-                zone_id: currentZone.id,
-                limit: 100,
-                start: 0,
-            }
         }
+        console.log('sortByCoord after computed sort', sortByCoord)
 
         let restaurantsList;
         let checkCatId = currentCategory ? currentCategory.id : 0
         let restaurantsListData
 
-            console.log('sortByCoord', sortByCoord)
         if (checkCatId == 0) {
             restaurantsList = await axios.post('https://yestapi.xyz/restaurants', sortByCoord)
             restaurantsListData = restaurantsList.data.restaurants
@@ -198,21 +204,21 @@ export default {
         let showSpecialOffer;
         if (process.server) {
             if (req.headers.cookie) {
-				if (req.headers.cookie.indexOf('latitude') > 0 && req.headers.cookie.indexOf('longitude') > 0) {
-					specialOffer = await axios.post('https://yestapi.xyz/restaurants/special-offers', {
-						zone_id: parseInt(currentZone.id),
-						latitude: parseFloat(latitude),
-						longitude: parseFloat(longitude),
-					})
-					specialOfferData = specialOffer.data
-					if (specialOfferData.length == 0) {
-						showSpecialOffer = false
-					} else {
-						showSpecialOffer = true
-					}
-				} else {
-					showSpecialOffer = false
-				}
+                if (req.headers.cookie.indexOf('latitude') > 0 && req.headers.cookie.indexOf('longitude') > 0) {
+                    specialOffer = await axios.post('https://yestapi.xyz/restaurants/special-offers', {
+                        zone_id: parseInt(currentZone.id),
+                        latitude: parseFloat(latitude),
+                        longitude: parseFloat(longitude),
+                    })
+                    specialOfferData = specialOffer.data
+                    if (specialOfferData.length == 0) {
+                        showSpecialOffer = false
+                    } else {
+                        showSpecialOffer = true
+                    }
+                } else {
+                    showSpecialOffer = false
+                }
             }
         }
         console.log('END ASYNC DATA');
