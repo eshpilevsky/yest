@@ -2399,7 +2399,7 @@ export default {
 }
 
 .mapimg {
-    background-image: url("https://static-maps.yandex.ru/1.x/?l=map&ll=30.309158,59.963836&size=620,1572&scale=2&z=16&key=AP5KxFsBAAAAr4rWXAIApROgjMkXM-bOIOmMi2amb4pKEysAAAAAAAAAAADynFDWdJDGB1mMpov177fEMLqcCA==");
+    background-image: url("../assets/mapImg.png");
     background-size: cover;
     height: calc(100% - 54px);
     width: 100%;
