@@ -90,6 +90,7 @@ export default {
             getCityGeocoder: '',
             currentCoordsBuffer: null,
             currentAddress: null,
+            confirm: false,
         }
     },
     computed: {
@@ -104,9 +105,11 @@ export default {
     },
     watch: {
         searchAddress(newValue, oldValue) {
-            if (newValue !== null && newValue.length > 1 && oldValue !== '') {
-                this.showAdressList = false
-                this.getSuggest(newValue)
+            if (this.confirm == false) {
+                if (newValue !== null && newValue.length > 1 && oldValue !== '') {
+                    this.showAdressList = false
+                    this.getSuggest(newValue)
+                }
             }
         },
         getCurrentAddress(newValue) {
@@ -123,6 +126,16 @@ export default {
         },
     },
     methods: {
+        selectAdress(address) {
+            var adv = address.value
+            var addressSplit = adv.split('Беларусь,')
+            this.searchAddress = addressSplit[1]
+            this.showAdressList = false
+            this.confirm = true
+            setTimeout(() => {
+                this.confirm = false
+            }, 1500);
+        },
         ...mapMutations({
             setCurrentAddress: 'map/SET_CURRENT_ADDRESS',
             setCurrentCoords: 'map/SET_CURRENT_COORDS',
@@ -146,7 +159,7 @@ export default {
             this.showAdressList = false
         },
         async showRestuarants() {
-			this.showAdressList = false
+            this.showAdressList = false
             const app = this
             await ymaps.geocode(this.searchAddress, {
                 results: 1,
@@ -194,8 +207,8 @@ export default {
                 boundedBy: [
                     [51.753588, 23.148098],
                     [55.591263, 31.491889]
-				],
-				strictBounds: true,
+                ],
+                strictBounds: true,
             }).then((items) => {
                 app.suggestions = items
                 app.loadingSuggest = false
@@ -217,12 +230,6 @@ export default {
                 body.classList.remove('stop-scrolling')
                 headContainer.style.visibility = 'visible'
             }
-        },
-        selectAdress(address) {
-            var adv = address.value
-            var addressSplit = adv.split('Беларусь,')
-            this.searchAddress = addressSplit[1]
-            this.showAdressList = false
         },
     },
     async beforeMount() {
@@ -281,7 +288,7 @@ export default {
     right: 0;
     max-width: 100%;
     width: calc(100% - 220px);
-	z-index: 10;
+    z-index: 10;
     box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.15);
     border: none;
 }
