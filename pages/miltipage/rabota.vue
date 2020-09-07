@@ -28,15 +28,13 @@ export default {
         })
         let categoriesListData = categoriesList.data
         store.dispatch('user/allCategory', categoriesListData)		
-		console.log('router',router);
         let getPage = await axios.post('https://yestapi.xyz/get-data-page', {
-            url: `/faq`
+            url: `/rabota`
 		})
         console.log('getPage', getPage.data)
-        console.log('getPage', app.router.current.path)
 
 		if (getPage.data.status == 404) {
-			// redirect('/404')
+			redirect('/404')
 		}
 
         return {
