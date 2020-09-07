@@ -1,5 +1,7 @@
 <template>
-<div v-html="this.pageData.html_content">
+<div class="container">
+    <div v-html="this.pageData.html_content">
+    </div>
 </div>
 </template>
 
@@ -11,8 +13,8 @@ export default {
         app,
         store,
         req,
-		redirect,
-		router,
+        redirect,
+        router,
     }) {
         console.log('start asyncData of multipage');
         var orderList = await store.getters['basket/getSelectedDishs']
@@ -27,15 +29,15 @@ export default {
             zone_id: 1
         })
         let categoriesListData = categoriesList.data
-        store.dispatch('user/allCategory', categoriesListData)		
+        store.dispatch('user/allCategory', categoriesListData)
         let getPage = await axios.post('https://yestapi.xyz/get-data-page', {
             url: `/partner`
-		})
+        })
         console.log('getPage', getPage.data)
 
-		if (getPage.data.status == 404) {
-			redirect('/404')
-		}
+        if (getPage.data.status == 404) {
+            redirect('/404')
+        }
 
         return {
             pageData: getPage.data

@@ -1,5 +1,7 @@
 <template>
-<div v-html="this.pageData.html_content">
+<div class="container">
+    <div v-html="this.pageData.html_content">
+    </div>
 </div>
 </template>
 
