@@ -1,10 +1,10 @@
 <template>
 <div class="chose-city">
     <div class="d-flex flex-column">
-		<h1>Доставка еды</h1>
-        <nuxt-link class="chose-city__item" :to='`/${zone.alias}`' v-for="zone in zones" :key="zone.alias">
+        <h1>Доставка еды</h1>
+        <div class="chose-city__item" @click="goTo(zone.alias)" v-for="zone in zones" :key="zone.alias">
             {{zone.name}}
-        </nuxt-link>
+        </div>
     </div>
 </div>
 </template>
@@ -37,21 +37,26 @@ export default {
             zones: zoneListData
         }
 
-	},
-	    head() {
+    },
+    methods: {
+        goTo(url) {
+            this.$store.dispatch('map/dropLocation');
+            this.$router.push(`/${url}`)
+        }
+    },
+    head() {
         return {
             title: 'Доставка еды – yest.by',
             meta: [{
-                    hid: 'description',
-                    name: 'description',
-                    content: 'Быстрая доставка еды по Беларуси из ресторанов и кафе. 🚚 Доставляем пиццу, суши, бургеры, WOK, шаурму. 🍰 Блюда итальянской, японской, европейской и других кухонь мира. 📞 Звоните!'
-                },
-            ]
+                hid: 'description',
+                name: 'description',
+                content: 'Быстрая доставка еды по Беларуси из ресторанов и кафе. 🚚 Доставляем пиццу, суши, бургеры, WOK, шаурму. 🍰 Блюда итальянской, японской, европейской и других кухонь мира. 📞 Звоните!'
+            }, ]
         }
-	},
-	mounted () {
-		window.scrollTo(0, 0);
-	},
+    },
+    mounted() {
+        window.scrollTo(0, 0);
+    },
 }
 </script>
 

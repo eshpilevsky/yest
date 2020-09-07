@@ -76,6 +76,7 @@ export const actions = {
   dropLocation({
     commit
   }) {
+    commit('SET_CURRENT_ADDRESS', null)
     commit('SET_CURRENT_COORDS', null)
   }
 };
