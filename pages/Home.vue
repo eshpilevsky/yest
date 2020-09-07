@@ -26,7 +26,7 @@ export default {
         let zoneList = await axios.get('https://yestapi.xyz/get-zones')
         const zoneListData = zoneList.data
         store.dispatch('zone/setZone', zoneListData)
-
+        store.dispatch('zone/setSelectedZone', zoneListData[0])
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
             zone_id: 1
         })

@@ -18,11 +18,13 @@
 import {
     mapGetters
 } from 'vuex'
+import axios from 'axios'
 
 export default {
     name: 'NotFound',
     async asyncData({
-        params,
+		app,
+		params,
         store,
         redirect,
     }) {
@@ -34,12 +36,10 @@ export default {
         })
         if (currentZone !== undefined) {
             store.dispatch('zone/setSelectedZone', currentZone)
-        } else {
-            redirect('/')
         }
         app.currentZone = currentZone
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
-            zone_id: currentZone.id
+            zone_id: 1
         })
         let categoriesListData = categoriesList.data
         store.dispatch('user/allCategory', categoriesListData)

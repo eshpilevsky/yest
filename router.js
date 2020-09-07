@@ -9,7 +9,14 @@ import restaurants from './pages/restaurants.vue'
 import Checkout from './pages/Checkout.vue'
 import CheckoutSuccess from './pages/checkoutSuccess.vue'
 import paymantStatus from './pages/paymantStatus.vue'
-import multipage from './pages/multipage.vue'
+import faq from './pages/miltipage/faq.vue'
+import partner from './pages/miltipage/partner.vue'
+import contacts from './pages/miltipage/contacts.vue'
+import delivery from './pages/miltipage/delivery.vue'
+import termsOfUse from './pages/miltipage/terms-of-use.vue'
+import questions from './pages/miltipage/questions.vue'
+import rabota from './pages/miltipage/rabota.vue'
+import business from './pages/miltipage/business.vue'
 
 Vue.use(Router)
 
@@ -20,42 +27,42 @@ export function createRouter() {
       {
         path: '/contacts',
         name: 'contacts',
-        component: multipage,
+        component: contacts,
       },
       {
         path: '/delivery',
         name: 'delivery',
-        component: multipage,
+        component: delivery,
       },
       {
         path: '/terms-of-use',
         name: 'terms-of-use',
-        component: multipage,
+        component: termsOfUse,
       },
       {
         path: '/faq',
         name: 'faq',
-        component: multipage,
+        component: faq,
       },
       {
         path: '/questions',
         name: 'questions',
-        component: multipage,
+        component: questions,
       },
       {
         path: '/partner',
         name: 'partner',
-        component: multipage,
+        component: partner,
       },
       {
         path: '/rabota',
         name: 'rabota',
-        component: multipage,
+        component: rabota,
       },
       {
         path: '/business',
         name: 'business',
-        component: multipage,
+        component: business,
       },
       {
         path: '/404',
