@@ -134,7 +134,8 @@ export default {
             this.confirm = true
             setTimeout(() => {
                 this.confirm = false
-            }, 1500);
+			}, 1500);
+			this.showRestuarants()
         },
         ...mapMutations({
             setCurrentAddress: 'map/SET_CURRENT_ADDRESS',

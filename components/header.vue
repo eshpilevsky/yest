@@ -233,7 +233,6 @@ export default {
             this.showburgerOverlay = false
         },
         changeRegion(item) {
-            this.$store.dispatch('map/dropLocation')
             this.$router.push(`/${item.alias}`)
         }
     },

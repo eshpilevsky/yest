@@ -141,18 +141,23 @@ export default {
         let longitude
         if (process.server) {
             if (req.headers.cookie) {
-                latitude = getCookie('latitude', req.headers.cookie)
-                longitude = getCookie('longitude', req.headers.cookie)
-
-                function getCookie(cookieName, stringCookie) {
-                    let strCookie = new RegExp('' + cookieName + '[^;]+').exec(stringCookie)[0]
-                    return unescape(strCookie ? strCookie.toString().replace(/^[^=]+./, '') : '')
-                }
+				if (req.headers.cookie.indexOf('latitude') > 0 && req.headers.cookie.indexOf('longitude') > 0) {
+					latitude = getCookie('latitude', req.headers.cookie)
+					longitude = getCookie('longitude', req.headers.cookie)
+					
+					function getCookie(cookieName, stringCookie) {
+						let strCookie = new RegExp('' + cookieName + '[^;]+').exec(stringCookie)[0]
+						return unescape(strCookie ? strCookie.toString().replace(/^[^=]+./, '') : '')
+					}
+				} else{
+					latitude = null
+					longitude = null
+				}
             }
         }
 
         var sortByCoord = {}
-        if (latitude && longitude) {
+        if (latitude !==null && longitude !==null) {
             sortByCoord = {
                 zone_id: parseInt(currentZone.id),
                 latitude: parseFloat(latitude),
@@ -172,6 +177,7 @@ export default {
         let checkCatId = currentCategory ? currentCategory.id : 0
         let restaurantsListData
 
+            console.log('sortByCoord', sortByCoord)
         if (checkCatId == 0) {
             restaurantsList = await axios.post('https://yestapi.xyz/restaurants', sortByCoord)
             restaurantsListData = restaurantsList.data.restaurants
@@ -192,17 +198,21 @@ export default {
         let showSpecialOffer;
         if (process.server) {
             if (req.headers.cookie) {
-                specialOffer = await axios.post('https://yestapi.xyz/restaurants/special-offers', {
-                    zone_id: parseInt(currentZone.id),
-                    latitude: parseFloat(latitude),
-                    longitude: parseFloat(longitude),
-                })
-                specialOfferData = specialOffer.data
-                if (specialOfferData.length == 0) {
-                    showSpecialOffer = false
-                } else {
-                    showSpecialOffer = true
-                }
+				if (req.headers.cookie.indexOf('latitude') > 0 && req.headers.cookie.indexOf('longitude') > 0) {
+					specialOffer = await axios.post('https://yestapi.xyz/restaurants/special-offers', {
+						zone_id: parseInt(currentZone.id),
+						latitude: parseFloat(latitude),
+						longitude: parseFloat(longitude),
+					})
+					specialOfferData = specialOffer.data
+					if (specialOfferData.length == 0) {
+						showSpecialOffer = false
+					} else {
+						showSpecialOffer = true
+					}
+				} else {
+					showSpecialOffer = false
+				}
             }
         }
         console.log('END ASYNC DATA');
@@ -322,8 +332,8 @@ export default {
                 });
                 return openRestorants.concat(closeRestorants)
             }
-			
-			this.restaurantsList = []
+
+            this.restaurantsList = []
             this.restaurantsList = name(rest)
 
         }
@@ -341,7 +351,7 @@ export default {
             }
         },
         restaurantsList(newValue) {
-			console.log('restaurantsList -> newValue', newValue[0].name)
+            console.log('restaurantsList -> newValue', newValue[0].name)
             return newValue
         }
     },
