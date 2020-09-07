@@ -5,7 +5,7 @@
     </div>
     <div v-show="!this.getMapLoading" class="map-search-wrapper">
         <div class="currentAddress" v-show="!isInputAddressMode">
-            <h2 class="currentAddress-title">{{address}}</h2>
+            <h2 class="currentAddress-title">{{address.address}}</h2>
             <div class="currentAddress-put" @click="switchToAddressMode">Изменить адрес доставки</div>
         </div>
         <yandex-map v-show="!isInputAddressMode" :coords="coords" :zoom="17" @click.stop="onClick" @map-was-initialized="onInit" :controls="controls" :options="options" @boundschange="onBoundsChange" />
@@ -134,7 +134,7 @@ export default {
                     router
                 }, {
                     root: true
-                })
+				})
                 await this.hideMap()
             })
             if (this.getCurrentCoords.length === 0) {

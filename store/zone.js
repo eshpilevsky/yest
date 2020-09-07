@@ -39,13 +39,11 @@ export const mutations = {
 export const getters = {
   getSelectedZone(state) {
     const zones = state.data.zone
-
     if (zones !== null) {
 		return state.data.selectedZoneId
 	} else {
 		return zones[0];
 	}
-
   },
   getZoneList(state) {
     return state.data.zone

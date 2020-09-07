@@ -88,6 +88,7 @@ export default {
         addressMass: null,
         addressBuffer: null,
         coordsBuffer: null,
+        boundAnswer: {},
     }),
     computed: {
         ...mapGetters({
@@ -135,8 +136,8 @@ export default {
                 boundedBy: [
                     [51.753588, 23.148098],
                     [55.591263, 31.491889]
-				],
-				strictBounds: true,
+                ],
+                strictBounds: true,
             }).then((geo) => {
                 const geoObjects = geo.geoObjects.get(0)
                 app.getCityGeocoder = geoObjects.properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.Locality.LocalityName')
@@ -171,8 +172,8 @@ export default {
                 boundedBy: [
                     [51.753588, 23.148098],
                     [55.591263, 31.491889]
-				],
-				strictBounds: true,
+                ],
+                strictBounds: true,
             }).then((items) => {
                 app.suggestList = items
             });
@@ -188,6 +189,20 @@ export default {
         async confirmPosition() {
             await this.setCurrentCoords(this.coords)
             await this.setCurrentAddress(this.address)
+
+            let cityId = await axios.post('https://yestapi.xyz/check_delivery_address', this.boundAnswer.position).then(res => {
+                return res.data.city_id
+            })
+            if (this.getSelectedZone.id !== cityId) {
+                let findCity = this.getZoneList.find((zone) => {
+                    return zone.id == cityId
+                })
+                if (findCity !== undefined) {
+                    this.$router.push(`/${findCity.alias}`)
+                } else {
+                    this.$router.push(`/`)
+                }
+            }
             this.$emit('closeMap')
         },
         async onInit(mapInstance) {
@@ -263,7 +278,8 @@ export default {
         },
         async onBoundsChange() {
             const coords = this.mapInstance.getCenter()
-            this.address = await getAddresByCoords(ymaps, coords, this.getZoneList, this.getSelectedZone, this.$router)
+            this.boundAnswer = await getAddresByCoords(ymaps, coords, this.getZoneList, this.getSelectedZone, this.$router)
+            this.address = this.boundAnswer.address
             await this.$emit('selectAddress', this.address)
         }
     },

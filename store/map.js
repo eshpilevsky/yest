@@ -3,6 +3,7 @@ import {
   getAddresByCoords
 } from '@/common/lib/map'
 import * as Cookie from 'js-cookie'
+import axios from 'axios'
 
 export const state = () => ({
   data: {
@@ -52,8 +53,24 @@ export const actions = {
 }) {
     const currentAddress = await getAddresByCoords(ymaps, coords, getZoneList, getSelectedZone, router)
     console.log('currentAddress', currentAddress)
-    commit('SET_CURRENT_ADDRESS', currentAddress)
-    commit('SET_CURRENT_COORDS', coords)
+    commit('SET_CURRENT_ADDRESS', currentAddress.address)
+	commit('SET_CURRENT_COORDS', coords)
+	
+		
+	let cityId = await axios.post('https://yestapi.xyz/check_delivery_address', currentAddress.position).then(res => {
+		return res.data.city_id
+	})
+	if (getSelectedZone.id !== cityId) {
+		let findCity = getZoneList.find((zone) => {
+			return zone.id == cityId
+		})
+		if (findCity !== undefined) {
+			router.push(`/${findCity.alias}`)
+		} else {
+			router.push(`/`)
+		}
+	}
+
     commit('HIDE_MAP')
   },
   dropLocation({

@@ -26,19 +26,8 @@ export const getAddresByCoords = async (ymaps, coords, zoneList, selectedZone, r
 
     return buffer = geo.geoObjects
   })
-  let cityId = await axios.post('https://yestapi.xyz/check_delivery_address', addressMass).then(res => {
-    return res.data.city_id
-  })
-  if (selectedZone.id !== cityId) {
-    let findCity = zoneList.find((zone) => {
-      return zone.id == cityId
-    })
-    if (findCity !== undefined) {
-      router.push(`/${findCity.alias}`)
-    } else {
-      router.push(`/`)
-    }
-  } else {
-    return getAddresFromGeoobject(buffer)
-  }
+    return {
+		address: getAddresFromGeoobject(buffer),
+		position: addressMass
+	}
 }
