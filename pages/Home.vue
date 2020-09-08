@@ -64,6 +64,11 @@ export default {
 .chose-city {
     padding: 72px 20px 40px;
 
+    &__item {
+		cursor: pointer;
+		color: #00a646;
+    }
+
     @media screen and (max-width: 992px) {
         padding: 40px 20px;
     }

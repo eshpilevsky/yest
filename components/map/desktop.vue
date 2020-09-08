@@ -16,8 +16,9 @@
                     Определить
                 </v-btn>
                 <div class="map-actions-container">
-                    <v-text-field @focus="focusInput" @blur="blurInput" height='40' dense placeholder="Укажите адрес доставки..." v-model="address" filled outlined clearable background-color="primary" class="address-input btnFz"></v-text-field>
-                    <div v-show="showSuggestList" class="map-actions-bottom">
+                    <!-- <v-text-field @focus="focusInput" @blur="blurInput" height='40' dense placeholder="Укажите адрес доставки..." v-model="address" filled outlined clearable background-color="primary" class="address-input btnFz"></v-text-field> -->
+                    <v-text-field height='40' dense placeholder="Укажите адрес доставки..." v-model="address" filled outlined clearable background-color="primary" class="address-input btnFz"></v-text-field>
+                    <div v-show="showSuggestList && !confirm" class="map-actions-bottom">
                         <v-list class="sugList" max-width="505px">
                             <v-list-item v-for="(item, index) in suggestList" :key="'sug'+index" class="itemAdress" @click="selectAdress(item)">
                                 <v-list-item-content>
@@ -88,6 +89,7 @@ export default {
         addressMass: null,
         addressBuffer: null,
         coordsBuffer: null,
+        confirm: false,
         boundAnswer: {},
     }),
     computed: {
@@ -103,8 +105,10 @@ export default {
     },
     watch: {
         address(newValue, oldValue) {
-            if (newValue.length > 3) {
-                this.suggestPlaces(newValue)
+            if (this.confirm == false) {
+                if (newValue !== null && newValue.length > 1 && oldValue !== '') {
+                    this.suggestPlaces(newValue)
+                }
             }
         },
         coords(newValue) {
@@ -128,10 +132,14 @@ export default {
         blurInput() {
             this.showSuggestList = false
         },
-        async selectAdress(address) {
+        selectAdress(address) {
+            this.showSuggestList = false
+            this.confirm = true
+            setTimeout(() => {
+                this.confirm = false
+            }, 500);
             const app = this
-            this.address = address.value
-            await ymaps.geocode(address.value, {
+            ymaps.geocode(address.value, {
                 results: 1,
                 boundedBy: [
                     [51.753588, 23.148098],
@@ -144,30 +152,14 @@ export default {
                 app.addressMass = geoObjects.properties.get('metaDataProperty.GeocoderMetaData.Address.Components')
                 app.coordsBuffer = geoObjects.geometry.getCoordinates()
                 app.addressBuffer = address.value
-                app.coords = geoObjects.geometry.getCoordinates()
                 app.mapInstance.setCenter(geoObjects.geometry.getCoordinates(), 17)
+                app.address = address.value
             });
-            let cityId = await axios.post('https://yestapi.xyz/check_delivery_address', this.addressMass).then(res => {
-                return res.data.city_id
-            })
-
-            if (this.getSelectedZone.id !== cityId) {
-                let findCity = this.getZoneList.find((zone) => {
-                    return zone.id == cityId
-                })
-                if (findCity !== undefined) {
-                    this.$router.push(`/${findCity.alias}`)
-                } else {
-                    this.$router.push(`/`)
-                }
-            } else {
-                this.setCurrentCoords(this.coordsBuffer)
-                this.setCurrentAddress(this.addressBuffer)
-            }
         },
-        suggestPlaces(str) {
+        async suggestPlaces(str) {
+            this.showSuggestList = true
             const app = this
-            ymaps.suggest(str, {
+            await ymaps.suggest(str, {
                 results: 6,
                 boundedBy: [
                     [51.753588, 23.148098],
@@ -187,8 +179,9 @@ export default {
             this.$emit('closeMap')
         },
         async confirmPosition() {
-            await this.setCurrentCoords(this.coords)
-            await this.setCurrentAddress(this.address)
+            console.log('confirmPosition');
+            await this.setCurrentCoords(this.coordsBuffer)
+            await this.setCurrentAddress(this.addressBuffer)
 
             let cityId = await axios.post('https://yestapi.xyz/check_delivery_address', this.boundAnswer.position).then(res => {
                 return res.data.city_id
@@ -214,7 +207,7 @@ export default {
             }
             this.mapInstance = mapInstance
             getPlace(ymaps, mapInstance)
-            getGeo(ymaps, mapInstance)
+            // getGeo(ymaps, mapInstance)
 
             if (this.getCurrentCoords.length === 0) {
                 await this.getLocation()
@@ -330,7 +323,7 @@ export default {
     left: 0;
     right: 0;
     width: 100%;
-    z-index: 10;
+    z-index: 999;
 }
 
 .near_me-btn {
