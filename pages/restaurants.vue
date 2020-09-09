@@ -554,7 +554,7 @@
                             Корзина
                         </span>
                         <span class="btn-sub-text">
-                            {{this.getTotalPriceWithDelivery}} BYN
+                            {{this.getTotalPriceWithDelivery.toFixed(1)}} BYN
                         </span>
                     </v-btn>
                 </div>
