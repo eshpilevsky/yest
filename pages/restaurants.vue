@@ -378,13 +378,18 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="info-price" v-show="checkInbasket(item)" @click='momentAdd(item)'>
-                                        <span>
-                                            {{item.sizes[0] ? item.sizes[0].price.toFixed(1) : ''}} BYN
-                                        </span>
-                                        <span class="dish-info__price-old" v-show="item.sizes[0].sale == 2">
-                                            {{(item.sizes[0].price + item.sizes[0].discount).toFixed(1)}} BYN
-                                        </span>
+                                    <div class="info-price-box" v-show="checkInbasket(item)" @click='momentAdd(item)'>
+                                        <div class="info-price-box__wrapper">
+                                            <span class="info-price-box__title">
+                                                {{item.sizes[0] ? item.sizes[0].price.toFixed(1) : ''}} BYN
+                                            </span>
+                                              <span class="dish-info__price-old" v-show="item.sizes[0].sale == 2">
+                                                {{(item.sizes[0].price + item.sizes[0].discount).toFixed(1)}} BYN
+                                            </span>
+                                        </div>
+                                        <v-icon class="info-price-box__icon">
+                                          add
+                                        </v-icon>
                                     </div>
                                     <div v-show="!checkInbasket(item)" class="dish-conter-mobile">
                                         <v-icon class="info-price px-3" @click="decrement(item)">
@@ -2037,8 +2042,37 @@ export default {
     justify-content: center;
     background-color: #F1F0ED;
     margin: 0 9px 8px;
-    display: flex;
     flex-direction: column;
+}
+
+.info-price-box {
+  display: grid;
+  grid-template-columns: 1fr 48px;
+  grid-column-gap: 10px;
+  margin: 0 9px 8px;
+}
+
+.info-price-box__title {
+  font-size: 14px;
+}
+
+.info-price-box__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #F1F0ED;
+  border-radius: 16px;
+}
+
+.info-price-box__icon {
+  color: #000 !important;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  height: 48px;
+  background-color: #F1F0ED;
+  border-radius: 16px;
 }
 
 .dish-info__price {
