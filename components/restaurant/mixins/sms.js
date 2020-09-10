@@ -69,8 +69,9 @@ export default {
             }
           }, 1000);
         } else {
-			let currentTime = new Date(new Date().getTime() + 5 * 60000).getTime();
-			this.$store.dispatch('user/setSmsTimer', currentTime);
+			    let currentTime = new Date(new Date().getTime() + 5 * 60000).getTime();
+			    ym(67033669,'reachGoal','PhoneNumberEntered')
+          this.$store.dispatch('user/setSmsTimer', currentTime);
 		}
       }).catch((error) => {
         console.error(error)
@@ -88,7 +89,8 @@ export default {
           this.checkCode = false
           this.errorMsg = response.data.error[0]
         } else {
-          this.goToCheckout()
+          ym(67033669,'reachGoal','SMScodeEntered')
+          this.goToCheckout();
         }
       }).catch((error) => {
         console.error(error)

@@ -512,7 +512,7 @@
                         </div>
                         <div class="rest-ship-modal__wrapper">
                             <div class="rest-ship-modal__item">
-                                Укажите адрес доставки, чтобы мы могли показать вам список доступных мест
+                                Укажите адрес доставки, чтобы начать оформление заказа
                             </div>
                         </div>
                         <div class="rest-ship-modal__map-block" @click="setAddressMobile()">
@@ -1001,6 +1001,7 @@ export default {
             this.showDeliveryOption = false
         },
         checkout() {
+            ym(67033669,'reachGoal','clickChekoutButtonStart');
             if (this.getUserPhoneNumber) {
                 this.$router.push('/checkout')
             } else {
@@ -1008,7 +1009,7 @@ export default {
             }
         },
         goToBasketPage() {
-            this.$router.push(`/cart`)
+          this.$router.push(`/cart`)
         },
         cancelDeleteBasket() {
             this.showWarning = false

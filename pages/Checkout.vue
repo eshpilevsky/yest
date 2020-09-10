@@ -249,6 +249,7 @@ export default {
             this.showBasket = true
         },
         goToForm() {
+            ym(67033669,'reachGoal','clickChekoutButtonStart');
             if (this.getUserPhoneNumber !== null) {
                 this.showAuthForm = false
                 this.showOrderForm = true
