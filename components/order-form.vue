@@ -240,13 +240,15 @@ export default {
                 comment: this.comment,
                 order: this.order,
             }).then((response) => {
-                if (response.data.hasOwnProperty('checkout')) {
+
+              ym(67033669,'reachGoal','newOrder')
+
+              if (response.data.hasOwnProperty('checkout')) {
             		window.location = response.data.checkout.redirect_url
                 } else {
             		this.$store.dispatch('basket/setOrderId', response.data.order_id);
             		this.$router.push('/checkout/success')
 				}
-				ym(67033669,'reachGoal','newOrder')
                 this.$store.dispatch('basket/dropBasket');
                 this.loadingSendOrder = false
 
