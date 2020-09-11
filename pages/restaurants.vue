@@ -298,8 +298,8 @@
                     <v-chip @click="showDeliveryOption = !showDeliveryOption" :color="showDeliveryOption ? 'primary': null" class="rest-info-center-block-tag">
                         Условия доставки
                     </v-chip>
-                  <v-chip @click="showDeliveryOption = !showDeliveryOption" :color="showDeliveryOption ? 'primary': null" class="rest-info-center-block-tag">
-                    60-90 мин.
+                  <v-chip  :color="showDeliveryOption ? 'primary': null" class="rest-info-center-block-tag">
+                    {{this.restuarant.delivery.time.min}} - {{this.restuarant.delivery.time.max}} мин.
                   </v-chip>
                     <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showRatingSheet" :eager=true>
                         <v-sheet>
