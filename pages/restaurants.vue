@@ -358,7 +358,7 @@
                         {{category.name}}
                     </h2>
                     <div class="dishs-list-mobile">
-                        < v-for="(item, index2) in category.dishes" v-show="item !== null ? item.status : false" :key="`dishCard${index2}`" class="dishs-list-mobile-item">
+                        <div v-for="(item, index2) in category.dishes" v-show="item !== null ? item.status : false" :key="`dishCard${index2}`" class="dishs-list-mobile-item">
                             <v-card v-if="item !== null" class="dish-card">
                                 <div @click="showSelectedDish(item)">
                                     <div class="card-dish-top">
@@ -382,18 +382,31 @@
                                     </div>
                                 </div>
                                 <div>
+
                                   <div class="info-price-box" v-show="checkInbasket(item)" @click='momentAdd(item)'>
-                                        <span>	                                        <div class="info-price-box__wrapper">
-                                            {{item.sizes[0] ? item.sizes[0].price.toFixed(1) : ''}} BYN	                                            <span class="info-price-box__title">
-                                        </span>	                                                {{item.sizes[0] ? item.sizes[0].price.toFixed(1) : ''}} BYN
-                                        <span class="dish-info__price-old" v-show="item.sizes[0].sale == 2">	                                            </span>
-                                            {{(item.sizes[0].price + item.sizes[0].discount).toFixed(1)}} BYN	                                              <span class="dish-info__price-old" v-show="item.sizes[0].sale == 2">
+                                    <div class="info-price-box__wrapper">
+                                      <span class="info-price-box__title">
+                                          {{item.sizes[0] ? item.sizes[0].price.toFixed(1) : ''}} BYN
+                                      </span>
+                                      <span class="dish-info__price-old" v-show="item.sizes[0].sale == 2">
+                                        {{(item.sizes[0].price + item.sizes[0].discount).toFixed(1)}} BYN
                                         </span>
+                                    </div>
+                                    <v-icon class="info-price-box__icon">
+                                      add
+                                    </v-icon>
                                   </div>
-                                  <v-icon class="info-price-box__icon">
-                                    add
-                                  </v-icon>
-                                </div>
+
+
+
+
+
+
+
+
+
+
+
                                     <div v-show="!checkInbasket(item)" class="dish-conter-mobile">
                                         <v-icon class="info-price px-3" @click="decrement(item)">
                                             remove
@@ -732,7 +745,6 @@ export default {
 			      return a.min > b.min
         })
 
-      // console.log(deliveryMass);
 
         return {
             restuarant: restuarantData,
@@ -2036,25 +2048,6 @@ export default {
     padding-bottom: 8px;
 }
 
-.info-price {
-    color: #000 !important;
-    font-size: 17px;
-    font-weight: 400;
-    letter-spacing: -0.5px;
-    height: 48px;
-    min-width: 48px;
-    display: flex;
-    transition: opacity, background-color 100ms;
-    align-items: center;
-    border-radius: 16px;
-    align-content: center;
-    justify-content: center;
-    background-color: #F1F0ED;
-    margin: 0 9px 8px;
-    display: flex;
-    flex-direction: column;
-}
-
 .info-price-box {
   display: grid;
   grid-template-columns: 1fr 48px;
@@ -2080,6 +2073,26 @@ export default {
   height: 48px;
   background-color: #F1F0ED;
   border-radius: 16px;
+}
+
+.info-price {
+    color: #000 !important;
+    font-size: 17px;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+    height: 48px;
+    min-width: 48px;
+    display: flex;
+    transition: opacity, background-color 100ms;
+    align-items: center;
+    border-radius: 16px;
+    align-content: center;
+    justify-content: center;
+    background-color: #F1F0ED;
+    margin: 0 9px 8px;
+    display: flex;
+    flex-direction: column;
+}
 
 
 .dish-info__price {
