@@ -296,10 +296,10 @@
                         {{restuarant.rating ? restuarant.rating: 'Мало оценок'}}
                     </v-chip>
                     <v-chip @click="showDeliveryOption = !showDeliveryOption" :color="showDeliveryOption ? 'primary': null" class="rest-info-center-block-tag">
-                        Условия доставки
+                      Доставка {{delivery[1].delivery == 0 ? '' : `${delivery[1].delivery} -`}} {{delivery[0].delivery}} BYN. Бесплатно при заказе от {{delivery[delivery.length-1].min}} BYN
                     </v-chip>
                   <v-chip  :color="showDeliveryOption ? 'primary': null" class="rest-info-center-block-tag">
-                    {{this.restuarant.delivery.time.min}} - {{this.restuarant.delivery.time.max}} мин.
+                    Доставка: {{this.restuarant.delivery.time.min}} - {{this.restuarant.delivery.time.max}} мин.
                   </v-chip>
                     <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showRatingSheet" :eager=true>
                         <v-sheet>
