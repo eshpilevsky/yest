@@ -719,10 +719,16 @@ export default {
                 computedWorkTime.is_open = false;
             }
         }
-        let deliveryMass = restuarantData.delivery.fee
+        let deliveryMass = restuarantData.delivery.fee;
+
+        // console.log(deliveryMass);
         deliveryMass.sort((a, b) => {
-			return a.delivery > b.delivery
+          // console.log('a ->'+(a.delivery));
+          // console.log('b ->'+(b.delivery));
+			      return a.min > b.min
         })
+
+      // console.log(deliveryMass);
 
         return {
             restuarant: restuarantData,
