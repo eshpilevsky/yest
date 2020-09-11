@@ -130,19 +130,20 @@
                 </div>
             </div>
             <div cols-2 xl8 class="right">
-                <div v-show="this.getCurrentAddress.length > 0">
+                <!--<div v-show="this.getCurrentAddress.length > 0">-->
+                <div>
                     <basket :orderList="this.orderList" :delivery='this.restuarant.delivery' />
                     <v-btn :disabled="this.getTotalPrice <= 0" color="primary" class="desctop_btn_confirm_order" id="desctop_btn_confirm_order" @click="checkout()">Оформить заказ</v-btn>
                 </div>
-                <div class="map-wrapper" v-show="this.getCurrentAddress.length == 0">
-                    <div class="mapimg"></div>
-                    <v-btn class="map-wrapper__button" color="primary" block @click="visibleMap()">
-                        <v-icon>
-                            near_me
-                        </v-icon>
-                        Указать свой адрес
-                    </v-btn>
-                </div>
+                <!--<div class="map-wrapper" v-show="this.getCurrentAddress.length == 0">-->
+                    <!--<div class="mapimg"></div>-->
+                    <!--<v-btn class="map-wrapper__button" color="primary" block @click="visibleMap()">-->
+                        <!--<v-icon>-->
+                            <!--near_me-->
+                        <!--</v-icon>-->
+                        <!--Указать свой адрес-->
+                    <!--</v-btn>-->
+                <!--</div>-->
             </div>
             <client-only>
                 <v-overlay :dark='false' z-index="999" v-model="showOptionsmenu">
@@ -850,7 +851,7 @@ export default {
             }
         },
         addToBasket(dish) {
-            if (this.getCurrentAddress.length > 0) {
+            // if (this.getCurrentAddress.length > 0) {
                 if (dish.sizes.length > 1 || dish.options.length > 0) {
                     this.selectedDish = dish
                     this.selectedDishCounter = 1
@@ -879,12 +880,12 @@ export default {
 					this.optionsCounter = []
 					this.confirmDesktopPreorder()
                 }
-            } else {
-                this.showDesktopMap = true
-            }
+            // } else {
+            //     this.showDesktopMap = true
+            // }
         },
         showSelectedDish(dish) {
-            if (this.getCurrentAddress.length > 0) {
+            // if (this.getCurrentAddress.length > 0) {
                 this.selectedDish = dish
                 this.selectedDishCounter = 1
                 this.sizesRadioBtn = dish.sizes[0]
@@ -900,12 +901,12 @@ export default {
                 } else {
                     this.showDish = true
                 }
-            } else {
-                this.showSetAddressMobile = true
-            }
+            // } else {
+            //     this.showSetAddressMobile = true
+            // }
         },
         momentAdd(dish) {
-            if (this.getCurrentAddress.length > 0) {
+            // if (this.getCurrentAddress.length > 0) {
                 if (!this.workTime.is_open && this.saveSelectPreorder == false) {
                     this.showPreorderMobileForm = true
                     this.saveSelectPreorder = true
@@ -932,9 +933,9 @@ export default {
                         }
                     }
                 }
-            } else {
-                this.showSetAddressMobile = true
-            }
+            // } else {
+            //     this.showSetAddressMobile = true
+            // }
         },
         addToBasketMobile() {
             if (this.getLatetestRestInfoWithOrder !== null) {
