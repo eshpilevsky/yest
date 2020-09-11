@@ -110,7 +110,7 @@
                     </span>
                 </div>
                 <div class="next-btn-block">
-                    <v-btn block color="primary" @click="goToForm()">Далее</v-btn>
+                    <v-btn block color="primary" @click="goToForm()">Оформить заказ</v-btn>
                 </div>
             </div>
         </div>
