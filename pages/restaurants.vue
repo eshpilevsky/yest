@@ -855,6 +855,7 @@ export default {
             }
         },
         addToBasket(dish) {
+            ym(67033669,'reachGoal','addDish')
             if (this.getCurrentAddress.length > 0) {
                 if (dish.sizes.length > 1 || dish.options.length > 0) {
                     this.selectedDish = dish

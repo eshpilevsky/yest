@@ -200,6 +200,7 @@ export default {
             return n_str.join('');
         },
         goToRes(info) {
+            ym(67033669,'reachGoal','openRestaurantPage')
             let name = this.translite(info.name)
             let modifName = name.replace(' ', '-')
             this.$router.push(`/${this.currentZone.alias}/restaurant/${info.restaurant_id}-${modifName.toLowerCase()}`)
@@ -215,7 +216,7 @@ export default {
         if (this.restaurantsList[0] !== '404') {
             this.restOverlay = true
             this.counterRest = this.restaurantsList.length
-			this.restaurants = this.restaurantsList			
+			this.restaurants = this.restaurantsList
             setTimeout(() => {
                 this.restaurants = this.restaurantsList.slice(0, this.limit)
             }, 100);
