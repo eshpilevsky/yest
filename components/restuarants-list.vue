@@ -19,7 +19,7 @@
                     </div>
                     <div class="card-options">
                         <img class="card-options__delivery" src="@/assets/deliveryIcon.svg" alt="deliveryIcon" />
-                        <span class="card-options__rating">
+                        <span class="card-options__rating" v-show="item.rating !== 0">
                             <v-icon class="rating-icon" color="#FFFADF">star</v-icon>
                             <span>{{ item.rating }}</span>
                         </span>

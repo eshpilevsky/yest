@@ -224,7 +224,7 @@
                                         remove
                                     </v-icon>
                                     <span class="dish-counter__qty">{{selectedDishCounter}}</span>
-                                    <v-icon @click="incrementSelectedDish()" color="black">
+                                    <v-icon @click="с()" color="black">
                                         add
                                     </v-icon>
                                 </div>
@@ -934,6 +934,8 @@ export default {
             // }
         },
         momentAdd(dish) {
+
+          // Добавление товара мгновенное //
             // if (this.getCurrentAddress.length > 0) {
                 if (!this.workTime.is_open && this.saveSelectPreorder == false) {
                     this.showPreorderMobileForm = true
