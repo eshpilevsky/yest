@@ -1596,7 +1596,7 @@ export default {
     position: absolute;
     top: 7px;
     left: 8px;
-    background-color: #4ca647;
+    background-color: #f44336;
     width: 40px;
     height: 28px;
     display: flex;

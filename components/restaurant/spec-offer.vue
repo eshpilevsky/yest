@@ -59,7 +59,7 @@ export default {
     width: 70px;
     height: 70px;
     display: flex;
-    background: #4ca647;
+    background: #F44336;
     box-shadow: 0 2px 16px 0px rgba(0, 0, 0, 0.07);
     box-sizing: content-box;
     align-items: center;
@@ -114,7 +114,7 @@ export default {
     height: 42px;
     border: 5px solid #fff;
     display: flex;
-    background: #4ca647;
+    background: #F44336;
     box-shadow: 0 2px 16px 0px rgba(0, 0, 0, 0.07);
     box-sizing: content-box;
     align-items: center;
