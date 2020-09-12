@@ -20,18 +20,18 @@
                                     {{order.selectSize.weight}}
                                 </span>
                                 <div class="order-item-subbtitle">
-                                    {{order.selectSize.name}}
+                                    {{order.selectSize.name}} • {{order.selectSize.price}} BYN
                                 </div>
                                 <div v-show="order.selectOption.length > 0" class="d-flex flex-column">
                                     <span v-for="opt in order.selectOption" :key="opt.selected.id" class="order-item-subbtitle">
-										<div v-if="opt.selected.length > 1">
-											<div v-for="opti in opt.selected" :key="opti.id">
-												{{opti.name}}
-											</div>
-										</div>
-										<div v-else>
-                                        	{{opt.selected[0] ? opt.selected[0].name : opt.selected.name }}
-										</div>
+                                      <div v-if="opt.selected.length > 1">
+                                        <div v-for="opti in opt.selected" :key="opti.id">
+                                          {{opti.name}}
+                                        </div>
+                                      </div>
+                                      <div v-else>
+                                         {{opt.selected[0] ? opt.selected[0].name : opt.selected.name }}
+                                      </div>
                                     </span>
                                 </div>
                             </div>
@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     <div class="pl-4 order-item__price">
-                        {{order.selectSize.price }} <span class="fs10">BYN</span>
+                        {{order.selectSize.price * order.selectSize.count }} <span class="fs10">BYN</span>
                     </div>
                 </div>
             </div>
@@ -64,7 +64,7 @@
             </div>
             <div class="delivery-options" v-show="this.getTotalPrice > 0 && basketListVisible">
                 <v-divider />
-				
+
                 <div class="my-order-top__total d-flex flex-row justify-space-between align-center py-2" v-if="this.deliveryCost > 0">
                     <span class="delivery-title">
                         Доставка
