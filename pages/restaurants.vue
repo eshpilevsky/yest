@@ -6,7 +6,7 @@
                 <div class="left-top" :style="{backgroundImage:'url(https://img.eatmealby.com/resize/restaurant/900/'+restuarant.background_image+')'}">
                     <div class="top-wrapper">
                         <div class="rating">
-                            <v-chip color="primary" class="restaurant-rating">
+                            <v-chip color="primary" class="restaurant-rating" v-if="restuarant.rating !== 0">
                                 <v-icon class="restaurant-rating__icon" color="#FFFADF">star</v-icon>
                                 <div>{{restuarant.rating ? restuarant.rating: 'Мало оценок'}}</div>
                             </v-chip>
@@ -291,7 +291,7 @@
                     </v-bottom-sheet>
                 </div>
                 <div class="rest-info-center">
-                    <v-chip @click="showRatingSheet = !showRatingSheet" :color="showRatingSheet ? 'primary': null" class="rest-info-center-block-tag">
+                    <v-chip @click="showRatingSheet = !showRatingSheet" :color="showRatingSheet ? 'primary': null" class="rest-info-center-block-tag" v-if="restuarant.rating !== 0">
                         <v-icon class="rest-info-center__rating-icon">star</v-icon>
                         {{restuarant.rating ? restuarant.rating: 'Мало оценок'}}
                     </v-chip>
@@ -312,7 +312,7 @@
                                     <v-icon @click="closeSheetRating()">close</v-icon>
                                 </div>
                             </div>
-                            <div class="rest-ship-modal__rating">
+                            <div class="rest-ship-modal__rating" v-if="restuarant.rating !== 0">
                                 {{restuarant.rating ? restuarant.rating : 'Мало оценок'}}
                             </div>
                         </v-sheet>
