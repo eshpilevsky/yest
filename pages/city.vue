@@ -224,7 +224,9 @@ export default {
         }
         // console.log('END ASYNC DATA');
       time = new Date().getTime() - time;
-      // console.log('Время выполнения = ', time);
+      console.log('Время выполнения = ', time);
+
+
         return {
             restaurantsList: filtByTime,
             categoriesList: categoryAll.concat(categoriesListData),

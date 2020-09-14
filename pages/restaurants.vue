@@ -642,7 +642,10 @@ export default {
         params,
         redirect,
     }) {
-        console.log('START REST ASYNC');
+        // console.log('START REST ASYNC');
+      let time = new Date().getTime();
+
+
         let restParams = params.resName
         let id = restParams.split('-')
         var lastRest = store.getters['basket/getLatetestRestInfoWithOrder']
@@ -748,13 +751,16 @@ export default {
 			      return a.min > b.min
         })
 
+      time = new Date().getTime() - time;
+      console.log('Время выполнения = ', time);
 
-        return {
+
+      return {
             restuarant: restuarantData,
             currentZone: currentZone,
             showSpecOffer: showSpecOffer,
-			workTime: computedWorkTime,
-			delivery: deliveryMass
+            workTime: computedWorkTime,
+            delivery: deliveryMass
         }
     },
     data() {
@@ -897,7 +903,7 @@ export default {
                     this.sizesRadioBtn = dish.sizes[0]
                     this.optionsCounter = []
                 }
-                    console.log('addToBasket -> this.workTime.is_open', this.workTime.is_open)
+                    // console.log('addToBasket -> this.workTime.is_open', this.workTime.is_open)
                 if (!this.workTime.is_open && this.saveSelectPreorder == false) {
                     this.showPreorderDesktopForm = true
                     this.saveSelectPreorder = true
@@ -1060,7 +1066,7 @@ export default {
             this.selectedDishCounter++
         },
         goBack() {
-            console.log('goBack -> this.getSelectedCategory', this.getSelectedCategory)
+            // console.log('goBack -> this.getSelectedCategory', this.getSelectedCategory)
             if (this.getSelectedCategory.hasOwnProperty('alias')) {
                 this.$router.push(`/${this.currentZone.alias}/restaurants/category/${this.getSelectedCategory.alias}`)
             } else {
