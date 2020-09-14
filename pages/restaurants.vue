@@ -366,7 +366,7 @@
                                 <div @click="showSelectedDish(item)">
                                     <div class="card-dish-top">
                                         <span class="dash-info-compare" v-if="item.sizes[0]" v-show="item.sizes[0].sale == 2">%</span>
-                                        <img :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" :alt="item.name" class="dish-img-mobile" />
+                                        <!--<img :src="'https://img.eatmealby.com/resize/dish/400/'+item.image" :alt="item.name" class="dish-img-mobile" />-->
                                     </div>
                                     <div class="card-dish-bottom">
                                         <div class="dish-name-container">
@@ -436,7 +436,7 @@
                                     </v-btn>
                                 </div>
                                 <div class="selected-dish-top">
-                                    <img :src="'https://img.eatmealby.com/resize/dish/400/'+selectedDish.image" :alt="selectedDish.name" class="dish-img-mobile-selected" />
+                                    <!--<img :src="'https://img.eatmealby.com/resize/dish/400/'+selectedDish.image" :alt="selectedDish.name" class="dish-img-mobile-selected" />-->
                                 </div>
                                 <div class="selected-dish-composition">
                                     {{selectedDish.description}}
