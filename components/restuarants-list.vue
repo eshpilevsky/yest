@@ -3,6 +3,7 @@
     <h2 class="restorane-title" id="restTitle" v-show='!notFound'>Рестораны</h2>
     <v-flex cols-12 wrap class="restorane-list">
         <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in this.restaurants" :key="index" class="restorane-list-item" @click="goToRes(item)">
+          <nuxt-link :to="`/${get_rest_url(item)}`"  class="restorane-list-item">
             <div class="list-item-block">
                 <img contain :v-lazy="notFindImg" :alt="item.name" :src="item.cover" class="restorane-logo" :class="{closeRestorane:item.is_open == false }" />
                 <div class="block-bottom">
@@ -30,6 +31,7 @@
                     </div>
                 </div>
             </div>
+          </nuxt-link>
         </v-flex>
 
     </v-flex>
@@ -199,11 +201,15 @@ export default {
             }
             return n_str.join('');
         },
+        get_rest_url(info){
+          // return 'minsk';
+          let name = this.translite(info.name)
+          let modifName = name.replace(' ', '-')
+          let url = `${this.currentZone.alias}/restaurant/${info.restaurant_id}-${modifName.toLowerCase()}`
+          return url;
+        },
         goToRes(info) {
-            ym(67033669,'reachGoal','openRestaurantPage')
-            let name = this.translite(info.name)
-            let modifName = name.replace(' ', '-')
-            this.$router.push(`/${this.currentZone.alias}/restaurant/${info.restaurant_id}-${modifName.toLowerCase()}`)
+            ym(67033669,'reachGoal','openRestaurantPage');
         },
         showMore() {
             this.loadingShowMore = true
