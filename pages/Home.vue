@@ -11,6 +11,7 @@
 
 <script>
 import axios from 'axios'
+import VueLazyload from 'vue-lazyload'
 
 export default {
     name: 'home',
