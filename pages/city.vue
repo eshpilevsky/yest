@@ -237,6 +237,7 @@ export default {
             showSpecialOffer: showSpecialOffer,
         }
     },
+
     methods: {
         goToRestuarant() {
             this.$router.push(`/${this.restInfo.params.region}/restaurant/${this.restInfo.params.resName}`)
