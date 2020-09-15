@@ -2,9 +2,9 @@
 <div class="chose-city">
     <div class="d-flex flex-column">
         <h1>Доставка еды</h1>
-        <div class="chose-city__item" @click="goTo(zone.alias)" v-for="zone in zones" :key="zone.alias">
+        <nuxt-link :to="`/${zone.alias}`" class="chose-city__item" v-for="zone in zones" :key="zone.alias">
             {{zone.name}}
-        </div>
+        </nuxt-link>
     </div>
 </div>
 </template>

@@ -107,6 +107,14 @@ module.exports = {
     'nuxt-webfontloader',
     'cookie-universal-nuxt',
     '@nuxtjs/style-resources',
+    '@nuxtjs/component-cache',
+    [
+      '@nuxtjs/component-cache',
+      {
+        max: 10000,
+        maxAge: 1000 * 60 * 60
+      }
+    ]
   ],
   /*
    ** Axios module configuration
