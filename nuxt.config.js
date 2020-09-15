@@ -1,12 +1,21 @@
+const imageminMozjpeg = require('imagemin-mozjpeg')
+const ImageminPlugin = require('imagemin-webpack-plugin').default
+const isDev = process.env.NODE_ENV !== 'production'
+
 const colors = require('vuetify/es5/util/colors').default
 
 module.exports = {
   mode: 'universal',
+  modern: 'client',
+
   /*
    ** Headers of the page
    */
   head: {
     titleTemplate: '%s',
+    htmlAttrs: {
+      lang: 'ru'
+    },
     title: process.env.npm_package_name || '',
     meta: [{
         charset: 'utf-8'
@@ -92,6 +101,14 @@ module.exports = {
     '@nuxtjs/vuetify',
     '@nuxtjs/router'
   ],
+
+  webfontloader: {
+    events: false,
+    google: {
+      families: ['Montserrat:400,500,600:cyrillic&display=swap']
+    },
+    timeout: 5000
+  },
   /*
    ** Nuxt.js modules
    */
@@ -99,6 +116,8 @@ module.exports = {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
+    'nuxt-trailingslash-module',
+    'nuxt-webfontloader',
   ],
   /*
    ** Axios module configuration
@@ -131,6 +150,19 @@ module.exports = {
     },
     icons: {
       iconfont: 'md'
+    }
+  },
+  render: {
+    // http2: {
+    //     push: true,
+    //     pushAssets: (req, res, publicPath, preloadFiles) => preloadFiles
+    //     .map(f => `<${publicPath}${f.file}>; rel=preload; as=${f.asType}`)
+    //   },
+    // compressor: false,
+    resourceHints: false,
+    etag: false,
+    static: {
+      etag: false
     }
   },
   /*
