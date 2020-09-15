@@ -6,7 +6,7 @@
                 <div class="left-top" :style="{backgroundImage:'url(https://img.eatmealby.com/resize/restaurant/900/'+restuarant.background_image+')'}">
                     <div class="top-wrapper">
                         <div class="rating">
-                            <v-chip color="primary" class="restaurant-rating">
+                            <v-chip color="primary" class="restaurant-rating" v-if="restuarant.rating !== 0">
                                 <v-icon class="restaurant-rating__icon" color="#FFFADF">star</v-icon>
                                 <div>{{restuarant.rating ? restuarant.rating: 'Мало оценок'}}</div>
                             </v-chip>
@@ -291,7 +291,7 @@
                     </v-bottom-sheet>
                 </div>
                 <div class="rest-info-center">
-                    <v-chip @click="showRatingSheet = !showRatingSheet" :color="showRatingSheet ? 'primary': null" class="rest-info-center-block-tag">
+                    <v-chip @click="showRatingSheet = !showRatingSheet" :color="showRatingSheet ? 'primary': null" class="rest-info-center-block-tag" v-if="restuarant.rating !== 0">
                         <v-icon class="rest-info-center__rating-icon">star</v-icon>
                         {{restuarant.rating ? restuarant.rating: 'Мало оценок'}}
                     </v-chip>
@@ -312,7 +312,7 @@
                                     <v-icon @click="closeSheetRating()">close</v-icon>
                                 </div>
                             </div>
-                            <div class="rest-ship-modal__rating">
+                            <div class="rest-ship-modal__rating" v-if="restuarant.rating !== 0">
                                 {{restuarant.rating ? restuarant.rating : 'Мало оценок'}}
                             </div>
                         </v-sheet>
@@ -642,7 +642,10 @@ export default {
         params,
         redirect,
     }) {
-        console.log('START REST ASYNC');
+        // console.log('START REST ASYNC');
+      let time = new Date().getTime();
+
+
         let restParams = params.resName
         let id = restParams.split('-')
         var lastRest = store.getters['basket/getLatetestRestInfoWithOrder']
@@ -748,13 +751,16 @@ export default {
 			      return a.min > b.min
         })
 
+      time = new Date().getTime() - time;
+      console.log('Время выполнения = ', time);
 
-        return {
+
+      return {
             restuarant: restuarantData,
             currentZone: currentZone,
             showSpecOffer: showSpecOffer,
-			workTime: computedWorkTime,
-			delivery: deliveryMass
+            workTime: computedWorkTime,
+            delivery: deliveryMass
         }
     },
     data() {
@@ -897,7 +903,7 @@ export default {
                     this.sizesRadioBtn = dish.sizes[0]
                     this.optionsCounter = []
                 }
-                    console.log('addToBasket -> this.workTime.is_open', this.workTime.is_open)
+                    // console.log('addToBasket -> this.workTime.is_open', this.workTime.is_open)
                 if (!this.workTime.is_open && this.saveSelectPreorder == false) {
                     this.showPreorderDesktopForm = true
                     this.saveSelectPreorder = true
@@ -1060,7 +1066,7 @@ export default {
             this.selectedDishCounter++
         },
         goBack() {
-            console.log('goBack -> this.getSelectedCategory', this.getSelectedCategory)
+            // console.log('goBack -> this.getSelectedCategory', this.getSelectedCategory)
             if (this.getSelectedCategory.hasOwnProperty('alias')) {
                 this.$router.push(`/${this.currentZone.alias}/restaurants/category/${this.getSelectedCategory.alias}`)
             } else {
