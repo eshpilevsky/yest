@@ -1,4 +1,9 @@
 const colors = require('vuetify/es5/util/colors').default
+// import purgecss from '@fullhuman/postcss-purgecss'
+const imageminMozjpeg = require('imagemin-mozjpeg')
+// const JavaScriptObfuscator = require('webpack-obfuscator')
+const ImageminPlugin = require('imagemin-webpack-plugin').default
+const isDev = process.env.NODE_ENV !== 'production'
 
 module.exports = {
   mode: 'universal',
@@ -58,12 +63,11 @@ module.exports = {
    */
   plugins: [{
       src: '~/plugins/vuex-persist',
-      ssr: false
+      ssr: false,
     },
-    // {
-    //   src: '~/plugins/ymapPlugin.js',
-    //   mode: 'client'
-    // },
+    {
+      src: '~/plugins/vue-lazy-load.js',
+    },
     {
       src: '~/plugins/vClickOutside',
       ssr: false
@@ -90,7 +94,7 @@ module.exports = {
     // Doc: https://github.com/nuxt-community/eslint-module
     // '@nuxtjs/eslint-module',
     '@nuxtjs/vuetify',
-    '@nuxtjs/router'
+    '@nuxtjs/router',
   ],
   /*
    ** Nuxt.js modules
@@ -99,6 +103,10 @@ module.exports = {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
+    'nuxt-trailingslash-module',
+    'nuxt-webfontloader',
+    'cookie-universal-nuxt',
+    '@nuxtjs/style-resources',
   ],
   /*
    ** Axios module configuration
@@ -140,13 +148,86 @@ module.exports = {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {
-      config.resolve.symlinks = false
-    },
     // vendor: [
     //   'vuelidate'
     // ]
+    optimizeCss: false,
+    filenames: {
+      app: ({ isDev }) => isDev ? '[name].js' : 'js/[contenthash].js',
+      chunk: ({ isDev }) => isDev ? '[name].js' : 'js/[contenthash].js',
+      css: ({ isDev }) => isDev ? '[name].css' : 'css/[contenthash].css',
+      img: ({ isDev }) => isDev ? '[path][name].[ext]' : 'img/[contenthash:7].[ext]',
+      font: ({ isDev }) => isDev ? '[path][name].[ext]' : 'fonts/[contenthash:7].[ext]',
+      video: ({ isDev }) => isDev ? '[path][name].[ext]' : 'videos/[contenthash:7].[ext]'
+    },
+    ...(!isDev && {
+      html: {
+        minify: {
+          collapseBooleanAttributes: true,
+          decodeEntities: true,
+          minifyCSS: true,
+          minifyJS: true,
+          processConditionalComments: true,
+          removeEmptyAttributes: true,
+          removeRedundantAttributes: true,
+          trimCustomFragments: true,
+          useShortDoctype: true
+        }
+      }
+    }),
+    splitChunks: {
+      layouts: true,
+      pages: true,
+      commons: true
+    },
+    optimization: {
+      minimize: !isDev
+    },
+    ...(!isDev && {
+      extractCSS: {
+        ignoreOrder: true
+      }
+    }),
 
+    transpile: ['vue-lazy-hydration', 'intersection-observer'],
+    postcss: {
+      plugins: {
+        ...(!isDev && {
+          cssnano: {
+            preset: ['advanced', {
+              autoprefixer: false,
+              cssDeclarationSorter: false,
+              zindex: false,
+              discardComments: {
+                removeAll: true
+              }
+            }]
+          }
+        })
+      },
+      ...(!isDev && {
+        preset: {
+          browsers: 'cover 99.5%',
+          autoprefixer: true
+        }
+      }),
+
+      order: 'cssnanoLast'
+    },
+  },
+
+  render: {
+    // http2: {
+    //     push: true,
+    //     pushAssets: (req, res, publicPath, preloadFiles) => preloadFiles
+    //     .map(f => `<${publicPath}${f.file}>; rel=preload; as=${f.asType}`)
+    //   },
+    // compressor: false,
+    resourceHints: false
+    // etag: false,
+    // static: {
+    //   etag: false
+    // }
   },
   vue: {
     config: {
