@@ -37,7 +37,7 @@
                     <client-only>
                         <div v-for="order in getSelectedDishs" :key="`${order.id}`" class="list-item">
                             <div class='item-left'>
-                                <v-img cover :src="'https://img.eatmealby.com/resize/dish/400/'+order.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="order.name" class="order-img"></v-img>
+                                <v-img cover :src="'https://img.yest.by/resize/dish/400/'+order.image" lazy-src='https://yastatic.net/s3/eda-front/prod-www/assets/fallback-pattern-9d2103a870e23618a16bcf4f8b5efa54.svg' :alt="order.name" class="order-img"></v-img>
                             </div>
                             <div class="dish-info">
                                 <div class="d-flex flex-row justify-space-between main-mobile-cart__name">
