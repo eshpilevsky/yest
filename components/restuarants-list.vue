@@ -2,7 +2,10 @@
 <v-card class="restuarants-container">
     <h2 class="restorane-title" id="restTitle" v-show='!notFound'>Рестораны</h2>
     <v-flex cols-12 wrap class="restorane-list">
-        <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in this.restaurants" :key="index" class="restorane-list-item" @click="goToRes(item)">
+        <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in this.restaurants" :key="index" class="restorane-list-item" @click="overlay = !overlay">
+<!--          <v-overlay :value="overlay">-->
+<!--            <v-progress-circular indeterminate size="64"></v-progress-circular>-->
+<!--          </v-overlay>-->
           <nuxt-link :to="`/${get_rest_url(item)}`"  class="restorane-list-item">
             <div class="list-item-block">
                 <img contain :alt="item.name" v-lazy="item.cover" class="restorane-logo" :class="{closeRestorane:item.is_open == false }" />
@@ -45,9 +48,12 @@
     <div class="show-btn-block">
         <v-btn color="primary" class="showMore-btn" @click="showMore()" v-show="this.counterRest > limit" :loading="loadingShowMore">Показать ещё</v-btn>
     </div>
-    <v-overlay :value="restOverlay" z-index="100" :absolute="absolute" :color="wiw < 992 ? 'rgb(255, 255, 255)' : 'rgba(255, 255, 255, 0.5)'" :opacity="wiw < 992 ? 1 : 0.5">
-        <v-progress-circular indeterminate size="24" v-show="wiw < 992" color="black"></v-progress-circular>
-    </v-overlay>
+<!--    <v-overlay :value="restOverlay" z-index="100" :absolute="absolute" :color="wiw < 992 ? 'rgb(255, 255, 255)' : 'rgba(255, 255, 255, 0.5)'" :opacity="wiw < 992 ? 1 : 0.5">-->
+<!--        <v-progress-circular indeterminate size="24" v-show="wiw < 992" color="black"></v-progress-circular>-->
+<!--    </v-overlay>-->
+  <v-overlay :value="restOverlay">
+    <v-progress-circular indeterminate size="64"></v-progress-circular>
+  </v-overlay>
 </v-card>
 </template>
 
@@ -225,7 +231,7 @@ export default {
 			this.restaurants = this.restaurantsList
             setTimeout(() => {
                 this.restaurants = this.restaurantsList.slice(0, this.limit)
-            }, 100);
+            }, 1000);
             this.restOverlay = false
         } else {
             this.restaurants = [];

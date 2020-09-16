@@ -1,5 +1,8 @@
 <template>
 <div>
+  <v-overlay :value="overlay">
+    <v-progress-circular indeterminate size="64"></v-progress-circular>
+  </v-overlay>
     <div class="desktop-mode">
         <div class="rest-cotainer">
             <div class="left">
