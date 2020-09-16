@@ -12,7 +12,7 @@
                         <p class="card-time__unit">мин</p>
                     </div>
                     <div class="card-title">
-                        <div class="restorane-list-item-name" :class="{hidetime: checkAddress}">{{ item.name }}</div>
+                        <span class="restorane-list-item-name" :class="{hidetime: checkAddress}">{{ item.name }}</span>
                         <v-chip class="item-bottom-right-mob" color="primary" v-show="item.rating !== 0">
                             <v-icon color="#FFFADF">star</v-icon>
                             <div class="rating">{{ item.rating }}</div>
@@ -455,6 +455,11 @@ export default {
     text-align: left;
     z-index: 2;
     position: relative;
+    text-decoration: none;
+}
+
+.restorane-list-item {
+  text-decoration: none;
 }
 
 .restorane-list-item:hover {
