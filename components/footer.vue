@@ -214,6 +214,10 @@ export default {
     letter-spacing: 0.05rem;
 }
 
+.bottom-items:hover, .bottom-items a:hover {
+  text-decoration: underline !important;
+}
+
 .bottom-title {
     color: #646464;
     font-size: 17px;

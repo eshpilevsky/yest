@@ -537,6 +537,10 @@ export default {
     line-height: 1em;
 }
 
+.links-list a:hover {
+  text-decoration: underline !important;
+}
+
 .language-switcher p {
     margin-left: 20px;
     margin-bottom: 0px !important;
