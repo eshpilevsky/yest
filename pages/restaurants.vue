@@ -679,38 +679,40 @@ export default {
         let restuarant = await axios.post(`https://yestapi.xyz/restaurant/${id[0]}`, {
             zone_id: currentZone.id,
         })
-        let restuarantData = restuarant.data
+        let restuarantData = restuarant.data;
 
-        let showSpecOffer = restuarantData.menu.find(cat => {
+        //
+        if (restuarantData.status === 200){
+          let showSpecOffer = restuarantData.menu.find(cat => {
             return cat.dishes.find((dish, index, arr) => {
-                if (dish !== null) {
-                    return dish.sizes[0].sale == 2
-                }
+              if (dish !== null) {
+                return dish.sizes[0].sale == 2
+              }
             })
-        })
-        if (showSpecOffer !== undefined) {
+          })
+          if (showSpecOffer !== undefined) {
             showSpecOffer = true
-        } else {
+          } else {
             showSpecOffer = false
-        }
+          }
 
-        const openRestorants = [];
-        const closeRestorants = [];
-        const currentDay = new Date().getDay();
-        const currentTime = new Date().getTime();
+          const openRestorants = [];
+          const closeRestorants = [];
+          const currentDay = new Date().getDay();
+          const currentTime = new Date().getTime();
 
-        const op = restuarantData.operation_time;
-        const buffer = [];
-        let computedWorkTime = {}
-        if (op.length > 6) {
+          const op = restuarantData.operation_time;
+          const buffer = [];
+          let computedWorkTime = {}
+          if (op.length > 6) {
             op.forEach((optime, index, operationTimeArr) => {
-                if (optime.day === currentDay) {
-                    buffer.push(optime);
-                }
+              if (optime.day === currentDay) {
+                buffer.push(optime);
+              }
             });
             let closeTime = buffer[0].close_time
             const openTime =
-                buffer.length > 1 ? buffer[1].open_time : buffer[0].open_time;
+              buffer.length > 1 ? buffer[1].open_time : buffer[0].open_time;
 
             const closeTimeHour = closeTime.slice(0, 2);
             const closeTimeMin = closeTime.slice(3, 5);
@@ -733,35 +735,38 @@ export default {
             computedWorkTime.today_open_time = openTimeTimestamp.getTime();
 
             if (buffer.length !== 1) {
-                computedWorkTime.today_close_time += 86400000;
+              computedWorkTime.today_close_time += 86400000;
             }
 
             if (currentTime < computedWorkTime.today_close_time) {
-                computedWorkTime.is_open = true;
+              computedWorkTime.is_open = true;
             } else {
-                computedWorkTime.is_open = false;
+              computedWorkTime.is_open = false;
             }
-        }
-        let deliveryMass = restuarantData.delivery.fee;
+          }
+          let deliveryMass = restuarantData.delivery.fee;
 
-        // console.log(deliveryMass);
-        deliveryMass.sort((a, b) => {
-          // console.log('a ->'+(a.delivery));
-          // console.log('b ->'+(b.delivery));
-			      return a.min > b.min
-        })
+          // console.log(deliveryMass);
+          deliveryMass.sort((a, b) => {
+            // console.log('a ->'+(a.delivery));
+            // console.log('b ->'+(b.delivery));
+            return a.min > b.min
+          })
 
-      time = new Date().getTime() - time;
-      console.log('Время выполнения = ', time);
+          time = new Date().getTime() - time;
 
-
-      return {
+          return {
             restuarant: restuarantData,
             currentZone: currentZone,
             showSpecOffer: showSpecOffer,
             workTime: computedWorkTime,
             delivery: deliveryMass
+          }
+        } else {
+          redirect('/'+currentZone.alias);
         }
+
+
     },
     data() {
         return {
