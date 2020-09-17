@@ -2,7 +2,7 @@
 <v-card class="sms-modal">
     <img class="sms-modal__logo" src="@/assets/logo.svg" alt="Logo">
     <v-card-title class="sms-modal__title">
-        Пожалуйста, укажите <br> свой телефон
+        Для оформления заказа пожалуйста, укажите <br> свой телефон
     </v-card-title>
     <v-icon class="sms-modal__close" @click="closeForm()" v-show="currentRouteName !== 'cart'">
         close

@@ -1,7 +1,7 @@
 <template>
 <div class="sms-form">
     <div :class="{active:current}" class="sms-form__first">
-        <p class="sms-form__title">Введите номер телефона </p>
+        <p class="sms-form__title">Для оформления заказа пожалуйста введите свой номер телефона </p>
         <div class="sms-form__container">
             <v-text-field class="sms-form__field" label="Ваш номер телефона" outlined v-model="phone" v-mask="mask" @keydown.enter="showCurrnet()"></v-text-field>
             <v-btn class="sms-form__submit" block color="primary" :disabled="phone.length <17" @click="showCurrnet()" >Далее</v-btn>
