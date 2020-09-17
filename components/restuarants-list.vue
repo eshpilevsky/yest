@@ -2,7 +2,7 @@
 <v-card class="restuarants-container">
     <h2 class="restorane-title" id="restTitle" v-show='!notFound'>Рестораны</h2>
     <v-flex cols-12 wrap class="restorane-list">
-        <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in this.restaurants" :key="index" class="restorane-list-item" @click="overlay = !overlay">
+        <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in this.restaurants" :key="index" class="restorane-list-item" @click="restOverlay = !restOverlay">
 <!--          <v-overlay :value="overlay">-->
 <!--            <v-progress-circular indeterminate size="64"></v-progress-circular>-->
 <!--          </v-overlay>-->
@@ -48,12 +48,9 @@
     <div class="show-btn-block">
         <v-btn color="primary" class="showMore-btn" @click="showMore()" v-show="this.counterRest > limit" :loading="loadingShowMore">Показать ещё</v-btn>
     </div>
-<!--    <v-overlay :value="restOverlay" z-index="100" :absolute="absolute" :color="wiw < 992 ? 'rgb(255, 255, 255)' : 'rgba(255, 255, 255, 0.5)'" :opacity="wiw < 992 ? 1 : 0.5">-->
-<!--        <v-progress-circular indeterminate size="24" v-show="wiw < 992" color="black"></v-progress-circular>-->
-<!--    </v-overlay>-->
-  <v-overlay :value="restOverlay">
-    <v-progress-circular indeterminate size="64"></v-progress-circular>
-  </v-overlay>
+    <v-overlay :value="restOverlay" z-index="100">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
 </v-card>
 </template>
 
@@ -75,7 +72,7 @@ export default {
     },
     data() {
         return {
-            restOverlay: true,
+            restOverlay: false,
             absolute: true,
             serachAdress: "",
             restaurants: [],
@@ -129,7 +126,12 @@ export default {
         },
         getCurrentAddress(newValue) {
             // this.getRestWithCoords()
-        }
+        },
+        overlay (val) {
+          val && setTimeout(() => {
+            this.overlay = false
+          }, 5000)
+        },
     },
     methods: {
         async getRestWithCoords() {

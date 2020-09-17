@@ -19,7 +19,7 @@
                     </v-chip>
                 </template>
                 <v-list class="list-component">
-                    <v-list-item v-for="(item, index) in second" :key="'secondCategor' + index" class="more-category-list" @click="selectCategory(item)">
+                    <v-list-item v-for="(item, index) in second" :key="'secondCategor' + index" class="more-category-list" @click="selectCategory(item); restOverlay = !restOverlay;">
                         <v-list-item-title>{{ item.name }}</v-list-item-title>
                     </v-list-item>
                 </v-list>
@@ -56,7 +56,7 @@
                 <v-icon>search</v-icon>
             </span>
         </button> -->
-        <div v-for="(item, index) in allCategory" :key="'adaptiveCatList' + index" v-show="item.category_icon" class="category-list-mobile-item" @click="selectCategory(item)">
+        <div v-for="(item, index) in allCategory" :key="'adaptiveCatList' + index" v-show="item.category_icon" class="category-list-mobile-item" @click="selectCategory(item); categoryOverlay = !categoryOverlay;">
             <v-chip :class="{selected: item.id === currentCategory.id}" class="item-name">
                 {{ item.name }}
             </v-chip>
@@ -64,6 +64,7 @@
         <v-overlay :value="showModalOverlay" :dark="false">
             <searchModal @closeModalWindow='showModalWindow()' />
         </v-overlay>
+
     </div>
     <!-- <v-divider class="divider" />
     <v-text-field placeholder="Название, кухня или блюдо" height="46" dense clearable prepend-inner-icon="search" outlined class="searchDesktop" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch"></v-text-field> -->
@@ -74,6 +75,9 @@
     <!--            </v-btn>-->
     <!--        </template> &ndash;&gt;-->
     <!--    </v-text-field>-->
+  <v-overlay :value="categoryOverlay" z-index="999999">
+    <v-progress-circular indeterminate size="64"></v-progress-circular>
+  </v-overlay>
 </div>
 </template>
 
@@ -98,6 +102,7 @@ export default {
     },
     data() {
         return {
+            categoryOverlay: false,
             first: [],
             second: [],
             allCategory: [],
@@ -147,6 +152,11 @@ export default {
         }
     },
     watch: {
+        overlay (val) {
+          val && setTimeout(() => {
+            this.overlay = false
+          }, 5000)
+        },
         getSelectedZone(newValue, oldValue) {
             if (newValue.id !== oldValue.id) {
                 this.selectedCategory = this.currentCategory
