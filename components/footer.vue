@@ -1,5 +1,8 @@
 <template>
 <div class="containe">
+  <v-overlay :value="overlay" z-index="100">
+    <v-progress-circular indeterminate size="64"></v-progress-circular>
+  </v-overlay>
     <div class="footer">
         <div class="footer-top">
             <div class="top-block">
@@ -50,25 +53,25 @@
                         <div class="bottom-title ">
                             О компании
                         </div>
-                        <nuxt-link to="/contacts" class="bottom-items">
+                        <nuxt-link to="/contacts" class="bottom-items" @click="overlay = !overlay">
                             Контакты
                         </nuxt-link>
-                        <nuxt-link to="/delivery" class="bottom-items">
+                        <nuxt-link to="/delivery" class="bottom-items" @click="overlay = !overlay">
                             Доставка
                         </nuxt-link>
-                        <nuxt-link to="/terms-of-use" class="bottom-items">
+                        <nuxt-link to="/terms-of-use" class="bottom-items" @click="overlay = !overlay">
                             Пользоватльское соглашние
                         </nuxt-link>
-                        <nuxt-link to="/faq" class="bottom-items">
+                        <nuxt-link to="/faq" class="bottom-items" @click="overlay = !overlay">
                             Вопросы и ответы
                         </nuxt-link>
-                        <nuxt-link to="/partner" class="bottom-items">
+                        <nuxt-link to="/partner" class="bottom-items" @click="overlay = !overlay">
                             Стать партнёром
                         </nuxt-link>
-                        <nuxt-link to="/rabota" class="bottom-items">
+                        <nuxt-link to="/rabota" class="bottom-items" @click="overlay = !overlay">
                             Стать курьером
                         </nuxt-link>
-                        <nuxt-link to="/business" class="bottom-items">
+                        <nuxt-link to="/business" class="bottom-items" @click="overlay = !overlay">
                             Еда для бизнеса
                         </nuxt-link>
                     </div>
@@ -101,7 +104,8 @@ export default {
     name: 'layout-footer',
     data() {
         return {
-            all: false,
+          overlay: false,
+          all: false,
             limit: 5,
             mass: []
         }
@@ -118,6 +122,13 @@ export default {
                 return this.$store.state.user.data.categoryList.slice(0,4)
             }
         },
+    },
+    watch: {
+      overlay(val) {
+        val && setTimeout(() => {
+          this.overlay = false
+        }, 5000)
+      },
     },
     methods: {
         showAllCategory() {

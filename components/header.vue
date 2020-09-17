@@ -1,5 +1,8 @@
 <template>
 <div class="header-contain" v-show="!isMapVisible" :class="{ burgerOverlaySet: showburgerOverlay == true}">
+  <v-overlay :value="overlay" z-index="100">
+    <v-progress-circular indeterminate size="64"></v-progress-circular>
+  </v-overlay>
     <div class="container">
         <div class="burger-log" @click="showHideSidebar()" v-show="showSidebar == false" />
         <v-navigation-drawer v-model="showSidebar" absolute left temporary burgerOverlay-opacity="0.7" class="newHeader" v-show="showSidebar">
@@ -20,22 +23,22 @@
                 </div>
                 <div class="secondary-links">
                     <div>
-                        <nuxt-link to="/contacts">
+                        <nuxt-link to="/contacts" @click="overlay = !overlay">
                             О сервисе
                         </nuxt-link>
-                        <nuxt-link to="/rabota">
+                        <nuxt-link to="/rabota" @click="overlay = !overlay">
                             Стать курьером
                         </nuxt-link>
-                        <nuxt-link to="/partner">
+                        <nuxt-link to="/partner" @click="overlay = !overlay">
                             Стать партнёром
                         </nuxt-link>
-                        <nuxt-link to="/faq">
+                        <nuxt-link to="/faq" @click="overlay = !overlay">
                             Вопросы и ответы
                         </nuxt-link>
-                        <nuxt-link to="/business">
+                        <nuxt-link to="/business" @click="overlay = !overlay">
                             Еда для бизнеса
                         </nuxt-link>
-                        <nuxt-link to="/terms-of-use">
+                        <nuxt-link to="/terms-of-use" @click="overlay = !overlay">
                             Пользовательское соглашение
                         </nuxt-link>
                     </div>
@@ -163,6 +166,7 @@ export default {
     },
     data() {
         return {
+            overlay: false,
             calcWidth: 340,
             showburgerOverlay: false,
             burgerOverlay: false,
@@ -183,15 +187,20 @@ export default {
         }
     },
     watch: {
-		getSelectedZone(newValue){
-			return newValue
-		},
-        getCurrentAddress(newValue, oldValue) {
-            if (newValue.length > 0) {
-                this.showSetAdressBtn = true
-            }
-            return newValue
+      overlay(val) {
+        val && setTimeout(() => {
+          this.overlay = false
+        }, 5000)
+      },
+      getSelectedZone(newValue) {
+        return newValue
+      },
+      getCurrentAddress(newValue, oldValue) {
+        if (newValue.length > 0) {
+          this.showSetAdressBtn = true
         }
+        return newValue
+      }
     },
     methods: {
         ...mapMutations({
