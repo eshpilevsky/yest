@@ -694,6 +694,14 @@ export default {
             showSpecOffer = false
         }
 
+        if (getPage.data.status == 404) {
+          redirect('/404')
+        }
+
+        return {
+          pageData: getPage.data
+        }
+
         const openRestorants = [];
         const closeRestorants = [];
         const currentDay = new Date().getDay();

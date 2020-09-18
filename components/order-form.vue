@@ -168,7 +168,7 @@ export default {
             loadingSendOrder: false,
             mask: ['+375', '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/, ],
             time: {},
-            cutleryCounter: 1,
+            cutleryCounter: 0,
         }
     },
     methods: {

@@ -46,7 +46,7 @@
         </div>
     </div>
     <div class="show-btn-block">
-        <v-btn color="primary" class="showMore-btn" @click="showMore()" v-show="this.counterRest > limit" :loading="loadingShowMore">Показать ещё</v-btn>
+        <v-btn color="primary" class="showMore-btn" @click="showMore()" v-show="this.counterRest < limit" :loading="loadingShowMore">Показать ещё</v-btn>
     </div>
     <v-overlay :value="restOverlay" z-index="100">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
@@ -80,7 +80,7 @@ export default {
             mergeMassive: [],
             loadingRest: true,
             notFound: false,
-            limit: 24,
+            limit: 900,
             itemCounter: 0,
             params: {},
             notFindImg: require("../assets/logo.svg"),
@@ -93,7 +93,7 @@ export default {
                 }
             },
             restList: null,
-            counterRest: 0,
+            counterRest: 9,
             urlStr: '',
             loadingShowMore: false,
         };

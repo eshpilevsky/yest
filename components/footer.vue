@@ -24,9 +24,13 @@
                         </div>
                         <div class="regions-list">
                             <client-only>
-                                <div class="bottom-items" v-for="region in this.$store.state.zone.data.zone" :key="'footerRegion' + region.alias" @click="goToRegion(region)">
-                                    {{ region.name }}
-                                </div>
+<!--                                <div class="bottom-items" v-for="region in this.$store.state.zone.data.zone" :key="'footerRegion' + region.alias" @click="goToRegion(region)">-->
+<!--                                    {{ region.alias }}-->
+<!--                                </div>-->
+
+                                <nuxt-link :to="`/${region.alias}`" class="bottom-items" v-for="region in this.$store.state.zone.data.zone" :key="'footerRegion' + region.alias">
+                                  {{ region.alias }}
+                                </nuxt-link>
                             </client-only>
                         </div>
                     </div>
@@ -36,11 +40,16 @@
                         </div>
                         <div class="category-list">
                             <client-only>
-                                <div class="bottom-items" v-for="category in computedCategory" :key="+ 'footerCategory' + category.alias "  @click="goToCategory(category)">
-                                    <div >
-                                        {{ category.name }}
-                                    </div>
-                                </div>
+<!--                                <div class="bottom-items" v-for="category in computedCategory" :key="+ 'footerCategory' + category.alias "  @click="goToCategory(category)">-->
+<!--                                    <div >-->
+<!--                                        {{ category.name }}-->
+<!--                                    </div>-->
+<!--                                </div>-->
+
+                                <nuxt-link :to="`/${category.alias}`" class="bottom-items" v-for="category in computedCategory" :key="+ 'footerCategory' + category.alias ">
+                                    {{ category.name }}
+                                </nuxt-link>
+
                                 <div v-show="!all" class="bottom-items" @click="showAllCategory()">
                                     Показать все >
                                 </div>

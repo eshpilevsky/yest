@@ -21,9 +21,9 @@
         <div class="modal-text-gray modal-text-gray__fs12">
             Исполнитель (продавец): {{restuarant.legal_info.business_firm_name}}, {{restuarant.legal_info.business_address}}, УНП {{restuarant.legal_info.business_unp}}.
         </div>
-        <div class="modal-text-gray modal-text-gray__fs12">
-            Режим работы ресторана: с 09:00 до 21:00
-        </div>
+<!--        <div class="modal-text-gray modal-text-gray__fs12">-->
+<!--            Режим работы ресторана: с 09:00 до 21:00-->
+<!--        </div>-->
     </div>
 </div>
 </template>

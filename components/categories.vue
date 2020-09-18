@@ -57,10 +57,14 @@
             </span>
         </button> -->
         <div v-for="(item, index) in allCategory" :key="'adaptiveCatList' + index" v-show="item.category_icon" class="category-list-mobile-item" @click="selectCategory(item); categoryOverlay = !categoryOverlay;">
-            <v-chip :class="{selected: item.id === currentCategory.id}" class="item-name">
+            <nuxt-link :to="`/${item.alias}`" :class="{selected: item.id === currentCategory.id}" class="item-name">
                 {{ item.name }}
-            </v-chip>
+            </nuxt-link>
         </div>
+
+<!--      <nuxt-link :to="`/${category.alias}`" class="bottom-items" v-for="category in computedCategory" :key="+ 'footerCategory' + category.alias ">-->
+<!--        {{ category.name }}-->
+<!--      </nuxt-link>-->
         <v-overlay :value="showModalOverlay" :dark="false">
             <searchModal @closeModalWindow='showModalWindow()' />
         </v-overlay>
