@@ -468,6 +468,7 @@ export default {
 
 .restorane-list-item {
   text-decoration: none;
+  color: #000 !important;
 }
 
 .restorane-list-item:hover {
