@@ -5,9 +5,9 @@ import {
 } from "vuex"
 
 export default {
-	props: {
-		smsFormCurrent: Boolean,
-	},
+  props: {
+    smsFormCurrent: Boolean,
+  },
   data() {
     return {
       phone: ' ',
@@ -69,10 +69,10 @@ export default {
             }
           }, 1000);
         } else {
-			    let currentTime = new Date(new Date().getTime() + 5 * 60000).getTime();
-			    ym(67033669,'reachGoal','PhoneNumberEntered')
+          let currentTime = new Date(new Date().getTime() + 5 * 60000).getTime();
+          ym(67033669,'reachGoal','PhoneNumberEntered')
           this.$store.dispatch('user/setSmsTimer', currentTime);
-		}
+        }
       }).catch((error) => {
         console.error(error)
       })
@@ -117,17 +117,17 @@ export default {
       return newValue
     },
     current(newValue) {
-	  this.$emit('currentForm', newValue)
+      this.$emit('currentForm', newValue)
       return newValue
     },
     smsFormCurrent(newValue) {
       this.current = newValue
-	  this.$emit('currentForm', newValue)
+      this.$emit('currentForm', newValue)
       return newValue
     },
   },
   mounted() {
-	  this.current = this.smsFormCurrent
+    this.current = this.smsFormCurrent
     this.currentRouteName = this.$route.name
   },
 }

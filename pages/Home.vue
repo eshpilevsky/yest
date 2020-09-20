@@ -2,16 +2,15 @@
 <div class="chose-city">
     <div class="d-flex flex-column">
         <h1>Доставка еды</h1>
-        <nuxt-link :to="`/${zone.alias}`" class="chose-city__item" v-for="zone in zones" :key="zone.alias">
+        <div class="chose-city__item" @click="goTo(zone.alias)" v-for="zone in zones" :key="zone.alias">
             {{zone.name}}
-        </nuxt-link>
+        </div>
     </div>
 </div>
 </template>
 
 <script>
 import axios from 'axios'
-import VueLazyload from 'vue-lazyload'
 
 export default {
     name: 'home',

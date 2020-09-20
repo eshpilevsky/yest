@@ -56,8 +56,7 @@ export default {
         req,
         redirect,
     }) {
-        var time = new Date().getTime();
-        // console.log('START ASYNC DATA');
+        console.log('START ASYNC DATA');
 
         let zoneList = await axios.get('https://yestapi.xyz/get-zones')
         const zoneListData = zoneList.data
@@ -141,10 +140,10 @@ export default {
         let latitude
         let longitude
         if (process.server) {
-            // console.log('req', req)
+            console.log('req', req)
             if (req.headers.cookie) {
-                // console.log(req.headers.cookie.indexOf('latitude'));
-                // console.log(req.headers.cookie.indexOf('longitude'));
+                console.log(req.headers.cookie.indexOf('latitude'));
+                console.log(req.headers.cookie.indexOf('longitude'));
 
                 if (req.headers.cookie.indexOf('latitude') > 0 && req.headers.cookie.indexOf('longitude') > 0) {
                     latitude = await getCookie('latitude', req.headers.cookie)
@@ -162,12 +161,12 @@ export default {
         }
 
         var sortByCoord = {}
-        // console.log('latitude', latitude)
-        // console.log('longitude', longitude)
+        console.log('latitude', latitude)
+        console.log('longitude', longitude)
         if (latitude == undefined && longitude == undefined) {
             sortByCoord = {
                 zone_id: currentZone.id,
-                limit: 9,
+                limit: 100,
                 start: 0,
             }
         } else {
@@ -176,10 +175,10 @@ export default {
                 latitude: parseFloat(latitude),
                 longitude: parseFloat(longitude),
                 start: 0,
-                limit: 9
+                limit: 100
             }
         }
-        // console.log('sortByCoord after computed sort', sortByCoord)
+        console.log('sortByCoord after computed sort', sortByCoord)
 
         let restaurantsList;
         let checkCatId = currentCategory ? currentCategory.id : 0
@@ -222,11 +221,7 @@ export default {
                 }
             }
         }
-        // console.log('END ASYNC DATA');
-      time = new Date().getTime() - time;
-      console.log('Время выполнения = ', time);
-
-
+        console.log('END ASYNC DATA');
         return {
             restaurantsList: filtByTime,
             categoriesList: categoryAll.concat(categoriesListData),
@@ -237,7 +232,6 @@ export default {
             showSpecialOffer: showSpecialOffer,
         }
     },
-
     methods: {
         goToRestuarant() {
             this.$router.push(`/${this.restInfo.params.region}/restaurant/${this.restInfo.params.resName}`)
@@ -264,12 +258,12 @@ export default {
                     latitude: parseFloat(this.getCurrentCoords[0]),
                     longitude: parseFloat(this.getCurrentCoords[1]),
                     start: 0,
-                    limit: 9
+                    limit: 100
                 }
             } else {
                 sortByCoord = {
                     zone_id: this.getSelectedZone.id,
-                    limit: 9,
+                    limit: 100,
                     start: 0,
                 }
             }
@@ -363,7 +357,7 @@ export default {
             }
         },
         restaurantsList(newValue) {
-            // console.log('restaurantsList -> newValue', newValue[0].name)
+            console.log('restaurantsList -> newValue', newValue[0].name)
             return newValue
         }
     },
