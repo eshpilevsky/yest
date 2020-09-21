@@ -2,18 +2,27 @@
 <div class="chose-city">
     <div class="d-flex flex-column">
         <h1>Доставка еды</h1>
-        <div class="chose-city__item" @click="goTo(zone.alias)" v-for="zone in zones" :key="zone.alias">
+        <div class="chose-city__item" @click="goTo(zone.alias); restOverlay = !restOverlay;" v-for="zone in zones" :key="zone.alias">
             {{zone.name}}
         </div>
     </div>
+  <v-overlay :value="restOverlay" z-index="100">
+    <v-progress-circular indeterminate size="64"></v-progress-circular>
+  </v-overlay>
 </div>
 </template>
 
 <script>
 import axios from 'axios'
+import VueLazyload from 'vue-lazyload'
 
 export default {
     name: 'home',
+    data() {
+      return {
+        restOverlay: false,
+      };
+    },
     async asyncData({
         app,
         context,

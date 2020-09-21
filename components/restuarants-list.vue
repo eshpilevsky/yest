@@ -3,9 +3,6 @@
     <h2 class="restorane-title" id="restTitle" v-show='!notFound'>Рестораны</h2>
     <v-flex cols-12 wrap class="restorane-list">
       <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in this.restaurants" :key="index" class="restorane-list-item" @click="restOverlay = !restOverlay">
-        <!--          <v-overlay :value="overlay">-->
-        <!--            <v-progress-circular indeterminate size="64"></v-progress-circular>-->
-        <!--          </v-overlay>-->
         <nuxt-link :to="`/${get_rest_url(item)}`"  class="restorane-list-item">
           <div class="list-item-block">
             <img contain :alt="item.name" v-lazy="item.cover" class="restorane-logo" :class="{closeRestorane:item.is_open == false }" />

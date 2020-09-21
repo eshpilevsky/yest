@@ -80,6 +80,9 @@ module.exports = {
       ssr: false
     },
     {
+      src: '~/plugins/vue-lazy-load.js',
+    },
+    {
       src: '@/plugins/mask'
     },
   ],
