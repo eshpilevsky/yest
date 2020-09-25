@@ -81,10 +81,18 @@
             ООО "Фудтех системс"
           </div>
           <div class="social-links">
-            <img src="@/assets/fb.svg" alt="facebook" class="social-links-img">
-            <img src="@/assets/vk.svg" alt="vk" class="social-links-img">
-            <img src="@/assets/insta.svg" alt="instagramm" class="social-links-img">
-            <img src="@/assets/twitter.svg" alt="twitter" class="social-links-img">
+            <nuxt-link to="https://www.facebook.com/groups/yestby/">
+              <img src="@/assets/fb.svg" alt="facebook" class="social-links-img">
+            </nuxt-link>
+            <nuxt-link to="https://vk.com/yestby">
+              <img src="@/assets/vk.svg" alt="vk" class="social-links-img">
+            </nuxt-link>
+            <nuxt-link to="https://www.instagram.com/yest.by">
+              <img src="@/assets/insta.svg" alt="instagramm" class="social-links-img">
+            </nuxt-link>
+            <nuxt-link to="https://twitter.com/yest_by">
+              <img src="@/assets/twitter.svg" alt="twitter" class="social-links-img">
+            </nuxt-link>
           </div>
         </div>
       </div>
