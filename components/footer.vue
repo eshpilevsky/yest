@@ -81,10 +81,10 @@
             ООО "Фудтех системс"
           </div>
           <div class="social-links">
-            <a href="https://www.facebook.com/groups/yestby/"  rel="nofollow" target="_blank">>
+            <a href="https://www.facebook.com/groups/yestby/"  rel="nofollow" target="_blank">
               <img src="@/assets/fb.svg" alt="facebook" class="social-links-img">
             </a>
-            <a href="https://vk.com/yestby"  rel="nofollow" target="_blank">>
+            <a href="https://vk.com/yestby"  rel="nofollow" target="_blank">
               <img src="@/assets/vk.svg" alt="vk" class="social-links-img">
             </a>
             <a href="https://www.instagram.com/yest.by/"  rel="nofollow" target="_blank">
@@ -183,6 +183,7 @@
     max-width: 28px;
     max-height: 28px;
     cursor: pointer;
+    width: 100%;
   }
   .footer-bottom {
     display: flex;
