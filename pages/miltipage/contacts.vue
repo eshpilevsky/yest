@@ -1,6 +1,6 @@
 <template>
 <div class="container">
-    <div v-html="this.pageData.html_content">
+    <div v-html="this.pageData.html_content" class="multipage">
     </div>
 </div>
 </template>
@@ -29,7 +29,7 @@ export default {
             zone_id: 1
         })
         let categoriesListData = categoriesList.data
-        store.dispatch('user/allCategory', categoriesListData)		
+        store.dispatch('user/allCategory', categoriesListData)
         let getPage = await axios.post('https://yestapi.xyz/get-data-page', {
             url: `/contacts`
 		})
@@ -62,8 +62,19 @@ export default {
 }
 </script>
 
-<style scoped>
-.multipage-container {
-    padding-top: 5rem;
-}
+<style>
+  @media screen and (max-width: 992px) {
+    h1 {
+      margin-bottom: 20px;
+    }
+  }
+</style>
+
+<style scoped lang="scss">
+  .multipage {
+    @media screen and (max-width: 992px){
+      padding: 0 20px;
+      margin-top: -40px;
+    }
+  }
 </style>

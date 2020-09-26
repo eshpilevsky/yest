@@ -397,6 +397,9 @@ export default {
         background-repeat: no-repeat;
         background-position: top right;
         margin-top: 0;
+        background-color: #fff;
+        z-index: 10;
+        position: relative;
     }
 
     .info-pre-title {
@@ -446,8 +449,8 @@ export default {
         margin-top: 0;
         height: 100%;
         width: 100%;
-        background-position-x: 230px;
-        background-position-y: -0px;
+        /*background-position-x: 230px;*/
+        /*background-position-y: -0px;*/
     }
 
     .setAdressContaine-info {
