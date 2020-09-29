@@ -5,6 +5,9 @@
       <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in this.restaurants" :key="index" class="restorane-list-item" @click="restOverlay = !restOverlay">
         <nuxt-link :to="`/${get_rest_url(item)}`"  class="restorane-list-item">
           <div class="list-item-block">
+            <div class="item-logo-block" v-if="item.logo !== undefined">
+              <img contain :alt="item.name" v-lazy="item.logo" class="restorane-logo-image-small">
+            </div>
             <img contain :alt="item.name" v-lazy="item.cover" class="restorane-logo" :class="{closeRestorane:item.is_open == false }" />
             <div class="block-bottom">
               <div class="card-time" v-show="checkAddress">
@@ -52,12 +55,10 @@
 </template>
 
 <script>
-  import ApiService from "../common/api.service";
   import axios from 'axios'
-  import {
-    mapGetters
-  } from "vuex";
+  import {mapGetters} from "vuex";
   import * as Cookie from 'js-cookie'
+
   export default {
     name: "Restorane",
     props: {
@@ -75,7 +76,8 @@
         mergeMassive: [],
         loadingRest: true,
         notFound: false,
-        limit: 24,
+        startLimit: 0,
+        limit: 12,
         itemCounter: 0,
         params: {},
         notFindImg: require("../assets/logo.svg"),
@@ -129,23 +131,7 @@
     },
     methods: {
       async getRestWithCoords() {
-        let queryString;
-        if (this.currentCategory.id !== 0) {
-          queryString = `https://yestapi.xyz/restaurants`
-        } else {
-          queryString = `https://yestapi.xyz/restaurants/category/${this.currentCategory.id}`
-        }
-        let latitude = Cookie.get('latitude')
-        let longitude = Cookie.get('longitude')
-        let restaurantsList = await axios.post(queryString, {
-          zone_id: parseInt(this.currentZone.id),
-          latitude: parseFloat(latitude),
-          longitude: parseFloat(longitude),
-          start: 0,
-          limit: 100
-        })
-        let restaurantsListData = restaurantsList.data.restaurants
-        this.restaurants = restaurantsListData.slice(0, this.limit)
+
       },
       calcTime(mass) {
         const today = new Date().getDay();
@@ -210,10 +196,15 @@
       goToRes(info) {
         ym(67033669,'reachGoal','openRestaurantPage');
       },
-      showMore() {
-        this.loadingShowMore = true
-        this.limit += 24;
-        this.restaurants = this.restaurantsList.slice(0, this.limit)
+      async showMore() {
+        this.loadingShowMore = true;
+        this.startLimit += 12;
+        this.limit += 12;
+
+        console.log('startLimit:'+this.startLimit);
+        console.log('limit:'+this.limit);
+
+        this.restaurants = (this.restaurants).concat(this.restaurantsList.slice(this.startLimit, this.limit));
         this.loadingShowMore = false
       }
     },
@@ -221,6 +212,8 @@
       if (this.restaurantsList[0] !== '404') {
         this.restOverlay = true
         this.counterRest = this.restaurantsList.length
+        // this.counterRest = 500;
+
         this.restaurants = this.restaurantsList
         setTimeout(() => {
           this.restaurants = this.restaurantsList.slice(0, this.limit)
@@ -334,6 +327,7 @@
     border-radius: 20px;
     cursor: pointer;
     box-shadow: 0 4px 40px rgb(230, 230, 230);
+    position: relative;
   }
   .informMe-btn {
     color: #000 !important;
@@ -408,6 +402,11 @@
     object-fit: cover;
     background: #000;
   }
+  .restorane-logo-image-small{
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+  }
   .restorane-list-item-tags {
     font-size: 11px;
     color: rgba(0, 0, 0, 0.5);
@@ -464,6 +463,18 @@
     border: 1px solid rgba(0, 0, 0, 0.1) !important;
     border-top: 4px solid rgba(245, 245, 245, 0.6) !important;
     box-shadow: none !important;
+  }
+  .item-logo-block{
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    overflow: hidden;
+    padding: 6px;
+    margin: 108px 20px 20px 20px;
+    background: #fff;
+    border-radius: 10px;
   }
   @media screen and (max-width: 1000px) {
     .list-item-block {
