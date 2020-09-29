@@ -102,7 +102,13 @@ module.exports = {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
+    '@nuxtjs/robots'
   ],
+  robots: {
+    UserAgent: '*',
+    Disallow: '/',
+    Allow: '/$'
+  },
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
