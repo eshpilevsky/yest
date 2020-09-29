@@ -166,7 +166,7 @@ export default {
         if (latitude == undefined && longitude == undefined) {
             sortByCoord = {
                 zone_id: currentZone.id,
-                limit: 100,
+                limit: 1000,
                 start: 0,
             }
         } else {
@@ -175,7 +175,7 @@ export default {
                 latitude: parseFloat(latitude),
                 longitude: parseFloat(longitude),
                 start: 0,
-                limit: 100
+                limit: 1000
             }
         }
         console.log('sortByCoord after computed sort', sortByCoord)
@@ -204,11 +204,11 @@ export default {
         let showSpecialOffer;
         if (process.server) {
             if (req.headers.cookie) {
-                if (req.headers.cookie.indexOf('latitude') > 0 && req.headers.cookie.indexOf('longitude') > 0) {
+                // if (req.headers.cookie.indexOf('latitude') > 0 && req.headers.cookie.indexOf('longitude') > 0) {
                     specialOffer = await axios.post('https://yestapi.xyz/restaurants/special-offers', {
                         zone_id: parseInt(currentZone.id),
-                        latitude: parseFloat(latitude),
-                        longitude: parseFloat(longitude),
+                        // latitude: parseFloat(latitude),
+                        // longitude: parseFloat(longitude),
                     })
                     specialOfferData = specialOffer.data
                     if (specialOfferData.length == 0) {
@@ -216,9 +216,9 @@ export default {
                     } else {
                         showSpecialOffer = true
                     }
-                } else {
-                    showSpecialOffer = false
-                }
+                // } else {
+                //     showSpecialOffer = false
+                // }
             }
         }
         console.log('END ASYNC DATA');
