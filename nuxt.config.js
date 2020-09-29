@@ -107,7 +107,8 @@ module.exports = {
   robots: {
     UserAgent: '*',
     Disallow: '/',
-    Allow: '/$'
+    Allow: '/$',
+    Sitemap: 'https://yest.by/sitemap.xml'
   },
   /*
    ** Axios module configuration
