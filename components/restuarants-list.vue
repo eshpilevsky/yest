@@ -29,7 +29,7 @@
                         </span>
                 <span class="card-options__currency">
                             <img class="currency-icon" src="@/assets/purseIcon.svg" alt="purseIcon" />
-                            0 BYN
+                            от 0.01 BYN
                         </span>
               </div>
             </div>
