@@ -473,7 +473,7 @@
     height: 60px;
     position: absolute;
     top: 0;
-    right: 0;
+    left: 0;
     overflow: hidden;
     padding: 6px;
     margin: 108px 20px 20px 20px;
