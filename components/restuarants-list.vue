@@ -23,14 +23,18 @@
               </div>
               <div class="card-options">
                 <img class="card-options__delivery" src="@/assets/deliveryIcon.svg" alt="deliveryIcon" />
+                <span class="restaurant_block_free_delivery">
+                  Бесплатная доставка
+                </span>
                 <span class="card-options__rating" v-show="item.rating !== 0">
                             <v-icon class="rating-icon" color="#FFFADF">star</v-icon>
                             <span>{{ item.rating }}</span>
                         </span>
-                <span class="card-options__currency">
-                            <img class="currency-icon" src="@/assets/purseIcon.svg" alt="purseIcon" />
-                            от 0.01 BYN
-                        </span>
+                <!--<span class="card-options__currency">-->
+                  <!--<img class="currency-icon" src="@/assets/purseIcon.svg" alt="purseIcon" />-->
+                  <!--заказ от 0.01 BYN-->
+                <!--</span>-->
+
               </div>
             </div>
           </div>
@@ -475,6 +479,9 @@
     margin: 108px 20px 20px 20px;
     background: #fff;
     border-radius: 10px;
+  }
+  .restaurant_block_free_delivery{
+    font-size: 14px;
   }
   @media screen and (max-width: 1000px) {
     .list-item-block {
