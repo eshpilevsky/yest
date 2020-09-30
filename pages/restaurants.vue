@@ -647,9 +647,10 @@
       var lastRest = store.getters['basket/getLatetestRestInfoWithOrder']
       var orderList = store.getters['basket/getSelectedDishs']
       var totalPrice = store.getters['basket/getTotalPrice']
-      let zoneList = await axios.get('https://yestapi.xyz/get-zones')
-      const zoneListData = zoneList.data
+      let zoneList = await axios.get('https://yestapi.xyz/get-zones');
+      const zoneListData = zoneList.data;
       store.dispatch('zone/setZone', zoneListData)
+
       let currentZone = zoneListData.find((zones) => {
         return zones.alias == params.region
       })
@@ -660,7 +661,7 @@
       }
       let categoriesList = await axios.post('https://yestapi.xyz/categories', {
         zone_id: currentZone.id
-      })
+      });
       let categoriesListData = categoriesList.data
       store.dispatch('user/allCategory', categoriesListData)
       app.lastRest = lastRest
@@ -672,73 +673,142 @@
       let restuarantData = restuarant.data;
       //
       if (restuarantData.status === 200){
-        let showSpecOffer = restuarantData.menu.find(cat => {
-          return cat.dishes.find((dish, index, arr) => {
-            if (dish !== null) {
-              return dish.sizes[0].sale == 2
-            }
-          })
-        })
-        if (showSpecOffer !== undefined) {
-          showSpecOffer = true
-        } else {
-          showSpecOffer = false
-        }
-        const openRestorants = [];
-        const closeRestorants = [];
-        const currentDay = new Date().getDay();
-        const currentTime = new Date().getTime();
-        const op = restuarantData.operation_time;
-        const buffer = [];
-        let computedWorkTime = {}
-        if (op.length > 6) {
-          op.forEach((optime, index, operationTimeArr) => {
-            if (optime.day === currentDay) {
-              buffer.push(optime);
-            }
+
+
+        function translite(str) {
+          str = str.replace(/[^A-Za-zА-Яа-яЁё]^-/g, "")
+          var ru = {
+              'а': 'a',
+              'б': 'b',
+              'в': 'v',
+              'г': 'g',
+              'д': 'd',
+              'е': 'e',
+              'ё': 'e',
+              'ж': 'j',
+              'з': 'z',
+              'и': 'i',
+              'к': 'k',
+              'л': 'l',
+              'м': 'm',
+              'н': 'n',
+              'о': 'o',
+              'п': 'p',
+              'р': 'r',
+              'с': 's',
+              'т': 't',
+              'у': 'u',
+              'ф': 'f',
+              'х': 'h',
+              'ц': 'c',
+              'ч': 'ch',
+              'ш': 'sh',
+              'щ': 'shch',
+              'ы': 'y',
+              'э': 'e',
+              'ю': 'u',
+              'я': 'ya'
+            },
+            n_str = [];
+          str = str.replace(/[ъь]+/g, '').replace(/й/g, 'i');
+          for (var i = 0; i < str.length; ++i) {
+            n_str.push(
+              ru[str[i]] ||
+              ru[str[i].toLowerCase()] == undefined && str[i] ||
+              ru[str[i].toLowerCase()].replace(/^(.)/, function (match) {
+                return match.toUpperCase()
+              })
+            );
+          }
+          return n_str.join('');
+        };
+        function rest_alias(info){
+          let name = translite(info.name);
+          let modifName = name.replace(' ', '-');
+          let url = `${info.id}-${modifName.toLowerCase()}`
+          return url;
+        };
+
+        let alias = rest_alias(restuarantData);
+
+        if(currentZone.id ===  restuarantData.city_id && alias === params.resName){
+
+          let showSpecOffer = restuarantData.menu.find(cat => {
+            return cat.dishes.find((dish, index, arr) => {
+              if (dish !== null) {
+                return dish.sizes[0].sale == 2
+              }
+            })
           });
-          let closeTime = buffer[0].close_time
-          const openTime =
-            buffer.length > 1 ? buffer[1].open_time : buffer[0].open_time;
-          const closeTimeHour = closeTime.slice(0, 2);
-          const closeTimeMin = closeTime.slice(3, 5);
-          const closeTimeSec = closeTime.slice(6, 8);
-          const closeTimeTimestamp = new Date();
-          closeTimeTimestamp.setHours(closeTimeHour);
-          closeTimeTimestamp.setMinutes(closeTimeMin);
-          closeTimeTimestamp.setSeconds(closeTimeSec);
-          const openTimeHour = openTime.slice(0, 2);
-          const openTimeMin = openTime.slice(3, 5);
-          const openTimeSec = openTime.slice(6, 8);
-          const openTimeTimestamp = new Date();
-          openTimeTimestamp.setHours(openTimeHour);
-          openTimeTimestamp.setMinutes(openTimeMin);
-          openTimeTimestamp.setSeconds(openTimeSec);
-          computedWorkTime.today_close_time = closeTimeTimestamp.getTime();
-          computedWorkTime.today_open_time = openTimeTimestamp.getTime();
-          if (buffer.length !== 1) {
-            computedWorkTime.today_close_time += 86400000;
-          }
-          if (currentTime < computedWorkTime.today_close_time) {
-            computedWorkTime.is_open = true;
+
+          if (showSpecOffer !== undefined) {
+            showSpecOffer = true
           } else {
-            computedWorkTime.is_open = false;
+            showSpecOffer = false
           }
-        }
-        let deliveryMass = restuarantData.delivery.fee;
-        // console.log(deliveryMass);
-        deliveryMass.sort((a, b) => {
-          // console.log('a ->'+(a.delivery));
-          // console.log('b ->'+(b.delivery));
-          return a.min > b.min
-        })
-        time = new Date().getTime() - time;
-        return {
-          restuarant: restuarantData,
-          currentZone: currentZone,
-          showSpecOffer: showSpecOffer,
-          workTime: computedWorkTime,
-          delivery: deliveryMass
+          const openRestorants = [];
+          const closeRestorants = [];
+          const currentDay = new Date().getDay();
+          const currentTime = new Date().getTime();
+          const op = restuarantData.operation_time;
+          const buffer = [];
+          let computedWorkTime = {}
+          if (op.length > 6) {
+            op.forEach((optime, index, operationTimeArr) => {
+              if (optime.day === currentDay) {
+                buffer.push(optime);
+              }
+            });
+            let closeTime = buffer[0].close_time
+            const openTime =
+              buffer.length > 1 ? buffer[1].open_time : buffer[0].open_time;
+            const closeTimeHour = closeTime.slice(0, 2);
+            const closeTimeMin = closeTime.slice(3, 5);
+            const closeTimeSec = closeTime.slice(6, 8);
+            const closeTimeTimestamp = new Date();
+            closeTimeTimestamp.setHours(closeTimeHour);
+            closeTimeTimestamp.setMinutes(closeTimeMin);
+            closeTimeTimestamp.setSeconds(closeTimeSec);
+            const openTimeHour = openTime.slice(0, 2);
+            const openTimeMin = openTime.slice(3, 5);
+            const openTimeSec = openTime.slice(6, 8);
+            const openTimeTimestamp = new Date();
+            openTimeTimestamp.setHours(openTimeHour);
+            openTimeTimestamp.setMinutes(openTimeMin);
+            openTimeTimestamp.setSeconds(openTimeSec);
+            computedWorkTime.today_close_time = closeTimeTimestamp.getTime();
+            computedWorkTime.today_open_time = openTimeTimestamp.getTime();
+            if (buffer.length !== 1) {
+              computedWorkTime.today_close_time += 86400000;
+            }
+            if (currentTime < computedWorkTime.today_close_time) {
+              computedWorkTime.is_open = true;
+            } else {
+              computedWorkTime.is_open = false;
+            }
+          }
+          let deliveryMass = restuarantData.delivery.fee;
+          // console.log(deliveryMass);
+          deliveryMass.sort((a, b) => {
+            // console.log('a ->'+(a.delivery));
+            // console.log('b ->'+(b.delivery));
+            return a.min > b.min
+          })
+          time = new Date().getTime() - time;
+          return {
+            restuarant: restuarantData,
+            currentZone: currentZone,
+            showSpecOffer: showSpecOffer,
+            workTime: computedWorkTime,
+            delivery: deliveryMass
+          }
+        }else{
+          // Делаем редирект на станицу нужного города
+          let mustBeZone = zoneListData.find((zones) => {
+            return zones.id == restuarantData.city_id
+          });
+
+          redirect('/'+mustBeZone.alias+'/restaurant/'+alias);
         }
       } else {
         redirect('/'+currentZone.alias);
@@ -1080,7 +1150,8 @@
           let visibleCategory = entries[0].target.id.split('_')
           this.tab = parseInt(visibleCategory[1])
         }
-      }
+      },
+
     },
     computed: {
       ...mapGetters({
