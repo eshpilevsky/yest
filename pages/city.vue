@@ -202,14 +202,14 @@ export default {
         let specialOffer;
         let specialOfferData;
         let showSpecialOffer;
-        if (process.server) {
-            if (req.headers.cookie) {
+        // if (process.server) {
+            // if (req.headers.cookie) {
                 // if (req.headers.cookie.indexOf('latitude') > 0 && req.headers.cookie.indexOf('longitude') > 0) {
                     specialOffer = await axios.post('https://yestapi.xyz/restaurants/special-offers', {
                         zone_id: parseInt(currentZone.id),
                         // latitude: parseFloat(latitude),
                         // longitude: parseFloat(longitude),
-                    })
+                    });
                     specialOfferData = specialOffer.data
                     if (specialOfferData.length == 0) {
                         showSpecialOffer = false
@@ -219,8 +219,8 @@ export default {
                 // } else {
                 //     showSpecialOffer = false
                 // }
-            }
-        }
+            // }
+        // }
         console.log('END ASYNC DATA');
         return {
             restaurantsList: filtByTime,
