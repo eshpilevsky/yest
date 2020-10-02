@@ -51,10 +51,6 @@
             clickable: true,
           },
           breakpoints: {
-            1500: {
-              slidesPerView: 5,
-              spaceBetween: 30,
-            },
             1200: {
               slidesPerView: 4,
               spaceBetween: 30,
@@ -63,10 +59,10 @@
               slidesPerView: 3,
             },
             600: {
-              slidesPerView: 3.2,
+              slidesPerView: 2.1,
             },
             320: {
-              slidesPerView: 2.2,
+              slidesPerView: 1.1,
               spaceBetween: 20,
             }
           }
