@@ -39,7 +39,7 @@
         swiperOptions: {
           observer: true,
           observeParents: true,
-          slidesPerView: 5,
+          slidesPerView: 4,
           spaceBetween: 30,
           navigation: {
             nextEl: '.customBtnNext',
@@ -70,12 +70,7 @@
               spaceBetween: 20,
             }
           }
-        },
-        loop: true,
-        autoplay: {
-          delay: 3000,
-          stopOnLastSlide: false,
-        },
+        }
       }
     },
     methods: {
