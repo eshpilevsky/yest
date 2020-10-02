@@ -71,11 +71,11 @@
             }
           }
         },
-        loop: true,
-        autoplay: {
-          delay: 3000,
-          stopOnLastSlide: false,
-        },
+        // loop: true,
+        // autoplay: {
+        //   delay: 3000,
+        //   stopOnLastSlide: false,
+        // },
       }
     },
     methods: {
