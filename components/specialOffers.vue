@@ -13,7 +13,7 @@
       <div class="customBtnNext" slot="button-next">
         <div class="customBtnNext-box"></div>
       </div>
-      <div class="swiper-pagination" slot="pagination"></div>
+      <!--<div class="swiper-pagination" slot="pagination"></div>-->
     </div>
   </div>
 </template>
@@ -46,10 +46,10 @@
             prevEl: '.customBtnPrev',
           },
           effect: 'fade',
-          pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-          },
+          // pagination: {
+          //   el: '.swiper-pagination',
+          //   clickable: true,
+          // },
           breakpoints: {
             1500: {
               slidesPerView: 5,
