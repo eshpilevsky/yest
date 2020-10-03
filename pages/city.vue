@@ -140,10 +140,7 @@ export default {
         let latitude
         let longitude
         if (process.server) {
-            console.log('req', req)
             if (req.headers.cookie) {
-                console.log(req.headers.cookie.indexOf('latitude'));
-                console.log(req.headers.cookie.indexOf('longitude'));
 
                 if (req.headers.cookie.indexOf('latitude') > 0 && req.headers.cookie.indexOf('longitude') > 0) {
                     latitude = await getCookie('latitude', req.headers.cookie)
@@ -178,7 +175,7 @@ export default {
                 limit: 1000
             }
         }
-        console.log('sortByCoord after computed sort', sortByCoord)
+        // console.log('sortByCoord after computed sort', sortByCoord)
 
         let restaurantsList;
         let checkCatId = currentCategory ? currentCategory.id : 0
@@ -258,12 +255,12 @@ export default {
                     latitude: parseFloat(this.getCurrentCoords[0]),
                     longitude: parseFloat(this.getCurrentCoords[1]),
                     start: 0,
-                    limit: 100
+                    limit: 1000
                 }
             } else {
                 sortByCoord = {
                     zone_id: this.getSelectedZone.id,
-                    limit: 100,
+                    limit: 1000,
                     start: 0,
                 }
             }
