@@ -62,6 +62,7 @@ export default {
 
         if (response.data.status == 'err') {
           this.badCode = true
+          this.loadingSendSms = false
           this.errorMsg = response.data.errors[0]
           setInterval(() => {
             if (currentTimee < this.getSmsTimer) {
@@ -90,6 +91,7 @@ export default {
           this.errorMsg = response.data.error[0]
         } else {
           ym(67033669,'reachGoal','SMScodeEntered')
+          this.$store.dispatch('user/setUserPhoneNumber', parseInt(this.phone.replace(/[^\d]/g, '')));
           this.goToCheckout();
         }
       }).catch((error) => {
@@ -97,7 +99,6 @@ export default {
       })
     },
     goToCheckout() {
-      this.$store.dispatch('user/setUserPhoneNumber', parseInt(this.phone.replace(/[^\d]/g, '')));
       if (this.currentRouteName == 'restik') {
         this.$router.push('/checkout')
       } else {

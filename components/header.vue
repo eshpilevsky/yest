@@ -111,23 +111,23 @@
         </nuxt-link>
       </div>
       <div class="technical-Btns">
+        <client-only>
         <v-btn v-show="this.getCurrentAddress.length > 0" small rounded outlined class="zone-btn" color="primary" @click="showDesktopMap()" :class="{'btn--rounded' : this.getTotalPrice == 0}">
           <v-icon>
             near_me
           </v-icon>
-          <span class="zone-btn-address">
-                    {{this.getCurrentAddress}}
-                </span>
+          <span class="zone-btn-address">{{this.getCurrentAddress}}</span>
         </v-btn>
-        <client-only>
           <v-btn v-if="this.getTotalPrice > 0" color="primary" @click='goToLatestReset()' class="header-cart-btn"  :class="{'btn--rounded' : this.getCurrentAddress.length == 0}">
             <v-icon class="header-cart-icon">shopping_cart</v-icon>
             {{this.getTotalPrice}} BYN
           </v-btn>
         </client-only>
+
         <v-overlay :dark='false' :value="burgerOverlay" :opacity=".5">
           <MapDesktop @closeMap='closeDesktopMap()'></MapDesktop>
         </v-overlay>
+
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
             <v-btn small rounded outlined class="zone-btn country-zone-btn btn--rounded" color="primary" v-on="on">
@@ -140,6 +140,16 @@
             </v-list-item>
           </v-list>
         </v-menu>
+        <!--Вывод личного кабинета -->
+        <!--<client-only>-->
+          <!--<div v-if="this.getUserPhoneNumber != null">-->
+            <!--{{this.getUserPhoneNumber}}-->
+          <!--</div>-->
+          <!--<div v-else >-->
+            <!--Войти-->
+          <!--</div>-->
+        <!--</client-only>-->
+
       </div>
     </div>
   </div>
@@ -245,6 +255,7 @@
         getZoneList: 'zone/getZoneList',
         getTotalPrice: "basket/getTotalPrice",
         getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
+        getUserPhoneNumber: "user/getUserPhoneNumber"
       }),
       checkAddress() {
         return this.getCurrentAddress > 0 ? true : false

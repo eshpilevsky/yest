@@ -71,7 +71,7 @@
           </div>
           <div class="order-deliv-block" v-if="getSelectedDishs.length > 0">
             <span>Доставка yest.by</span>
-            <span>{{this.deliveryCost}} BYN</span>
+            <span>{{(this.deliveryCost).toFixed(2)}} BYN</span>
           </div>
           <div class="order-knifes">
             <div class="d-flex flex-row">
@@ -101,7 +101,7 @@
           <div class="confirm-order" v-show="getSelectedDishs.length > 0">
             <div class="total-info-block">
                     <span class="total-price">
-						{{parseFloat(this.totalPrice) + this.deliveryCost}} BYN
+						{{(parseFloat(this.totalPrice) + this.deliveryCost).toFixed(2)}} BYN
                     </span>
               <span class="total-time">
                         <client-only>
@@ -120,7 +120,7 @@
             Корзина пуста
           </div>
           <div class="empty-basket-subtitle">
-            Перейдите к списку мест, чтобы оформить заказ заново
+            Перейдите к списку мест, чтобы оформить заказ
           </div>
         </div>
       </div>

@@ -17,7 +17,7 @@ const state = () => ({
 })
 
 const actions = {
-
+  // Фильтрация ресторанов по режиму работы
   caclWorkTime(context, payload) {
     return new Promise((resolve, reject) => {
 		const openRestaurants = [];
@@ -67,6 +67,7 @@ const actions = {
 		resolve(openRestaurants.concat(closeRestaurants))
     });
   },
+
   checkUserPhonemuber(context) {
     return new Promise((resolve, reject) => {
       resolve(context.state.data.userNumber)

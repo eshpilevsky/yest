@@ -53,7 +53,7 @@
               </div>
             </div>
             <div class="pl-4 order-item__price">
-              {{order.selectSize.price * order.selectSize.count }} <span class="fs10">BYN</span>
+              {{(order.selectSize.price * order.selectSize.count).toFixed(2) }} <span class="fs10">BYN</span>
             </div>
           </div>
         </div>
@@ -89,7 +89,7 @@
         <div class="total-price" v-show="this.$route.name !== 'checkout'">
           <p class="total-title">Итого</p>
           <p v-if="this.orderList.length > 0 && basketListVisible" class="price">
-            {{parseFloat(this.getTotalPrice)+deliveryCost}} BYN</p>
+            {{(parseFloat(this.getTotalPrice)+deliveryCost).toFixed(2)}} BYN</p>
           <p v-else class="price">0.0 BYN</p>
         </div>
       </div>
@@ -131,9 +131,9 @@
           } else {
             let computedNextSum = deliveryMass[finded + 1].min - price
             if (deliveryMass[finded + 1].delivery !== 0) {
-              return `Закажите ещё на ${computedNextSum.toFixed(1) == 0 ? deliveryMass[finded + 2].min-price : computedNextSum.toFixed(1) } BYN для доставки за ${deliveryMass[finded+1].delivery} BYN`
+              return `Закажите ещё на ${computedNextSum.toFixed(2) == 0 ? deliveryMass[finded + 2].min-price : computedNextSum.toFixed(2) } BYN для доставки за ${deliveryMass[finded+1].delivery} BYN`
             } else {
-              return `Закажите ещё на ${computedNextSum.toFixed(1)} BYN для бесплатной доставки`
+              return `Закажите ещё на ${computedNextSum.toFixed(2)} BYN для бесплатной доставки`
             }
           }
         } else {

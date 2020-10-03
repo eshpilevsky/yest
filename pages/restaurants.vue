@@ -165,7 +165,7 @@
                     <v-radio v-for="size in selectedDish.sizes" :key="size.id" :value="size" color="primary">
                       <template v-slot:label>
                                             <span class="option-main-text">
-                                                {{size.name}}
+                                                {{size.name}} <span v-if="size.weight">({{size.weight}})</span>
                                             </span>
                         <span class="option-main-price">
                                                 {{size.price-selectedDish.sizes[0].price == 0 ? `` : `+${(size.price-selectedDish.sizes[0].price).toFixed(1)} BYN`}}
@@ -451,7 +451,7 @@
                           <template v-slot:label>
                             <p class="option-main">
                                                         <span class="option-main-text">
-                                                            {{size.name}}
+                                                            {{size.name}} <span v-if="size.weight">({{size.weight}})</span>
                                                         </span>
                               <span class="option-main-price">
                                                             {{size.price-selectedDish.sizes[0].price == 0 ? `` : `+${(size.price-selectedDish.sizes[0].price).toFixed(1)} BYN`}}
