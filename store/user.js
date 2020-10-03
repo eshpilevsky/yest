@@ -48,9 +48,6 @@ const actions = {
 
       todayOT.forEach((time, i, arr) => {
         if(item.is_open === false){
-          console.log('currentTime:  '+currentTime);
-          console.log('time_open:    '+Number(time.time_open));
-          console.log('close_time:   r'+Number(time.close_time));
 
           if(Number(time.time_open) <= currentTime && Number(time.close_time) > currentTime){
             item.is_open = true;
@@ -60,11 +57,9 @@ const actions = {
 
       switch(item.is_open){
         case true:
-          console.log('OPEN:   '+item.name);
           openRestaurants.push(item);
           break;
         case false:
-          console.log('CLOSE:  '+item.name);
           closeRestaurants.push(item);
           break;
       }
@@ -107,7 +102,7 @@ const mutations = {
 
   SET_USER_PHONE_NUMBER(state, payload) {
 	state.status = '200'
-	Cookie.set('phone', payload)
+	Cookie.set('phone', payload);
     state.data.userNumber = payload
   },
 
@@ -153,6 +148,7 @@ const getters = {
     return test
   },
   getUserPhoneNumber(state) {
+
     return state.data.userNumber
   }
 };

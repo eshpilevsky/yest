@@ -613,7 +613,7 @@
   import orderForm from '@/components/order-form'
   import cardDish from '@/components/restaurant/cardDish'
   import basket from '@/components/basket'
-  import leagalInfo from '@/components/restaurant/legalInfo'
+  import legalInfo from '@/components/restaurant/legalInfo'
   import smsForm from '@/components/restaurant/sms-form'
   import specOffer from '@/components/restaurant/spec-offer'
   import MapDesktop from '@/components/map/desktop'
@@ -627,7 +627,7 @@
       MapBtn,
       cardDish,
       orderForm,
-      leagalInfo,
+      legalInfo,
       basket,
       smsForm,
       specOffer,
@@ -644,9 +644,11 @@
       let time = new Date().getTime();
       let restParams = params.resName
       let id = restParams.split('-')
+
       var lastRest = store.getters['basket/getLatetestRestInfoWithOrder']
       var orderList = store.getters['basket/getSelectedDishs']
       var totalPrice = store.getters['basket/getTotalPrice']
+
       let zoneList = await axios.get('https://yestapi.xyz/get-zones');
       const zoneListData = zoneList.data;
       store.dispatch('zone/setZone', zoneListData)

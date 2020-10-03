@@ -2,6 +2,11 @@
   <div>
     <div class="desktop-form">
       <div class="desktop-form__wrapper">
+        <div class="customer_info">
+          Ваш телефон: +{{this.getUserPhoneNumber}}
+        </div>
+
+
         <div class="form-fields">
           <v-card-title class="form-title">
             Адрес доставки

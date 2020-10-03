@@ -56,15 +56,14 @@ export default {
         req,
         redirect,
     }) {
-        console.log('START ASYNC DATA');
 
         let zoneList = await axios.get('https://yestapi.xyz/get-zones')
-        const zoneListData = zoneList.data
-        store.dispatch('zone/setZone', zoneListData)
-        var currentZone = zoneListData.find((zones) => {
-            return zones.alias == params.region
-        })
+        const zoneListData = zoneList.data;
+        store.dispatch('zone/setZone', zoneListData);
 
+        let currentZone = zoneListData.find((zones) => {
+            return zones.alias == params.region
+        });
         if (currentZone !== undefined) {
             store.dispatch('zone/setSelectedZone', currentZone)
         } else {
@@ -73,20 +72,20 @@ export default {
 
         let categoriesList = await axios.post('https://yestapi.xyz/categories', {
             zone_id: currentZone.id
-        })
+        });
 
-        let categoriesListData = categoriesList.data
+        let categoriesListData = categoriesList.data;
 
-        store.dispatch('user/allCategory', categoriesListData)
+        store.dispatch('user/allCategory', categoriesListData);
         let categoryAll = [{
             name: 'Все',
             id: 0,
             alias: 'all'
-        }]
+        }];
 
         let currentCategory = categoriesListData.find((category) => {
             return category.alias == params.alias
-        })
+        });
 
         let categoryInfo;
         let categoryInfoData;
@@ -95,7 +94,7 @@ export default {
             categoryInfo = await axios.post('https://yestapi.xyz/categories/info', {
                 zone_id: currentZone.id,
                 category_id: currentCategory.id
-            })
+            });
 
             if (categoryInfo.status != 404) {
                 categoryInfoData = categoryInfo.data
@@ -131,215 +130,105 @@ export default {
                         description: currentZone.seo.description,
                         keywords: currentZone.seo.keywords,
                     }
-                }
-                currentCategory = categoryAll[0]
+                };
+                currentCategory = categoryAll[0];
                 store.dispatch('user/selectCategory', currentCategory)
             }
         }
 
-        let latitude
-        let longitude
-        if (process.server) {
-            if (req.headers.cookie) {
+    // Определение широты и долготы пользователя
+    let latitude
+    let longitude
+    if (process.server) {
+        if (req.headers.cookie) {
 
-                if (req.headers.cookie.indexOf('latitude') > 0 && req.headers.cookie.indexOf('longitude') > 0) {
-                    latitude = await getCookie('latitude', req.headers.cookie)
-                    longitude = await getCookie('longitude', req.headers.cookie)
+            if (req.headers.cookie.indexOf('latitude') > 0 && req.headers.cookie.indexOf('longitude') > 0) {
+                latitude = await getCookie('latitude', req.headers.cookie)
+                longitude = await getCookie('longitude', req.headers.cookie)
 
-                    function getCookie(cookieName, stringCookie) {
-                        let strCookie = new RegExp('' + cookieName + '[^;]+').exec(stringCookie)[0]
-                        return unescape(strCookie ? strCookie.toString().replace(/^[^=]+./, '') : '')
-                    }
-                } else {
-                    latitude = undefined
-                    longitude = undefined
+                function getCookie(cookieName, stringCookie) {
+                    let strCookie = new RegExp('' + cookieName + '[^;]+').exec(stringCookie)[0]
+                    return unescape(strCookie ? strCookie.toString().replace(/^[^=]+./, '') : '')
                 }
+            } else {
+                latitude = undefined;
+                longitude = undefined;
             }
         }
+    }
+    // КОНЕЦ Определение широты и долготы пользователя
 
-        var sortByCoord = {}
-        console.log('latitude', latitude)
-        console.log('longitude', longitude)
-        if (latitude == undefined && longitude == undefined) {
-            sortByCoord = {
-                zone_id: currentZone.id,
-                limit: 1000,
-                start: 0,
-            }
-        } else {
-            sortByCoord = {
-                zone_id: parseInt(currentZone.id),
-                latitude: parseFloat(latitude),
-                longitude: parseFloat(longitude),
-                start: 0,
-                limit: 1000
-            }
+    // Получение списка всех ресторанов в зоне по категории
+    let sortByCoord = {};
+    if (latitude == undefined && longitude == undefined) {
+        sortByCoord = {
+            zone_id: currentZone.id,
+            limit: 1000,
+            start: 0,
         }
-        // console.log('sortByCoord after computed sort', sortByCoord)
-
-        let restaurantsList;
-        let checkCatId = currentCategory ? currentCategory.id : 0
-        let restaurantsListData
-
-        if (checkCatId == 0) {
-            restaurantsList = await axios.post('https://yestapi.xyz/restaurants', sortByCoord)
-            restaurantsListData = restaurantsList.data.restaurants
-        } else {
-            restaurantsList = await axios.post(`https://yestapi.xyz/restaurants/category/${currentCategory.id}`, sortByCoord)
-            restaurantsListData = restaurantsList.data.restaurants
+    } else {
+        sortByCoord = {
+            zone_id: parseInt(currentZone.id),
+            latitude: parseFloat(latitude),
+            longitude: parseFloat(longitude),
+            start: 0,
+            limit: 1000
         }
+    }
 
-        var filtByTime;
-        if (restaurantsList.data.status == 404) {
-            restaurantsListData = [404]
-        } else {
-            filtByTime = await store.dispatch('user/caclWorkTime', restaurantsListData)
-        }
+    let restaurantsList;
+    let checkCatId = currentCategory ? currentCategory.id : 0;
+    let restaurantsListData;
 
-        let specialOffer;
-        let specialOfferData;
-        let showSpecialOffer;
-        // if (process.server) {
-            // if (req.headers.cookie) {
-                // if (req.headers.cookie.indexOf('latitude') > 0 && req.headers.cookie.indexOf('longitude') > 0) {
-                    specialOffer = await axios.post('https://yestapi.xyz/restaurants/special-offers', {
-                        zone_id: parseInt(currentZone.id),
-                        // latitude: parseFloat(latitude),
-                        // longitude: parseFloat(longitude),
-                    });
-                    specialOfferData = specialOffer.data
-                    if (specialOfferData.length == 0) {
-                        showSpecialOffer = false
-                    } else {
-                        showSpecialOffer = true
-                    }
-                // } else {
-                //     showSpecialOffer = false
-                // }
-            // }
-        // }
-        console.log('END ASYNC DATA');
-        return {
-            restaurantsList: filtByTime,
-            categoriesList: categoryAll.concat(categoriesListData),
-            currentCategory: currentCategory,
-            categoryInfoData: categoryInfoData,
-            currentZone: currentZone,
-            specilaOffers: specialOfferData,
-            showSpecialOffer: showSpecialOffer,
-        }
+    if (checkCatId == 0) {
+        restaurantsList = await axios.post('https://yestapi.xyz/restaurants', sortByCoord);
+        restaurantsListData = restaurantsList.data.restaurants
+    } else {
+        restaurantsList = await axios.post(`https://yestapi.xyz/restaurants/category/${currentCategory.id}`, sortByCoord)
+        restaurantsListData = restaurantsList.data.restaurants
+    }
+
+    // Конец получения всех ресторанов в городе по категории
+
+    // Фильтрация ресторанов по режиму работы
+    let filtByTime;
+    if (restaurantsList.data.status == 404) {
+        restaurantsListData = [404]
+    } else {
+        filtByTime = await store.dispatch('user/caclWorkTime', restaurantsListData)
+    }
+    // Конец фильтрации ресторанов по режиму работы
+
+
+    // Получение специальных предложений
+    let specialOffer;
+    let specialOfferData;
+    let showSpecialOffer;
+
+      specialOffer = await axios.post('https://yestapi.xyz/restaurants/special-offers', {
+          zone_id: parseInt(currentZone.id),
+      });
+      specialOfferData = specialOffer.data
+      if (specialOfferData.length == 0) {
+          showSpecialOffer = false
+      } else {
+          showSpecialOffer = true
+      }
+      // Конец получения специальных предложений
+
+
+      return {
+          restaurantsList: filtByTime,
+          categoriesList: categoryAll.concat(categoriesListData),
+          currentCategory: currentCategory,
+          categoryInfoData: categoryInfoData,
+          currentZone: currentZone,
+          specilaOffers: specialOfferData,
+          showSpecialOffer: showSpecialOffer,
+      }
     },
     methods: {
-        goToRestuarant() {
-            this.$router.push(`/${this.restInfo.params.region}/restaurant/${this.restInfo.params.resName}`)
-        },
-        async getSpecialOffer() {
-            await axios.post('https://yestapi.xyz/restaurants/special-offers', {
-                zone_id: parseInt(this.getSelectedZone.id),
-                latitude: parseFloat(this.getCurrentCoords[0]),
-                longitude: parseFloat(this.getCurrentCoords[1]),
-            }).then((res) => {
-                if (res.data.length == 0) {
-                    this.showSpecialOffer = false
-                } else {
-                    this.showSpecialOffer = true
-                    this.specilaOffers = res.data
-                }
-            })
-        },
-        async getRestList() {
-            var sortByCoord = {}
-            if (this.getCurrentCoords.length > 0) {
-                sortByCoord = {
-                    zone_id: parseInt(this.getSelectedZone.id),
-                    latitude: parseFloat(this.getCurrentCoords[0]),
-                    longitude: parseFloat(this.getCurrentCoords[1]),
-                    start: 0,
-                    limit: 1000
-                }
-            } else {
-                sortByCoord = {
-                    zone_id: this.getSelectedZone.id,
-                    limit: 1000,
-                    start: 0,
-                }
-            }
 
-            let url;
-            if (this.getSelectedCategory.id == 0) {
-                url = 'https://yestapi.xyz/restaurants'
-            } else {
-                url = `https://yestapi.xyz/restaurants/category/${this.getSelectedCategory.id}`
-            }
-
-            let rest = await axios.post(`${url}`, sortByCoord).then((res) => {
-                return res.data.restaurants
-            })
-
-            function name(params) {
-                const openRestorants = [];
-                const closeRestorants = [];
-                const currentDay = new Date().getDay();
-                const currentTime = new Date().getTime();
-                params.forEach((item, i, arr) => {
-                    const op = item.operation_time;
-                    const buffer = [];
-                    if (item.operation_time.length > 6) {
-                        op.forEach((optime, index, operationTimeArr) => {
-                            if (optime.day === currentDay) {
-                                buffer.push(optime);
-                            }
-                        });
-                        let closeTime = buffer[0].close_time
-                        const openTime =
-                            buffer.length > 1 ? buffer[1].open_time : buffer[0].open_time;
-
-                        const closeTimeHour = closeTime.slice(0, 2);
-                        const closeTimeMin = closeTime.slice(3, 5);
-                        const closeTimeSec = closeTime.slice(6, 8);
-                        const closeTimeTimestamp = new Date();
-                        closeTimeTimestamp.setHours(closeTimeHour);
-                        closeTimeTimestamp.setMinutes(closeTimeMin);
-                        closeTimeTimestamp.setSeconds(closeTimeSec);
-
-                        const openTimeHour = openTime.slice(0, 2);
-                        const openTimeMin = openTime.slice(3, 5);
-                        const openTimeSec = openTime.slice(6, 8);
-                        const openTimeTimestamp = new Date();
-
-                        openTimeTimestamp.setHours(openTimeHour);
-                        openTimeTimestamp.setMinutes(openTimeMin);
-                        openTimeTimestamp.setSeconds(openTimeSec);
-
-                        item.today_close_time = closeTimeTimestamp.getTime();
-                        item.today_open_time = openTimeTimestamp.getTime();
-
-                        if (buffer.length !== 1) {
-                            item.today_close_time += 86400000;
-                        }
-
-                        if (currentTime < item.today_close_time) {
-                            openRestorants.push(item);
-                            item.is_open = true;
-                        } else {
-                            closeRestorants.push(item);
-                            item.is_open = false;
-                        }
-                    }
-                    if (item.hasOwnProperty('delivery')) {
-                        // let mass = item.delivery.fee
-                        // mass.sort((a, b) => {
-                        // 	return a.delivery > b.delivery
-                        // })
-                    }
-                });
-                return openRestorants.concat(closeRestorants)
-            }
-
-            this.restaurantsList = []
-            this.restaurantsList = name(rest)
-
-        }
     },
     watch: {
         getCurrentCoords(newValue, oldValue) {

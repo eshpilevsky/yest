@@ -163,17 +163,45 @@
                       app,
                       store,
                       params,
-                      req
+                      req,
+                      redirect
                     }) {
-      var orderList = await store.getters['basket/getSelectedDishs']
-      var totalPrice = await store.getters['basket/getTotalPrice']
-      var currentZone = await store.getters['zone/getSelectedZone']
-      let zoneList = await axios.get('https://yestapi.xyz/get-zones')
+
+
+      // Проверка есть ли информация о номере телефона пользователя и авторизирован ли он если нет делаем редирект на главную страницу сайта
+      if (process.server) {
+        if (req.headers.cookie) {
+          function getCookie(cookieName, stringCookie) {
+            let strCookieArr = new RegExp('' + cookieName + '[^;]+').exec(stringCookie);
+            if(strCookieArr != null){
+              if(strCookieArr.length > 0){
+                let strCookie = strCookieArr[0];
+                return unescape(strCookie ? strCookie.toString().replace(/^[^=]+./, '') : '')
+              }else{
+                return null;
+              }
+            }else{
+              return null;
+            }
+          }
+          let phone = getCookie('phone',  req.headers.cookie);
+          if(phone === null){
+            redirect('/');
+          }
+        }
+      }
+
+
+
+      let orderList = await store.getters['basket/getSelectedDishs']
+      let totalPrice = await store.getters['basket/getTotalPrice']
+      let currentZone = await store.getters['zone/getSelectedZone']
+      let zoneList = await axios.get('https://yestapi.xyz/get-zones');
       const zoneListData = zoneList.data
       store.dispatch('zone/setZone', zoneListData)
       let categoriesList = await axios.post('https://yestapi.xyz/categories', {
         zone_id: 1
-      })
+      });
       let categoriesListData = categoriesList.data
       store.dispatch('user/allCategory', categoriesListData)
     },
