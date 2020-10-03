@@ -253,12 +253,12 @@ export default {
           latitude: parseFloat(this.getCurrentCoords[0]),
           longitude: parseFloat(this.getCurrentCoords[1]),
           start: 0,
-          limit: 100
+          limit: 10000
         }
       } else {
         sortByCoord = {
           zone_id: this.getSelectedZone.id,
-          limit: 100,
+          limit: 10000,
           start: 0,
         }
       }
@@ -335,7 +335,9 @@ export default {
       }
 
       this.restaurantsList = []
-      this.restaurantsList = name(rest)
+      this.restaurantsList = name(rest);
+
+      await store.dispatch('user/caclWorkTime', restaurantsList);
 
     }
   },
