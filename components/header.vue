@@ -242,6 +242,12 @@
         this.showburgerOverlay = false
       },
       changeRegion(item) {
+        // Очистить корзину //
+        this.$store.dispatch('basket/dropBasket');
+        // Очистить информацию об адресе //
+        this.$store.dispatch('map/dropLocation');
+
+        this.$store.dispatch('zone/setSelectedZone', item.id);
         this.$router.push(`/${item.alias}`)
       }
     },

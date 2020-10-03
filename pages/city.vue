@@ -227,9 +227,118 @@ export default {
           showSpecialOffer: showSpecialOffer,
       }
     },
-    methods: {
-
+  methods: {
+    goToRestuarant() {
+      this.$router.push(`/${this.restInfo.params.region}/restaurant/${this.restInfo.params.resName}`)
     },
+    async getSpecialOffer() {
+      await axios.post('https://yestapi.xyz/restaurants/special-offers', {
+        zone_id: parseInt(this.getSelectedZone.id),
+        latitude: parseFloat(this.getCurrentCoords[0]),
+        longitude: parseFloat(this.getCurrentCoords[1]),
+      }).then((res) => {
+        if (res.data.length == 0) {
+          this.showSpecialOffer = false
+        } else {
+          this.showSpecialOffer = true
+          this.specilaOffers = res.data
+        }
+      })
+    },
+    async getRestList() {
+      var sortByCoord = {}
+      if (this.getCurrentCoords.length > 0) {
+        sortByCoord = {
+          zone_id: parseInt(this.getSelectedZone.id),
+          latitude: parseFloat(this.getCurrentCoords[0]),
+          longitude: parseFloat(this.getCurrentCoords[1]),
+          start: 0,
+          limit: 100
+        }
+      } else {
+        sortByCoord = {
+          zone_id: this.getSelectedZone.id,
+          limit: 100,
+          start: 0,
+        }
+      }
+
+      let url;
+      if (this.getSelectedCategory.id == 0) {
+        url = 'https://yestapi.xyz/restaurants'
+      } else {
+        url = `https://yestapi.xyz/restaurants/category/${this.getSelectedCategory.id}`
+      }
+
+      let rest = await axios.post(`${url}`, sortByCoord).then((res) => {
+        return res.data.restaurants
+      });
+
+      function name(params) {
+        const openRestorants = [];
+        const closeRestorants = [];
+        const currentDay = new Date().getDay();
+        const currentTime = new Date().getTime();
+        params.forEach((item, i, arr) => {
+          const op = item.operation_time;
+          const buffer = [];
+          if (item.operation_time.length > 6) {
+            op.forEach((optime, index, operationTimeArr) => {
+              if (optime.day === currentDay) {
+                buffer.push(optime);
+              }
+            });
+            let closeTime = buffer[0].close_time
+            const openTime =
+              buffer.length > 1 ? buffer[1].open_time : buffer[0].open_time;
+
+            const closeTimeHour = closeTime.slice(0, 2);
+            const closeTimeMin = closeTime.slice(3, 5);
+            const closeTimeSec = closeTime.slice(6, 8);
+            const closeTimeTimestamp = new Date();
+            closeTimeTimestamp.setHours(closeTimeHour);
+            closeTimeTimestamp.setMinutes(closeTimeMin);
+            closeTimeTimestamp.setSeconds(closeTimeSec);
+
+            const openTimeHour = openTime.slice(0, 2);
+            const openTimeMin = openTime.slice(3, 5);
+            const openTimeSec = openTime.slice(6, 8);
+            const openTimeTimestamp = new Date();
+
+            openTimeTimestamp.setHours(openTimeHour);
+            openTimeTimestamp.setMinutes(openTimeMin);
+            openTimeTimestamp.setSeconds(openTimeSec);
+
+            item.today_close_time = closeTimeTimestamp.getTime();
+            item.today_open_time = openTimeTimestamp.getTime();
+
+            if (buffer.length !== 1) {
+              item.today_close_time += 86400000;
+            }
+
+            if (currentTime < item.today_close_time) {
+              openRestorants.push(item);
+              item.is_open = true;
+            } else {
+              closeRestorants.push(item);
+              item.is_open = false;
+            }
+          }
+          if (item.hasOwnProperty('delivery')) {
+            // let mass = item.delivery.fee
+            // mass.sort((a, b) => {
+            // 	return a.delivery > b.delivery
+            // })
+          }
+        });
+        return openRestorants.concat(closeRestorants)
+      }
+
+      this.restaurantsList = []
+      this.restaurantsList = name(rest)
+
+    }
+  },
     watch: {
         getCurrentCoords(newValue, oldValue) {
             this.getSpecialOffer()

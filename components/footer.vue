@@ -138,6 +138,12 @@
         this.$router.push(`/${this.getSelectedZone.alias}/restaurants/category/${category.alias}`)
       },
       goToRegion(region) {
+
+        // Очистить корзину //
+        this.$store.dispatch('basket/dropBasket');
+        // Очистить информацию об адресе //
+        this.$store.dispatch('map/dropLocation');
+
         this.$store.dispatch('zone/setSelectedZone', region.id)
         this.$router.push(`/${region.alias}`)
       }
