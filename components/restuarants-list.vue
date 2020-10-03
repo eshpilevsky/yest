@@ -2,7 +2,7 @@
   <v-card class="restuarants-container">
     <h2 class="restorane-title" id="restTitle" v-show='!notFound'>Рестораны</h2>
     <v-flex cols-12 wrap class="restorane-list">
-      <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in this.restaurants" :key="index" class="restorane-list-item" @click="restOverlay = !restOverlay">
+      <v-flex cols-12 md4 sm6 xs12 v-for="(item, index) in this.restaurantsList.slice(this.startLimit, this.limit)" :key="index" class="restorane-list-item" @click="restOverlay = !restOverlay">
         <nuxt-link :to="`/${get_rest_url(item)}`"  class="restorane-list-item">
           <div class="list-item-block">
             <div class="item-logo-block" v-if="item.logo !== undefined">
