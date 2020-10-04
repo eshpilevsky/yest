@@ -121,10 +121,11 @@
         return newValue
       },
       restaurantsList(newValue) {
+        this.startLimit = 0;
+        this.limit = 12;
         this.restaurantsList = newValue;
         this.restaurants = newValue.slice(this.startLimit, this.limit);
-        this.startLimit = 0;
-        this.limit =12;
+
         return newValue
       },
       getCurrentAddress(newValue) {
