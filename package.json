@@ -22,7 +22,7 @@
     "js-cookie": "^2.2.1",
     "koa": "^2.13.0",
     "nuxt": "^2.14.3",
-    "swiper": "^6.1.2",
+    "swiper": "^5.4.5",
     "v-click-outside": "^3.0.1",
     "v-mask": "^2.2.3",
     "vue-awesome-swiper": "^4.1.1",

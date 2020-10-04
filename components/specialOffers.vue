@@ -38,18 +38,14 @@
         loadingSO: true,
         swiperOptions: {
           observer: true,
-          observeParents: true,
+          observeParents: false,
           slidesPerView: 4,
           spaceBetween: 30,
           navigation: {
             nextEl: '.customBtnNext',
             prevEl: '.customBtnPrev',
           },
-          effect: 'fade',
-          pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-          },
+          // effect: 'fade',
           breakpoints: {
             1200: {
               slidesPerView: 4,
