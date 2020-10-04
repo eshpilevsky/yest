@@ -50,7 +50,7 @@
             </div>
         </v-menu> -->
     </div>
-    <div class="category-list-mobile">
+    <div id="mobile-categories-block"  class="category-list-mobile">
         <!-- <button class="category-list-mobile-item" @click="showModalWindow()">
             <span class="item-name" style="width: 48px;">
                 <v-icon>search</v-icon>
@@ -190,6 +190,8 @@ export default {
         }
     },
     created() {
+
+
         this.selectedCategory = this.$route.params.alias
         this.allCategory = this.categoriesList
         this.first = this.allCategory.slice(0, this.sliceCounter)
@@ -213,6 +215,37 @@ export default {
 		}
     },
     mounted() {
+      // Прокрутка до активной категории
+
+
+
+      let mobileCategories = document.getElementById("mobile-categories-block");
+      let childs = mobileCategories.childNodes;
+      let need_element = undefined;
+      let ScrollWidth = 0;
+
+      childs.forEach((element)=>{
+        (element.childNodes).forEach((elementChild)=>{
+          if(need_element === undefined){
+            let className = elementChild.className;
+
+            if(className.match('selected') != null){
+              need_element = element;
+            }else {
+
+              ScrollWidth += elementChild.offsetWidth+8;
+              // console.log(elementChild.offsetWidth);
+            }
+          }
+        });
+        // console.log(element);
+      });
+      // console.log(ScrollWidth);
+      // console.log(need_element);
+
+      mobileCategories.scrollLeft = ScrollWidth - 25;
+
+
         this.hideCategory = false
         this.ww = window.innerWidth
         if (this.getSearchNameKitchenDish !== null) {
