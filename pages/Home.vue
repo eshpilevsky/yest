@@ -49,6 +49,7 @@ export default {
     },
     methods: {
         goTo(url) {
+            this.$store.dispatch('backet/dropBasket');
             this.$store.dispatch('map/dropLocation');
             this.$router.push(`/${url}`)
         }

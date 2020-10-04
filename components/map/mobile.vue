@@ -64,7 +64,7 @@ export default {
     watch: {
         getMapLoading(newValue, oldValue) {
             return newValue
-        }
+        },
     },
     computed: {
         ...mapGetters({
@@ -76,6 +76,7 @@ export default {
             getMapLoading: 'map/getMapLoading',
             getSelectedZone: 'zone/getSelectedZone',
             getZoneList: 'zone/getZoneList',
+            getAddressMass: 'map/getAddressMass'
         }),
         currentAddress() {
             return this.getCurrentAddress
@@ -132,11 +133,9 @@ export default {
                     getZoneList,
                     getSelectedZone,
                     router
-                }, {
-                    root: true
-				})
-                await this.hideMap()
-            })
+                }, {root: true});
+                await this.hideMap();
+            });
             if (this.getCurrentCoords.length === 0) {
                 await this.getLocation()
             }
@@ -145,6 +144,7 @@ export default {
             console.error('onInit -> this.coords', this.coords)
         },
         onClick(e) {
+          console.log('onClick');
             this.coords = e.get('coords')
             this.setCurrentCoords(this.coords)
         },

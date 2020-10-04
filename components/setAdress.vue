@@ -24,17 +24,18 @@
         </span>
         <div class="smart-search">
             <!-- <v-text-field autocomplete="off" @focus="focusInput" @blur="blurInput()" class='search-me' max-width='500px' prepend-inner-icon="near_me" @click:prepend-inner="openMap()" label="Укажите адрес доставки..." v-model='searchAddress' solo clearable @click:clear="clearAdress"> -->
-            <v-text-field autocomplete="off" class='search-me' max-width='500px' prepend-inner-icon="near_me" @click:prepend-inner="openMap()" label="Укажите адрес доставки..." v-model='searchAddress' solo clearable @click:clear="clearAdress">
+            <v-text-field v-on:input="changeSearchLocation();" autocomplete="off" class='search-me' max-width='500px' prepend-inner-icon="near_me" @click:prepend-inner="openMap()" label="Укажите адрес доставки..." v-model='searchAddress' solo clearable @click:clear="clearAdress">
                 <template v-slot:append-outer>
                     <v-btn class="showRest-block" color='primary' @click="showRestuarants()">Показать рестораны</v-btn>
                 </template>
             </v-text-field>
+            <!--Подсказки при ввводе -->
             <div v-show="showAdressList && searchAddress.length > 2 && suggestions.length > 0" class="adressList">
                 <v-list>
                     <v-list-item v-for="(item, index) in suggestions" :key="'address'+index" class="itemAdress" @click="selectAdress(item)">
                         <v-list-item-content>
-                            <v-list-item-title>{{item.displayName}}</v-list-item-title>
-                            <v-list-item-subtitle class="itemAdress-sub">{{item.value}}</v-list-item-subtitle>
+                            <v-list-item-title>{{item.geoobjectText}}</v-list-item-title>
+                            <v-list-item-subtitle class="itemAdress-sub">{{item.geoobject[1]}}</v-list-item-subtitle>
                         </v-list-item-content>
                     </v-list-item>
                 </v-list>
@@ -51,7 +52,8 @@
 <script>
 import {
     mapGetters,
-    mapMutations
+    mapMutations,
+    mapActions
 } from 'vuex'
 import MapBtn from '@/components/map/map-btn'
 import MapDesktop from '@/components/map/desktop'
@@ -100,20 +102,28 @@ export default {
             getSelectedCategoryName: 'user/getSelectedCategoryName',
             // getSelectedCategory: 'user/getSelectedCategory',
             canDisplayMap: 'device/isMobile',
-            getCurrentAddress: 'map/getCurrentAddress'
+            getCurrentAddress: 'map/getCurrentAddress',
+            getAddressMass: 'map/getAddressMass'
         })
     },
     watch: {
         searchAddress(newValue, oldValue) {
-            if (this.confirm == false) {
-                if (newValue !== null && newValue.length > 1 && oldValue !== '') {
-                    this.showAdressList = false
-                    this.getSuggest(newValue)
-                }
-            }
+          // console.log(this);
+          // console.log(newValue, oldValue);
+          //
+          //   if (this.confirm == false) {
+          //       if (newValue !== null && newValue.length > 1 && oldValue !== '') {
+          //           this.showAdressList = false
+          //           this.getSuggest(newValue)
+          //       }
+          //   }
         },
         getCurrentAddress(newValue) {
-            this.searchAddress = newValue
+            this.searchAddress = newValue;
+            this.confirm = true;
+        },
+        getAddressMass(newValue){
+            this.addressMass = newValue;
         },
         categoryInfoData(newValue) {
             return newValue
@@ -128,8 +138,8 @@ export default {
     methods: {
         selectAdress(address) {
             var adv = address.value
-            var addressSplit = adv.split('Беларусь,')
-            this.searchAddress = addressSplit[1]
+            var addressSplit = adv.split('Беларусь,');
+            this.searchAddress = addressSplit[1];
             this.showAdressList = false
             this.confirm = true
             setTimeout(() => {
@@ -140,6 +150,9 @@ export default {
         ...mapMutations({
             setCurrentAddress: 'map/SET_CURRENT_ADDRESS',
             setCurrentCoords: 'map/SET_CURRENT_COORDS',
+        }),
+        ...mapActions({
+           Action__setCurrentAddress: 'map/setCurrentAddress',
         }),
         openMap() {
             this.showDesktopMap = true
@@ -161,20 +174,15 @@ export default {
         },
         async showRestuarants() {
             this.showAdressList = false
-            const app = this
-            await ymaps.geocode(this.searchAddress, {
-                results: 1,
-            }).then((geo) => {
-                const geoObjects = geo.geoObjects.get(0)
-                app.getCityGeocoder = geoObjects.properties.get('metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.Locality.LocalityName')
-                app.addressMass = geoObjects.properties.get('metaDataProperty.GeocoderMetaData.Address.Components')
-                app.currentCoordsBuffer = geoObjects.geometry.getCoordinates()
-                app.currentAddress = app.searchAddress
+            await this.Action__setCurrentAddress(this.searchAddress);
+            this.showAdressList = false;
+
+          let cityId = await axios.post('https://yestapi.xyz/check_delivery_address', this.addressMass).then(res => {
+                return res.data.city_id
             });
 
-            let cityId = await axios.post('https://yestapi.xyz/check_delivery_address', this.addressMass).then(res => {
-                return res.data.city_id
-            })
+            console.log('cityId->'+cityId);
+            console.log('getSelectedZone->'+this.getSelectedZone.id);
 
             if (this.getSelectedZone.id !== cityId) {
                 let findCity = this.getZoneList.find((zone) => {
@@ -186,8 +194,6 @@ export default {
                     this.$router.push(`/`)
                 }
             } else {
-                this.setCurrentCoords(this.currentCoordsBuffer)
-                this.setCurrentAddress(this.currentAddress)
                 const id = 'restTitle';
                 const yOffset = -345;
                 const element = document.getElementById(id);
@@ -196,6 +202,7 @@ export default {
                     top: y,
                     behavior: 'smooth'
                 });
+
             }
 
         },
@@ -211,7 +218,13 @@ export default {
                 ],
                 strictBounds: true,
             }).then((items) => {
-                app.suggestions = items
+                items.forEach((item, key)=>{
+                  items[key].geoobject = (item.value).split(',');
+                  items[key].geoobjectText  = item.value.split(',').slice(2).join(',')
+                });
+
+                app.suggestions = items;
+                console.log(items);
                 app.loadingSuggest = false
             });
         },
@@ -232,6 +245,14 @@ export default {
                 headContainer.style.visibility = 'visible'
             }
         },
+      changeSearchLocation(){
+          if (this.confirm === false) {
+            if (this.searchAddress !== null && (this.searchAddress).length > 3) {
+              this.showAdressList = false
+              this.getSuggest(this.searchAddress)
+            }
+          }
+      }
     },
     async beforeMount() {
         await loadYmap({
@@ -240,7 +261,8 @@ export default {
         });
     },
     mounted() {
-        this.searchAddress = this.getCurrentAddress
+        this.searchAddress = this.getCurrentAddress;
+        this.addressMass = this.getAddressMass;
     }
 }
 </script>

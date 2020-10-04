@@ -1,7 +1,7 @@
 <template>
 <div class="manual-enter-address">
     <div class="search-address">
-        <input class="address-input" v-model="searchString" placeholder="Укажите адрес доставки..." />
+        <input class="address-input" v-model="searchString" v-on:input="changeSearchLocation()" placeholder="Укажите адрес доставки..." />
         <div class="black--text cancel" @click="onCancel">Отменить</div>
     </div>
     <div class="palces-list" v-show="!loading">
@@ -47,7 +47,7 @@ export default {
     },
     watch: {
         searchString(newValue, oldValue) {
-            this.suggestPlaces(newValue)
+
         },
         places(newValue) {
             return newValue
@@ -62,6 +62,11 @@ export default {
             getCurrentCoords: 'getCurrentCoords',
             getCurrentAddress: 'getCurrentAddress'
         }),
+      changeSearchLocation(){
+          if(this.searchString.length > 3 ){
+            this.suggestPlaces(this.searchString);
+          }
+      },
         selectPlace(item) {
             this.$emit('selectedPlace', item)
             this.switchToMapMode()

@@ -125,6 +125,7 @@ export default {
         }),
         ...mapActions({
             getLocation: 'map/getLocation',
+            Action__setCurrentAddress: 'map/setCurrentAddress',
         }),
         focusInput() {
             this.showSuggestList = true
@@ -133,6 +134,8 @@ export default {
             this.showSuggestList = false
         },
         selectAdress(address) {
+
+
             this.showSuggestList = false
             this.confirm = true
             setTimeout(() => {
@@ -180,23 +183,8 @@ export default {
         },
         async confirmPosition() {
             console.log('confirmPosition');
-            await this.setCurrentCoords(this.coordsBuffer)
-            await this.setCurrentAddress(this.addressBuffer)
-
-            let cityId = await axios.post('https://yestapi.xyz/check_delivery_address', this.boundAnswer.position).then(res => {
-                return res.data.city_id
-            })
-            if (this.getSelectedZone.id !== cityId) {
-                let findCity = this.getZoneList.find((zone) => {
-                    return zone.id == cityId
-                })
-                if (findCity !== undefined) {
-                    this.$router.push(`/${findCity.alias}`)
-                } else {
-                    this.$router.push(`/`)
-                }
-            }
-            this.$emit('closeMap')
+            this.Action__setCurrentAddress(this.address);
+            this.emitClose();
         },
         async onInit(mapInstance) {
             if (this.getCurrentAddress !== '') {
