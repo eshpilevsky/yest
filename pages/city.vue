@@ -228,6 +228,9 @@ export default {
       }
     },
   methods: {
+    ...mapActions({
+      Action__calcWorkTime: 'user/caclWorkTime',
+    }),
     goToRestuarant() {
       this.$router.push(`/${this.restInfo.params.region}/restaurant/${this.restInfo.params.resName}`)
     },
@@ -338,7 +341,7 @@ export default {
       // this.restaurantsList = rest;
       console.log(rest);
 
-      this.restaurantsList = await store.dispatch('user/caclWorkTime', rest)
+      this.restaurantsList = await this.Action__calcWorkTime(rest)
 
       // await store.dispatch('user/caclWorkTime', this.restaurantsList);
 
