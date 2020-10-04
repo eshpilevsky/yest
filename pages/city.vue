@@ -274,70 +274,72 @@ export default {
         return res.data.restaurants
       });
 
-      function name(params) {
-        const openRestorants = [];
-        const closeRestorants = [];
-        const currentDay = new Date().getDay();
-        const currentTime = new Date().getTime();
-        params.forEach((item, i, arr) => {
-          const op = item.operation_time;
-          const buffer = [];
-          if (item.operation_time.length > 6) {
-            op.forEach((optime, index, operationTimeArr) => {
-              if (optime.day === currentDay) {
-                buffer.push(optime);
-              }
-            });
-            let closeTime = buffer[0].close_time
-            const openTime =
-              buffer.length > 1 ? buffer[1].open_time : buffer[0].open_time;
+      // function name(params) {
+      //   const openRestorants = [];
+      //   const closeRestorants = [];
+      //   const currentDay = new Date().getDay();
+      //   const currentTime = new Date().getTime();
+      //   params.forEach((item, i, arr) => {
+      //     const op = item.operation_time;
+      //     const buffer = [];
+      //     if (item.operation_time.length > 6) {
+      //       op.forEach((optime, index, operationTimeArr) => {
+      //         if (optime.day === currentDay) {
+      //           buffer.push(optime);
+      //         }
+      //       });
+      //       let closeTime = buffer[0].close_time
+      //       const openTime =
+      //         buffer.length > 1 ? buffer[1].open_time : buffer[0].open_time;
+      //
+      //       const closeTimeHour = closeTime.slice(0, 2);
+      //       const closeTimeMin = closeTime.slice(3, 5);
+      //       const closeTimeSec = closeTime.slice(6, 8);
+      //       const closeTimeTimestamp = new Date();
+      //       closeTimeTimestamp.setHours(closeTimeHour);
+      //       closeTimeTimestamp.setMinutes(closeTimeMin);
+      //       closeTimeTimestamp.setSeconds(closeTimeSec);
+      //
+      //       const openTimeHour = openTime.slice(0, 2);
+      //       const openTimeMin = openTime.slice(3, 5);
+      //       const openTimeSec = openTime.slice(6, 8);
+      //       const openTimeTimestamp = new Date();
+      //
+      //       openTimeTimestamp.setHours(openTimeHour);
+      //       openTimeTimestamp.setMinutes(openTimeMin);
+      //       openTimeTimestamp.setSeconds(openTimeSec);
+      //
+      //       item.today_close_time = closeTimeTimestamp.getTime();
+      //       item.today_open_time = openTimeTimestamp.getTime();
+      //
+      //       if (buffer.length !== 1) {
+      //         item.today_close_time += 86400000;
+      //       }
+      //
+      //       if (currentTime < item.today_close_time) {
+      //         openRestorants.push(item);
+      //         item.is_open = true;
+      //       } else {
+      //         closeRestorants.push(item);
+      //         item.is_open = false;
+      //       }
+      //     }
+      //     if (item.hasOwnProperty('delivery')) {
+      //       // let mass = item.delivery.fee
+      //       // mass.sort((a, b) => {
+      //       // 	return a.delivery > b.delivery
+      //       // })
+      //     }
+      //   });
+      //   return openRestorants.concat(closeRestorants)
+      // }
 
-            const closeTimeHour = closeTime.slice(0, 2);
-            const closeTimeMin = closeTime.slice(3, 5);
-            const closeTimeSec = closeTime.slice(6, 8);
-            const closeTimeTimestamp = new Date();
-            closeTimeTimestamp.setHours(closeTimeHour);
-            closeTimeTimestamp.setMinutes(closeTimeMin);
-            closeTimeTimestamp.setSeconds(closeTimeSec);
+      this.restaurantsList = [];
+      // this.restaurantsList = rest;
 
-            const openTimeHour = openTime.slice(0, 2);
-            const openTimeMin = openTime.slice(3, 5);
-            const openTimeSec = openTime.slice(6, 8);
-            const openTimeTimestamp = new Date();
+      this.restaurantsList = await store.dispatch('user/caclWorkTime', rest)
 
-            openTimeTimestamp.setHours(openTimeHour);
-            openTimeTimestamp.setMinutes(openTimeMin);
-            openTimeTimestamp.setSeconds(openTimeSec);
-
-            item.today_close_time = closeTimeTimestamp.getTime();
-            item.today_open_time = openTimeTimestamp.getTime();
-
-            if (buffer.length !== 1) {
-              item.today_close_time += 86400000;
-            }
-
-            if (currentTime < item.today_close_time) {
-              openRestorants.push(item);
-              item.is_open = true;
-            } else {
-              closeRestorants.push(item);
-              item.is_open = false;
-            }
-          }
-          if (item.hasOwnProperty('delivery')) {
-            // let mass = item.delivery.fee
-            // mass.sort((a, b) => {
-            // 	return a.delivery > b.delivery
-            // })
-          }
-        });
-        return openRestorants.concat(closeRestorants)
-      }
-
-      this.restaurantsList = []
-      this.restaurantsList = name(rest);
-
-      await store.dispatch('user/caclWorkTime', restaurantsList);
+      // await store.dispatch('user/caclWorkTime', this.restaurantsList);
 
     }
   },
