@@ -27,7 +27,8 @@ import axios from 'axios'
 import * as Cookie from 'js-cookie'
 
 import {
-    mapGetters
+    mapGetters,
+  mapActions
 } from 'vuex'
 
 export default {
