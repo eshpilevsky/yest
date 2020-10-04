@@ -334,8 +334,9 @@ export default {
       //   return openRestorants.concat(closeRestorants)
       // }
 
-      this.restaurantsList = [];
+      // this.restaurantsList = [];
       // this.restaurantsList = rest;
+      console.log(rest);
 
       this.restaurantsList = await store.dispatch('user/caclWorkTime', rest)
 
