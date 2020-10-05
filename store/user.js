@@ -1,4 +1,5 @@
 import * as Cookie from 'js-cookie'
+import ApiService from '~/common/api.service'
 
 const state = () => ({
   data: {
@@ -9,6 +10,8 @@ const state = () => ({
 	  name: null,
     },
     searchNameKitchenDish: null,
+    searchText: null,
+    searchResults: null,
     categoryList: {},
     userNumber: null,
     smsTimer: 0,
@@ -67,7 +70,6 @@ const actions = {
 		resolve(openRestaurants.concat(closeRestaurants))
     });
   },
-
   checkUserPhonemuber(context) {
     return new Promise((resolve, reject) => {
       resolve(context.state.data.userNumber)
@@ -76,26 +78,50 @@ const actions = {
   setSmsTimer(context, time) {
     context.commit('SET_SMS_TIMER', time)
   },
-
   setUserPhoneNumber(context, payload) {
     context.commit('SET_USER_PHONE_NUMBER', payload)
   },
-
   selectCategory(context, payload) {
     context.commit('SELECT_CATEGORY', payload)
   },
-
   setSearchNameKitchenDish(context, payload) {
     context.commit('SEARCH_NAME_KITCHEN_DISH', payload)
   },
-
   allCategory(context, payload) {
     context.commit('CATEGOTY_LIST', payload)
   },
+  async SearchSuggestions(context, payload){
+    context.commit('SET_SEARCH_TEXT', payload.address);
+    // Получение данных под SET_SEARCH_RESULTS //
+    let data_to_send = {
+      city: payload.city,
+      searchText: payload.address
+    };
+
+    console.log(data_to_send);
+
+    await ApiService.post('/check_delivery_address', data_to_send).then((res)=>{
+      console.log('checkDeliveryAddress -> res', res)
+    }).catch((err)=>{
+      console.error(err);
+    });
+
+    // Получение данных под SET_SEARCH_RESULTS //
+    context.commit('SET_SEARCH_RESULTS', [1,2,3,4,5,6,7,8,9,10]);
+  }
+
 
 };
 
 const mutations = {
+  SET_SEARCH_TEXT(state, text){
+    state.status = 200;
+    state.data.searchText = text
+  },
+  SET_SEARCH_RESULTS(state, data){
+    state.status = 200;
+    state.data.searchResults = data
+  },
   SET_SMS_TIMER(state, time) {
     state.status = '200'
     state.data.smsTimer = time
@@ -125,6 +151,9 @@ const mutations = {
 };
 
 const getters = {
+  getSearchResults(state){
+    return state.data.searchResults;
+  },
   getSmsTimer(state) {
     return state.data.smsTimer
   },

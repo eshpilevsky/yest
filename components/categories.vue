@@ -51,11 +51,11 @@
         </v-menu> -->
     </div>
     <div id="mobile-categories-block"  class="category-list-mobile">
-        <!-- <button class="category-list-mobile-item" @click="showModalWindow()">
+        <button class="category-list-mobile-item" @click="showModalWindow()">
             <span class="item-name" style="width: 48px;">
                 <v-icon>search</v-icon>
             </span>
-        </button> -->
+        </button>
         <div v-for="(item, index) in allCategory" :key="'adaptiveCatList' + index" v-show="item.category_icon" class="category-list-mobile-item" @click="selectCategory(item)">
             <v-chip :class="{selected: item.id === currentCategory.id}" class="item-name">
                 {{ item.name }}
@@ -65,15 +65,26 @@
             <searchModal @closeModalWindow='showModalWindow()' />
         </v-overlay>
     </div>
-    <!-- <v-divider class="divider" />
-    <v-text-field placeholder="Название, кухня или блюдо" height="46" dense clearable prepend-inner-icon="search" outlined class="searchDesktop" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch"></v-text-field> -->
-    <!--    <v-text-field placeholder="Найти в Еде" height="48" clearable prepend-inner-icon="search" outlined dense filled class="searchMobile" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch">-->
-    <!--        &lt;!&ndash; <template v-slot:append-outer v-show="this.getCurrentAddress.length > 0" >-->
-    <!--            <v-btn rounded height="40px">-->
-    <!--                <i class="material-icons" color='#000'>sync_alt</i>-->
-    <!--            </v-btn>-->
-    <!--        </template> &ndash;&gt;-->
-    <!--    </v-text-field>-->
+    <!--<v-divider class="divider" />-->
+        <v-text-field placeholder="Название, кухня или блюдо" height="46" dense clearable prepend-inner-icon="search" outlined class="searchDesktop" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch"></v-text-field>
+        <v-text-field placeholder="Найти в Еде" height="48" clearable prepend-inner-icon="search" outlined dense filled class="searchMobile" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch">
+            <!--<template v-slot:append-outer v-show="this.getCurrentAddress.length > 0" >-->
+                <!--<v-btn rounded height="40px">-->
+                    <!--<i class="material-icons" color='#000'>sync_alt</i>-->
+                <!--</v-btn>-->
+            <!--</template>-->
+        </v-text-field>
+
+        <div v-show="searchNameKitchenDish.length > 2 && SearchSuggestions.length > 0" class="adressList">
+          <v-list>
+            <v-list-item v-for="(item, index) in SearchSuggestions" :key="'SearchSuggestion'+index" class="">
+              <v-list-item-content>
+                <v-list-item-title>{{item}}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </div>
+
   <v-overlay :value="restOverlay" z-index="100">
     <v-progress-circular indeterminate size="64"></v-progress-circular>
   </v-overlay>
@@ -86,15 +97,16 @@ import ApiService from '../common/api.service'
 import searchModal from '@/components/search-modal';
 
 import {
-    mapGetters
+    mapGetters,
+    mapActions
 } from 'vuex'
 
 export default {
     name: 'Categories',
     props: {
-        categoriesList: Array,
-		currentCategory: Object,
-		currentZone: Object,
+      categoriesList: Array,
+		  currentCategory: Object,
+		  currentZone: Object,
     },
     components: {
         searchModal,
@@ -109,6 +121,7 @@ export default {
             searchNameKitchenDish: '',
             firstCategoryId: [],
             secondCategoryId: [],
+            SearchSuggestions: [],
             ww: 0,
             sliceCounter: 9,
             sortText: [{
@@ -155,10 +168,22 @@ export default {
             if (newValue.id !== oldValue.id) {
                 this.selectedCategory = this.currentCategory
             }
-		},
-		currentCategory(newValue){
-			return newValue
-		}
+		    },
+        currentCategory(newValue){
+          return newValue
+        },
+        getSearchResults(newValue){
+          this.SearchSuggestions = newValue;
+        },
+        async searchNameKitchenDish(newValue){
+          if(newValue.length > 3){
+
+            await this.Action__SearchSuggestions({
+              address: newValue,
+              city: this.currentZone.id
+            });
+          }
+        }
     },
     computed: {
         ...mapGetters({
@@ -166,9 +191,13 @@ export default {
             // currentCategory: 'user/currentCategory',
             getCurrentAddress: 'map/getCurrentAddress',
             getSearchNameKitchenDish: 'user/getSearchNameKitchenDish',
+            getSearchResults: 'user/getSearchResults'
         }),
     },
     methods: {
+      ...mapActions({
+        Action__SearchSuggestions: 'user/SearchSuggestions',
+      }),
         showModalWindow() {
             this.showModalOverlay = !this.showModalOverlay
         },
@@ -195,7 +224,7 @@ export default {
         this.selectedCategory = this.$route.params.alias
         this.allCategory = this.categoriesList
         this.first = this.allCategory.slice(0, this.sliceCounter)
-		this.second = this.allCategory.slice(this.sliceCounter, this.categoriesList.length)
+		    this.second = this.allCategory.slice(this.sliceCounter, this.categoriesList.length)
 
 		let checkMore = this.first.find((cat)=>{
 			return cat.id == this.currentCategory.id
@@ -216,8 +245,6 @@ export default {
     },
     mounted() {
       // Прокрутка до активной категории
-
-
 
       let mobileCategories = document.getElementById("mobile-categories-block");
       let childs = mobileCategories.childNodes;
@@ -243,7 +270,16 @@ export default {
       // console.log(ScrollWidth);
       // console.log(need_element);
 
-      mobileCategories.scrollLeft = ScrollWidth - 25;
+      let need_scroll_width = ScrollWidth - 25;
+
+
+      mobileCategories.scrollLeft = need_scroll_width;
+
+
+
+
+
+
 
 
         this.hideCategory = false

@@ -3,6 +3,8 @@
     <setAdress :currentZone='currentZone' :currentCategory='this.currentCategory' :categoryInfoData='categoryInfoData' :class="{hide: showSetAdress == false}" />
     <specialOffers :offers="specilaOffers" v-show="showSpecialOffer" />
     <categories v-show="categoriesList.length > 1" :currentZone='currentZone' :categoriesList='categoriesList' :currentCategory='this.currentCategory' />
+
+    <restuarantsSpecialOffersList :restaurantsList='restaurantsList'  :currentCategory='this.currentCategory' :currentZone='currentZone'/>
     <restuarantsList :restaurantsList='restaurantsList' :currentCategory='this.currentCategory' :currentZone='currentZone' />
     <div class="basket-home-btn" v-show="this.getTotalPrice > 0">
         <v-btn block color='primary' class="basket-home-btn__box d-flex flex-row justify-space-between rounded-xl" height="60px" @click="goToRestuarant()">
@@ -22,6 +24,7 @@ import setAdress from '~/components/setAdress'
 import categories from '~/components/categories.vue'
 import specialOffers from '~/components/specialOffers.vue'
 import restuarantsList from '~/components/restuarants-list.vue'
+import restuarantsSpecialOffersList from '~/components/restuarants-special-offers-list.vue'
 import ApiService from "~/common/api.service";
 import axios from 'axios'
 import * as Cookie from 'js-cookie'
@@ -37,6 +40,7 @@ export default {
         categories,
         specialOffers,
         restuarantsList,
+        restuarantsSpecialOffersList,
         setAdress
     },
     data() {
@@ -220,6 +224,7 @@ export default {
 
       return {
           restaurantsList: filtByTime,
+          SpecialOfferRestaurants: [],
           categoriesList: categoryAll.concat(categoriesListData),
           currentCategory: currentCategory,
           categoryInfoData: categoryInfoData,
