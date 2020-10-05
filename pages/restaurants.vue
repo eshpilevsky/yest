@@ -93,7 +93,7 @@
                       </template>
                       <div class="rest-info-modal">
                         <v-card max-width='460' class="restuarants-legal-info">
-                          <leagalInfo :restuarant='this.restuarant' />
+                          <legalInfo :restuarant='restuarant' />
                         </v-card>
                       </div>
                     </v-menu>
