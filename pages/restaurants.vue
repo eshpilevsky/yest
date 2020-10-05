@@ -62,14 +62,9 @@
 
                         <div v-for="fee in this.restuarant.delivery.fee" :key="`deliveryFee${fee.min}`" class="d-flex flex-column">
                           <div class="delivery-info">
-                            <v-icon>
-                              directions_run
-                            </v-icon>
+                            <v-icon>directions_run</v-icon>
                             <div v-if="fee.delivery">
-                              {{fee.delivery }} BYN
-                              <span>
-                                                            на заказ от {{fee.min}} BYN
-                                                        </span>
+                              {{fee.delivery }} BYN <span>на заказ от {{fee.min}} BYN</span>
                             </div>
                             <div v-else>
                               Бесплатная доставка при заказе от {{fee.min}} BYN

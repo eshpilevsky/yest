@@ -41,6 +41,9 @@
           observeParents: false,
           slidesPerView: 4,
           spaceBetween: 30,
+          autoplay: {
+            delay: 5000,
+          },
           navigation: {
             nextEl: '.customBtnNext',
             prevEl: '.customBtnPrev',

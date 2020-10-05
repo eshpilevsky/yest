@@ -4,7 +4,7 @@
     <specialOffers :offers="specilaOffers" v-show="showSpecialOffer" />
     <categories v-show="categoriesList.length > 1" :currentZone='currentZone' :categoriesList='categoriesList' :currentCategory='this.currentCategory' />
 
-    <restuarantsSpecialOffersList :restaurantsList='restaurantsList'  :currentCategory='this.currentCategory' :currentZone='currentZone'/>
+    <restuarantsSpecialOffersList :restaurantsList='SpecialOfferRestaurants'  :currentCategory='this.currentCategory' :currentZone='currentZone'/>
     <restuarantsList :restaurantsList='restaurantsList' :currentCategory='this.currentCategory' :currentZone='currentZone' />
     <div class="basket-home-btn" v-show="this.getTotalPrice > 0">
         <v-btn block color='primary' class="basket-home-btn__box d-flex flex-row justify-space-between rounded-xl" height="60px" @click="goToRestuarant()">
@@ -221,10 +221,12 @@ export default {
       }
       // Конец получения специальных предложений
 
+      let SpecialOfferRestaurants = await store.dispatch('user/calcWorkTime_onlyOpen', restaurantsListData);
+
 
       return {
           restaurantsList: filtByTime,
-          SpecialOfferRestaurants: [],
+          SpecialOfferRestaurants: SpecialOfferRestaurants,
           categoriesList: categoryAll.concat(categoriesListData),
           currentCategory: currentCategory,
           categoryInfoData: categoryInfoData,
@@ -236,6 +238,7 @@ export default {
   methods: {
     ...mapActions({
       Action__calcWorkTime: 'user/caclWorkTime',
+      Action__caclWorkTime_onlyOpen: 'user/calcWorkTime_onlyOpen'
     }),
     goToRestuarant() {
       this.$router.push(`/${this.restInfo.params.region}/restaurant/${this.restInfo.params.resName}`)
@@ -347,7 +350,8 @@ export default {
       // this.restaurantsList = rest;
       console.log(rest);
 
-      this.restaurantsList = await this.Action__calcWorkTime(rest)
+      this.restaurantsList = await this.Action__calcWorkTime(rest);
+      this.SpecialOfferRestaurants = await this.Action__caclWorkTime_onlyOpen(rest);
 
       // await store.dispatch('user/caclWorkTime', this.restaurantsList);
 
