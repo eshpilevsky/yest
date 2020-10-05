@@ -48,6 +48,9 @@
             nextEl: '.customBtnNext',
             prevEl: '.customBtnPrev',
           },
+          autoplay: {
+            delay: 5000,
+          },
           // effect: 'fade',
           breakpoints: {
             1200: {

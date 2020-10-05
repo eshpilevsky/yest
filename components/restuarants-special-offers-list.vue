@@ -1,6 +1,6 @@
 <template>
   <div class='specialOffer-restaurants-container'>
-    <p class="specialOffer-title">Акции:</p>
+    <p class="specialOffer-title">Акции</p>
     <div v-swiper="swiperOptions" id='swiper' class="specialOffer-slider">
       <div class="swiper-wrapper specialOffer-wrapper">
 
@@ -90,6 +90,9 @@
             navigation: {
               nextEl: '.customBtnNext',
               prevEl: '.customBtnPrev',
+            },
+            autoplay: {
+              delay: 5000,
             },
             // effect: 'fade',
             breakpoints: {
