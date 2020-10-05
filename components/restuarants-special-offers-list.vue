@@ -108,7 +108,7 @@
               500: {
                 slidesPerView: 1.9,
               },
-              400: {
+              440: {
                 slidesPerView: 1.7,
               },
               320: {
@@ -511,6 +511,10 @@
   /*  }*/
   /*}*/
   @media screen and (max-width: 992px) {
+    .item-logo-block {
+      width: 48px;
+      height: 48px;
+    }
     .specialOffer-slider {
       padding: 0 20px;
     }
@@ -542,7 +546,7 @@
       transition: none;
     }
     .block-bottom {
-      height: 85px;
+      height: 55px;
     }
     .card-title {
       width: 100%;

@@ -2134,7 +2134,7 @@
     left: 0;
     right: 0;
     height: 60px;
-    z-index: 5;
+    z-index: 10;
     background: #ffffff;
     display: flex;
     align-items: center;
