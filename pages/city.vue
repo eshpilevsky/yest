@@ -438,7 +438,7 @@ export default {
     .basket-home-btn {
         display: flex;
         position: fixed;
-        z-index: 2;
+        z-index: 3;
         bottom: 0;
         width: 100%;
         background: #fff;

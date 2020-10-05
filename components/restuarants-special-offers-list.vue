@@ -1,12 +1,10 @@
 <template>
-
-
   <div class='specialOffer-restaurants-container'>
-    <span>Акции:</span>
-    <div v-swiper="swiperOptions" id='swiper'>
+    <p class="specialOffer-title">Акции:</p>
+    <div v-swiper="swiperOptions" id='swiper' class="specialOffer-slider">
       <div class="swiper-wrapper specialOffer-wrapper">
 
-        <div v-for='(item, index) in this.restaurantsList' :key='index'>
+        <div v-for='(item, index) in this.restaurantsList' :key='index' class="swiper-slide">
           <nuxt-link :to="`/${get_rest_url(item)}`"  class="restorane-list-item">
             <div class="list-item-block">
               <div class="item-logo-block" v-if="item.logo !== undefined">
@@ -54,7 +52,6 @@
       <div class="swiper-pagination" slot="pagination"></div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -185,8 +182,25 @@
     };
 </script>
 
-
 <style scoped>
+  .specialOffer-restaurants-container {
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 4px solid rgba(245, 245, 245, 0.6);
+  }
+
+  .specialOffer-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: black;
+    padding: 20px 90px 0;
+  }
+
+  .specialOffer-slider {
+    padding: 0 90px;
+    overflow: hidden;
+  }
+
   .card-options {
     display: flex;
     align-items: center;
@@ -265,7 +279,7 @@
     background-size: cover;
   }
   .block-bottom {
-    width: 100%;
+    width: calc(100% - 40px);
     padding: 16px 20px 20px;
     position: relative;
   }
@@ -280,7 +294,7 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    margin: 20px;
+    margin: 20px 0;
     border-radius: 20px;
     cursor: pointer;
     box-shadow: 0 4px 40px rgb(230, 230, 230);
@@ -388,11 +402,11 @@
     text-decoration: none;
     color: #000 !important;
   }
-  .restorane-list-item:hover {
+  .list-item-block:hover {
     transition: 0.5s;
     transform: scale(1.05);
   }
-  .restorane-list-item:not(:hover) {
+  .list-item-block:not(:hover) {
     transition: 0.5s;
   }
   .restorane-list {

@@ -73,6 +73,7 @@ export default {
         justify-content: center;
         text-align: center;
         line-height: 24px;
+        word-break: break-word;
     }
 
     &__close {

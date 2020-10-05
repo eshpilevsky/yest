@@ -334,7 +334,7 @@
     margin: 20px;
     border-radius: 20px;
     cursor: pointer;
-    box-shadow: 0 4px 40px rgb(230, 230, 230);
+    box-shadow: 0 4px 20px rgb(240, 240, 240);
     position: relative;
   }
   .informMe-btn {
@@ -469,7 +469,8 @@
     margin: auto;
     margin-bottom: .5rem;
     border: 1px solid rgba(0, 0, 0, 0.1) !important;
-    border-top: 4px solid rgba(245, 245, 245, 0.6) !important;
+    border-top: none !important;
+    border-radius: 0 0 4px 4px !important;
     box-shadow: none !important;
   }
   .item-logo-block{

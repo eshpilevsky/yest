@@ -2451,9 +2451,11 @@
     line-height: 28px;
     font-weight: bold;
     margin-left: 8px;
+    margin-bottom: 0 !important;
   }
   .info-top-title.large {
     font-size: 24px;
     margin-right: 10px;
+    margin-bottom: 0 !important;
   }
 </style>

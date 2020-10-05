@@ -416,7 +416,6 @@
     }
     .mobile-cart {
       display: flex;
-      padding-top: 18px;
     }
     .mobile-cart__form {
       width: 100%;
