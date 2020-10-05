@@ -39,6 +39,10 @@
 
                 </div>
               </div>
+              <div class="card-sale">
+                <span class="card-sale__img">%</span>
+                <span class="card-sale__text">Скидка 20%</span>
+              </div>
             </div>
           </nuxt-link>
         </div>
@@ -55,138 +59,231 @@
 </template>
 
 <script>
-    import axios from 'axios'
-    import {mapGetters, mapActions} from "vuex";
-    import * as Cookie from 'js-cookie'
-    import {
-      directive
-    } from 'vue-awesome-swiper'
+  import axios from 'axios'
+  import {mapGetters, mapActions} from "vuex";
+  import * as Cookie from 'js-cookie'
+  import {
+    directive
+  } from 'vue-awesome-swiper'
 
-    export default {
-      name: "restuarants-special-offers-list.vue",
-      directives: {
-        swiper: directive
-      },
-      props: {
-        restaurantsList: Array,
-        currentCategory: Object,
-        currentZone: Object,
-      },
-      data() {
+  export default {
+    name: "restuarants-special-offers-list.vue",
+    directives: {
+      swiper: directive
+    },
+    props: {
+      restaurantsList: Array,
+      currentCategory: Object,
+      currentZone: Object,
+    },
+    data() {
 
-        // let restaurant = props.
+      // let restaurant = props.
 
-        return {
-          restaurantsList:[],
-          swiperOptions: {
-            observer: true,
-            observeParents: false,
-            slidesPerView: 4,
-            spaceBetween: 30,
-            navigation: {
-              nextEl: '.customBtnNext',
-              prevEl: '.customBtnPrev',
+      return {
+        restaurantsList:[],
+        swiperOptions: {
+          observer: true,
+          observeParents: false,
+          slidesPerView: 4,
+          spaceBetween: 40,
+          navigation: {
+            nextEl: '.customBtnNext',
+            prevEl: '.customBtnPrev',
+          },
+          // effect: 'fade',
+          breakpoints: {
+            1200: {
+              slidesPerView: 3,
+              spaceBetween: 40,
             },
-            // effect: 'fade',
-            breakpoints: {
-              1200: {
-                slidesPerView: 3,
-                spaceBetween: 30,
-              },
-              992: {
-                slidesPerView: 2,
-              },
-              600: {
-                slidesPerView: 1.1,
-              },
-              320: {
-                slidesPerView: 1.1,
-                spaceBetween: 20,
-              }
+            992: {
+              slidesPerView: 3,
+            },
+            865: {
+              slidesPerView: 3.2,
+            },
+            720: {
+              slidesPerView: 2.7,
+            },
+            600: {
+              slidesPerView: 2.4,
+            },
+            500: {
+              slidesPerView: 1.9,
+            },
+            440: {
+              slidesPerView: 1.7,
+            },
+            320: {
+              slidesPerView: 1.2,
+              spaceBetween: 20,
             }
           }
-        };
-      },
-      computed: {
-        ...mapGetters({
-          getCurrentAddress: "map/getCurrentAddress",
-          getCurrentCoords: "map/getCurrentCoords"
-        }),
+        }
+      };
+    },
+    computed: {
+      ...mapGetters({
+        getCurrentAddress: "map/getCurrentAddress",
+        getCurrentCoords: "map/getCurrentCoords"
+      }),
 
+    },
+    watch: {
+      restaurantsList(newValue) {
+        this.restaurantsList = newValue;
+        return newValue
       },
-      watch: {
-        restaurantsList(newValue) {
-          this.restaurantsList = newValue;
-          return newValue
-        },
+    },
+    methods: {
+      translite(str) {
+        str = str.replace(/[^A-Za-zА-Яа-яЁё]^-/g, "")
+        var ru = {
+            'а': 'a',
+            'б': 'b',
+            'в': 'v',
+            'г': 'g',
+            'д': 'd',
+            'е': 'e',
+            'ё': 'e',
+            'ж': 'j',
+            'з': 'z',
+            'и': 'i',
+            'к': 'k',
+            'л': 'l',
+            'м': 'm',
+            'н': 'n',
+            'о': 'o',
+            'п': 'p',
+            'р': 'r',
+            'с': 's',
+            'т': 't',
+            'у': 'u',
+            'ф': 'f',
+            'х': 'h',
+            'ц': 'c',
+            'ч': 'ch',
+            'ш': 'sh',
+            'щ': 'shch',
+            'ы': 'y',
+            'э': 'e',
+            'ю': 'u',
+            'я': 'ya'
+          },
+          n_str = [];
+        str = str.replace(/[ъь]+/g, '').replace(/й/g, 'i');
+        for (var i = 0; i < str.length; ++i) {
+          n_str.push(
+            ru[str[i]] ||
+            ru[str[i].toLowerCase()] == undefined && str[i] ||
+            ru[str[i].toLowerCase()].replace(/^(.)/, function (match) {
+              return match.toUpperCase()
+            })
+          );
+        }
+        return n_str.join('');
       },
-      methods: {
-        translite(str) {
-          str = str.replace(/[^A-Za-zА-Яа-яЁё]^-/g, "")
-          var ru = {
-              'а': 'a',
-              'б': 'b',
-              'в': 'v',
-              'г': 'g',
-              'д': 'd',
-              'е': 'e',
-              'ё': 'e',
-              'ж': 'j',
-              'з': 'z',
-              'и': 'i',
-              'к': 'k',
-              'л': 'l',
-              'м': 'm',
-              'н': 'n',
-              'о': 'o',
-              'п': 'p',
-              'р': 'r',
-              'с': 's',
-              'т': 't',
-              'у': 'u',
-              'ф': 'f',
-              'х': 'h',
-              'ц': 'c',
-              'ч': 'ch',
-              'ш': 'sh',
-              'щ': 'shch',
-              'ы': 'y',
-              'э': 'e',
-              'ю': 'u',
-              'я': 'ya'
-            },
-            n_str = [];
-          str = str.replace(/[ъь]+/g, '').replace(/й/g, 'i');
-          for (var i = 0; i < str.length; ++i) {
-            n_str.push(
-              ru[str[i]] ||
-              ru[str[i].toLowerCase()] == undefined && str[i] ||
-              ru[str[i].toLowerCase()].replace(/^(.)/, function (match) {
-                return match.toUpperCase()
-              })
-            );
-          }
-          return n_str.join('');
-        },
-        get_rest_url(info){
-          // return 'minsk';
-          let name = this.translite(info.name)
-          let modifName = name.replace(' ', '-')
-          let url = `${this.currentZone.alias}/restaurant/${info.restaurant_id}-${modifName.toLowerCase()}`
-          return url;
-        },
+      get_rest_url(info){
+        // return 'minsk';
+        let name = this.translite(info.name)
+        let modifName = name.replace(' ', '-')
+        let url = `${this.currentZone.alias}/restaurant/${info.restaurant_id}-${modifName.toLowerCase()}`
+        return url;
       },
-      created() {
+    },
+    created() {
 
-      },
-    };
+    },
+  };
 </script>
 
 <style scoped>
+  .card-sale {
+    display: flex;
+    margin-top: 14px;
+    position: absolute;
+    top: 0;
+    left: 6px;
+  }
+  .card-sale__img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 32px;
+    font-size: 16px;
+    font-weight: 600;
+    background-color: #4ca648;
+    color: #fff;
+    margin-top: -8px;
+    position: relative;
+  }
+  .card-sale__text {
+    padding: 8px 12px 8px 18px;
+    font-size: 13px;
+    background: #F1F0ED;
+    line-height: 16px;
+    flex-shrink: 0;
+    border-radius: 999px;
+    margin-left: -12px;
+  }
+
   .specialOffer-restaurants-container {
     border-left: 1px solid rgba(0, 0, 0, 0.1);
     border-right: 1px solid rgba(0, 0, 0, 0.1);
     border-bottom: 4px solid rgba(245, 245, 245, 0.6);
+  }
+
+  .customBtnPrev,
+  .customBtnNext {
+    position: absolute;
+    top: 0;
+    background: #fff;
+    z-index: 1;
+    overflow: hidden;
+    width: 70px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: none
+  }
+
+  .customBtnPrev {
+    left: 0;
+  }
+
+  .customBtnNext {
+    right: 0;
+  }
+
+  .customBtnNext-box, .customBtnPrev-box {
+    z-index: 10;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    height: 40px;
+    width: 40px;
+    background-position: center;
+    background-color: #00a646;
+  }
+
+  .customBtnNext .customBtnNext-box {
+    background-image: url("../assets/nextArrowIcon.svg");
+  }
+
+  .customBtnPrev .customBtnPrev-box {
+    background-image: url("../assets/prevArrowIcon.svg");
+  }
+
+  .customBtnPrev.swiper-button-disabled .customBtnPrev-box,
+  .customBtnNext.swiper-button-disabled .customBtnPrev-box {
+    display: none;
   }
 
   .specialOffer-title {
@@ -297,7 +394,7 @@
     margin: 20px 0;
     border-radius: 20px;
     cursor: pointer;
-    box-shadow: 0 4px 40px rgb(230, 230, 230);
+    box-shadow: 0 4px 20px rgb(240, 240, 240);
     position: relative;
   }
   .informMe-btn {
@@ -402,19 +499,12 @@
     text-decoration: none;
     color: #000 !important;
   }
-  .list-item-block:hover {
-    transition: 0.5s;
-    transform: scale(1.05);
-  }
-  .list-item-block:not(:hover) {
-    transition: 0.5s;
-  }
   .restorane-list {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
-    padding: 20px 70px;
+    padding: 20px 90px;
   }
   .restorane-title {
     font-size: 28px;
@@ -450,13 +540,28 @@
   .restaurant_block_free_delivery{
     font-size: 14px;
   }
-  @media screen and (max-width: 1000px) {
-    .list-item-block {
-      min-height: 273px;
-      margin: 10px 20px;
-    }
-  }
+  /*@media screen and (max-width: 1000px) {*/
+  /*  .list-item-block {*/
+  /*    min-height: 273px;*/
+  /*    margin: 10px 20px;*/
+  /*  }*/
+  /*}*/
   @media screen and (max-width: 992px) {
+    .item-logo-block {
+      width: 48px;
+      height: 48px;
+    }
+    .specialOffer-slider {
+      padding: 0 20px;
+    }
+    .specialOffer-title {
+      padding: 16px 30px 0;
+      font-size: 20px;
+    }
+    .customBtnPrev,
+    .customBtnNext {
+      display: none;
+    }
     .show-btn-block {
       padding: 0 20px;
     }
@@ -477,7 +582,7 @@
       transition: none;
     }
     .block-bottom {
-      height: 85px;
+      /*height: 55px;*/
     }
     .card-title {
       width: 100%;
