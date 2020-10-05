@@ -70,55 +70,6 @@ const actions = {
 		resolve(openRestaurants.concat(closeRestaurants))
     });
   },
-  calcWorkTime_onlyOpen(context, payload) {
-    return new Promise((resolve, reject) => {
-      const openRestaurants = [];
-      const closeRestaurants = [];
-      const currentDay = new Date().getDay();
-      let UTC_DATE_TIME = new Date();
-      // UTC_DATE_TIME.setMilliseconds(3 * 60 * 60 * 1000);
-      let currentTime = ((UTC_DATE_TIME.getHours() * 3600) + (UTC_DATE_TIME.getMinutes() * 60) + (UTC_DATE_TIME.getSeconds()))*100;
-
-
-
-      // const  = new Date().getTime();
-      let todayOT = [];
-      payload.forEach((item, i, arr) => {
-        todayOT = [];
-        item.is_open = false;
-        (item.operation_time).forEach((time, i_time, arr_time) => {
-          if(time.day === currentDay){
-            let time_open = (time.open_time).split(':');
-            let close_time = (time.close_time).split(':');
-
-            todayOT.push({
-              time_open: (time_open[0]*3600) + (time_open[1]*60) + time_open[2],
-              close_time: (close_time[0]*3600) + (close_time[1]*60) + close_time[2],
-            });
-          }
-        });
-
-        todayOT.forEach((time, i, arr) => {
-          if(item.is_open === false){
-
-            if(Number(time.time_open) <= currentTime && Number(time.close_time) > currentTime){
-              item.is_open = true;
-            }
-          }
-        });
-
-        switch(item.is_open){
-          case true:
-            openRestaurants.push(item);
-            break;
-          case false:
-            closeRestaurants.push(item);
-            break;
-        }
-      });
-      resolve(openRestaurants)
-    });
-  },
   checkUserPhonemuber(context) {
     return new Promise((resolve, reject) => {
       resolve(context.state.data.userNumber)
