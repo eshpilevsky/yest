@@ -82,7 +82,7 @@
             observer: true,
             observeParents: false,
             slidesPerView: 4,
-            spaceBetween: 30,
+            spaceBetween: 40,
             navigation: {
               nextEl: '.customBtnNext',
               prevEl: '.customBtnPrev',
@@ -91,16 +91,28 @@
             breakpoints: {
               1200: {
                 slidesPerView: 3,
-                spaceBetween: 30,
+                spaceBetween: 40,
               },
               992: {
-                slidesPerView: 2,
+                slidesPerView: 3,
+              },
+              865: {
+                slidesPerView: 3.2,
+              },
+              720: {
+                slidesPerView: 2.7,
               },
               600: {
-                slidesPerView: 1.1,
+                slidesPerView: 2.4,
+              },
+              500: {
+                slidesPerView: 1.9,
+              },
+              400: {
+                slidesPerView: 1.7,
               },
               320: {
-                slidesPerView: 1.1,
+                slidesPerView: 1.2,
                 spaceBetween: 20,
               }
             }
@@ -187,6 +199,55 @@
     border-left: 1px solid rgba(0, 0, 0, 0.1);
     border-right: 1px solid rgba(0, 0, 0, 0.1);
     border-bottom: 4px solid rgba(245, 245, 245, 0.6);
+  }
+
+  .customBtnPrev,
+  .customBtnNext {
+    position: absolute;
+    top: 0;
+    background: #fff;
+    z-index: 1;
+    overflow: hidden;
+    width: 70px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: none
+  }
+
+  .customBtnPrev {
+    left: 0;
+  }
+
+  .customBtnNext {
+    right: 0;
+  }
+
+  .customBtnNext-box, .customBtnPrev-box {
+    z-index: 10;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    height: 40px;
+    width: 40px;
+    background-position: center;
+    background-color: #00a646;
+  }
+
+  .customBtnNext .customBtnNext-box {
+    background-image: url("../assets/nextArrowIcon.svg");
+  }
+
+  .customBtnPrev .customBtnPrev-box {
+    background-image: url("../assets/prevArrowIcon.svg");
+  }
+
+  .customBtnPrev.swiper-button-disabled .customBtnPrev-box,
+  .customBtnNext.swiper-button-disabled .customBtnPrev-box {
+    display: none;
   }
 
   .specialOffer-title {
@@ -297,7 +358,7 @@
     margin: 20px 0;
     border-radius: 20px;
     cursor: pointer;
-    box-shadow: 0 4px 40px rgb(230, 230, 230);
+    box-shadow: 0 4px 20px rgb(240, 240, 240);
     position: relative;
   }
   .informMe-btn {
@@ -402,19 +463,12 @@
     text-decoration: none;
     color: #000 !important;
   }
-  .list-item-block:hover {
-    transition: 0.5s;
-    transform: scale(1.05);
-  }
-  .list-item-block:not(:hover) {
-    transition: 0.5s;
-  }
   .restorane-list {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
-    padding: 20px 70px;
+    padding: 20px 90px;
   }
   .restorane-title {
     font-size: 28px;
@@ -450,13 +504,24 @@
   .restaurant_block_free_delivery{
     font-size: 14px;
   }
-  @media screen and (max-width: 1000px) {
-    .list-item-block {
-      min-height: 273px;
-      margin: 10px 20px;
-    }
-  }
+  /*@media screen and (max-width: 1000px) {*/
+  /*  .list-item-block {*/
+  /*    min-height: 273px;*/
+  /*    margin: 10px 20px;*/
+  /*  }*/
+  /*}*/
   @media screen and (max-width: 992px) {
+    .specialOffer-slider {
+      padding: 0 20px;
+    }
+    .specialOffer-title {
+      padding: 16px 30px 0;
+      font-size: 20px;
+    }
+    .customBtnPrev,
+    .customBtnNext {
+      display: none;
+    }
     .show-btn-block {
       padding: 0 20px;
     }
