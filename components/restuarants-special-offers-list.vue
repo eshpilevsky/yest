@@ -39,6 +39,10 @@
 
                 </div>
               </div>
+              <div class="card-sale">
+                <span class="card-sale__img">%</span>
+                <span class="card-sale__text">Скидка 20%</span>
+              </div>
             </div>
           </nuxt-link>
         </div>
@@ -195,6 +199,38 @@
 </script>
 
 <style scoped>
+  .card-sale {
+    display: flex;
+    margin-top: 14px;
+    position: absolute;
+    top: 0;
+    left: 6px;
+  }
+  .card-sale__img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 32px;
+    font-size: 16px;
+    font-weight: 600;
+    background-color: #4ca648;
+    color: #fff;
+    margin-top: -8px;
+    position: relative;
+  }
+  .card-sale__text {
+    padding: 8px 12px 8px 18px;
+    font-size: 13px;
+    background: #F1F0ED;
+    line-height: 16px;
+    flex-shrink: 0;
+    border-radius: 999px;
+    margin-left: -12px;
+  }
+
   .specialOffer-restaurants-container {
     border-left: 1px solid rgba(0, 0, 0, 0.1);
     border-right: 1px solid rgba(0, 0, 0, 0.1);
@@ -546,7 +582,7 @@
       transition: none;
     }
     .block-bottom {
-      height: 55px;
+      /*height: 55px;*/
     }
     .card-title {
       width: 100%;
