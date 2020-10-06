@@ -71,7 +71,6 @@ const actions = {
     });
   },
   async calcWorkTime_onlyOpen(context, payload) {
-    console.log('calcWorkTime_onlyOpen',payload);
     return new Promise((resolve, reject) => {
       const openRestaurants = [];
       const closeRestaurants = [];

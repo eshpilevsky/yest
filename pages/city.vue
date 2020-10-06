@@ -226,13 +226,20 @@ export default {
 
       if (checkCatId === 0) {
         SpecialOfferRestaurants_list = await axios.post('https://yestapi.xyz/restaurants/restaurants-special-offers/', sortByCoord);
-        SpecialOfferRestaurants = SpecialOfferRestaurants_list.data.restaurants
+        if(SpecialOfferRestaurants_list.data.status === 200){
+          SpecialOfferRestaurants = SpecialOfferRestaurants_list.data.restaurants
+        }
       } else {
         SpecialOfferRestaurants_list = await axios.post(`https://yestapi.xyz/restaurants/restaurants-special-offers/category/${currentCategory.id}`, sortByCoord)
-        SpecialOfferRestaurants = SpecialOfferRestaurants_list.data.restaurants
+        if(SpecialOfferRestaurants_list.data.status === 200){
+          SpecialOfferRestaurants = SpecialOfferRestaurants_list.data.restaurants
+        }
       }
 
-       SpecialOfferRestaurants = await store.dispatch('user/calcWorkTime_onlyOpen', SpecialOfferRestaurants);
+      if(SpecialOfferRestaurants.length > 0){
+        SpecialOfferRestaurants = await store.dispatch('user/calcWorkTime_onlyOpen', SpecialOfferRestaurants);
+      }
+
 
       return {
           restaurantsList: filtByTime,
