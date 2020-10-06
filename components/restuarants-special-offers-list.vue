@@ -1,5 +1,5 @@
 <template>
-  <div class='specialOffer-restaurants-container'>
+  <div class='specialOffer-restaurants-container' v-if="(this.restaurantsList).length > 0 ">
     <p class="specialOffer-title">Акции</p>
     <div v-swiper="swiperOptions" id='swiper' class="specialOffer-slider">
       <div class="swiper-wrapper specialOffer-wrapper">

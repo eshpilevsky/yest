@@ -185,7 +185,7 @@ export default {
     let checkCatId = currentCategory ? currentCategory.id : 0;
     let restaurantsListData;
 
-    if (checkCatId == 0) {
+    if (checkCatId === 0) {
         restaurantsList = await axios.post('https://yestapi.xyz/restaurants', sortByCoord);
         restaurantsListData = restaurantsList.data.restaurants
     } else {
@@ -221,7 +221,16 @@ export default {
       }
       // Конец получения специальных предложений
 
-      let SpecialOfferRestaurants = await store.dispatch('user/calcWorkTime_onlyOpen', restaurantsListData);
+      let SpecialOfferRestaurants_list = [];
+      if (checkCatId === 0) {
+        SpecialOfferRestaurants_list = await axios.post('https://yestapi.xyz/restaurants/restaurants-special-offers/', sortByCoord);
+        SpecialOfferRestaurants = SpecialOfferRestaurants_list.data.restaurants
+      } else {
+        SpecialOfferRestaurants_list = await axios.post(`https://yestapi.xyz/restaurants/restaurants-special-offers/category/${currentCategory.id}`, sortByCoord)
+        SpecialOfferRestaurants = SpecialOfferRestaurants_list.data.restaurants
+      }
+
+      let SpecialOfferRestaurants = await store.dispatch('user/calcWorkTime_onlyOpen', SpecialOfferRestaurants_list);
 
       return {
           restaurantsList: filtByTime,
