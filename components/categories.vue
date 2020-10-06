@@ -50,40 +50,72 @@
             </div>
         </v-menu> -->
     </div>
-    <div id="mobile-categories-block"  class="category-list-mobile">
-        <button class="category-list-mobile-item" @click="showModalWindow()">
-            <span class="item-name" style="width: 48px;">
-                <v-icon>search</v-icon>
-            </span>
-        </button>
-        <div v-for="(item, index) in allCategory" :key="'adaptiveCatList' + index" v-show="item.category_icon" class="category-list-mobile-item" @click="selectCategory(item)">
-            <v-chip :class="{selected: item.id === currentCategory.id}" class="item-name">
-                {{ item.name }}
-            </v-chip>
-        </div>
-        <v-overlay :value="showModalOverlay" :dark="false">
-            <searchModal @closeModalWindow='showModalWindow()' />
-        </v-overlay>
+    <div id="mobile-categories-block" class="category-list-mobile__wrapper">
+      <button class="category-list-mobile-item category-list-mobile-item--first" @click="showModalWindow()">
+        <span class="item-name" style="width: 48px;">
+            <v-icon>search</v-icon>
+        </span>
+      </button>
+      <div v-for="(item, index) in allCategory" :key="'adaptiveCatList' + index" v-show="item.category_icon" class="category-list-mobile-item" @click="selectCategory(item)">
+        <v-chip :class="{selected: item.id === currentCategory.id}" class="item-name">
+          {{ item.name }}
+        </v-chip>
+      </div>
+      <v-overlay :value="showModalOverlay" :dark="false">
+        <searchModal @closeModalWindow='showModalWindow()' />
+      </v-overlay>
     </div>
     <!--<v-divider class="divider" />-->
-        <v-text-field placeholder="Название, кухня или блюдо" height="46" dense clearable prepend-inner-icon="search" outlined class="searchDesktop" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch"></v-text-field>
-        <!--<v-text-field placeholder="Найти в Еде" height="48" clearable prepend-inner-icon="search" outlined dense filled class="searchMobile" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch">-->
-            <!--<template v-slot:append-outer v-show="this.getCurrentAddress.length > 0" >-->
-                <!--<v-btn rounded height="40px">-->
-                    <!--<i class="material-icons" color='#000'>sync_alt</i>-->
-                <!--</v-btn>-->
-            <!--</template>-->
-        </v-text-field>
+  <div class="rest-search">
+      <v-text-field placeholder="Название, кухня или блюдо" height="46" dense clearable prepend-inner-icon="search" outlined class="searchDesktop" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch"></v-text-field>
+      <!--<v-text-field placeholder="Найти в Еде" height="48" clearable prepend-inner-icon="search" outlined dense filled class="searchMobile" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch">-->
+      <!--<template v-slot:append-outer v-show="this.getCurrentAddress.length > 0" >-->
+      <!--<v-btn rounded height="40px">-->
+      <!--<i class="material-icons" color='#000'>sync_alt</i>-->
+      <!--</v-btn>-->
+      <!--</template>-->
+    </v-text-field>
 
-        <div v-show="searchNameKitchenDish.length > 2 && SearchSuggestions.length > 0" class="adressList">
-          <v-list>
-            <v-list-item v-for="(item, index) in SearchSuggestions" :key="'SearchSuggestion'+index" class="">
-              <v-list-item-content>
-                <v-list-item-title>{{item}}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </div>
+    <div v-show="searchNameKitchenDish.length > 2 && SearchSuggestions.length > 0" class="rest-search__list">
+      <v-list class="rest-search__wrapper">
+        <v-list-item v-for="(item, index) in SearchSuggestions" :key="'SearchSuggestion'+index" class="rest-search-item">
+          <v-list-item-content class="rest-search-item__wrapper">
+
+            <!-- Это вид с изображением и с категориями -->
+            <a href="" class="rest-search-item__link">
+              <img class="rest-search-item__img" src="https://via.placeholder.com/150" alt="placeholder">
+              <div class="rest-search-item__content">
+                <p class="rest-search-item__title">Суши</p>
+                <p class="rest-search-item__categories">
+                  <span class="rest-search-item__category">Японская</span>
+                  <span class="rest-search-item__category">Китайская</span>
+                  <span class="rest-search-item__category">Суши</span>
+                </p>
+              </div>
+            </a>
+
+            <!-- Это вид без изображения, но с ценником -->
+            <a href="" class="rest-search-item__link">
+              <span></span>
+              <div class="rest-search-item__content">
+                <p class="rest-search-item__subtitle">Суши с тунцом</p>
+                <p class="rest-search-item__price">25 BYN</p>
+              </div>
+            </a>
+
+            <a href="" class="rest-search-item__link">
+              <span></span>
+              <div class="rest-search-item__content">
+                <p class="rest-search-item__subtitle">Суши со сливочной креветкой</p>
+                <p class="rest-search-item__price">12 BYN</p>
+              </div>
+            </a>
+
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </div>
+  </div>
 
   <v-overlay :value="restOverlay" z-index="100">
     <v-progress-circular indeterminate size="64"></v-progress-circular>
@@ -466,6 +498,7 @@ export default {
 
 .category-list-mobile {
     display: none;
+    position: relative;
 }
 
 .category_icon {
@@ -479,6 +512,20 @@ export default {
     justify-content: center;
     align-items: center;
     outline: none;
+}
+
+/*.category-list-mobile-item:nth-child(3) {*/
+/*  margin-left: 31px;*/
+/*}*/
+
+.category-list-mobile-item--first {
+  position: absolute;
+  top: 1px;
+  left: 0;
+  bottom: 0;
+  z-index: 1;
+  background-color: #fff;
+  padding-left: 10px;
 }
 
 .item-name {
@@ -561,20 +608,118 @@ export default {
     }
 
     .category-list-mobile {
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-        justify-items: flex-start;
-        max-width: 992px;
-        overflow: hidden;
-        overflow-x: auto;
-        padding: 10px 0;
-        padding-left: 16px;
-        border-top: 1px solid rgba(0, 0, 0, .1);
+      position: relative;
+    }
+
+    .category-list-mobile__wrapper {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-items: flex-start;
+      max-width: 992px;
+      overflow: hidden;
+      overflow-x: auto;
+      padding: 10px 0 10px 66px;
+      border-top: 1px solid rgba(0, 0, 0, .1);
     }
 
     .searchDesktop {
         padding: 10px 10px !important;
     }
 }
+</style>
+
+<style scoped lang="scss">
+  .rest-search {
+    position: relative;
+
+    &__list {
+      position: absolute;
+      top: 46px;
+      left: 80px;
+      right: 80px;
+      z-index: 10;
+      overflow: auto;
+      max-height: 400px;
+      box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.1);
+      background: #fff;
+      border-radius: 4px;
+    }
+
+    &__wrapper {
+      padding: 0;
+    }
+
+    &-item {
+      padding: 6px 0;
+      border-bottom: 1px solid #ddd;
+
+      &__wrapper {
+        padding: 0;
+      }
+
+      &__link {
+        display: grid;
+        grid-template-columns: 36px 1fr;
+        grid-column-gap: 16px;
+        padding: 6px 16px;
+        text-decoration: none;
+
+        &:hover {
+          background-color: #efefef;
+        }
+      }
+
+      &__img {
+        width: 36px;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      &__title {
+        font-size: 20px;
+        line-height: 18px;
+        font-weight: bold;
+        color: #262626;
+        margin-bottom: 1px !important;
+      }
+
+      &__subtitle {
+        line-height: 18px;
+        color: #262626;
+        margin-bottom: 1px !important;
+      }
+
+      &__category {
+        color: #b0b0b0;
+        font-size: 14px;
+        margin-right: 10px;
+        position: relative;
+
+        &:after {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: calc(100% + 6px);
+          transform: translateY(-50%);
+          display: block;
+          width: 3px;
+          height: 3px;
+          border-radius: 50%;
+          background-color: #ddd;
+        }
+
+        &:last-child {
+          &:after {
+            display: none;
+          }
+        }
+      }
+
+      &__price {
+        color: #b0b0b0;
+        font-size: 14px;
+      }
+    }
+  }
 </style>
