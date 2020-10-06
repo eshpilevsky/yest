@@ -50,7 +50,7 @@
             </div>
         </v-menu> -->
     </div>
-    <div id="mobile-categories-block" class="category-list-mobile__wrapper">
+    <div id="mobile-categories-block" class="category-list-mobile">
       <button class="category-list-mobile-item category-list-mobile-item--first" @click="showModalWindow()">
         <span class="item-name" style="width: 48px;">
             <v-icon>search</v-icon>
@@ -498,7 +498,6 @@ export default {
 
 .category-list-mobile {
     display: none;
-    position: relative;
 }
 
 .category_icon {
@@ -513,10 +512,6 @@ export default {
     align-items: center;
     outline: none;
 }
-
-/*.category-list-mobile-item:nth-child(3) {*/
-/*  margin-left: 31px;*/
-/*}*/
 
 .category-list-mobile-item--first {
   position: absolute;
@@ -608,10 +603,6 @@ export default {
     }
 
     .category-list-mobile {
-      position: relative;
-    }
-
-    .category-list-mobile__wrapper {
       display: flex;
       flex-direction: row;
       align-items: flex-start;
