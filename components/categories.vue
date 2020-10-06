@@ -393,8 +393,7 @@ export default {
 }
 
 .searchDesktop {
-    padding: 20px 80px !important;
-    padding-bottom: 16px !important;
+    padding: 0 80px 6px!important;
     border-bottom: 4px solid rgba(245, 245, 245, 0.6);
 }
 

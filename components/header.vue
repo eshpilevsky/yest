@@ -112,12 +112,12 @@
       </div>
       <div class="technical-Btns">
         <client-only>
-        <v-btn v-show="this.getCurrentAddress.length > 0" small rounded outlined class="zone-btn" color="primary" @click="showDesktopMap()" :class="{'btn--rounded' : this.getTotalPrice == 0}">
-          <v-icon>
-            near_me
-          </v-icon>
-          <span class="zone-btn-address">{{this.getCurrentAddress}}</span>
-        </v-btn>
+          <v-btn v-show="this.getCurrentAddress.length > 0" small rounded outlined class="zone-btn" color="primary" @click="showDesktopMap()" :class="{'btn--rounded' : this.getTotalPrice == 0}">
+            <v-icon>
+              near_me
+            </v-icon>
+            <span class="zone-btn-address">{{this.getCurrentAddress}}</span>
+          </v-btn>
           <v-btn v-if="this.getTotalPrice > 0" color="primary" @click='goToLatestReset()' class="header-cart-btn"  :class="{'btn--rounded' : this.getCurrentAddress.length == 0}">
             <v-icon class="header-cart-icon">shopping_cart</v-icon>
             {{this.getTotalPrice}} BYN
@@ -125,7 +125,7 @@
         </client-only>
 
         <v-overlay :dark='false' :value="burgerOverlay" :opacity=".5">
-          <MapDesktop @closeMap='closeDesktopMap()'></MapDesktop>
+          <MapDesktop @closeMap='closeDesktopMap()' />
         </v-overlay>
 
         <v-menu offset-y>
@@ -141,14 +141,14 @@
           </v-list>
         </v-menu>
         <!--Вывод личного кабинета -->
-        <!--<client-only>-->
-          <!--<div v-if="this.getUserPhoneNumber != null">-->
-            <!--{{this.getUserPhoneNumber}}-->
-          <!--</div>-->
-          <!--<div v-else >-->
-            <!--Войти-->
-          <!--</div>-->
-        <!--</client-only>-->
+<!--        <client-only>-->
+<!--          <div v-if="this.getUserPhoneNumber != null" class="user__number">-->
+<!--            {{this.getUserPhoneNumber}}-->
+<!--          </div>-->
+<!--          <div v-else  class="user__login">-->
+<!--            Войти-->
+<!--          </div>-->
+<!--        </client-only>-->
 
       </div>
     </div>
@@ -354,6 +354,26 @@
   }
 </style>
 <style scoped>
+  .user__number, .user__login {
+    border: .5px solid rgba(0, 0, 0, .1);
+    height: 32px;
+    line-height: 32px;
+    padding: 0 16px;
+    margin-left: 20px !important;
+    font-size: 14px !important;
+    text-transform: none !important;
+    color: #000 !important;
+    text-overflow: clip;
+    overflow: hidden;
+    max-width: 400px;
+    border-radius: 28px;
+    font-weight: 600;
+    cursor: pointer;
+    order: 1;
+  }
+  .user__login {
+    letter-spacing: 0.09rem;
+  }
   .country-zone-btn {
     max-width: initial !important;
   }
