@@ -21,7 +21,7 @@ const state = () => ({
 
 const actions = {
   // Фильтрация ресторанов по режиму работы
-  caclWorkTime(context, payload) {
+  async caclWorkTime(context, payload) {
     return new Promise((resolve, reject) => {
 		const openRestaurants = [];
 		const closeRestaurants = [];
@@ -70,7 +70,8 @@ const actions = {
 		resolve(openRestaurants.concat(closeRestaurants))
     });
   },
-  calcWorkTime_onlyOpen(context, payload) {
+  async calcWorkTime_onlyOpen(context, payload) {
+    console.log('calcWorkTime_onlyOpen',payload);
     return new Promise((resolve, reject) => {
       const openRestaurants = [];
       const closeRestaurants = [];

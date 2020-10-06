@@ -222,6 +222,8 @@ export default {
       // Конец получения специальных предложений
 
       let SpecialOfferRestaurants_list = [];
+      let SpecialOfferRestaurants = [];
+
       if (checkCatId === 0) {
         SpecialOfferRestaurants_list = await axios.post('https://yestapi.xyz/restaurants/restaurants-special-offers/', sortByCoord);
         SpecialOfferRestaurants = SpecialOfferRestaurants_list.data.restaurants
@@ -230,7 +232,7 @@ export default {
         SpecialOfferRestaurants = SpecialOfferRestaurants_list.data.restaurants
       }
 
-      let SpecialOfferRestaurants = await store.dispatch('user/calcWorkTime_onlyOpen', SpecialOfferRestaurants_list);
+       SpecialOfferRestaurants = await store.dispatch('user/calcWorkTime_onlyOpen', SpecialOfferRestaurants);
 
       return {
           restaurantsList: filtByTime,
