@@ -1,4 +1,5 @@
 const colors = require('vuetify/es5/util/colors').default
+let getRoutes = require('./functions/generateRoutesSitemap');
 
 module.exports = {
   mode: 'universal',
@@ -101,6 +102,7 @@ module.exports = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/sitemap',
     '@nuxtjs/pwa',
     '@nuxtjs/robots'
   ],
@@ -109,6 +111,14 @@ module.exports = {
     Disallow: '/',
     Allow: '/$',
     Sitemap: 'https://yest.by/sitemap.xml'
+  },
+  sitemap: {
+    async routes() {
+      return await getRoutes();
+    },
+    path: '/sitemap.xml',
+    gzip: true,
+    generate: false,
   },
   /*
    ** Axios module configuration

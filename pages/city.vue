@@ -6,7 +6,31 @@
 
     <restuarantsSpecialOffersList :restaurantsList='SpecialOfferRestaurants'  :currentCategory='this.currentCategory' :currentZone='currentZone'/>
     <restuarantsList :restaurantsList='restaurantsList' :currentCategory='this.currentCategory' :currentZone='currentZone' />
-    <div class="basket-home-btn" v-show="this.getTotalPrice > 0">
+
+  <!-- SEO блок -->
+
+      <!-- Выбор региона -->
+      <!-- Выбор региона -->
+
+      <!-- (IF) Если в городе нет станций метро то не выводим -->
+      <!-- Рестораны вблизи станции метро -->
+      <!-- Рестораны вблизи станции метро -->
+
+      <!-- (IF) Если в системе нет информации о районах то не выводим -->
+      <!-- Рестораны по районам  -->
+      <!-- Рестораны по районам  -->
+
+      <!-- (IF) Если у системы нет информации об улицах то не выводим-->
+      <!-- Рестораны по улицам  -->
+      <!-- Рестораны по улицам  -->
+
+      <!-- (IF) Если на странице не предусмотрен SEO-текст не выводим его -->
+      <!--SEO текст -->
+      <!--SEO текст -->
+
+  <!-- SEO блок -->
+
+  <div class="basket-home-btn" v-show="this.getTotalPrice > 0">
         <v-btn block color='primary' class="basket-home-btn__box d-flex flex-row justify-space-between rounded-xl" height="60px" @click="goToRestuarant()">
             <span class="basket-home-btn__name">
                 {{this.restInfo ? this.restInfo.restName : ''}}

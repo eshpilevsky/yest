@@ -27,6 +27,7 @@ export default {
 		params,
         store,
         redirect,
+        error
     }) {
         let zoneList = await axios.get('https://yestapi.xyz/get-zones')
         const zoneListData = zoneList.data
@@ -42,7 +43,8 @@ export default {
             zone_id: 1
         })
         let categoriesListData = categoriesList.data
-        store.dispatch('user/allCategory', categoriesListData)
+        store.dispatch('user/allCategory', categoriesListData);
+        error({ statusCode: 404, message: 'Page not found' })
     },
     computed: {
         ...mapGetters({

@@ -64,10 +64,10 @@ export function createRouter() {
         name: 'business',
         component: business,
       },
-      {
-        path: '/404',
-        component: notFound,
-      },
+      // {
+      //   path: '/404',
+      //   component: notFound,
+      // },
       {
         path: '/cart',
         name: 'cart',
@@ -87,6 +87,22 @@ export function createRouter() {
         component: city,
 
       },
+      {
+        path: '/:region/restaurants/metro/:metro',
+        component: city,
+      },
+      {
+        path: '/:region/restaurants/street/:street',
+        component: city,
+      },
+      {
+        path: '/:region/restaurants/district/:district',
+        component: city,
+      },
+
+
+
+
       {
         path: '/:region/restaurants/category/:alias',
         component: city2,
@@ -108,7 +124,7 @@ export function createRouter() {
         name: 'paymantStatus',
         component: paymantStatus,
       },
-
+      { path: "*", component: notFound }
     ]
   })
 }

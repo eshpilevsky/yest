@@ -141,8 +141,17 @@
       },
       methods: {
         translite(str) {
-          str = str.replace(/[^A-Za-zА-Яа-яЁё]^-/g, "")
-          var ru = {
+          str = str.replace(/[^A-Za-zА-Яа-яЁё]^-/g, "");
+
+          str = str.replace(/\n/, "");
+          str = str.replace(/\r/, "");
+          str = str.replace(/\s+/, " ");
+          str = str.replace(/[^0-9a-z-_ ]/i, "");
+          str = str.replace(/ /, "-");
+
+
+
+          let ru = {
               'а': 'a',
               'б': 'b',
               'в': 'v',
@@ -172,10 +181,11 @@
               'ы': 'y',
               'э': 'e',
               'ю': 'u',
-              'я': 'ya'
+              'я': 'ya',
+              'ъ': '',
+              'ь': ''
             },
             n_str = [];
-          str = str.replace(/[ъь]+/g, '').replace(/й/g, 'i');
           for (var i = 0; i < str.length; ++i) {
             n_str.push(
               ru[str[i]] ||
