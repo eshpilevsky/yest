@@ -51,11 +51,11 @@
         </v-menu> -->
     </div>
     <div id="mobile-categories-block" class="category-list-mobile">
-      <button class="category-list-mobile-item category-list-mobile-item--first" @click="showModalWindow()">
-        <span class="item-name" style="width: 48px;">
-            <v-icon>search</v-icon>
-        </span>
-      </button>
+      <!--<button class="category-list-mobile-item category-list-mobile-item&#45;&#45;first" @click="showModalWindow()">-->
+        <!--<span class="item-name" style="width: 48px;">-->
+            <!--<v-icon>search</v-icon>-->
+        <!--</span>-->
+      <!--</button>-->
       <div v-for="(item, index) in allCategory" :key="'adaptiveCatList' + index" v-show="item.category_icon" class="category-list-mobile-item" @click="selectCategory(item)">
         <v-chip :class="{selected: item.id === currentCategory.id}" class="item-name">
           {{ item.name }}
