@@ -108,8 +108,8 @@ module.exports = {
   ],
   robots: {
     UserAgent: '*',
-    Disallow: '/',
-    Allow: '/$',
+    Disallow: ['/cart','/checkout', '/order/online_payment/', '/checkout/'],
+    // Allow: '/$',
     Sitemap: 'https://yest.by/sitemap.xml'
   },
   sitemap: {

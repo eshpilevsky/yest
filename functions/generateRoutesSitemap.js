@@ -4,19 +4,89 @@ const axios = require('axios');
 // const appRoutes = require('../routes.json');
 
 module.exports = async function getAppRoutes() {
-  const routes = ['/'];
+  let text_pages_priority = 0.6;
+  const routes = [
+    {
+      url:'/',
+      changefreq: 'daily',
+      priority: text_pages_priority,
+      lastmod: new Date()
+    },
+    {
+      url:'/contacts',
+      changefreq: 'daily',
+      priority: text_pages_priority,
+      lastmod: new Date()
+    },
+    {
+      url:'/delivery',
+      changefreq: 'daily',
+      priority: text_pages_priority,
+      lastmod: new Date()
+    },
+    {
+      url:'/terms-of-use',
+      changefreq: 'daily',
+      priority: text_pages_priority,
+      lastmod: new Date()
+    },
+    {
+      url:'/faq',
+      changefreq: 'daily',
+      priority: text_pages_priority,
+      lastmod: new Date()
+    },
+    {
+      url:'/questions',
+      changefreq: 'daily',
+      priority: text_pages_priority,
+      lastmod: new Date()
+    },
+    {
+      url:'/partner',
+      changefreq: 'daily',
+      priority: text_pages_priority,
+      lastmod: new Date()
+    },
+    {
+      url:'/rabota',
+      changefreq: 'daily',
+      priority: text_pages_priority,
+      lastmod: new Date()
+    },
+    {
+      url:'/business',
+      changefreq: 'daily',
+      priority: text_pages_priority,
+      lastmod: new Date()
+    },
+
+  //  cart
+  //  checkout
+
+  ];
 
   let cities = await get_cities();
 
   await asyncForEach(cities, async function (city) {
     // Генирация главного урла города
-    routes.push('/'+city.alias);
+    routes.push({
+      url:'/'+city.alias,
+      changefreq: 'daily',
+      priority: 1,
+      lastmod: new Date()
+    });
 
     // Генирация урлов для тегов
     let categories = await get_tags(city.id);
     await asyncForEach(categories, async function (category) {
       // console.log(category);
-      routes.push('/'+city.alias+'/restaurants/category/'+category.alias);
+      routes.push({
+          url:'/'+city.alias+'/restaurants/category/'+category.alias,
+          changefreq: 'daily',
+          priority: 0.9,
+          lastmod: new Date()
+        });
       // console.log(category);
     });
 
@@ -26,7 +96,12 @@ module.exports = async function getAppRoutes() {
 
     await asyncForEach(restaurants, async function (restaurant) {
       let url = await get_rest_url(restaurant);
-      routes.push('/'+city.alias+url);
+      routes.push({
+        url:'/'+city.alias+url,
+        changefreq: 'daily',
+        priority: 0.8,
+        lastmod: new Date()
+      });
     });
 
 
