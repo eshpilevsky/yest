@@ -140,63 +140,37 @@
         },
       },
       methods: {
-        translite(str) {
-          str = str.replace(/[^A-Za-zА-Яа-яЁё]^-/g, "");
+        translite(str){
+            let text = to_latin(str);
+            return text.toLowerCase();
+          },
 
-          str = str.replace(/\n/, "");
-          str = str.replace(/\r/, "");
-          str = str.replace(/\s+/, " ");
-          str = str.replace(/[^0-9a-z-_ ]/i, "");
-          str = str.replace(/ /, "-");
+     to_latin(str) {
+      str = str.replace(/\n/, "");
+      str = str.replace(/\r/, "");
+      str = str.replace(/\s+/, " ");
+//   str = str.replace(/[^0-9a-z-_ ]/i, "");
 
+      const ru = new Map([
+        ['а', 'a'], ['б', 'b'], ['в', 'v'], ['г', 'g'], ['д', 'd'], ['е', 'e'],
+        ['є', 'e'], ['ё', 'e'], ['ж', 'j'], ['з', 'z'], ['и', 'i'], ['ї', 'yi'], ['й', 'i'],
+        ['к', 'k'], ['л', 'l'], ['м', 'm'], ['н', 'n'], ['о', 'o'], ['п', 'p'], ['р', 'r'],
+        ['с', 's'], ['т', 't'], ['у', 'u'], ['ф', 'f'], ['х', 'h'], ['ц', 'c'], ['ч', 'ch'],
+        ['ш', 'sh'], ['щ', 'shch'], ['ы', 'y'], ['э', 'e'], ['ю', 'u'], ['я', 'ya'],
+      ]);
 
+      str = str.replace(/[ъь]+/g, '');
 
-          let ru = {
-              'а': 'a',
-              'б': 'b',
-              'в': 'v',
-              'г': 'g',
-              'д': 'd',
-              'е': 'e',
-              'ё': 'e',
-              'ж': 'j',
-              'з': 'z',
-              'и': 'i',
-              'к': 'k',
-              'л': 'l',
-              'м': 'm',
-              'н': 'n',
-              'о': 'o',
-              'п': 'p',
-              'р': 'r',
-              'с': 's',
-              'т': 't',
-              'у': 'u',
-              'ф': 'f',
-              'х': 'h',
-              'ц': 'c',
-              'ч': 'ch',
-              'ш': 'sh',
-              'щ': 'shch',
-              'ы': 'y',
-              'э': 'e',
-              'ю': 'u',
-              'я': 'ya',
-              'ъ': '',
-              'ь': ''
-            },
-            n_str = [];
-          for (var i = 0; i < str.length; ++i) {
-            n_str.push(
-              ru[str[i]] ||
-              ru[str[i].toLowerCase()] == undefined && str[i] ||
-              ru[str[i].toLowerCase()].replace(/^(.)/, function (match) {
-                return match.toUpperCase()
-              })
-            );
-          }
-          return n_str.join('');
-        },
+      return Array.from(str)
+        .reduce((s, l) =>
+          s + (
+            ru.get(l)
+            || ru.get(l.toLowerCase()) === undefined && l
+            || ru.get(l.toLowerCase()).toUpperCase()
+          )
+          , '');
+
+    },
         get_rest_url(info){
           // return 'minsk';
           let name = this.translite(info.name)
