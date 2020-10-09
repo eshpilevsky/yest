@@ -389,10 +389,29 @@ export default {
 
       // this.restaurantsList = [];
       // this.restaurantsList = rest;
-      console.log(rest);
+
+      let SpecialOfferRestaurants_list = [];
+      let SpecialOfferRestaurants = [];
+
+      if (this.getSelectedCategory.id === 0) {
+        SpecialOfferRestaurants_list = await axios.post('https://yestapi.xyz/restaurants/restaurants-special-offers/', sortByCoord);
+        if(SpecialOfferRestaurants_list.data.status === 200){
+          SpecialOfferRestaurants = SpecialOfferRestaurants_list.data.restaurants
+        }
+      } else {
+        SpecialOfferRestaurants_list = await axios.post(`https://yestapi.xyz/restaurants/restaurants-special-offers/category/${this.getSelectedCategory.id}`, sortByCoord)
+        if(SpecialOfferRestaurants_list.data.status === 200){
+          SpecialOfferRestaurants = SpecialOfferRestaurants_list.data.restaurants
+        }
+      }
+
+      if(SpecialOfferRestaurants.length > 0){
+        this.SpecialOfferRestaurants = await this.calcWorkTime_onlyOpen(SpecialOfferRestaurants);
+      }else {
+        this.SpecialOfferRestaurants = [];
+      }
 
       this.restaurantsList = await this.Action__calcWorkTime(rest);
-      this.SpecialOfferRestaurants = await this.calcWorkTime_onlyOpen(rest);
 
       // let SpecialOfferRestaurants = await store.dispatch('user/calcWorkTime_onlyOpen', restaurantsListData);
 
