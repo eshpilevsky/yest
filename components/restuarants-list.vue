@@ -148,7 +148,7 @@
         return `${openTime.slice(0, 5)} - ${closeTime.slice(0, 5)}`;
       },
       translite(str){
-        let text = to_latin(str);
+        let text = this.to_latin(str);
         return text.toLowerCase();
       },
       to_latin(str) {

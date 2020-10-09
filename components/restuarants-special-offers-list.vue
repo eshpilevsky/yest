@@ -141,7 +141,7 @@
       },
       methods: {
         translite(str){
-            let text = to_latin(str);
+            let text = this.to_latin(str);
             return text.toLowerCase();
           },
 
