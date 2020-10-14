@@ -69,6 +69,14 @@ export default {
         console.error(this.getSelectedZone);
         console.log('created -> this.getOrderId', this.getOrderId)
         this.orderId = this.getOrderId;
+
+        ga('ec:setAction', 'purchase', {
+          'id': this.orderId,
+          'affiliation': 'yest.by',
+          'revenue': 0,
+          'tax': 0,
+          'shipping': 0
+        });
 	},
 	mounted () {
 		window.scrollTo(0, 0);
