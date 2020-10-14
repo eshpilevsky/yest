@@ -87,11 +87,11 @@ export const mutations = {
           "products": [
             {
               "id": payload.id,
-              "name": data.name,
-              "price": data.price,
-              "brand": data.brand,
+              "name": payload.name,
+              "price": payload.selectSize.price,
+              "brand": "",
               "category": "",
-              "quantity": data.quantity
+              "quantity": payload.selectSize.count
             }
           ]
         }
