@@ -84,12 +84,12 @@ export const mutations = {
         "add": {
           "products": [
             {
-              "id": payload.id,
+              "id": payload.selectSize.id,
               "name": payload.name,
               "price": payload.selectSize.price,
               "brand": "",
               "category": "",
-              "quantity": payload.selectSize.count
+              "quantity": 1
             }
           ]
         }
@@ -101,20 +101,42 @@ export const mutations = {
   SAVE_RESTRUARNT_URL(state, url) {
     state.status = '200'
     state.data.restuarantUrl = url
-    // state.data.restuarantUrl = url
   },
   SAVE_TO_BASKET(state, payload) {
+
+    // Добавление товара в корзину в первый раз
     state.status = '200'
     state.data.dishs.push(payload);
 
 
-    console.log('SAVE_TO_BASKET');
-    console.log(payload);
+    let dataLayer = window.dataLayer || [];
+    dataLayer.push({
+      "ecommerce": {
+        "add": {
+          "products": [
+            {
+              "id": payload.selectSize.id,
+              "name": payload.name,
+              "price": payload.selectSize.price,
+              "brand": "",
+              "category": "",
+              "quantity": 1
+            }
+          ]
+        }
+      }
+    });
 
 
 
   },
   DROP_BASKET(state) {
+
+    (state.data.dishs).forEach(function (a) {
+      console.log(a);
+    });
+
+
     state.status = '200'
     state.data.dishs = []
     state.data.restuarantUrl = null
@@ -149,6 +171,25 @@ export const mutations = {
         state.data.dishs.push(payload)
       }
     }
+
+
+    let dataLayer = window.dataLayer || [];
+    dataLayer.push({
+      "ecommerce": {
+        "remove": {
+          "products": [
+            {
+              "id": payload.selectSize.id,
+              "name": payload.name,
+              "price": payload.selectSize.price,
+              "brand": "",
+              "category": "",
+              "quantity": 1
+            }
+          ]
+        }
+      }
+    });
 
 
     console.log('DECREMENT_DISH');
