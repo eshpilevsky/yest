@@ -247,18 +247,24 @@
         })
 
         window.dataLayer = window.dataLayer || [];
+
         dataLayer.push({
           'ecommerce': {
-            'checkout': {
-              'actionField': {'step': 1},
+            'purchase': {
+              'actionField': {
+                'id': this.orderId,
+                'affiliation': 'Yest.by',
+                'coupon': ''
+              },
               'products': products_GA
             }
           },
           'event': 'gtm-ee-event',
-          'gtm-ee-event-category': '',
-          'gtm-ee-event-action': 'Checkout Step 1',
+          'gtm-ee-event-category': 'Enhanced Ecommerce',
+          'gtm-ee-event-action': 'Purchase',
           'gtm-ee-event-non-interaction': 'False',
         });
+
 
         ApiService.post('/create/order', {
           phone: this.getUserPhoneNumber,
