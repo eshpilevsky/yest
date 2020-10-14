@@ -70,7 +70,7 @@ export default {
         console.log('created -> this.getOrderId', this.getOrderId)
         this.orderId = this.getOrderId;
 
-        window.dataLayer.push({
+        dataLayer.push({
           'event': 'checkout',
           'ecommerce': {
             'checkout': {
