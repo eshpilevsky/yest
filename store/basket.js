@@ -131,9 +131,25 @@ export const mutations = {
 
   },
   DROP_BASKET(state) {
+    let dataLayer = window.dataLayer || [];
 
-    (state.data.dishs).forEach(function (a) {
-      console.log(a);
+    (state.data.dishs).forEach(function (data) {
+      dataLayer.push({
+        "ecommerce": {
+          "remove": {
+            "products": [
+              {
+                "id": data.selectSize.id,
+                "name": data.name,
+                "price": data.selectSize.price,
+                "brand": "",
+                "category": "",
+                "quantity": data.selectSize.count
+              }
+            ]
+          }
+        }
+      });
     });
 
 
