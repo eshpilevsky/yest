@@ -191,8 +191,25 @@
         this.loadingSendOrder = true
         let dishId;
         let dishOption = [];
+        let products_GA = [];
+
         this.getSelectedDishs.forEach((dish) => {
           dishId = dish.selectSize.id
+
+
+          // Добавляем в массив для отправки данных в GA
+
+          products_GA.push({
+            "id": dish.selectSize.id,
+            "name": dish.name,
+            "price": dish.selectSize.price,
+            "brand": "",
+            "category": "",
+            "quantity": dish.selectSize.count
+          });
+
+
+
           if (dish.hasOwnProperty('selectOption')) {
             dish.selectOption.forEach((option) => {
               if (option.selected.length > 1) {
@@ -228,7 +245,21 @@
           }
           this.order.push(result)
         })
-        console.log(this.order);
+
+        window.dataLayer = window.dataLayer || [];
+        dataLayer.push({
+          'ecommerce': {
+            'checkout': {
+              'actionField': {'step': 1},
+              'products': products_GA
+            }
+          },
+          'event': 'gtm-ee-event',
+          'gtm-ee-event-category': '',
+          'gtm-ee-event-action': 'Checkout Step 1',
+          'gtm-ee-event-non-interaction': 'False',
+        });
+
         ApiService.post('/create/order', {
           phone: this.getUserPhoneNumber,
           delivery: {

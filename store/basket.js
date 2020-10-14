@@ -78,7 +78,7 @@ export const mutations = {
       }
     }
 
-    let dataLayer = window.dataLayer || [];
+    window.dataLayer = window.dataLayer || [];
     dataLayer.push({
       "ecommerce": {
         "add": {
@@ -109,7 +109,7 @@ export const mutations = {
     state.data.dishs.push(payload);
 
 
-    let dataLayer = window.dataLayer || [];
+    window.dataLayer = window.dataLayer || [];
     dataLayer.push({
       "ecommerce": {
         "add": {
@@ -131,7 +131,7 @@ export const mutations = {
 
   },
   DROP_BASKET(state) {
-    let dataLayer = window.dataLayer || [];
+    window.dataLayer = window.dataLayer || [];
 
     (state.data.dishs).forEach(function (data) {
       dataLayer.push({
@@ -189,7 +189,7 @@ export const mutations = {
     }
 
 
-    let dataLayer = window.dataLayer || [];
+    window.dataLayer = window.dataLayer || [];
     dataLayer.push({
       "ecommerce": {
         "remove": {
