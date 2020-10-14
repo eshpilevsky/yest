@@ -30,7 +30,7 @@ export const actions = {
       if (findSize == undefined) {
         context.commit('SAVE_TO_BASKET', payload)
       } else {
-        context.commit('INCREMENT_DISH', payload)
+        context.commit('INCREMENT_DISH', payload);
       }
     }
   },
@@ -57,15 +57,13 @@ export const actions = {
 export const mutations = {
   INCREMENT_DISH(state, payload) {
     state.status = '200'
-    let dishList = state.data.dishs
+    let dishList = state.data.dishs;
     let findDish = dishList.findIndex((dish) => {
-      return dish.id == payload.id
-    })
+      return dish.id === payload.id
+    });
     let dishSizes;
     if (findDish !== undefined) {
-
       dishSizes = state.data.dishs[findDish].selectSize
-
       let findSize;
       if (dishSizes.id == payload.selectSize.id) {
         findSize = true
@@ -79,6 +77,28 @@ export const mutations = {
         state.data.dishs.push(payload)
       }
     }
+
+    console.log(payload);
+
+    let dataLayer = window.dataLayer || [];
+    dataLayer.push({
+      "ecommerce": {
+        "add": {
+          "products": [
+            {
+              "id": payload.id,
+              "name": data.name,
+              "price": data.price,
+              "brand": data.brand,
+              "category": "",
+              "quantity": data.quantity
+            }
+          ]
+        }
+      }
+    });
+
+
   },
   SAVE_RESTRUARNT_URL(state, url) {
     state.status = '200'
