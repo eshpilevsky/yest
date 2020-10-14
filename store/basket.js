@@ -78,8 +78,6 @@ export const mutations = {
       }
     }
 
-    console.log(payload);
-
     let dataLayer = window.dataLayer || [];
     dataLayer.push({
       "ecommerce": {
@@ -104,11 +102,17 @@ export const mutations = {
     state.status = '200'
     state.data.restuarantUrl = url
     // state.data.restuarantUrl = url
-
   },
   SAVE_TO_BASKET(state, payload) {
     state.status = '200'
-    state.data.dishs.push(payload)
+    state.data.dishs.push(payload);
+
+
+    console.log('SAVE_TO_BASKET');
+    console.log(payload);
+
+
+
   },
   DROP_BASKET(state) {
     state.status = '200'
@@ -145,10 +149,16 @@ export const mutations = {
         state.data.dishs.push(payload)
       }
     }
+
+
+    console.log('DECREMENT_DISH');
+    console.log(payload);
   },
   REMOVE_FROM_BASKET(state, id) {
+    console.log('REMOVE_FROM_BASKET');
     state.status = '200'
     state.data.dishs.filter(dish => {
+      console.log(dish);
       return dish !== id
     })
   },
