@@ -51,11 +51,11 @@
         </v-menu> -->
     </div>
     <div id="mobile-categories-block" class="category-list-mobile">
-      <!--<button class="category-list-mobile-item category-list-mobile-item&#45;&#45;first" @click="showModalWindow()">-->
-        <!--<span class="item-name" style="width: 48px;">-->
-            <!--<v-icon>search</v-icon>-->
-        <!--</span>-->
-      <!--</button>-->
+      <button class="category-list-mobile-item category-list-mobile-item--first" @click="showModalWindow()">
+        <span class="item-name" style="width: 48px;">
+            <v-icon>search</v-icon>
+        </span>
+      </button>
       <div v-for="(item, index) in allCategory" :key="'adaptiveCatList' + index" v-show="item.category_icon" class="category-list-mobile-item" @click="selectCategory(item)">
         <v-chip :class="{selected: item.id === currentCategory.id}" class="item-name">
           {{ item.name }}
@@ -66,55 +66,57 @@
       </v-overlay>
     </div>
     <!--<v-divider class="divider" />-->
-  <!--<div class="rest-search">-->
-      <!--&lt;!&ndash;<v-text-field placeholder="Название, кухня или блюдо" height="46" dense clearable prepend-inner-icon="search" outlined class="searchDesktop" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch"></v-text-field>&ndash;&gt;-->
-      <!--&lt;!&ndash;<v-text-field placeholder="Найти в Еде" height="48" clearable prepend-inner-icon="search" outlined dense filled class="searchMobile" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch">&ndash;&gt;-->
-      <!--&lt;!&ndash;<template v-slot:append-outer v-show="this.getCurrentAddress.length > 0" >&ndash;&gt;-->
-      <!--&lt;!&ndash;<v-btn rounded height="40px">&ndash;&gt;-->
-      <!--&lt;!&ndash;<i class="material-icons" color='#000'>sync_alt</i>&ndash;&gt;-->
-      <!--&lt;!&ndash;</v-btn>&ndash;&gt;-->
-      <!--&lt;!&ndash;</template>&ndash;&gt;-->
+  <div class="rest-search">
+      <v-text-field placeholder="Название, кухня или блюдо" height="46" dense clearable prepend-inner-icon="search" outlined class="searchDesktop" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch"></v-text-field>
+      <v-text-field placeholder="Найти в Еде" height="48" clearable prepend-inner-icon="search" outlined dense filled class="searchMobile" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch">
+      <template v-slot:append-outer v-show="this.getCurrentAddress.length > 0" >
+        <v-btn rounded height="40px">
+          <i class="material-icons" color='#000'>sync_alt</i>
+        </v-btn>
+      </template>
 
-    <!--<div v-show="searchNameKitchenDish.length > 2 && SearchSuggestions.length > 0" class="rest-search__list">-->
-      <!--<v-list class="rest-search__wrapper">-->
-        <!--<v-list-item v-for="(item, index) in SearchSuggestions" :key="'SearchSuggestion'+index" class="rest-search-item">-->
-          <!--<v-list-item-content class="rest-search-item__wrapper">-->
+    <div v-show="searchNameKitchenDish.length > 2" class="rest-search__list">
+      <v-list class="rest-search__wrapper">
+        <v-list-item v-for="(item, index) in SearchSuggestions" :key="'SearchSuggestion'+index" class="rest-search-item">
+          <v-list-item-content class="rest-search-item__wrapper">
 
-            <!--&lt;!&ndash; Это вид с изображением и с категориями &ndash;&gt;-->
-            <!--<a href="" class="rest-search-item__link">-->
-              <!--<img class="rest-search-item__img" src="https://via.placeholder.com/150" alt="placeholder">-->
-              <!--<div class="rest-search-item__content">-->
-                <!--<p class="rest-search-item__title">Суши</p>-->
-                <!--<p class="rest-search-item__categories">-->
-                  <!--<span class="rest-search-item__category">Японская</span>-->
-                  <!--<span class="rest-search-item__category">Китайская</span>-->
-                  <!--<span class="rest-search-item__category">Суши</span>-->
-                <!--</p>-->
-              <!--</div>-->
-            <!--</a>-->
+            <!-- Это вид с изображением и с категориями -->
+            <a href="" class="rest-search-item__link">
+              <img class="rest-search-item__img" src="https://via.placeholder.com/150" alt="placeholder">
+              <div class="rest-search-item__content">
+                <p class="rest-search-item__title">Суши</p>
+                <p class="rest-search-item__categories">
+                  <span class="rest-search-item__category">Японская</span>
+                  <span class="rest-search-item__category">Китайская</span>
+                  <span class="rest-search-item__category">Суши</span>
+                </p>
+              </div>
+            </a>
 
-            <!--&lt;!&ndash; Это вид без изображения, но с ценником &ndash;&gt;-->
-            <!--<a href="" class="rest-search-item__link">-->
-              <!--<span></span>-->
-              <!--<div class="rest-search-item__content">-->
-                <!--<p class="rest-search-item__subtitle">Суши с тунцом</p>-->
-                <!--<p class="rest-search-item__price">25 BYN</p>-->
-              <!--</div>-->
-            <!--</a>-->
+            <!-- Это вид без изображения, но с ценником -->
+            <a href="" class="rest-search-item__link">
+              <span></span>
+              <div class="rest-search-item__content">
+                <p class="rest-search-item__subtitle">Суши с тунцом</p>
+                <p class="rest-search-item__price">25 BYN</p>
+              </div>
+            </a>
 
-            <!--<a href="" class="rest-search-item__link">-->
-              <!--<span></span>-->
-              <!--<div class="rest-search-item__content">-->
-                <!--<p class="rest-search-item__subtitle">Суши со сливочной креветкой</p>-->
-                <!--<p class="rest-search-item__price">12 BYN</p>-->
-              <!--</div>-->
-            <!--</a>-->
+            <a href="" class="rest-search-item__link">
+              <span></span>
+              <div class="rest-search-item__content">
+                <p class="rest-search-item__subtitle">Суши со сливочной креветкой</p>
+                <p class="rest-search-item__price">12 BYN</p>
+              </div>
+            </a>
 
-          <!--</v-list-item-content>-->
-        <!--</v-list-item>-->
-      <!--</v-list>-->
-    <!--</div>-->
-  <!--</div>-->
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </div>
+      </v-text-field>
+  </div>
+
 
   <v-overlay :value="restOverlay" z-index="100">
     <v-progress-circular indeterminate size="64"></v-progress-circular>
