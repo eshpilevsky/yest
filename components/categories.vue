@@ -68,12 +68,6 @@
     <!--<v-divider class="divider" />-->
   <div class="rest-search">
       <v-text-field placeholder="Название, кухня или блюдо" height="46" dense clearable prepend-inner-icon="search" outlined class="searchDesktop" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch"></v-text-field>
-      <v-text-field placeholder="Найти в Еде" height="48" clearable prepend-inner-icon="search" outlined dense filled class="searchMobile" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch">
-      <template v-slot:append-outer v-show="this.getCurrentAddress.length > 0" >
-        <v-btn rounded height="40px">
-          <i class="material-icons" color='#000'>sync_alt</i>
-        </v-btn>
-      </template>
 
     <div v-show="searchNameKitchenDish.length > 2 && SearchSuggestions.length > 0" class="rest-search__list">
       <v-list class="rest-search__wrapper">
