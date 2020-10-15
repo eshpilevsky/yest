@@ -254,9 +254,9 @@ export default {
 		    this.second = this.allCategory.slice(this.sliceCounter, this.categoriesList.length)
 
 		let checkMore = this.first.find((cat)=>{
-			return cat.id == this.currentCategory.id
+			return cat.id === this.currentCategory.id
 		})
-		if (checkMore == undefined) {
+		if (checkMore === undefined) {
 			this.more= {
                 text: this.currentCategory.name,
                 id: this.currentCategory.id,
@@ -286,7 +286,6 @@ export default {
             if(className.match('selected') != null){
               need_element = element;
             }else {
-
               ScrollWidth += elementChild.offsetWidth+8;
               // console.log(elementChild.offsetWidth);
             }
@@ -294,10 +293,11 @@ export default {
         });
         // console.log(element);
       });
-      // console.log(ScrollWidth);
+      console.log(ScrollWidth);
       // console.log(need_element);
 
-      let need_scroll_width = ScrollWidth - 25;
+      let need_scroll_width = ScrollWidth + 14;
+
 
 
       mobileCategories.scrollLeft = need_scroll_width;
