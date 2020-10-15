@@ -46,6 +46,9 @@ export const actions = {
   removeFromBasket(context, id) {
     context.commit('REMOVE_FROM_BASKET', id)
   },
+  system_dropBasket(context) {
+    context.commit('SYSTEM_DROP_BASKET')
+  },
   saveRestuarantUrl(context, url) {
     context.commit('SAVE_RESTRUARNT_URL', url)
   },
@@ -238,6 +241,13 @@ export const mutations = {
   SET_ORDER_ID(state, id) {
     state.status = '200'
     state.data.orderId = id
+  },
+  SYSTEM_DROP_BASKET(state, payload) {
+
+    // Добавление товара в корзину в первый раз
+    state.status = '200'
+    state.data.dishs.push(payload);
+
   },
 };
 

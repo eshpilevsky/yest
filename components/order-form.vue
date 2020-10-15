@@ -299,7 +299,7 @@
 
 
 
-          this.$store.dispatch('basket/dropBasket');
+          this.$store.dispatch('basket/system_dropBasket');
           this.loadingSendOrder = false
 
         }).catch((error) => {
