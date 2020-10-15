@@ -75,7 +75,7 @@
         </v-btn>
       </template>
 
-    <div v-show="searchNameKitchenDish.length > 2" class="rest-search__list">
+    <div v-show="searchNameKitchenDish.length > 2 && SearchSuggestions.length > 0" class="rest-search__list">
       <v-list class="rest-search__wrapper">
         <v-list-item v-for="(item, index) in SearchSuggestions" :key="'SearchSuggestion'+index" class="rest-search-item">
           <v-list-item-content class="rest-search-item__wrapper">
@@ -154,7 +154,7 @@ export default {
             searchNameKitchenDish: '',
             firstCategoryId: [],
             secondCategoryId: [],
-            SearchSuggestions: [],
+            SearchSuggestions: [{},{},{},{}],
             ww: 0,
             sliceCounter: 9,
             sortText: [{
