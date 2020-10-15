@@ -245,23 +245,7 @@
           this.order.push(result)
         });
 
-        window.dataLayer = window.dataLayer || [];
 
-        dataLayer.push({
-          'ecommerce': {
-            'purchase': {
-              'actionField': {
-                'id': (this.orderId).toString(),
-                'affiliation': 'Yest.by'
-              },
-              'products': products_GA
-            }
-          },
-          'event': 'gtm-ee-event',
-          'gtm-ee-event-category': 'Enhanced Ecommerce',
-          'gtm-ee-event-action': 'Purchase',
-          'gtm-ee-event-non-interaction': 'False',
-        });
 
 
         ApiService.post('/create/order', {
@@ -282,12 +266,39 @@
 
           ym(67033669,'reachGoal','newOrder')
 
+
+          window.dataLayer = window.dataLayer || [];
+
+          dataLayer.push({
+            'ecommerce': {
+              'purchase': {
+                'actionField': {
+                  'id': (response.data.order_id).toString(),
+                  'affiliation': 'Yest.by'
+                },
+                'products': products_GA
+              }
+            },
+            'event': 'gtm-ee-event',
+            'gtm-ee-event-category': 'Enhanced Ecommerce',
+            'gtm-ee-event-action': 'Purchase',
+            'gtm-ee-event-non-interaction': 'False',
+          });
+
+
+
           if (response.data.hasOwnProperty('checkout')) {
             window.location = response.data.checkout.redirect_url
           } else {
             this.$store.dispatch('basket/setOrderId', response.data.order_id);
             this.$router.push('/checkout/success')
           }
+
+
+
+
+
+
           this.$store.dispatch('basket/dropBasket');
           this.loadingSendOrder = false
 
