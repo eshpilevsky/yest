@@ -192,9 +192,10 @@
         let dishId;
         let dishOption = [];
         let products_GA = [];
+        let full_cost = 0;
 
         this.getSelectedDishs.forEach((dish) => {
-          dishId = dish.selectSize.id
+          dishId = dish.selectSize.id;
 
 
           // Добавляем в массив для отправки данных в GA
@@ -207,8 +208,6 @@
             "category": "",
             "quantity": dish.selectSize.count
           });
-
-
 
           if (dish.hasOwnProperty('selectOption')) {
             dish.selectOption.forEach((option) => {
@@ -244,7 +243,7 @@
             }
           }
           this.order.push(result)
-        })
+        });
 
         window.dataLayer = window.dataLayer || [];
 
@@ -252,9 +251,8 @@
           'ecommerce': {
             'purchase': {
               'actionField': {
-                'id': this.orderId,
-                'affiliation': 'Yest.by',
-                'coupon': ''
+                'id': (this.orderId).toString(),
+                'affiliation': 'Yest.by'
               },
               'products': products_GA
             }
