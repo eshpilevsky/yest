@@ -93,7 +93,11 @@ export const mutations = {
             }
           ]
         }
-      }
+      },
+      'event': 'gtm-ee-event',
+      'gtm-ee-event-category': 'Enhanced Ecommerce',
+      'gtm-ee-event-action': 'Adding a Product to a Shopping Cart',
+      'gtm-ee-event-non-interaction': 'False'
     });
 
 
@@ -124,7 +128,11 @@ export const mutations = {
             }
           ]
         }
-      }
+      },
+      'event': 'gtm-ee-event',
+      'gtm-ee-event-category': 'Enhanced Ecommerce',
+      'gtm-ee-event-action': 'Adding a Product to a Shopping Cart',
+      'gtm-ee-event-non-interaction': 'False'
     });
 
 
@@ -148,7 +156,11 @@ export const mutations = {
               }
             ]
           }
-        }
+        },
+        'event': 'gtm-ee-event',
+        'gtm-ee-event-category': 'Enhanced Ecommerce',
+        'gtm-ee-event-action': 'DROP_BASKETt',
+        'gtm-ee-event-non-interaction': 'False'
       });
     });
 
@@ -204,7 +216,11 @@ export const mutations = {
             }
           ]
         }
-      }
+      },
+      'event': 'gtm-ee-event',
+      'gtm-ee-event-category': 'Enhanced Ecommerce',
+      'gtm-ee-event-action': 'delete a Product from Shopping Cart',
+      'gtm-ee-event-non-interaction': 'False'
     });
 
 
