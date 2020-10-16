@@ -144,6 +144,7 @@ export default {
                     }
                 }
             }
+            store.dispatch('user/setActiveCategoryInfoData',categoryInfoData);
             store.dispatch('user/selectCategory', currentCategory)
         } else {
             if (params.alias) {
@@ -327,69 +328,6 @@ export default {
         return res.data.restaurants
       });
 
-      // function name(params) {
-      //   const openRestorants = [];
-      //   const closeRestorants = [];
-      //   const currentDay = new Date().getDay();
-      //   const currentTime = new Date().getTime();
-      //   params.forEach((item, i, arr) => {
-      //     const op = item.operation_time;
-      //     const buffer = [];
-      //     if (item.operation_time.length > 6) {
-      //       op.forEach((optime, index, operationTimeArr) => {
-      //         if (optime.day === currentDay) {
-      //           buffer.push(optime);
-      //         }
-      //       });
-      //       let closeTime = buffer[0].close_time
-      //       const openTime =
-      //         buffer.length > 1 ? buffer[1].open_time : buffer[0].open_time;
-      //
-      //       const closeTimeHour = closeTime.slice(0, 2);
-      //       const closeTimeMin = closeTime.slice(3, 5);
-      //       const closeTimeSec = closeTime.slice(6, 8);
-      //       const closeTimeTimestamp = new Date();
-      //       closeTimeTimestamp.setHours(closeTimeHour);
-      //       closeTimeTimestamp.setMinutes(closeTimeMin);
-      //       closeTimeTimestamp.setSeconds(closeTimeSec);
-      //
-      //       const openTimeHour = openTime.slice(0, 2);
-      //       const openTimeMin = openTime.slice(3, 5);
-      //       const openTimeSec = openTime.slice(6, 8);
-      //       const openTimeTimestamp = new Date();
-      //
-      //       openTimeTimestamp.setHours(openTimeHour);
-      //       openTimeTimestamp.setMinutes(openTimeMin);
-      //       openTimeTimestamp.setSeconds(openTimeSec);
-      //
-      //       item.today_close_time = closeTimeTimestamp.getTime();
-      //       item.today_open_time = openTimeTimestamp.getTime();
-      //
-      //       if (buffer.length !== 1) {
-      //         item.today_close_time += 86400000;
-      //       }
-      //
-      //       if (currentTime < item.today_close_time) {
-      //         openRestorants.push(item);
-      //         item.is_open = true;
-      //       } else {
-      //         closeRestorants.push(item);
-      //         item.is_open = false;
-      //       }
-      //     }
-      //     if (item.hasOwnProperty('delivery')) {
-      //       // let mass = item.delivery.fee
-      //       // mass.sort((a, b) => {
-      //       // 	return a.delivery > b.delivery
-      //       // })
-      //     }
-      //   });
-      //   return openRestorants.concat(closeRestorants)
-      // }
-
-      // this.restaurantsList = [];
-      // this.restaurantsList = rest;
-
       let SpecialOfferRestaurants_list = [];
       let SpecialOfferRestaurants = [];
 
@@ -412,11 +350,6 @@ export default {
       }
 
       this.restaurantsList = await this.Action__calcWorkTime(rest);
-
-      // let SpecialOfferRestaurants = await store.dispatch('user/calcWorkTime_onlyOpen', restaurantsListData);
-
-      // await store.dispatch('user/caclWorkTime', this.restaurantsList);
-
     }
   },
     watch: {
@@ -432,8 +365,16 @@ export default {
             }
         },
         restaurantsList(newValue) {
-            console.log('restaurantsList -> newValue', newValue[0].name)
             return newValue
+        },
+        selectedCategory(newValue){
+          this.currentCategory = newValue;
+          // Обновить данные о ресторанах
+          this.getRestList();
+          // Обновить данные о специальных предложениях
+        },
+        getActiveCategoryInfoData(newValue){
+            this.categoryInfoData = newValue
         }
     },
     computed: {
@@ -441,16 +382,18 @@ export default {
             getSelectedZone: 'zone/getSelectedZone',
             getZoneList: 'zone/getZoneList',
             getCategoryList: 'user/getCategoryList',
+            selectedCategory: 'user/getSelectedCategory',
             getSelectedCategory: 'user/getSelectedCategory',
             getCurrentCoords: 'map/getCurrentCoords',
             getCurrentAddress: "map/getCurrentAddress",
             getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
             getTotalPrice: "basket/getTotalPrice",
+            getActiveCategoryInfoData: 'user/getActiveCategoryInfoData'
         })
     },
     created() {
-        this.$store.dispatch('zone/setSelectedZone', this.currentZone)
-        this.$store.dispatch('user/selectCategory', this.currentCategory)
+        this.$store.dispatch('zone/setSelectedZone', this.currentZone);
+        this.$store.dispatch('user/selectCategory', this.currentCategory);
         if (this.getLatetestRestInfoWithOrder) {
             this.restInfo = this.getLatetestRestInfoWithOrder
         }

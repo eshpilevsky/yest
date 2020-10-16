@@ -2,7 +2,7 @@
 <div class="categories-containe sticky" v-if="!hideCategory">
     <div class="category-list">
         <div class="category-list__container">
-            <v-chip active-class="category-chips--active" class="category-chips" v-for="(item, index) in first" :key="'firstCategor' + index" :color="item.alias == currentCategory.alias ? 'primary': 'white'" @click="selectCategory(item); restOverlay = !restOverlay;">
+            <v-chip active-class="category-chips--active" class="category-chips" v-for="(item, index) in first" :key="'firstCategor' + index" :color="item.alias === currentCategory.alias ? 'primary': 'white'" @click="selectCategory(item)">
                 <div class="category-name">
                     {{ item.name }}
                 </div>
@@ -120,7 +120,7 @@
 
 <script>
 import ApiService from '../common/api.service'
-
+import axios from 'axios'
 import searchModal from '@/components/search-modal';
 
 import {
@@ -228,15 +228,58 @@ export default {
         showModalWindow() {
             this.showModalOverlay = !this.showModalOverlay
         },
-        selectCategory(item) {
-            if (this.currentCategory.id == item.id) {
-              this.$router.push(`/${this.currentZone.alias}`)
+        async selectCategory(item) {
+            // Смена категории без перезагрузки страницы
+            let newUrl;
+            if (this.currentCategory.id === item.id) {
+              // this.$router.push(`/${this.currentZone.alias}`)
+              newUrl = `/${this.currentZone.alias}`;
+              history.pushState({}, null, newUrl);
             } else {
-              this.$router.push(`/${this.currentZone.alias}/restaurants/category/${item.alias}`)
+              // this.$router.push(`/${this.currentZone.alias}/restaurants/category/${item.alias}`)
+              if(item.alias === 'all'){
+                newUrl = `/${this.currentZone.alias}`;
+                history.pushState({}, null, newUrl);
+              }else {
+                newUrl = `/${this.currentZone.alias}/restaurants/category/${item.alias}`;
+                history.pushState({}, null, newUrl);
+              }
             }
+
+
+          let categoryInfo;
+          let categoryInfoData;
+
+          categoryInfo = await axios.post('https://yestapi.xyz/categories/info', {
+            zone_id: this.currentZone.id,
+            category_id: item.id
+          });
+
+          if (categoryInfo.data.status !== 404) {
+            categoryInfoData = categoryInfo.data;
+            if (categoryInfoData.background === '') {
+              categoryInfoData.background = 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png'
+            }
+            // app.categoryInfoData = categoryInfoData
+          } else {
+            categoryInfoData = {
+              header: 'Быстрая доставка',
+              city: this.currentZone.accusative,
+              background: 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png',
+              category_icon: 'https://menu-menu.by/images/category_background/mobile/pizza.jpg',
+              meta: {
+                title: this.currentZone.seo.title,
+                description: this.currentZone.seo.description,
+                keywords: this.currentZone.seo.keywords,
+              }
+            }
+          }
+
+          this.$store.dispatch('user/setActiveCategoryInfoData',categoryInfoData);
+          this.$store.dispatch('user/selectCategory', item);
         },
         dropSearch() {
-			this.searchNameKitchenDish = ''
+			      this.searchNameKitchenDish = ''
             this.$store.dispatch('user/setSearchNameKitchenDish', null)
         },
         searchFocus() {
@@ -255,7 +298,7 @@ export default {
 
 		let checkMore = this.first.find((cat)=>{
 			return cat.id === this.currentCategory.id
-		})
+		});
 		if (checkMore === undefined) {
 			this.more= {
                 text: this.currentCategory.name,
@@ -293,21 +336,11 @@ export default {
         });
         // console.log(element);
       });
-      console.log(ScrollWidth);
       // console.log(need_element);
 
-      let need_scroll_width = ScrollWidth + 14;
-
-
+      let need_scroll_width = ScrollWidth - 64;
 
       mobileCategories.scrollLeft = need_scroll_width;
-
-
-
-
-
-
-
 
         this.hideCategory = false
         this.ww = window.innerWidth
@@ -369,7 +402,8 @@ export default {
         opacity: .1 !important;
     }
 }
-</style><style scoped>
+</style>
+<style scoped>
 
 .list-component {
     overflow: scroll;
@@ -614,7 +648,6 @@ export default {
     }
 }
 </style>
-
 <style scoped lang="scss">
   .rest-search {
     position: relative;

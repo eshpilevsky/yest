@@ -78,7 +78,7 @@
       <div class="footer-bottom">
         <div class="bottom-block">
           <div class="copyright">
-            ООО "Фудтех системс"
+            ООО «Фудтех системс», юр.адрес: 223016, Минский район, д. Королищевичи, ул. Центральная, 86, к. 1
           </div>
           <div class="social-links">
             <a href="https://www.facebook.com/groups/yestby/"  rel="nofollow" target="_blank">

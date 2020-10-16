@@ -4,10 +4,11 @@ import ApiService from '~/common/api.service'
 const state = () => ({
   data: {
     name: null,
+    selectedCategoryInfoData: null,
     selectedCategory: {
       id: null,
-	  alias: null,
-	  name: null,
+      alias: null,
+      name: null,
     },
     searchNameKitchenDish: null,
     searchText: null,
@@ -130,7 +131,10 @@ const actions = {
   setUserPhoneNumber(context, payload) {
     context.commit('SET_USER_PHONE_NUMBER', payload)
   },
-  selectCategory(context, payload) {
+  async setActiveCategoryInfoData(context, payload) {
+    context.commit('SELECT_ACTIVE_CATEGORY_INFO_DATA', payload)
+  },
+  async selectCategory(context, payload) {
     context.commit('SELECT_CATEGORY', payload)
   },
   setSearchNameKitchenDish(context, payload) {
@@ -186,6 +190,10 @@ const mutations = {
     state.status = '200'
     state.data.selectedCategory = payload
   },
+  SELECT_ACTIVE_CATEGORY_INFO_DATA(state, payload) {
+    state.status = '200';
+    state.data.selectedCategoryInfoData = payload
+  },
 
   CATEGOTY_LIST(state, payload) {
     state.status = '200'
@@ -200,6 +208,9 @@ const mutations = {
 };
 
 const getters = {
+  getActiveCategoryInfoData(state){
+    return state.data.selectedCategoryInfoData;
+  },
   getSearchResults(state){
     return state.data.searchResults;
   },

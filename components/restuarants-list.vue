@@ -50,7 +50,7 @@
       </div>
     </div>
     <div class="show-btn-block">
-      <v-btn color="primary" class="showMore-btn" @click="showMore()" v-show="this.counterRest > limit" :loading="loadingShowMore">Показать ещё</v-btn>
+      <v-btn color="primary" class="showMore-btn" @click="showMore()" v-show="(this.restaurantsList).length > this.limit" :loading="loadingShowMore">Показать ещё</v-btn>
     </div>
     <v-overlay :value="restOverlay" z-index="100">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
@@ -121,6 +121,9 @@
         return newValue
       },
       restaurantsList(newValue) {
+        console.log('restaurantsList');
+        console.log(newValue);
+
         this.startLimit = 0;
         this.limit = 12;
         this.restaurantsList = newValue;
