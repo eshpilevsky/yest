@@ -663,6 +663,18 @@ export default {
       box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.1);
       background: #fff;
       border-radius: 4px;
+
+      @media screen and (max-width: 992px) {
+        position: fixed;
+        top: 66px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 100%;
+        z-index: 400;
+        overflow: auto;
+        max-height: initial;
+      }
     }
 
     &__wrapper {
