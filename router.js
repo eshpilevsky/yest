@@ -17,6 +17,7 @@ import termsOfUse from './pages/miltipage/terms-of-use.vue'
 import questions from './pages/miltipage/questions.vue'
 import rabota from './pages/miltipage/rabota.vue'
 import business from './pages/miltipage/business.vue'
+import profile from './pages/profile.vue'
 
 Vue.use(Router)
 
@@ -24,6 +25,16 @@ export function createRouter() {
   return new Router({
     mode: 'history',
     routes: [
+      {
+        path: '/profile',
+        name: 'profile',
+        component: profile
+      },
+      {
+        path: '/profile/:obj',
+        name: 'profile_infoPages',
+        component: profile
+      },
       {
         path: '/contacts',
         name: 'contacts',
@@ -124,6 +135,7 @@ export function createRouter() {
         name: 'paymantStatus',
         component: paymantStatus,
       },
+
       { path: "*", component: notFound }
     ]
   })

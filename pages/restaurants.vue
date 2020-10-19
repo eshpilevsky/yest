@@ -344,7 +344,6 @@
             </v-bottom-sheet>
           </div>
           <specOffer v-show="this.showSpecOffer" :salesText='restuarant.salesText' />
-
         </div>
         <div class="rest-info-bottom">
           <v-tabs hide-slider z-index='1' v-model="tab" class="catalog-tabs catalog-tabs-mobile">
@@ -617,6 +616,8 @@
   import smsForm from '@/components/restaurant/sms-form'
   import specOffer from '@/components/restaurant/spec-offer'
   import MapDesktop from '@/components/map/desktop'
+  import { SECOND, MINUTE, HOUR, getHourTime, getZeroPad } from '@/functions/Filters';
+
   import axios from 'axios'
   import {
     mapGetters
@@ -640,8 +641,7 @@
                       params,
                       redirect,
                     }) {
-      // console.log('START REST ASYNC');
-      let time = new Date().getTime();
+
       let restParams = params.resName
       let id = restParams.split('-')
 
@@ -732,60 +732,26 @@
           } else {
             showSpecOffer = false
           }
-          const openRestorants = [];
-          const closeRestorants = [];
-          const currentDay = new Date().getDay();
-          const currentTime = new Date().getTime();
-          const op = restuarantData.operation_time;
-          const buffer = [];
-          let computedWorkTime = {}
-          if (op.length > 6) {
-            op.forEach((optime, index, operationTimeArr) => {
-              if (optime.day === currentDay) {
-                buffer.push(optime);
-              }
-            });
-            let closeTime = buffer[0].close_time
-            const openTime =
-              buffer.length > 1 ? buffer[1].open_time : buffer[0].open_time;
-            const closeTimeHour = closeTime.slice(0, 2);
-            const closeTimeMin = closeTime.slice(3, 5);
-            const closeTimeSec = closeTime.slice(6, 8);
-            const closeTimeTimestamp = new Date();
-            closeTimeTimestamp.setHours(closeTimeHour);
-            closeTimeTimestamp.setMinutes(closeTimeMin);
-            closeTimeTimestamp.setSeconds(closeTimeSec);
-            const openTimeHour = openTime.slice(0, 2);
-            const openTimeMin = openTime.slice(3, 5);
-            const openTimeSec = openTime.slice(6, 8);
-            const openTimeTimestamp = new Date();
-            openTimeTimestamp.setHours(openTimeHour);
-            openTimeTimestamp.setMinutes(openTimeMin);
-            openTimeTimestamp.setSeconds(openTimeSec);
-            computedWorkTime.today_close_time = closeTimeTimestamp.getTime();
-            computedWorkTime.today_open_time = openTimeTimestamp.getTime();
-            if (buffer.length !== 1) {
-              computedWorkTime.today_close_time += 86400000;
-            }
-            if (currentTime < computedWorkTime.today_close_time) {
-              computedWorkTime.is_open = true;
-            } else {
-              computedWorkTime.is_open = false;
-            }
-          }
+
+          // const op = restuarantData.operation_time;
+          let RestaurantOpenStatus = await store.dispatch('user/caclWorkTime_forRestaurant',restuarantData);
+
+
           let deliveryMass = restuarantData.delivery.fee;
           // console.log(deliveryMass);
           deliveryMass.sort((a, b) => {
             // console.log('a ->'+(a.delivery));
             // console.log('b ->'+(b.delivery));
             return a.min > b.min
-          })
-          time = new Date().getTime() - time;
+          });
+
+
+
           return {
             restuarant: restuarantData,
             currentZone: currentZone,
             showSpecOffer: showSpecOffer,
-            workTime: computedWorkTime,
+            workTime: RestaurantOpenStatus,
             delivery: deliveryMass
           }
         }else{
@@ -802,6 +768,7 @@
     },
     data() {
       return {
+        isMobile: true,
         tab: 0,
         showRatingSheet: false,
         showDeliveryOption: false,
@@ -876,8 +843,7 @@
         }
       },
       closeFormShowOrderForm() {
-        this.showSmsForm = false
-        this.showSmsForm = false
+        this.showSmsForm = false;
       },
       closeSmsForm() {
         this.showSmsForm = false
@@ -938,9 +904,14 @@
           this.optionsCounter = []
         }
         // console.log('addToBasket -> this.workTime.is_open', this.workTime.is_open)
-        if (!this.workTime.is_open && this.saveSelectPreorder == false) {
-          this.showPreorderDesktopForm = true
-          this.saveSelectPreorder = true
+        if (!this.workTime.is_open) {
+          if(this.isMobile === true){
+            this.showPreorderMobileForm = true;
+            this.showPreorderDesktopForm = false;
+          }else {
+            this.showPreorderMobileForm = false;
+            this.showPreorderDesktopForm = true;
+          }
         } else {
           this.selectedDish = dish
           this.selectedDishCounter = 1
@@ -963,22 +934,33 @@
             selected: opt.multi_data == 0 ? opt.variants[0] : [],
           })
         })
-        if (!this.workTime.is_open && this.saveSelectPreorder == false) {
-          this.showPreorderMobileForm = true
-          this.saveSelectPreorder = true
+        if (!this.workTime.is_open) {
+          if(this.isMobile === true){
+            this.showPreorderMobileForm = true;
+            this.showPreorderDesktopForm = false;
+          }else {
+            this.showPreorderMobileForm = false;
+            this.showPreorderDesktopForm = true;
+          }
+
         } else {
           this.showDish = true
         }
-        // } else {
+        // else  {
         //     this.showSetAddressMobile = true
         // }
       },
       momentAdd(dish) {
         // Добавление товара мгновенное //
         // if (this.getCurrentAddress.length > 0) {
-        if (!this.workTime.is_open && this.saveSelectPreorder == false) {
-          this.showPreorderMobileForm = true
-          this.saveSelectPreorder = true
+        if (!this.workTime.is_open) {
+          if(this.isMobile === true){
+            this.showPreorderMobileForm = true;
+            this.showPreorderDesktopForm = false;
+          }else {
+            this.showPreorderMobileForm = false;
+            this.showPreorderDesktopForm = true;
+          }
         } else {
           this.selectedDish = dish
           this.selectedDishCounter = 1
@@ -1137,10 +1119,15 @@
           this.tab = parseInt(visibleCategory[1])
         }
       },
+      async updateDateTime() {
+        this.workTime = await this.$store.dispatch('user/caclWorkTime_forRestaurant',this.restuarant);
+        this.$options.timer = window.setTimeout(await this.updateDateTime, SECOND);
+      },
 
     },
     computed: {
       ...mapGetters({
+        getIsMobile: "device/isMobile",
         getSelectedZone: "zone/getSelectedZone",
         getSelectedCategory: "user/getSelectedCategory",
         getCurrentCoords: "map/getCurrentCoords",
@@ -1153,6 +1140,9 @@
       }),
     },
     watch: {
+      getIsMobile(newValue){
+        this.isMobile = newValue;
+      },
       getSelectedZone(newValue) {
         // this.dropBasket()
       },
@@ -1192,8 +1182,22 @@
     },
     mounted() {
       window.scrollTo(0, 0);
-      this.orderList = this.getSelectedDishs
-      let lastScrollTop = 0
+
+      this.$options.timer = window.setTimeout(this.updateDateTime, SECOND);
+
+        console.log(this.isMobile);
+      if(this.workTime.is_open === false){
+        if(this.isMobile === true){
+          this.showPreorderMobileForm = true;
+          this.showPreorderDesktopForm = false;
+        }else {
+          this.showPreorderMobileForm = false;
+          this.showPreorderDesktopForm = true;
+        }
+      }
+
+      this.orderList = this.getSelectedDishs;
+      let lastScrollTop = 0;
       window.addEventListener('scroll', () => {
         const st = window.pageYOffset || document.documentElement.scrollTop
         if (st > lastScrollTop) {
@@ -1209,7 +1213,7 @@
           this.showRestName = true
         }
         lastScrollTop = st <= 0 ? 0 : st
-      })
+      });
     },
     head() {
       return {
@@ -1227,6 +1231,9 @@
         ]
       }
     },
+    beforeDestroy() {
+      window.clearTimeout(this.$options.timer);
+    }
   }
 </script>
 

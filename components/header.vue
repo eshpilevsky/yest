@@ -124,6 +124,12 @@
           </v-btn>
         </client-only>
 
+         <client-only>
+           <v-overlay v-model="showAuthForm">
+             <smsForm @closeForm='closeAuthForm()' @closeFormShowOrderForm='closeFormAuth()' />
+           </v-overlay>
+         </client-only>
+
         <v-overlay :dark='false' :value="burgerOverlay" :opacity=".5">
           <MapDesktop @closeMap='closeDesktopMap()' />
         </v-overlay>
@@ -141,14 +147,17 @@
           </v-list>
         </v-menu>
         <!--Вывод личного кабинета -->
-<!--        <client-only>-->
-<!--          <div v-if="this.getUserPhoneNumber != null" class="user__number">-->
-<!--            {{this.getUserPhoneNumber}}-->
-<!--          </div>-->
-<!--          <div v-else  class="user__login">-->
-<!--            Войти-->
-<!--          </div>-->
-<!--        </client-only>-->
+        <client-only>
+          <nuxt-link to="/profile" v-if="this.getUserPhoneNumber != null">
+            <div  class="user__number">
+              +{{this.getUserPhoneNumber}}
+            </div>
+          </nuxt-link>
+
+          <div v-else  class="user__login" @click="openAuthForm()">
+            Войти
+          </div>
+        </client-only>
 
       </div>
     </div>
@@ -163,12 +172,15 @@
   import MapBtn from '@/components/map/map-btn'
   import MapContainer from '@/components/map/mobile'
   import MapDesktop from '@/components/map/desktop'
+  import smsForm from '@/components/restaurant/sms-form'
+
   export default {
     name: 'layout-header',
     components: {
       MapBtn,
       MapContainer,
       MapDesktop,
+      smsForm
     },
     data() {
       return {
@@ -179,6 +191,7 @@
         showSetAdressBtn: false,
         showMap: false,
         showSidebar: false,
+        showAuthForm: false,
         items: [{
           title: 'Home',
           icon: 'dashboard'
@@ -219,6 +232,16 @@
         this.coords = e.get('coords')
         this.setCurrentCoords(this.coords)
       },
+      closeAuthForm(){
+        this.showAuthForm = false;
+      },
+      closeFormAuth() {
+        this.showAuthForm = false;
+      },
+      openAuthForm(){
+        this.showAuthForm = true;
+      },
+
       showDesktopMap() {
         this.burgerOverlay = true
       },

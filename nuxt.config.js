@@ -110,7 +110,7 @@ module.exports = {
   ],
   robots: {
     UserAgent: '*',
-    Disallow: ['/cart','/checkout', '/order/online_payment/', '/checkout/'],
+    Disallow: ['/cart','/checkout', '/order/online_payment/', '/checkout/','/profile'],
     // Allow: '/$',
     Sitemap: 'https://yest.by/sitemap.xml'
   },
