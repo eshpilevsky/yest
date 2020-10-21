@@ -1,8 +1,8 @@
 <template>
-  <div v-show=" this.searchText.length > 2 && this.showData.length > 0" class="rest-search">
+  <div v-show=" this.searchText.length > 2 && showData.length > 0" class="rest-search">
    <!--SEARCH ->> {{searchText}}-->
     <v-list class="rest-search__wrapper">
-      <v-list-item v-for="(item, index) in this.showData" :key="'SearchSuggestion'+index" class="rest-search-item">
+      <v-list-item v-for="(item, index) in showData" :key="'SearchSuggestion'+index" class="rest-search-item">
         <v-list-item-content class="rest-search-item__wrapper">
 
           <!-- Это вид с изображением и с категориями -->
@@ -44,7 +44,13 @@
 
 <script>
   export default {
-    props: ['showData', 'searchText']
+
+    props: ['searchText'],
+    data(){
+      return{
+        showData: [{},{},{}]
+      };
+    },
   }
 </script>
 

@@ -68,46 +68,7 @@
     <!--<v-divider class="divider" />-->
   <div class="restSearchBox">
     <v-text-field placeholder="Название, кухня или блюдо" height="46" dense clearable prepend-inner-icon="search" outlined class="searchDesktop" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch"></v-text-field>
-
-    <div v-show="searchNameKitchenDish.length > 2 && SearchSuggestions.length > 0" class="rest-search">
-      <v-list class="rest-search__wrapper">
-        <v-list-item v-for="(item, index) in SearchSuggestions" :key="'SearchSuggestion'+index" class="rest-search-item">
-          <v-list-item-content class="rest-search-item__wrapper">
-
-            <!-- Это вид с изображением и с категориями -->
-            <a href="" class="rest-search-item__link">
-              <img class="rest-search-item__img" src="https://via.placeholder.com/150" alt="placeholder">
-              <div class="rest-search-item__content">
-                <p class="rest-search-item__title">Суши</p>
-                <p class="rest-search-item__categories">
-                  <span class="rest-search-item__category">Японская</span>
-                  <span class="rest-search-item__category">Китайская</span>
-                  <span class="rest-search-item__category">Суши</span>
-                </p>
-              </div>
-            </a>
-
-            <!-- Это вид без изображения, но с ценником -->
-            <a href="" class="rest-search-item__link">
-              <span></span>
-              <div class="rest-search-item__content">
-                <p class="rest-search-item__subtitle">Суши с тунцом</p>
-                <p class="rest-search-item__price">25 BYN</p>
-              </div>
-            </a>
-
-            <a href="" class="rest-search-item__link">
-              <span></span>
-              <div class="rest-search-item__content">
-                <p class="rest-search-item__subtitle">Суши со сливочной креветкой</p>
-                <p class="rest-search-item__price">12 BYN</p>
-              </div>
-            </a>
-
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </div>
+    <search_component :searchText="searchNameKitchenDish"></search_component>
   </div>
 
 
@@ -121,6 +82,7 @@
 import ApiService from '../common/api.service'
 import axios from 'axios'
 import searchModal from '@/components/search-modal';
+import search_component from '@/components/search/index'
 
 import {
     mapGetters,
@@ -136,6 +98,7 @@ export default {
     },
     components: {
         searchModal,
+      search_component
     },
     data() {
         return {

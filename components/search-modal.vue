@@ -4,7 +4,7 @@
 		<div @click="closeModalWindow()">
 			Закрыть
 		</div>
-    <search_component :showData="showData" :searchText="search"></search_component>
+    <search_component :searchText="search"></search_component>
 	</v-card>
 </template>
 
@@ -14,8 +14,7 @@
 	export default {
     data(){
       return {
-        search: '',
-        showData: [{},{},{}]
+        search: ''
       }
     },
     components: {
