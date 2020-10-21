@@ -66,10 +66,10 @@
       </v-overlay>
     </div>
     <!--<v-divider class="divider" />-->
-  <div class="rest-search">
-      <v-text-field placeholder="Название, кухня или блюдо" height="46" dense clearable prepend-inner-icon="search" outlined class="searchDesktop" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch"></v-text-field>
+  <div class="restSearchBox">
+    <v-text-field placeholder="Название, кухня или блюдо" height="46" dense clearable prepend-inner-icon="search" outlined class="searchDesktop" @focus="searchFocus" v-model="searchNameKitchenDish" @click:clear="dropSearch"></v-text-field>
 
-    <div v-show="searchNameKitchenDish.length > 2 && SearchSuggestions.length > 0" class="rest-search__list">
+    <div v-show="searchNameKitchenDish.length > 2 && SearchSuggestions.length > 0" class="rest-search">
       <v-list class="rest-search__wrapper">
         <v-list-item v-for="(item, index) in SearchSuggestions" :key="'SearchSuggestion'+index" class="rest-search-item">
           <v-list-item-content class="rest-search-item__wrapper">
@@ -108,7 +108,6 @@
         </v-list-item>
       </v-list>
     </div>
-      </v-text-field>
   </div>
 
 
@@ -404,6 +403,9 @@ export default {
 }
 </style>
 <style scoped>
+.restSearchBox {
+  position: relative;
+}
 
 .list-component {
     overflow: scroll;
@@ -650,31 +652,27 @@ export default {
 </style>
 <style scoped lang="scss">
   .rest-search {
-    position: relative;
+    position: absolute;
+    top: 46px;
+    left: 80px;
+    right: 80px;
+    z-index: 10;
+    overflow: auto;
+    max-height: 400px;
+    box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.1);
+    background: #fff;
+    border-radius: 4px;
 
-    &__list {
-      position: absolute;
-      top: 46px;
-      left: 80px;
-      right: 80px;
-      z-index: 10;
+    @media screen and (max-width: 992px) {
+      position: fixed;
+      top: 66px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 100%;
+      z-index: 400;
       overflow: auto;
-      max-height: 400px;
-      box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.1);
-      background: #fff;
-      border-radius: 4px;
-
-      @media screen and (max-width: 992px) {
-        position: fixed;
-        top: 66px;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        height: 100%;
-        z-index: 400;
-        overflow: auto;
-        max-height: initial;
-      }
+      max-height: initial;
     }
 
     &__wrapper {
