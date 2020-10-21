@@ -204,10 +204,10 @@ export default {
         async searchNameKitchenDish(newValue){
           if(newValue.length > 3){
 
-            await this.Action__SearchSuggestions({
-              address: newValue,
-              city: this.currentZone.id
-            });
+            // await this.Action__SearchSuggestions({
+            //   address: newValue,
+            //   city: this.currentZone.id
+            // });
           }
         }
     },

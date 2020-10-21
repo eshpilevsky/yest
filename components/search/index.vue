@@ -1,7 +1,8 @@
 <template>
-  <div v-show="searchNameKitchenDish.length > 2 && SearchSuggestions.length > 0" class="rest-search">
+  <div v-show=" this.searchText.length > 2 && this.showData.length > 0" class="rest-search">
+   <!--SEARCH ->> {{searchText}}-->
     <v-list class="rest-search__wrapper">
-      <v-list-item v-for="(item, index) in SearchSuggestions" :key="'SearchSuggestion'+index" class="rest-search-item">
+      <v-list-item v-for="(item, index) in this.showData" :key="'SearchSuggestion'+index" class="rest-search-item">
         <v-list-item-content class="rest-search-item__wrapper">
 
           <!-- Это вид с изображением и с категориями -->
@@ -39,6 +40,13 @@
     </v-list>
   </div>
 </template>
+
+
+<script>
+  export default {
+    props: ['showData', 'searchText']
+  }
+</script>
 
 <style scoped lang="scss">
   .rest-search {
