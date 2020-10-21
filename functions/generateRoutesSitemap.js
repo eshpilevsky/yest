@@ -9,7 +9,7 @@ module.exports = async function getAppRoutes() {
     {
       url:'/',
       changefreq: 'daily',
-      priority: text_pages_priority,
+      priority: 1,
       lastmod: new Date()
     },
     {

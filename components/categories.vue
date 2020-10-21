@@ -1,5 +1,5 @@
 <template>
-<div class="categories-containe sticky" v-if="!hideCategory">
+<div class="categories-containe sticky" v-if="!hideCategory" v-bind:class="{search_is_active:showModalOverlay}">
     <div class="category-list">
         <div class="category-list__container">
             <v-chip active-class="category-chips--active" class="category-chips" v-for="(item, index) in first" :key="'firstCategor' + index" :color="item.alias === currentCategory.alias ? 'primary': 'white'" @click="selectCategory(item)">
