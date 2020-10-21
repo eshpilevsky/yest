@@ -4,17 +4,22 @@
 		<div @click="closeModalWindow()">
 			Закрыть
 		</div>
-
+    <search></search>
 	</v-card>
 </template>
 
 <script>
+  import search from '@/components/search/index'
+
 	export default {
 		data() {
 			return {
 				search: ''
 			}
 		},
+    components: {
+      search,
+    },
 		methods: {
 			closeModalWindow() {
 				this.$emit('closeModalWindow')
