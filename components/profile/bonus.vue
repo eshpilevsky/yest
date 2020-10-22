@@ -37,10 +37,19 @@
       align-items: center;
       margin-bottom: 40px;
 
+      @media screen and (max-width: 600px) {
+        flex-direction: column;
+      }
+
       &__img {
         width: 20%;
         max-width: 150px;
         margin-right: 30px;
+
+        @media screen and (max-width: 600px) {
+          width: 110px;
+          margin: 0 0 20px;
+        }
       }
     }
 
@@ -54,12 +63,21 @@
       width: 70%;
       max-width: 480px;
 
+      @media screen and (max-width: 600px) {
+        width: 100%;
+        margin: 0 0 20px;
+      }
+
       &__item {
         border-right: 1px solid #ddd;
         font-size: 44px;
         font-weight: 600;
         color: #afafaf;
         text-align: center;
+
+        @media screen and (max-width: 600px) {
+          font-size: 32px;
+        }
 
         span {
           margin-left: -10px;
@@ -78,6 +96,10 @@
 
     &-list {
       list-style: none;
+
+      @media screen and (max-width: 992px) {
+        padding-left: 0;
+      }
 
       &__item {
         list-style: none;

@@ -107,5 +107,9 @@
         letter-spacing: -0.2px;
       }
     }
+
+    @media screen and (max-width: 992px) {
+      display: none;
+    }
   }
 </style>

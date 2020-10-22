@@ -85,14 +85,31 @@
     display: flex;
     padding: 20px 0 40px 0;
 
+    @media screen and (max-width: 992px) {
+      padding-top: 0;
+      margin-top: -10px;
+    }
+
     &-content {
       padding: 20px 20px 20px 50px;
       width: 100%;
+
+      @media screen and (max-width: 992px) {
+        padding: 0 20px 20px;
+      }
     }
 
     &-title {
       font-size: 35px;
       margin-bottom: 30px;
+
+      @media screen and (max-width: 992px) {
+        margin-bottom: 10px;
+      }
+
+      @media screen and (max-width: 600px) {
+        text-align: center;
+      }
     }
   }
 </style>
