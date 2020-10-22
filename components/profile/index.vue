@@ -24,6 +24,10 @@
       border: 1px dashed #ddd;
       padding: 10px 20px;
 
+      @media screen and (max-width: 992px) {
+        margin-top: 30px;
+      }
+
       &__box {
         width: 50px;
         height: 50px;
