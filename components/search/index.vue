@@ -69,7 +69,7 @@
 
     @media screen and (max-width: 992px) {
       position: fixed;
-      top: 66px;
+      top: 53px;
       left: 0;
       right: 0;
       bottom: 0;
@@ -77,6 +77,7 @@
       z-index: 400;
       overflow: auto;
       max-height: initial;
+      box-shadow: none;
     }
 
     &__wrapper {

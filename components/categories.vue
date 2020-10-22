@@ -62,7 +62,9 @@
         </v-chip>
       </div>
       <v-overlay :value="showModalOverlay" :dark="false">
-        <searchModal @closeModalWindow='showModalWindow()' />
+        <div class="modal-search-wrapper">
+          <searchModal @closeModalWindow='showModalWindow()' />
+        </div>
       </v-overlay>
     </div>
     <!--<v-divider class="divider" />-->
@@ -366,6 +368,15 @@ export default {
 }
 </style>
 <style scoped>
+.modal-search-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  background-color: #fff;
+}
 .restSearchBox {
   position: relative;
 }
@@ -460,6 +471,16 @@ export default {
     border-left: 1px solid rgba(0, 0, 0, .1);
     border-right: 1px solid rgba(0, 0, 0, .1);
     background: #fff;
+}
+
+.categories-containe.search_is_active {
+  z-index: 999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
 }
 
 .divider {
