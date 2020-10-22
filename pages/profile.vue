@@ -2,12 +2,13 @@
   <div class="container">
     <div class="profile">
       <sitebar :activePage="page"></sitebar>
-      <div class="right">
-        <h1>Личный кабинет</h1>
 
-        <content_index v-show="page === 'index'"></content_index>
-        <content_bonus v-show="page === 'bonus'"></content_bonus>
-        <content_edit v-show="page === 'edit'"></content_edit>
+      <div class="profile-content">
+        <h1 class="profile-title">Личный кабинет</h1>
+
+        <content_index v-show="page === 'index'"/>
+        <content_bonus v-show="page === 'bonus'"/>
+        <content_edit v-show="page === 'edit'"/>
       </div>
     </div>
   </div>
@@ -80,16 +81,18 @@
 </script>
 
 <style scoped lang="scss">
-  .profile{
+  .profile {
     display: flex;
     padding: 20px 0 40px 0;
-  }
-  .profile .left{
-    width: 30%;
-  }
-  .profile .right{
-    padding: 0 20px;
-  }
 
+    &-content {
+      padding: 20px 20px 20px 50px;
+      width: 100%;
+    }
 
+    &-title {
+      font-size: 35px;
+      margin-bottom: 30px;
+    }
+  }
 </style>
