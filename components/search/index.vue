@@ -53,8 +53,16 @@
     },
     watch: {
       searchText: function (newVal) {
+        console.log(this.getSelectedZone);
+        console.log(this.getCurrentCoords);
         console.log('searchText --> '+newVal);
       }
+    },
+    computed:{
+      ...mapGetters({
+        getSelectedZone: "zone/getSelectedZone",
+        getCurrentCoords: "map/getCurrentCoords",
+      })
     }
   }
 </script>
