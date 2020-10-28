@@ -51,6 +51,11 @@
         showData: [{},{},{}]
       };
     },
+    watch: {
+      searchText: function (newVal) {
+        console.log('searchText --> '+newVal);
+      }
+    }
   }
 </script>
 
