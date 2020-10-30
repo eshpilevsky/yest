@@ -13,7 +13,7 @@ export const actions = {
     if((payload.search).length > 2){
       let answ = {};
       await ApiService.post('/search', payload).then((res)=>{
-        context.commit('SET_SEARCH_RES', res)
+        context.commit('SET_SEARCH_RES', res.data)
       }).catch((err)=>{
         console.error(err);
       });
