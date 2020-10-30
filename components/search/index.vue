@@ -10,11 +10,9 @@
             <img class="rest-search-item__img" src="https://via.placeholder.com/150" alt="placeholder">
             <div class="rest-search-item__content">
               <p class="rest-search-item__title">{{item.name}}</p>
-              <!--<p class="rest-search-item__categories">-->
-                <!--<span class="rest-search-item__category">Японская</span>-->
-                <!--<span class="rest-search-item__category">Китайская</span>-->
-                <!--<span class="rest-search-item__category">Суши</span>-->
-              <!--</p>-->
+              <p class="rest-search-item__categories">
+                <span class="rest-search-item__category"  v-for="(tag, index) in item.tags">{{tag.name}}</span>
+              </p>
             </div>
           </a>
 
