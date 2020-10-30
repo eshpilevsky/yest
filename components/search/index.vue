@@ -17,7 +17,7 @@
           </nuxt-link>
 
           <!-- Это вид без изображения, но с ценником -->
-          <nuxt-link :to="get_rest_url({name: item.name, restaurant_id: item.id})`#dish-id-${dish.id}`" class="rest-search-item__link" v-for="(dish, index) in item.dishes ">
+          <nuxt-link :to="get_rest_url({name: item.name, restaurant_id: item.id, dish_id: dish.id})" class="rest-search-item__link" v-for="(dish, index) in item.dishes ">
             <span></span>
             <div class="rest-search-item__content">
               <p class="rest-search-item__subtitle">{{dish.name}}</p>
@@ -96,7 +96,7 @@
         // return 'minsk';
         let name = this.translite(info.name);
         let modifName = name.replace(' ', '-');
-        return `/${this.getSelectedZone.alias}/restaurant/${info.restaurant_id}-${modifName.toLowerCase()}`;
+        return `/${this.getSelectedZone.alias}/restaurant/${info.restaurant_id}-${modifName.toLowerCase()}#dish-id-${info.dish_id}`;
       },
       get_rest_logo(info){
         return 'https://img.eatmealby.com/resize/restaurant/600/'+info.logo;
