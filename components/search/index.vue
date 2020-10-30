@@ -6,7 +6,7 @@
         <v-list-item-content class="rest-search-item__wrapper">
 
           <!-- Это вид с изображением и с категориями -->
-          <a :to="get_rest_url({name: item.name, restaurant_id: item.id})" class="rest-search-item__link">
+          <nuxt-link :to="get_rest_url({name: item.name, restaurant_id: item.id})" class="rest-search-item__link">
             <img class="rest-search-item__img" src="https://via.placeholder.com/150" alt="placeholder">
             <div class="rest-search-item__content">
               <p class="rest-search-item__title">{{item.name}}</p>
@@ -14,16 +14,16 @@
                 <span class="rest-search-item__category"  v-for="(tag, index) in item.tags">{{tag.name}}</span>
               </p>
             </div>
-          </a>
+          </nuxt-link>
 
           <!-- Это вид без изображения, но с ценником -->
-          <a :to="get_rest_url({name: item.name, restaurant_id: item.id})" class="rest-search-item__link" v-for="(dish, index) in item.dishes ">
+          <nuxt-link :to="get_rest_url({name: item.name, restaurant_id: item.id})" class="rest-search-item__link" v-for="(dish, index) in item.dishes ">
             <span></span>
             <div class="rest-search-item__content">
               <p class="rest-search-item__subtitle">{{dish.name}}</p>
               <p class="rest-search-item__price">{{dish.price}} BYN</p>
             </div>
-          </a>
+          </nuxt-link>
 
 
 
