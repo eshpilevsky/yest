@@ -25,6 +25,7 @@ export const mutations = {
   SET_SEARCH_RES(state,payload) {
     console.log('SET_SEARCH_RES');
     state.data.results = payload
+    console.log(payload);
   },
 };
 

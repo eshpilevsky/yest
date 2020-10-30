@@ -67,7 +67,7 @@
         this.$store.dispatch('search/search', data);
       },
       search_results: function (newVal) {
-        console.log(newVal);
+        console.log('search_results ->'+newVal);
         this.showData = newVal;
       }
     },
