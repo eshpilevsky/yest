@@ -9,31 +9,25 @@
           <a href="" class="rest-search-item__link">
             <img class="rest-search-item__img" src="https://via.placeholder.com/150" alt="placeholder">
             <div class="rest-search-item__content">
-              <p class="rest-search-item__title">Суши</p>
-              <p class="rest-search-item__categories">
-                <span class="rest-search-item__category">Японская</span>
-                <span class="rest-search-item__category">Китайская</span>
-                <span class="rest-search-item__category">Суши</span>
-              </p>
+              <p class="rest-search-item__title">{{item.name}}</p>
+              <!--<p class="rest-search-item__categories">-->
+                <!--<span class="rest-search-item__category">Японская</span>-->
+                <!--<span class="rest-search-item__category">Китайская</span>-->
+                <!--<span class="rest-search-item__category">Суши</span>-->
+              <!--</p>-->
             </div>
           </a>
 
           <!-- Это вид без изображения, но с ценником -->
-          <a href="" class="rest-search-item__link">
+          <a href="" class="rest-search-item__link" v-for="(dish, index) in item.dishes ">
             <span></span>
             <div class="rest-search-item__content">
-              <p class="rest-search-item__subtitle">Суши с тунцом</p>
-              <p class="rest-search-item__price">25 BYN</p>
+              <p class="rest-search-item__subtitle">dish.name</p>
+              <p class="rest-search-item__price">dish.price</p>
             </div>
           </a>
 
-          <a href="" class="rest-search-item__link">
-            <span></span>
-            <div class="rest-search-item__content">
-              <p class="rest-search-item__subtitle">Суши со сливочной креветкой</p>
-              <p class="rest-search-item__price">12 BYN</p>
-            </div>
-          </a>
+
 
         </v-list-item-content>
       </v-list-item>
