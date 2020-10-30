@@ -22,8 +22,8 @@
           <a href="" class="rest-search-item__link" v-for="(dish, index) in item.dishes ">
             <span></span>
             <div class="rest-search-item__content">
-              <p class="rest-search-item__subtitle">dish.name</p>
-              <p class="rest-search-item__price">dish.price</p>
+              <p class="rest-search-item__subtitle">{{dish.name}}</p>
+              <p class="rest-search-item__price">{{dish.price}}</p>
             </div>
           </a>
 
