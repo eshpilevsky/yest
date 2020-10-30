@@ -147,17 +147,17 @@
           </v-list>
         </v-menu>
         <!--Вывод личного кабинета -->
-        <client-only>
-          <nuxt-link to="/profile" v-if="this.getUserPhoneNumber != null">
-            <div  class="user__number">
-              +{{this.getUserPhoneNumber}}
-            </div>
-          </nuxt-link>
+        <!--<client-only>-->
+          <!--<nuxt-link to="/profile" v-if="this.getUserPhoneNumber != null">-->
+            <!--<div  class="user__number">-->
+              <!--+{{this.getUserPhoneNumber}}-->
+            <!--</div>-->
+          <!--</nuxt-link>-->
 
-          <div v-else  class="user__login" @click="openAuthForm()">
-            Войти
-          </div>
-        </client-only>
+          <!--<div v-else  class="user__login" @click="openAuthForm()">-->
+            <!--Войти-->
+          <!--</div>-->
+        <!--</client-only>-->
 
       </div>
     </div>
