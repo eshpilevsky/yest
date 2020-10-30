@@ -10,18 +10,16 @@ export const state = () => ({
 export const actions = {
 
   async search(context, payload) {
-    console.log(payload);
-
     if((payload.search).length > 2){
+      let answ = {};
       await ApiService.post('/search', payload).then((res)=>{
         console.log(res);
-        context.commit('SET_SEARCH_RES', res);
+        answ = res;
       }).catch((err)=>{
         console.error(err);
       });
+      context.commit('SET_SEARCH_RES', answ.data);
     }
-
-
   }
 };
 
