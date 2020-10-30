@@ -6,7 +6,7 @@
         <v-list-item-content class="rest-search-item__wrapper">
 
           <!-- Это вид с изображением и с категориями -->
-          <a href="" class="rest-search-item__link">
+          <a :to="get_rest_url({name: item.name, id: item.id})" class="rest-search-item__link">
             <img class="rest-search-item__img" src="https://via.placeholder.com/150" alt="placeholder">
             <div class="rest-search-item__content">
               <p class="rest-search-item__title">{{item.name}}</p>
@@ -17,7 +17,7 @@
           </a>
 
           <!-- Это вид без изображения, но с ценником -->
-          <a href="" class="rest-search-item__link" v-for="(dish, index) in item.dishes ">
+          <a :to="get_rest_url({name: item.name, id: item.id})" class="rest-search-item__link" v-for="(dish, index) in item.dishes ">
             <span></span>
             <div class="rest-search-item__content">
               <p class="rest-search-item__subtitle">{{dish.name}}</p>
@@ -35,9 +35,7 @@
 
 
 <script>
-  import {
-    mapGetters
-  } from "vuex";
+  import {mapGetters} from "vuex";
 
   export default {
 
@@ -62,6 +60,44 @@
         console.log('search_results ->'+newVal);
         this.showData = newVal;
       }
+    },
+    methods:{
+      translite(str){
+        let text = this.to_latin(str);
+        return text.toLowerCase();
+      },
+      to_latin(str) {
+        str = str.replace(/\n/, "");
+        str = str.replace(/\r/, "");
+        str = str.replace(/\s+/, " ");
+//   str = str.replace(/[^0-9a-z-_ ]/i, "");
+
+        const ru = new Map([
+          ['а', 'a'], ['б', 'b'], ['в', 'v'], ['г', 'g'], ['д', 'd'], ['е', 'e'],
+          ['є', 'e'], ['ё', 'e'], ['ж', 'j'], ['з', 'z'], ['и', 'i'], ['ї', 'yi'], ['й', 'i'],
+          ['к', 'k'], ['л', 'l'], ['м', 'm'], ['н', 'n'], ['о', 'o'], ['п', 'p'], ['р', 'r'],
+          ['с', 's'], ['т', 't'], ['у', 'u'], ['ф', 'f'], ['х', 'h'], ['ц', 'c'], ['ч', 'ch'],
+          ['ш', 'sh'], ['щ', 'shch'], ['ы', 'y'], ['э', 'e'], ['ю', 'u'], ['я', 'ya'],
+        ]);
+
+        str = str.replace(/[ъь]+/g, '');
+
+        return Array.from(str)
+          .reduce((s, l) =>
+            s + (
+              ru.get(l)
+              || ru.get(l.toLowerCase()) === undefined && l
+              || ru.get(l.toLowerCase()).toUpperCase()
+            )
+            , '');
+
+      },
+      get_rest_url(info){
+        // return 'minsk';
+        let name = this.translite(info.name);
+        let modifName = name.replace(' ', '-');
+        return `${this.getSelectedZone.alias}/restaurant/${info.restaurant_id}-${modifName.toLowerCase()}`;
+      },
     },
     computed:{
       ...mapGetters({
