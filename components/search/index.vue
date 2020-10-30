@@ -43,25 +43,39 @@
 
 
 <script>
+  import {
+    mapGetters
+  } from "vuex";
+
   export default {
 
     props: ['searchText'],
     data(){
       return{
-        showData: [{},{},{}]
+        showData: []
       };
     },
     watch: {
       searchText: function (newVal) {
-        console.log(this.getSelectedZone);
-        console.log(this.getCurrentCoords);
-        console.log('searchText --> '+newVal);
+
+        let data = {
+          search: newVal,
+          city: (this.getSelectedZone).id,
+          location: this.getCurrentCoords ? this.getCurrentCoords : null
+        };
+
+        this.$store.dispatch('search/search', data);
+      },
+      search_results: function (newVal) {
+        console.log(newVal);
+        this.showData = newVal;
       }
     },
     computed:{
       ...mapGetters({
         getSelectedZone: "zone/getSelectedZone",
         getCurrentCoords: "map/getCurrentCoords",
+        search_results: "search/search_results"
       })
     }
   }

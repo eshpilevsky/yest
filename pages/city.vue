@@ -29,17 +29,19 @@
       <!--SEO текст -->
 
   <!-- SEO блок -->
-
-  <div class="basket-home-btn" v-show="this.getTotalPrice > 0">
-        <v-btn block color='primary' class="basket-home-btn__box d-flex flex-row justify-space-between rounded-xl" height="60px" @click="goToRestuarant()">
+  <client-only>
+    <div class="basket-home-btn" v-show="this.getTotalPrice > 0">
+      <v-btn block color='primary' class="basket-home-btn__box d-flex flex-row justify-space-between rounded-xl" height="60px" @click="goToRestuarant()">
             <span class="basket-home-btn__name">
                 {{this.restInfo ? this.restInfo.restName : ''}}
             </span>
-            <span class="basket-home-btn__price">
+        <span class="basket-home-btn__price">
                 {{this.getTotalPrice}} BYN
             </span>
-        </v-btn>
+      </v-btn>
     </div>
+  </client-only>
+
 </div>
 </template>
 
