@@ -122,7 +122,7 @@
                             </span>
               </div>
               <div class="dishs-list">
-                <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" v-show="item !== null ? item.status : false" class="dishs-list-item" @click="addToBasket(item)">
+                <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" v-show="item !== null ? item.status : false" class="dishs-list-item" id="`dish-id-{item.id}`" @click="addToBasket(item)">
                   <cardDish v-if="item !== null" :id='item.id' :count='item.count' :name='item.name' :description='item.description' :img='item.image' :dishinfo='item.sizes' />
                 </div>
               </div>
