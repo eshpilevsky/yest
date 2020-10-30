@@ -22,9 +22,9 @@ export const actions = {
 };
 
 export const mutations = {
-  SET_SEARCH_RES(state) {
-    console.log(state)
-    state.data.results = state
+  SET_SEARCH_RES(state,payload) {
+    console.log('SET_SEARCH_RES');
+    state.data.results = payload
   },
 };
 
