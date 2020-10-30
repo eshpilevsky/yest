@@ -13,18 +13,17 @@ export const actions = {
     if((payload.search).length > 2){
       let answ = {};
       await ApiService.post('/search', payload).then((res)=>{
-        console.log(res);
-        answ = res;
+        context.commit('SET_SEARCH_RES', answ.data);
       }).catch((err)=>{
         console.error(err);
       });
-      context.commit('SET_SEARCH_RES', answ.data);
     }
   }
 };
 
 export const mutations = {
   SET_SEARCH_RES(state) {
+    console.log(state)
     state.data.results = state
   },
 };
