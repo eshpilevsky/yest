@@ -21,7 +21,7 @@
             <span></span>
             <div class="rest-search-item__content">
               <p class="rest-search-item__subtitle">{{dish.name}}</p>
-              <p class="rest-search-item__price">{{dish.price}}</p>
+              <p class="rest-search-item__price">{{dish.price}} BYN</p>
             </div>
           </a>
 
