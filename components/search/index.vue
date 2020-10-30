@@ -7,7 +7,7 @@
 
           <!-- Это вид с изображением и с категориями -->
           <nuxt-link :to="get_rest_url({name: item.name, restaurant_id: item.id})" class="rest-search-item__link">
-            <img class="rest-search-item__img" src="https://via.placeholder.com/150" alt="placeholder">
+            <img class="rest-search-item__img" v-bind:src="`https://img.eatmealby.com/resize/restaurant/600/${item.logo}`" alt="placeholder">
             <div class="rest-search-item__content">
               <p class="rest-search-item__title">{{item.name}}</p>
               <p class="rest-search-item__categories">
@@ -17,7 +17,7 @@
           </nuxt-link>
 
           <!-- Это вид без изображения, но с ценником -->
-          <nuxt-link :to="get_rest_url({name: item.name, restaurant_id: item.id})" class="rest-search-item__link" v-for="(dish, index) in item.dishes ">
+          <nuxt-link :to="get_rest_url({name: item.name, restaurant_id: item.id})`#dish-id-${dish.id}`" class="rest-search-item__link" v-for="(dish, index) in item.dishes ">
             <span></span>
             <div class="rest-search-item__content">
               <p class="rest-search-item__subtitle">{{dish.name}}</p>
