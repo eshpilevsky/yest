@@ -77,6 +77,7 @@ export default {
             currentZone: null,
             restName: '',
             totalPrice: 0,
+            breadcrumbs: [{text: 'Yest.by', url: 'https://yest.by/'}]
         }
     },
     async asyncData({
@@ -166,6 +167,13 @@ export default {
                 currentCategory = categoryAll[0];
                 store.dispatch('user/selectCategory', currentCategory)
             }
+        }
+
+        if (categoryInfo.status !== 404){
+          (this.breadcrumbs).push({
+            text: '🌮 '+currentZone.name,
+            url: 'https://yest.by/'+currentZone.alias
+          })
         }
 
     // Определение широты и долготы пользователя
@@ -279,7 +287,7 @@ export default {
           showSpecialOffer: showSpecialOffer,
       }
     },
-  methods: {
+    methods: {
     ...mapActions({
       Action__calcWorkTime: 'user/caclWorkTime',
       calcWorkTime_onlyOpen: 'user/calcWorkTime_onlyOpen'
@@ -437,6 +445,21 @@ export default {
             ]
         }
     },
+    jsonld() {
+      const items = this.breadcrumbs.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        item: {
+          '@id': item.url,
+          name: item.text,
+        },
+      }));
+      return {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: items,
+      };
+    }
 }
 </script>
 

@@ -63,6 +63,10 @@ module.exports = {
       src: '~/plugins/vuex-persist',
       ssr: false
     },
+    {
+      src: '~/plugins/jsonld',
+      ssr: true
+    },
     // {
     //   src: '~/plugins/ymapPlugin.js',
     //   mode: 'client'
