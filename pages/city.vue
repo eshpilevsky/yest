@@ -77,7 +77,7 @@ export default {
             currentZone: null,
             restName: '',
             totalPrice: 0,
-            breadcrumbs: [{text: 'Yest.by', url: 'https://yest.by/'}]
+            breadcrumbs: []
         }
     },
     async asyncData({
@@ -88,13 +88,14 @@ export default {
         req,
         redirect,
     }) {
+        let breadcrumbs = [{text: 'Yest.by', url: 'https://yest.by/'}];
 
         let zoneList = await axios.get('https://yestapi.xyz/get-zones')
         const zoneListData = zoneList.data;
         store.dispatch('zone/setZone', zoneListData);
 
         let currentZone = zoneListData.find((zones) => {
-            return zones.alias == params.region
+            return zones.alias === params.region
         });
         if (currentZone !== undefined) {
             store.dispatch('zone/setSelectedZone', currentZone)
@@ -116,7 +117,7 @@ export default {
         }];
 
         let currentCategory = categoriesListData.find((category) => {
-            return category.alias == params.alias
+            return category.alias === params.alias
         });
 
         let categoryInfo;
@@ -128,12 +129,17 @@ export default {
                 category_id: currentCategory.id
             });
 
-            if (categoryInfo.status != 404) {
-                categoryInfoData = categoryInfo.data
-                if (categoryInfoData.background == '') {
+            if (categoryInfo.status !== 404) {
+                categoryInfoData = categoryInfo.data;
+                if (categoryInfoData.background === '') {
                     categoryInfoData.background = 'https://yastatic.net/s3/eda-front/prod-www/assets/default-d3a889e26c9ac9089ce5b007da1ac51b.png'
                 }
-                app.categoryInfoData = categoryInfoData
+                app.categoryInfoData = categoryInfoData;
+
+              (breadcrumbs).push({
+                text: '🌮 '+currentZone.name,
+                url: 'https://yest.by/'+currentZone.alias
+              })
             } else {
                 categoryInfoData = {
                     header: 'Быстрая доставка',
@@ -167,13 +173,6 @@ export default {
                 currentCategory = categoryAll[0];
                 store.dispatch('user/selectCategory', currentCategory)
             }
-        }
-
-        if (categoryInfo.status !== 404){
-          (this.breadcrumbs).push({
-            text: '🌮 '+currentZone.name,
-            url: 'https://yest.by/'+currentZone.alias
-          })
         }
 
     // Определение широты и долготы пользователя
@@ -248,12 +247,9 @@ export default {
       specialOffer = await axios.post('https://yestapi.xyz/restaurants/special-offers', {
           zone_id: parseInt(currentZone.id),
       });
-      specialOfferData = specialOffer.data
-      if (specialOfferData.length == 0) {
-          showSpecialOffer = false
-      } else {
-          showSpecialOffer = true
-      }
+      specialOfferData = specialOffer.data;
+      showSpecialOffer = specialOfferData.length !== 0;
+
       // Конец получения специальных предложений
 
       let SpecialOfferRestaurants_list = [];
@@ -285,6 +281,7 @@ export default {
           currentZone: currentZone,
           specilaOffers: specialOfferData,
           showSpecialOffer: showSpecialOffer,
+          breadcrumbs: breadcrumbs
       }
     },
     methods: {
