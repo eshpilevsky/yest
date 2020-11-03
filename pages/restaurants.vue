@@ -679,16 +679,13 @@
 
         function translite(str){
           let text = to_latin(str);
-
-          text = text.replace(/[^\n\t\r\f]+/,'');
-          text = text.replace(/ {1,}/g," ");
           return text.toLowerCase();
         }
 
         function to_latin(str) {
           str = str.replace(/\n/, "");
           str = str.replace(/\r/, "");
-          str = str.replace(/\s+/, " ");
+          str = str.replace(/\s+/, "-");
 
           const ru = new Map([
             ['а', 'a'], ['б', 'b'], ['в', 'v'], ['г', 'g'], ['д', 'd'], ['е', 'e'],
