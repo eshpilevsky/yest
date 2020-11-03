@@ -104,7 +104,7 @@
           </div>
           <div class="catalog">
             <v-tabs hide-slider v-model="tab" class="catalog-tabs catalog-tabs--desktop" center-active>
-              <v-tab class="tab-item" active-class="tab-item--active" height="70px" v-for="(category, index) in restuarant.menu" :key="category.cat_id" @click="scroll(`desktop_${index}`)">
+              <v-tab class="tab-item" active-class="tab-item--active" height="70px" v-for="(category, index) in restuarant.menu" :key="category.cat_id" @click="scroll(`desktop_${index}`)" :if="category.dishes.length > 0">
                 {{category.name}}
               </v-tab>
             </v-tabs>
