@@ -113,7 +113,7 @@
           <specOffer v-show="this.showSpecOffer" :salesText='restuarant.salesText' />
           <div class="catalog-list">
             <div v-for="(category, index) in restuarant.menu" :key="category.cat_id">
-              <div class="category-title">
+              <div class="category-title" v-if="category.dishes.length > 0">
                 <h2 v-intersect="{handler:categoryNameIntersect, options: {threshold: [1.0]}}" :id='`desktop_${index}`'>
                   {{category.name}}
                 </h2>
