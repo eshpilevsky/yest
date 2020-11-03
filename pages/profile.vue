@@ -33,7 +33,7 @@
     async asyncData({app, store, params, req, redirect, router}) {
       if(params.obj){
         if(params.obj !== 'edit' && params.obj !== 'bonus'){
-          redirect('/404');
+          redirect(404,'/404');
         // console.log(12322);
         }
       }else{

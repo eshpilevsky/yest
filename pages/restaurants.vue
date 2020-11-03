@@ -686,7 +686,6 @@
           str = str.replace(/\n/, "");
           str = str.replace(/\r/, "");
           str = str.replace(/\s+/, " ");
-//   str = str.replace(/[^0-9a-z-_ ]/i, "");
 
           const ru = new Map([
             ['а', 'a'], ['б', 'b'], ['в', 'v'], ['г', 'g'], ['д', 'd'], ['е', 'e'],
@@ -707,7 +706,8 @@
               )
               , '');
 
-        };
+        }
+
         function rest_alias(info){
           let name = translite(info.name);
           let modifName = name.replace(' ', '-');
@@ -760,7 +760,7 @@
             return zones.id == restuarantData.city_id
           });
 
-          redirect('/'+mustBeZone.alias+'/restaurant/'+alias);
+          redirect(301,'/'+mustBeZone.alias+'/restaurant/'+alias);
         }
       } else {
         redirect('/'+currentZone.alias);
