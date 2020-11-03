@@ -679,6 +679,9 @@
 
         function translite(str){
           let text = to_latin(str);
+
+          text = text.replace(/[^\n\t\r\f]+/,'');
+          text = text.replace(/ {1,}/g," ");
           return text.toLowerCase();
         }
 
