@@ -361,64 +361,105 @@
             </h2>
             <div class="dishs-list-mobile">
               <div v-for="(item, index2) in category.dishes" v-show="item !== null ? item.status : false" :key="`dishCard${index2}`" class="dishs-list-mobile-item">
+<!--                <v-card v-if="item !== null" class="dish-card">-->
+<!--                  <div @click="showSelectedDish(item)">-->
+<!--                    <div class="card-dish-top">-->
+<!--                      <span class="dash-info-compare" v-if="item.sizes[0]" v-show="item.sizes[0].sale == 2">%</span>-->
+<!--                      <img v-lazy="'https://img.eatmealby.com/resize/dish/400/'+item.image" :alt="item.name" class="dish-img-mobile" />-->
+<!--                    </div>-->
+<!--                    <div class="card-dish-bottom">-->
+<!--                      <div class="dish-name-container">-->
+<!--                        <h3 class="dish-name">-->
+<!--                          {{item.name}}-->
+<!--                        </h3>-->
+<!--                      </div>-->
+<!--                      <div class="dish-info">-->
+<!--                        <div class="d-flex">-->
+<!--                          <span class="dish-info__price" v-show="!checkInbasket(item)">{{computedPrice(item.sizes)}} BYN</span>-->
+<!--                          <span class="info-weight">-->
+<!--                            {{item.sizes[0] ? item.sizes[0].weight : ''}}-->
+<!--                          </span>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </div>-->
+
+<!--                  <div>-->
+<!--                    <div class="info-price-box" v-show="checkInbasket(item)" @click='momentAdd(item)'>-->
+<!--                      <div class="info-price-box__wrapper">-->
+<!--                        <span class="info-price-box__title">-->
+<!--                          {{item.sizes[0] ? item.sizes[0].price.toFixed(1) : ''}} BYN-->
+<!--                        </span>-->
+<!--                        <span class="dish-info__price-old" v-show="item.sizes[0].sale == 2">-->
+<!--                          {{(item.sizes[0].price + item.sizes[0].discount).toFixed(1)}} BYN-->
+<!--                        </span>-->
+<!--                      </div>-->
+<!--                      <v-icon class="info-price-box__icon">-->
+<!--                        add-->
+<!--                      </v-icon>-->
+<!--                    </div>-->
+
+<!--                    <div v-show="!checkInbasket(item)" class="dish-conter-mobile">-->
+<!--                      <v-icon class="info-price px-3" @click="decrement(item)">-->
+<!--                        remove-->
+<!--                      </v-icon>-->
+<!--                      <div class="dish-counter-mob">-->
+<!--                        {{computedCount(item)}}-->
+<!--                      </div>-->
+<!--                      <v-icon class="info-price px-3" @click="increment(item)">-->
+<!--                        add-->
+<!--                      </v-icon>-->
+<!--                    </div>-->
+<!--                  </div>-->
+
+<!--                </v-card>-->
+
                 <v-card v-if="item !== null" class="dish-card">
-                  <div @click="showSelectedDish(item)">
-                    <div class="card-dish-top">
-                      <span class="dash-info-compare" v-if="item.sizes[0]" v-show="item.sizes[0].sale == 2">%</span>
-                      <img v-lazy="'https://img.eatmealby.com/resize/dish/400/'+item.image" :alt="item.name" class="dish-img-mobile" />
-                    </div>
+                  <div class="main-product-card-m">
                     <div class="card-dish-bottom">
                       <div class="dish-name-container">
-                        <h3 class="dish-name">
-                          {{item.name}}
-                        </h3>
+                        <h3 class="dish-name">{{item.name}}</h3>
                       </div>
                       <div class="dish-info">
                         <div class="d-flex">
-                          <span class="dish-info__price" v-show="!checkInbasket(item)">{{computedPrice(item.sizes)}} BYN</span>
+<!--                          <span class="dish-info__price" v-show="!checkInbasket(item)">{{computedPrice(item.sizes)}} BYN</span>-->
                           <span class="info-weight">
-                                                    {{item.sizes[0] ? item.sizes[0].weight : ''}}
-                                                </span>
+                            {{item.sizes[0] ? item.sizes[0].weight : ''}}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div>
+                        <div class="info-price-box">
+                          <v-icon class="info-price-box__icon" v-show="checkInbasket(item)" @click='momentAdd(item)'>
+                            add
+                          </v-icon>
+                          <div v-show="!checkInbasket(item)" class="dish-conter-mobile">
+                            <v-icon class="info-price" @click="decrement(item)">
+                              remove
+                            </v-icon>
+                            <div class="dish-counter-mob">
+                              {{computedCount(item)}}
+                            </div>
+                            <v-icon class="info-price" @click="increment(item)">
+                              add
+                            </v-icon>
+                          </div>
+                          <div class="info-price-box__wrapper">
+                        <span class="info-price-box__title">
+                          {{item.sizes[0] ? item.sizes[0].price.toFixed(1) : ''}} BYN
+                        </span>
+                            <span class="dish-info__price-old" v-show="item.sizes[0].sale == 2">
+                          {{(item.sizes[0].price + item.sizes[0].discount).toFixed(1)}} BYN
+                        </span>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div>
 
-                    <div class="info-price-box" v-show="checkInbasket(item)" @click='momentAdd(item)'>
-                      <div class="info-price-box__wrapper">
-                                      <span class="info-price-box__title">
-                                          {{item.sizes[0] ? item.sizes[0].price.toFixed(1) : ''}} BYN
-                                      </span>
-                        <span class="dish-info__price-old" v-show="item.sizes[0].sale == 2">
-                                        {{(item.sizes[0].price + item.sizes[0].discount).toFixed(1)}} BYN
-                                        </span>
-                      </div>
-                      <v-icon class="info-price-box__icon">
-                        add
-                      </v-icon>
-                    </div>
-
-
-
-
-
-
-
-
-
-
-
-                    <div v-show="!checkInbasket(item)" class="dish-conter-mobile">
-                      <v-icon class="info-price px-3" @click="decrement(item)">
-                        remove
-                      </v-icon>
-                      <div class="dish-counter-mob">
-                        {{computedCount(item)}}
-                      </div>
-                      <v-icon class="info-price px-3" @click="increment(item)">
-                        add
-                      </v-icon>
+                    <div class="card-dish-top" @click="showSelectedDish(item)">
+                      <span class="dash-info-compare" v-if="item.sizes[0]" v-show="item.sizes[0].sale == 2">%</span>
+                      <img v-lazy="'https://img.eatmealby.com/resize/dish/400/'+item.image" :alt="item.name" class="dish-img-mobile" />
                     </div>
                   </div>
                 </v-card>
@@ -1395,7 +1436,8 @@
   .options-list div[role=radiogroup] .v-radio {
     width: 50% !important;
   }
-</style><style scoped>
+</style>
+<style scoped>
   .radio-button {
     margin-bottom: 0 !important;
   }
@@ -1564,21 +1606,23 @@
     align-items: center;
     position: relative;
     z-index: 999;
+    padding: 0;
+    max-width: 110px;
+    min-width: 110px;
   }
   .dish-counter-mob {
-    font-size: 20px;
+    font-size: 16px;
     color: #000;
-    margin-bottom: 8px;
   }
   .card-dish-top {
-    height: 167px;
-    width: 45vw;
+    padding-top: 20px;
+    padding-right: 14px;
     position: relative;
   }
   .dash-info-compare {
     position: absolute;
-    top: 7px;
-    left: 8px;
+    top: 25px;
+    right: 19px;
     background-color: #f44336;
     width: 40px;
     height: 28px;
@@ -1951,37 +1995,38 @@
     object-fit: cover;
   }
   .dish-img-mobile {
-    height: 167px;
+    height: 80px;
     object-fit: cover;
+    border-radius: 4px;
+    overflow: hidden;
   }
   .card-dish-bottom {
     display: flex;
     flex-direction: column;
+    padding-bottom: 14px;
   }
   .dish-name {
     color: #21201F;
     display: -webkit-box;
     overflow: hidden;
-    font-size: 16px;
-    text-align: center;
+    font-size: 14px;
     word-break: break-word;
     font-weight: 400;
     line-height: 19px;
+    margin-bottom: 4px;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
   }
   .dish-info {
-    height: 23px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding-bottom: 8px;
+    padding: 0 14px 16px;
   }
   .info-price-box {
-    display: grid;
-    grid-template-columns: 1fr 48px;
+    display: flex;
+    align-items: center;
     grid-column-gap: 10px;
-    margin: 0 9px 8px;
+    padding: 0 14px;
   }
   .info-price-box__title {
     font-size: 14px;
@@ -1990,35 +2035,34 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    background-color: #F1F0ED;
-    border-radius: 16px;
   }
   .info-price-box__icon {
-    color: #000 !important;
+    color: #7d7d7d !important;
     font-size: 17px;
     font-weight: 400;
     letter-spacing: -0.5px;
-    height: 48px;
+    height: 30px;
+    width: 30px;
     background-color: #F1F0ED;
-    border-radius: 16px;
+    border-radius: 4px;
   }
   .info-price {
-    color: #000 !important;
+    color: #7d7d7d !important;
     font-size: 17px;
     font-weight: 400;
     letter-spacing: -0.5px;
-    height: 48px;
-    min-width: 48px;
+    height: 30px;
+    min-width: 30px;
     display: flex;
     transition: opacity, background-color 100ms;
     align-items: center;
-    border-radius: 16px;
+    border-radius: 4px;
     align-content: center;
     justify-content: center;
     background-color: #F1F0ED;
-    margin: 0 9px 8px;
-    display: flex;
+    margin: 0;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
     flex-direction: column;
   }
   .dish-info__price {
@@ -2065,14 +2109,10 @@
     text-align: center;
   }
   .dish-card {
-    flex: 0 1 calc(50% - 11px * 1.5);
-    /*height: 296px;*/
-    display: block;
     position: relative;
     overflow: hidden;
-    transform: translate3d(0, 0, 0);
-    box-shadow: 0px 8px 20px rgba(117, 115, 111, 0.2);
-    border-radius: 24px !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
   }
   .delivery-info div {
     padding-left: 10px;
@@ -2168,10 +2208,15 @@
     font-weight: bold;
     display: flex;
     position: relative;
-    padding-top: 27px;
+    padding-top: 20px;
     align-items: center;
     padding-left: 20px;
     flex-direction: row;
+    padding-bottom: 14px;
+  }
+  .dishs-list-mobile {
+    padding-top: 10px;
+    background-color: #fafafa;
   }
   .treangle {
     border-left: 25px solid transparent;
@@ -2189,38 +2234,11 @@
     width: calc(50% - 40px);
     margin: 20px;
   }
-  .dishs-list-mobile {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding-left: 10px;
-  }
   .dishs-list-mobile-item {
-    margin: 5px;
-    max-width: calc((100% - 20px)/2);
+    padding-bottom: 10px !important;
     position: relative;
     z-index: 0;
-  }
-  @media screen and (min-width: 500px) {
-    .dishs-list-mobile-item {
-      max-width: calc((100% - 30px)/3);
-    }
-  }
-  @media screen and (min-width: 620px) {
-    .dishs-list-mobile-item {
-      max-width: calc((100% - 40px)/4);
-    }
-  }
-  @media screen and (min-width: 850px) {
-    .dishs-list-mobile-item {
-      max-width: calc((100% - 50px)/5);
-    }
-  }
-  @media screen and (min-width: 992px) {
-    .dishs-list-mobile-item {
-      max-width: calc((100% - 60px) / 6);
-    }
+    background-color: #fafafa;
   }
   .dishs-list {
     display: flex;
@@ -2405,18 +2423,15 @@
       border-bottom: none;
     }
   }
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 992px) {
     .dish-img-mobile {
       width: 100%;
     }
   }
   .dish-name-container {
-    height: 38px;
+    height: 20px;
     margin: 8px 0 2px;
-    padding: 0 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 0 14px;
   }
   .rest-info-center__rating-icon {
     font-size: 18px !important;
@@ -2448,5 +2463,12 @@
     font-size: 24px;
     margin-right: 10px;
     margin-bottom: 0 !important;
+  }
+</style>
+
+<style scoped>
+  .main-product-card-m {
+    display: grid;
+    grid-template-columns: 1fr 94px;
   }
 </style>
