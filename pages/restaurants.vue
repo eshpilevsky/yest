@@ -2231,8 +2231,7 @@
     z-index: 10;
   }
   .dishs-list-item {
-    width: calc(50% - 40px);
-    margin: 20px;
+    width: 100%;
   }
   .dishs-list-mobile-item {
     padding-bottom: 10px !important;
@@ -2241,17 +2240,19 @@
     background-color: #fafafa;
   }
   .dishs-list {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 14px;
+    grid-row-gap: 14px;
+    /*display: flex;*/
+    /*flex-direction: row;*/
+    /*flex-wrap: wrap;*/
   }
   .card {
     height: 100px;
     width: 100px;
   }
   .catalog-list {
-    /*border: solid 1px #eeeeee;*/
-    /*background-image: linear-gradient(to bottom, #ffffff, #f2f2f2 480px);*/
     padding: 25px 60px;
     background-color: #f2f2f2;
     border-top: none;
