@@ -423,8 +423,10 @@
                       <div class="dish-info">
                         <div class="d-flex">
 <!--                          <span class="dish-info__price" v-show="!checkInbasket(item)">{{computedPrice(item.sizes)}} BYN</span>-->
-                          <span class="info-weight">
-                            {{item.sizes[0] ? item.sizes[0].weight : ''}}
+
+                          <span class="info-description">
+                            <span class="info-weight">{{item.sizes[0] ? item.sizes[0].weight : ''}}</span>
+                              {{item.description}}
                           </span>
                         </div>
                       </div>
@@ -2103,10 +2105,11 @@
   /*    border-radius: 50%;*/
   /*    background-color: #c2c0be;*/
   /*}*/
-  .info-weight {
+  .info-weight,
+  .info-description{
     color: #c2c0be;
     font-size: 13px;
-    text-align: center;
+    text-align: left;
   }
   .dish-card {
     position: relative;
