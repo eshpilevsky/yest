@@ -2037,6 +2037,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-left: 10px;
   }
   .info-price-box__icon {
     color: #7d7d7d !important;
