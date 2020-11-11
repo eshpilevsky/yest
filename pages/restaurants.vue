@@ -2434,7 +2434,6 @@
     }
   }
   .dish-name-container {
-    height: 20px;
     margin: 8px 0 2px;
     padding: 0 14px;
   }
