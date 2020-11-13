@@ -262,24 +262,28 @@ export const getters = {
     return state.data.dishs
   },
   getTotalPrice(state) {
-    let dl = state.data.dishs
+    const dl = state.data.dishs
     let totalPrice = 0
-    dl.forEach(element => {
-      console.log(element);
-      totalPrice += element.selectSize.price * element.selectSize.count
-    //   if (element.selectOption.length > 0) {
-    //     element.selectOption.forEach(option => {
-    //       if (option.selected.length > 1) {
-    //         option.selected.forEach(opti => {
-    //           totalPrice += opti.price == null ? 0 : opti.price[0].price
-    //         })
-    //       } else {
-    //         totalPrice += option.selected.price == null ? 0 : option.selected.price[0].price
-    //       }
-    //     })
-    //     console.error(totalPrice);
-    //   }
-    });
+    if (dl.length > 0){
+      dl.forEach(element => {
+        console.log(element)
+        totalPrice += element.selectSize.price * element.selectSize.count
+        //   if (element.selectOption.length > 0) {
+        //     element.selectOption.forEach(option => {
+        //       if (option.selected.length > 1) {
+        //         option.selected.forEach(opti => {
+        //           totalPrice += opti.price == null ? 0 : opti.price[0].price
+        //         })
+        //       } else {
+        //         totalPrice += option.selected.price == null ? 0 : option.selected.price[0].price
+        //       }
+        //     })
+        //     console.error(totalPrice);
+        //   }
+      })
+    } else {
+      totalPrice = 0
+    }
     return totalPrice.toFixed(1)
   },
   getTotalPriceWithDelivery(state) {
