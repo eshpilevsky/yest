@@ -1059,8 +1059,8 @@
       },
       checkInbasket(item) {
         let findItem = this.getSelectedDishs.find((dish) => {
-          console.log(dish);
-          console.log(item);
+          console.log('dish:',dish);
+          console.log('item:',item);
           return item.id === dish.id
         })
         if (findItem !== undefined) {
