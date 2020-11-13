@@ -610,21 +610,23 @@
             </v-card>
           </v-bottom-sheet>
         </div>
-        <div class="basket-btn-block" v-show="this.getTotalPrice > 0">
-          <div>
-            <v-btn height="56px" block color="primary" class="basket-btn" @click="goToBasketPage()">
+        <client-only>
+          <div class="basket-btn-block" v-show="this.getTotalPrice > 0">
+            <div>
+              <v-btn height="56px" block color="primary" class="basket-btn" @click="goToBasketPage()">
                         <span class="btn-sub-text">
                             {{this.restuarant.delivery.time.min}} - {{this.restuarant.delivery.time.max}} мин
                         </span>
-              <span>
+                <span>
                             Корзина
                         </span>
-              <span class="btn-sub-text">
-                            {{this.getTotalPriceWithDelivery.toFixed(1)}} BYN
+                <span class="btn-sub-text">
+                            {{this.getTotalPriceWithDelivery.toFixed(2)}} BYN
                         </span>
-            </v-btn>
+              </v-btn>
+            </div>
           </div>
-        </div>
+        </client-only>
       </div>
     </div>
     <v-overlay class="modal-change-products" :dark='false' opacity="0.5" z-index="999" v-model="showWarning">

@@ -326,6 +326,6 @@ export const getters = {
     }
     return parseFloat(totalPrice) + addDeliveryPrice
   }
-};
+}
 
 export const strict = false
