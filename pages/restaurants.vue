@@ -1156,7 +1156,17 @@ export default {
       }
     },
     checkInbasket (item) {
-      return false
+      const findItem = this.getSelectedDishs.find((dish) => {
+        if (dish !== undefined && item !== undefined) {
+          return item.id === dish.id
+        }
+      })
+
+      if (findItem !== undefined) {
+        return false
+      } else {
+        return true
+      }
     },
     computedCount (item) {
       const findItem = this.getSelectedDishs.find((dish) => {
