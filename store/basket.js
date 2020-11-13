@@ -265,6 +265,7 @@ export const getters = {
     let dl = state.data.dishs
     let totalPrice = 0
     dl.forEach(element => {
+      console.log(element);
       totalPrice += element.selectSize.price * element.selectSize.count
     //   if (element.selectOption.length > 0) {
     //     element.selectOption.forEach(option => {
