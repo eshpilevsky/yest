@@ -266,10 +266,9 @@ export const getters = {
     let totalPrice = 0
     if (dl !== null && dl.length > 0) {
       dl.forEach((element) => {
-        console.log(element)
         let info = (element).selectSize
         console.log('info:', info)
-        totalPrice += (element).selectSize.price * element.selectSize.count
+        totalPrice += info.price * info.count
         //   if (element.selectOption.length > 0) {
         //     element.selectOption.forEach(option => {
         //       if (option.selected.length > 1) {
