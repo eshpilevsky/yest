@@ -235,7 +235,7 @@ export const mutations = {
   SYSTEM_DROP_BASKET (state, payload) {
     // Добавление товара в корзину в первый раз
     state.status = '200'
-    state.data.dishs.push(payload)
+    state.data.dishs = [];
   }
 }
 
