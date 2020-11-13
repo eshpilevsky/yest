@@ -1159,8 +1159,7 @@ export default {
       const findItem = this.getSelectedDishs.find((dish) => {
         console.log('dish:', dish)
         console.log('item:', item)
-        if (dish.id && item.id) {
-          console.log(1)
+        if (dish.id !== undefined && item.id !== undefined) {
           return item.id === dish.id
         }
       })
