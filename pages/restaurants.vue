@@ -1173,7 +1173,7 @@ export default {
     },
     computedCount (item) {
       const findItem = this.getSelectedDishs.find((dish) => {
-        return item.id == dish.id
+        return item.id === dish.id
       })
       if (findItem !== undefined) {
         return findItem.selectSize.count
