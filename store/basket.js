@@ -167,7 +167,6 @@ export const mutations = {
       });
     });
 
-
     state.status = '200'
     state.data.dishs = []
     state.data.restuarantUrl = null
@@ -252,18 +251,18 @@ export const mutations = {
 };
 
 export const getters = {
-  getOrderId(state) {
+  getOrderId (state) {
     return state.data.orderId
   },
-  getLatetestRestInfoWithOrder(state) {
+  getLatetestRestInfoWithOrder (state) {
     return state.data.restuarantUrl
   },
-  getSelectedDishs(state) {
+  getSelectedDishs (state) {
     return state.data.dishs
   },
-  getTotalPrice(state) {
+  getTotalPrice (state) {
     const dl = state.data.dishs
-    let totalPrice = 0
+    const totalPrice = 0
 
     // if (dl !== null && dl.length > 0) {
     //   dl.forEach((element) => {
@@ -287,44 +286,11 @@ export const getters = {
 
     return totalPrice
   },
-  getTotalPriceWithDelivery(state) {
-    let dl = state.data.dishs
-    let totalPrice = 0
-    // dl.forEach(element => {
-    //   totalPrice += element.selectSize.price * element.selectSize.count
-    // //   if (element.selectOption.length > 0) {
-    // //     element.selectOption.forEach(option => {
-    // //       if (option.selected.length > 1) {
-    // //         option.selected.forEach(opti => {
-    // //           totalPrice += opti.price == null ? 0 : opti.price[0].price
-    // //         })
-    // //       } else {
-    // //         totalPrice += option.selected.price == null ? 0 : option.selected.price[0].price
-    // //       }
-    // //     })
-    // //     console.error(totalPrice);
-    // //   }
-    // });
+  getTotalPriceWithDelivery (state) {
+    const dl = state.data.dishs
+    const totalPrice = 0
 
-
-    let mass = state.data.restuarantUrl == null ? 0 : state.data.restuarantUrl.delivery.fee
-    let addDeliveryPrice = 0
-    if (mass !== 0) {
-      function la(mass) {
-        let finded = mass.find((cost) => {
-          return cost.min < totalPrice && totalPrice < cost.max
-        })
-        if (finded !== undefined) {
-            return parseInt(finded.delivery)
-        } else {
-          return parseInt(mass[mass.length - 1].delivery)
-        }
-      }
-      addDeliveryPrice = la(mass)
-    } else {
-      addDeliveryPrice = 0
-    }
-    return parseFloat(totalPrice) + addDeliveryPrice
+    return totalPrice
   }
 }
 
