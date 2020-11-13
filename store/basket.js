@@ -3,16 +3,16 @@ export const state = () => ({
     restuarantUrl: null,
     dishs: [],
     totalPrice: 0,
-    orderId: 0,
+    orderId: 0
   },
   status: 0
 })
 
 export const actions = {
-  async addToBasket(context, payload) {
-    let list = context.state.data.dishs
-    let dishSizes;
-    let findDish = list.find((dish) => {
+  async addToBasket (context, payload) {
+    const list = context.state.data.dishs
+    let dishSizes
+    const findDish = list.find((dish) => {
       return dish.id == payload.id
     })
 
@@ -20,7 +20,7 @@ export const actions = {
       context.commit('SAVE_TO_BASKET', payload)
     } else {
       dishSizes = findDish.selectSize
-      let findSize;
+      let findSize
       if (dishSizes.id == payload.selectSize.id) {
         findSize = true
       } else {
@@ -30,45 +30,45 @@ export const actions = {
       if (findSize == undefined) {
         context.commit('SAVE_TO_BASKET', payload)
       } else {
-        context.commit('INCREMENT_DISH', payload);
+        context.commit('INCREMENT_DISH', payload)
       }
     }
   },
-  dropBasket(context) {
+  dropBasket (context) {
     context.commit('DROP_BASKET')
   },
-  incrementDishCounter(context, id) {
+  incrementDishCounter (context, id) {
     context.commit('INCREMENT_DISH', id)
   },
-  decrementDishCounter(context, payload) {
+  decrementDishCounter (context, payload) {
     context.commit('DECREMENT_DISH', payload)
   },
-  removeFromBasket(context, id) {
+  removeFromBasket (context, id) {
     context.commit('REMOVE_FROM_BASKET', id)
   },
-  system_dropBasket(context) {
+  system_dropBasket (context) {
     context.commit('SYSTEM_DROP_BASKET')
   },
-  saveRestuarantUrl(context, url) {
+  saveRestuarantUrl (context, url) {
     context.commit('SAVE_RESTRUARNT_URL', url)
   },
-  setOrderId(context, id) {
+  setOrderId (context, id) {
     context.commit('SET_ORDER_ID', id)
-  },
-};
+  }
+}
 
 export const mutations = {
-  INCREMENT_DISH(state, payload) {
+  INCREMENT_DISH (state, payload) {
     state.status = '200'
-    let dishList = state.data.dishs;
-    let findDish = dishList.findIndex((dish) => {
+    const dishList = state.data.dishs
+    const findDish = dishList.findIndex((dish) => {
       return dish.id === payload.id
-    });
-    let dishSizes;
+    })
+    let dishSizes
     if (findDish !== undefined) {
       dishSizes = state.data.dishs[findDish].selectSize
-      let findSize;
-      if (dishSizes.id == payload.selectSize.id) {
+      let findSize
+      if (dishSizes.id === payload.selectSize.id) {
         findSize = true
       } else {
         findSize = undefined
@@ -81,113 +81,106 @@ export const mutations = {
       }
     }
 
-    window.dataLayer = window.dataLayer || [];
+    window.dataLayer = window.dataLayer || []
     dataLayer.push({
-      "ecommerce": {
-        "add": {
-          "products": [
+      ecommerce: {
+        add: {
+          products: [
             {
-              "id": payload.selectSize.id,
-              "name": payload.name,
-              "price": payload.selectSize.price,
-              "brand": "",
-              "category": "",
-              "quantity": 1
+              id: payload.selectSize.id,
+              name: payload.name,
+              price: payload.selectSize.price,
+              brand: '',
+              category: '',
+              quantity: 1
             }
           ]
         }
       },
-      'event': 'gtm-ee-event',
+      event: 'gtm-ee-event',
       'gtm-ee-event-category': 'Enhanced Ecommerce',
       'gtm-ee-event-action': 'Adding a Product to a Shopping Cart',
       'gtm-ee-event-non-interaction': 'False'
-    });
-
-
+    })
   },
-  SAVE_RESTRUARNT_URL(state, url) {
+  SAVE_RESTRUARNT_URL (state, url) {
     state.status = '200'
     state.data.restuarantUrl = url
   },
-  SAVE_TO_BASKET(state, payload) {
-
+  SAVE_TO_BASKET (state, payload) {
     // Добавление товара в корзину в первый раз
     state.status = '200'
-    state.data.dishs.push(payload);
+    state.data.dishs.push(payload)
 
-
-    window.dataLayer = window.dataLayer || [];
+    window.dataLayer = window.dataLayer || []
     dataLayer.push({
-      "ecommerce": {
-        "add": {
-          "products": [
+      ecommerce: {
+        add: {
+          products: [
             {
-              "id": payload.selectSize.id,
-              "name": payload.name,
-              "price": payload.selectSize.price,
-              "brand": "",
-              "category": "",
-              "quantity": 1
+              id: payload.selectSize.id,
+              name: payload.name,
+              price: payload.selectSize.price,
+              brand: '',
+              category: '',
+              quantity: 1
             }
           ]
         }
       },
-      'event': 'gtm-ee-event',
+      event: 'gtm-ee-event',
       'gtm-ee-event-category': 'Enhanced Ecommerce',
       'gtm-ee-event-action': 'Adding a Product to a Shopping Cart',
       'gtm-ee-event-non-interaction': 'False'
-    });
-
-
-
+    })
   },
-  DROP_BASKET(state) {
+  DROP_BASKET (state) {
     window.dataLayer = window.dataLayer || [];
 
     (state.data.dishs).forEach(function (data) {
       dataLayer.push({
-        "ecommerce": {
-          "remove": {
-            "products": [
+        ecommerce: {
+          remove: {
+            products: [
               {
-                "id": data.selectSize.id,
-                "name": data.name,
-                "price": data.selectSize.price,
-                "brand": "",
-                "category": "",
-                "quantity": data.selectSize.count
+                id: data.selectSize.id,
+                name: data.name,
+                price: data.selectSize.price,
+                brand: '',
+                category: '',
+                quantity: data.selectSize.count
               }
             ]
           }
         },
-        'event': 'gtm-ee-event',
+        event: 'gtm-ee-event',
         'gtm-ee-event-category': 'Enhanced Ecommerce',
         'gtm-ee-event-action': 'DROP_BASKETt',
         'gtm-ee-event-non-interaction': 'False'
-      });
-    });
+      })
+    })
 
     state.status = '200'
     state.data.dishs = []
     state.data.restuarantUrl = null
   },
-  DECREMENT_DISH(state, payload) {
+  DECREMENT_DISH (state, payload) {
     state.status = '200'
-    let dishList = state.data.dishs
-    let findDish = dishList.findIndex((dish) => {
+    const dishList = state.data.dishs
+    const findDish = dishList.findIndex((dish) => {
       return dish.id == payload.id
     })
-    let dishSizes;
+    let dishSizes
     if (findDish !== undefined) {
       dishSizes = state.data.dishs[findDish].selectSize
-      let findSize;
+      let findSize
       if (dishSizes.id == payload.selectSize.id) {
         findSize = true
       } else {
         findSize = undefined
       }
 
-      let wellBe = state.data.dishs[findDish].selectSize.count - 1
+      const wellBe = state.data.dishs[findDish].selectSize.count - 1
       if (findSize !== undefined) {
         if (wellBe < 1) {
           state.data.dishs.splice(findDish, 1)
@@ -202,53 +195,49 @@ export const mutations = {
       }
     }
 
-
-    window.dataLayer = window.dataLayer || [];
+    window.dataLayer = window.dataLayer || []
     dataLayer.push({
-      "ecommerce": {
-        "remove": {
-          "products": [
+      ecommerce: {
+        remove: {
+          products: [
             {
-              "id": payload.selectSize.id,
-              "name": payload.name,
-              "price": payload.selectSize.price,
-              "brand": "",
-              "category": "",
-              "quantity": 1
+              id: payload.selectSize.id,
+              name: payload.name,
+              price: payload.selectSize.price,
+              brand: '',
+              category: '',
+              quantity: 1
             }
           ]
         }
       },
-      'event': 'gtm-ee-event',
+      event: 'gtm-ee-event',
       'gtm-ee-event-category': 'Enhanced Ecommerce',
       'gtm-ee-event-action': 'delete a Product from Shopping Cart',
       'gtm-ee-event-non-interaction': 'False'
-    });
+    })
 
-
-    console.log('DECREMENT_DISH');
-    console.log(payload);
+    console.log('DECREMENT_DISH')
+    console.log(payload)
   },
-  REMOVE_FROM_BASKET(state, id) {
-    console.log('REMOVE_FROM_BASKET');
+  REMOVE_FROM_BASKET (state, id) {
+    console.log('REMOVE_FROM_BASKET')
     state.status = '200'
-    state.data.dishs.filter(dish => {
-      console.log(dish);
+    state.data.dishs.filter((dish) => {
+      console.log(dish)
       return dish !== id
     })
   },
-  SET_ORDER_ID(state, id) {
+  SET_ORDER_ID (state, id) {
     state.status = '200'
     state.data.orderId = id
   },
-  SYSTEM_DROP_BASKET(state, payload) {
-
+  SYSTEM_DROP_BASKET (state, payload) {
     // Добавление товара в корзину в первый раз
     state.status = '200'
-    state.data.dishs.push(payload);
-
-  },
-};
+    state.data.dishs.push(payload)
+  }
+}
 
 export const getters = {
   getOrderId (state) {
@@ -258,7 +247,13 @@ export const getters = {
     return state.data.restuarantUrl
   },
   getSelectedDishs (state) {
-    return state.data.dishs
+    const dishes = state.data.dishs
+    dishes.forEach((dish, key) => {
+      if (!dish) {
+        delete dishes[key]
+      }
+    })
+    return dishes
   },
   getTotalPrice (state) {
     const dl = state.data.dishs
