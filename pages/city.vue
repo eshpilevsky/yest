@@ -97,8 +97,9 @@ export default {
         let currentZone = zoneListData.find((zones) => {
             return zones.alias === params.region
         });
-        if (currentZone !== undefined) {
-            console.log(currentZone);
+      console.log(currentZone);
+
+      if (currentZone !== undefined) {
             store.dispatch('zone/setSelectedZone', currentZone)
         } else {
             redirect('/')
