@@ -1160,7 +1160,11 @@ export default {
         console.log('dish:', dish)
         console.log('item:', item)
         if (dish.id && item.id) {
+          console.log(1)
           return item.id === dish.id
+        } else {
+          console.log(2)
+          return false
         }
       })
       if (findItem !== undefined) {
