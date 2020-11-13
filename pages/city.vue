@@ -98,6 +98,7 @@ export default {
             return zones.alias === params.region
         });
         if (currentZone !== undefined) {
+            console.log(currentZone);
             store.dispatch('zone/setSelectedZone', currentZone)
         } else {
             redirect('/')
