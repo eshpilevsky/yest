@@ -97,7 +97,6 @@ export default {
         let currentZone = zoneListData.find((zones) => {
             return zones.alias === params.region
         });
-      console.log(currentZone);
 
       if (currentZone !== undefined) {
             store.dispatch('zone/setSelectedZone', currentZone)
@@ -110,6 +109,7 @@ export default {
         });
 
         let categoriesListData = categoriesList.data;
+        console.log('categoriesListData:',categoriesListData);
 
         store.dispatch('user/allCategory', categoriesListData);
         let categoryAll = [{
@@ -121,6 +121,8 @@ export default {
         let currentCategory = categoriesListData.find((category) => {
             return category.alias === params.alias
         });
+
+      console.log('currentCategory:',currentCategory);
 
         let categoryInfo;
         let categoryInfoData;
@@ -177,11 +179,15 @@ export default {
             }
         }
 
+      console.log('categoryInfoData:', categoryInfoData);
+
     // Определение широты и долготы пользователя
     let latitude
     let longitude
     if (process.server) {
+      console.log('true');
         if (req.headers.cookie) {
+          console.log('true');
 
             if (req.headers.cookie.indexOf('latitude') > 0 && req.headers.cookie.indexOf('longitude') > 0) {
                 latitude = await getCookie('latitude', req.headers.cookie)
@@ -195,7 +201,11 @@ export default {
                 latitude = undefined;
                 longitude = undefined;
             }
+        }else {
+          console.log('false')
         }
+    }else {
+      console.log('false');
     }
     // КОНЕЦ Определение широты и долготы пользователя
 
