@@ -248,11 +248,14 @@ export const getters = {
   },
   getSelectedDishs (state) {
     const dishes = state.data.dishs
+    console.log('getSelectedDishs')
+    console.log('dishes:', dishes)
     dishes.forEach((dish, key) => {
       if (!dish) {
         delete dishes[key]
       }
     })
+    console.log('dishes:', dishes)
     return dishes
   },
   getTotalPrice (state) {

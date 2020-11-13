@@ -1162,9 +1162,6 @@ export default {
         if (dish.id && item.id) {
           console.log(1)
           return item.id === dish.id
-        } else {
-          console.log(2)
-          return false
         }
       })
 
@@ -1296,9 +1293,6 @@ export default {
       // this.dropBasket()
     },
     showRatingSheet (newValue) {
-      return newValue
-    },
-    showDeliveryOption (newValue) {
       return newValue
     },
     showDeliveryOption (newValue) {
