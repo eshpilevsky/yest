@@ -6,39 +6,48 @@
           <div class="left-top" :style="{backgroundImage:'url(https://img.eatmealby.com/resize/restaurant/900/'+restuarant.background_image+')'}">
             <div class="top-wrapper">
               <div class="rating">
-                <v-chip color="primary" class="restaurant-rating" v-if="restuarant.rating !== 0">
-                  <v-icon class="restaurant-rating__icon" color="#FFFADF">star</v-icon>
-                  <div>{{restuarant.rating ? restuarant.rating: 'Мало оценок'}}</div>
+                <v-chip v-if="restuarant.rating !== 0" color="primary" class="restaurant-rating">
+                  <v-icon class="restaurant-rating__icon" color="#FFFADF">
+                    star
+                  </v-icon>
+                  <div>{{ restuarant.rating ? restuarant.rating: 'Мало оценок' }}</div>
                 </v-chip>
                 <div>
                   <nuxt-link to="/" class="info-delivery">
                     Доставка еды
                   </nuxt-link>
                   <span class="white--text">
-                                    •
-                                </span>
+                    •
+                  </span>
                   <nuxt-link :to="`/${this.currentZone.alias}`" class="info-delivery">
-                    {{this.currentZone.name}}
+                    {{ this.currentZone.name }}
                   </nuxt-link>
                 </div>
                 <h1 class="restuarant-name white--text pb-3">
-                  {{restuarant.name}}
+                  {{ restuarant.name }}
                 </h1>
                 <div class="delivery-options d-flex flex-row justify-space-between">
-
-                  <v-menu content-class="delivery-modal-wrapper" min-width="356" bottom origin="center center" z-index="999" transition="scale-transition" nudge-bottom='65'>
+                  <v-menu
+                    content-class="delivery-modal-wrapper"
+                    min-width="356"
+                    bottom
+                    origin="center center"
+                    z-index="999"
+                    transition="scale-transition"
+                    nudge-bottom="65"
+                  >
                     <template v-slot:activator="{ on, attrs }">
                       <div class="white--text info-left" v-bind="attrs" v-on="on">
                         <div class="moped-block">
-                          <div class="moped"></div>
-                          <div class="treangule"></div>
+                          <div class="moped" />
+                          <div class="treangule" />
                         </div>
                         <div class="restuarants-description pl-2">
                           <div class="description-who">
                             Доставка Yest.by
                           </div>
                           <div class="description-price ">
-                            Доставка {{delivery[1].delivery == 0 ? '' : `${delivery[1].delivery} -`}} {{delivery[0].delivery}} BYN. Бесплатно при заказе от {{delivery[delivery.length-1].min}} BYN
+                            Доставка {{ delivery[1].delivery == 0 ? '' : `${delivery[1].delivery} -` }} {{ delivery[0].delivery }} BYN. Бесплатно при заказе от {{ delivery[delivery.length-1].min }} BYN
                           </div>
                         </div>
                       </div>
@@ -47,12 +56,12 @@
                           Заказ от
                         </p>
                         <p>
-                          {{delivery[0].min}} BYN
+                          {{ delivery[0].min }} BYN
                         </p>
                       </div>
                     </template>
                     <div class="delivery-modal">
-                      <v-card max-width='356' class="restuarants-legal-info">
+                      <v-card max-width="356" class="restuarants-legal-info">
                         <v-card-title class="modal-title">
                           Доставка Yest.by
                         </v-card-title>
@@ -66,34 +75,42 @@
                               directions_run
                             </v-icon>
                             <div v-if="fee.delivery">
-                              {{fee.delivery }} BYN
+                              {{ fee.delivery }} BYN
                               <span>
-                                                            на заказ от {{fee.min}} BYN
-                                                        </span>
+                                на заказ от {{ fee.min }} BYN
+                              </span>
                             </div>
                             <div v-else>
-                              Бесплатная доставка при заказе от {{fee.min}} BYN
+                              Бесплатная доставка при заказе от {{ fee.min }} BYN
                             </div>
                           </div>
-                          <v-divider width='100%' class="mx-auto" />
+                          <v-divider width="100%" class="mx-auto" />
                         </div>
                       </v-card>
                     </div>
                   </v-menu>
 
                   <div class="white--text rest-info-text">
-                    <v-menu content-class="rest-info-wrapper" bottom origin="center center" z-index="999" transition="scale-transition" nudge-left='100' nudge-bottom='50'>
+                    <v-menu
+                      content-class="rest-info-wrapper"
+                      bottom
+                      origin="center center"
+                      z-index="999"
+                      transition="scale-transition"
+                      nudge-left="100"
+                      nudge-bottom="50"
+                    >
                       <template v-slot:activator="{ on, attrs }">
                         <v-btn color="transparent" class="restaurant-info-btn" large v-bind="attrs" v-on="on">
                           <p class="info-btn-text">
-                            Информация <br /> о ресторане
+                            Информация <br> о ресторане
                           </p>
                           <img src="@/assets/restaurantInfoIcon.svg" alt="restaurant info">
                         </v-btn>
                       </template>
                       <div class="rest-info-modal">
-                        <v-card max-width='460' class="restuarants-legal-info">
-                          <legalInfo :restuarant='restuarant' />
+                        <v-card max-width="460" class="restuarants-legal-info">
+                          <legalInfo :restuarant="restuarant" />
                         </v-card>
                       </div>
                     </v-menu>
@@ -103,27 +120,50 @@
             </div>
           </div>
           <div class="catalog">
-            <v-tabs hide-slider v-model="tab" class="catalog-tabs catalog-tabs--desktop" center-active>
-              <v-tab class="tab-item" active-class="tab-item--active" height="70px" v-for="(category, index) in restuarant.menu" :key="category.cat_id" @click="scroll(`desktop_${index}`)" :if="category.dishes.length > 0">
-                {{category.name}}
+            <v-tabs v-model="tab" hide-slider class="catalog-tabs catalog-tabs--desktop" center-active>
+              <v-tab
+                v-for="(category, index) in restuarant.menu"
+                :key="category.cat_id"
+                class="tab-item"
+                active-class="tab-item--active"
+                height="70px"
+                :if="category.dishes.length > 0"
+                @click="scroll(`desktop_${index}`)"
+              >
+                {{ category.name }}
               </v-tab>
             </v-tabs>
             <v-divider />
           </div>
-          <specOffer v-show="this.showSpecOffer" :salesText='restuarant.salesText' />
+          <specOffer v-show="this.showSpecOffer" :sales-text="restuarant.salesText" />
           <div class="catalog-list">
             <div v-for="(category, index) in restuarant.menu" :key="category.cat_id">
-              <div class="category-title" v-if="category.dishes.length > 0">
-                <h2 v-intersect="{handler:categoryNameIntersect, options: {threshold: [1.0]}}" :id='`desktop_${index}`'>
-                  {{category.name}}
+              <div v-if="category.dishes.length > 0" class="category-title">
+                <h2 :id="`desktop_${index}`" v-intersect="{handler:categoryNameIntersect, options: {threshold: [1.0]}}">
+                  {{ category.name }}
                 </h2>
                 <span class="category-list-counter">
-                                {{category.dishes.length}}
-                            </span>
+                  {{ category.dishes.length }}
+                </span>
               </div>
               <div class="dishs-list">
-                <div v-for="(item, index2) in category.dishes" :key="`dishCard${index2}`" v-show="item !== null ? item.status : false" class="dishs-list-item" v-bind:id="`dish-id-${item.id}`" @click="addToBasket(item)">
-                  <cardDish v-if="item !== null" :id='item.id' :count='item.count' :name='item.name' :description='item.description' :img='item.image' :dishinfo='item.sizes' />
+                <div
+                  v-for="(item, index2) in category.dishes"
+                  v-show="item !== null ? item.status : false"
+                  :id="`dish-id-${item.id}`"
+                  :key="`dishCard${index2}`"
+                  class="dishs-list-item"
+                  @click="addToBasket(item)"
+                >
+                  <cardDish
+                    v-if="item !== null"
+                    :id="item.id"
+                    :count="item.count"
+                    :name="item.name"
+                    :description="item.description"
+                    :img="item.image"
+                    :dishinfo="item.sizes"
+                  />
                 </div>
               </div>
             </div>
@@ -132,8 +172,10 @@
         <div cols-2 xl8 class="right">
           <!--<div v-show="this.getCurrentAddress.length > 0">-->
           <div>
-            <basket :orderList="this.orderList" :delivery='this.restuarant.delivery' />
-            <v-btn :disabled="this.getTotalPrice <= 0" color="primary" class="desctop_btn_confirm_order" id="desctop_btn_confirm_order" @click="checkout()">Оформить заказ</v-btn>
+            <basket :order-list="this.orderList" :delivery="this.restuarant.delivery" />
+            <v-btn id="desctop_btn_confirm_order" :disabled="this.getTotalPrice <= 0" color="primary" class="desctop_btn_confirm_order" @click="checkout()">
+              Оформить заказ
+            </v-btn>
           </div>
           <!--<div class="map-wrapper" v-show="this.getCurrentAddress.length == 0">-->
           <!--<div class="mapimg"></div>-->
@@ -146,54 +188,56 @@
           <!--</div>-->
         </div>
         <client-only>
-          <v-overlay :dark='false' z-index="999" v-model="showOptionsmenu">
+          <v-overlay v-model="showOptionsmenu" :dark="false" z-index="999">
             <v-card width="50vw" class="select-option-card">
               <div class="d-flex flex-row justify-space-between pb-3">
                 <div class="select-option-title" color="secondary">
                   Выберите опции
                 </div>
                 <div class="close-select-option" @click="closeOptionMenu()">
-                  <v-icon color="#000">close</v-icon>
+                  <v-icon color="#000">
+                    close
+                  </v-icon>
                 </div>
               </div>
               <div class="options-list">
-                <div class="sizes" v-show="selectedDish.sizes.length > 1">
+                <div v-show="selectedDish.sizes.length > 1" class="sizes">
                   <div class="multi-title">
                     Размер на выбор
                   </div>
                   <v-radio-group v-model="sizesRadioBtn" :mandatory="false" class="d-flex flex-row">
                     <v-radio v-for="size in selectedDish.sizes" :key="size.id" :value="size" color="primary">
                       <template v-slot:label>
-                                            <span class="option-main-text">
-                                                {{size.name}} <span v-if="size.weight">({{size.weight}})</span>
-                                            </span>
+                        <span class="option-main-text">
+                          {{ size.name }} <span v-if="size.weight">({{ size.weight }})</span>
+                        </span>
                         <span class="option-main-price">
-                                                {{size.price-selectedDish.sizes[0].price == 0 ? `` : `+${(size.price-selectedDish.sizes[0].price).toFixed(1)} BYN`}}
-                                            </span>
+                          {{ size.price-selectedDish.sizes[0].price == 0 ? `` : `+${(size.price-selectedDish.sizes[0].price).toFixed(1)} BYN` }}
+                        </span>
                       </template>
                     </v-radio>
                   </v-radio-group>
                 </div>
-                <div class="options" v-show="selectedDish.options.length > 0">
+                <div v-show="selectedDish.options.length > 0" class="options">
                   <div class="multi-title">
                     Дополнительниые ингреденеты
                     <!-- {{this.selectedDish.options}} -->
                   </div>
                   <div v-for="(option, opindex) in selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
                     <div>
-                      {{option.title}}
+                      {{ option.title }}
                     </div>
                     <div v-if="option.multi_data !==1" class="d-flex flex-row justify-start">
                       <v-radio-group v-model="optionsCounter[opindex].selected" :mandatory="false" class="d-flex flex-row">
                         <v-radio v-for="optionV in option.variants" :key="optionV.id" :value="optionV" color="primary">
                           <template v-slot:label>
                             <p class="option-main">
-                                                        <span class="option-main-text">
-                                                            {{optionV.name}}
-                                                        </span>
-                              <span class="option-main-price" v-show="!option.free">
-                                                            {{optionV.price[0] != undefined ? (optionV.price[0].price == null ? `0` : optionV.price[0].price) : 0}} BYN
-                                                        </span>
+                              <span class="option-main-text">
+                                {{ optionV.name }}
+                              </span>
+                              <span v-show="!option.free" class="option-main-price">
+                                {{ optionV.price[0] != undefined ? (optionV.price[0].price == null ? `0` : optionV.price[0].price) : 0 }} BYN
+                              </span>
                             </p>
                           </template>
                         </v-radio>
@@ -203,12 +247,12 @@
                       <v-checkbox v-for="optionV in option.variants" :key="optionV.id" v-model="optionsCounter[opindex].selected" :value="optionV">
                         <template v-slot:label>
                           <p class="option-main">
-                                                    <span class="option-main-text">
-                                                        {{optionV.name}}
-                                                    </span>
+                            <span class="option-main-text">
+                              {{ optionV.name }}
+                            </span>
                             <span class="option-main-price">
-                                                        {{optionV.price[0] != undefined ? (optionV.price[0].price == null ? `0` :( optionV.price[0].price > 0 ? `+ ${optionV.price[0].price}`:`${optionV.price[0].price}`)) : 0}} BYN
-                                                    </span>
+                              {{ optionV.price[0] != undefined ? (optionV.price[0].price == null ? `0` :( optionV.price[0].price > 0 ? `+ ${optionV.price[0].price}`:`${optionV.price[0].price}`)) : 0 }} BYN
+                            </span>
                           </p>
                         </template>
                       </v-checkbox>
@@ -216,15 +260,17 @@
                   </div>
                 </div>
               </div>
-              <div class='options-actions'>
+              <div class="options-actions">
                 <div class="d-flex flex-row">
-                  <v-btn class="options-actions__add" color="primary" @click="addCraftDish()">Добавить</v-btn>
+                  <v-btn class="options-actions__add" color="primary" @click="addCraftDish()">
+                    Добавить
+                  </v-btn>
                   <div class="dish-counter">
-                    <v-icon @click="dencrementSelectedDish()" color="black">
+                    <v-icon color="black" @click="dencrementSelectedDish()">
                       remove
                     </v-icon>
-                    <span class="dish-counter__qty">{{selectedDishCounter}}</span>
-                    <v-icon @click="с()" color="black">
+                    <span class="dish-counter__qty">{{ selectedDishCounter }}</span>
+                    <v-icon color="black" @click="с()">
                       add
                     </v-icon>
                   </div>
@@ -234,24 +280,24 @@
                     Сумма
                   </div>
                   <div>
-                    {{(this.sizesRadioBtn.price * selectedDishCounter).toFixed(1)}} BYN
+                    {{ (this.sizesRadioBtn.price * selectedDishCounter).toFixed(1) }} BYN
                   </div>
                 </div>
               </div>
             </v-card>
           </v-overlay>
-          <v-overlay opacity="0.5" :dark='false' z-index="999" v-model="showSmsForm">
-            <smsForm @closeForm='closeSmsForm()' @closeFormShowOrderForm='closeFormShowOrderForm()' />
+          <v-overlay v-model="showSmsForm" opacity="0.5" :dark="false" z-index="999">
+            <smsForm @closeForm="closeSmsForm()" @closeFormShowOrderForm="closeFormShowOrderForm()" />
           </v-overlay>
-          <v-overlay opacity="0.5" :dark='false' z-index="999" v-model="showPreorderDesktopForm">
+          <v-overlay v-model="showPreorderDesktopForm" opacity="0.5" :dark="false" z-index="999">
             <v-card class="pa-3">
               <v-card-title class="d-flex flex-row justify-space-between align-start">
-                            <span>
-                                Ближайшее доступное время доставки — <br /> сегодня в 19:00
-                            </span>
+                <span>
+                  Ближайшее доступное время доставки — <br> сегодня в 19:00
+                </span>
                 <span @click="showPreorderDesktopForm = false">
-                                <v-icon>close</v-icon>
-                            </span>
+                  <v-icon>close</v-icon>
+                </span>
               </v-card-title>
               <v-card-actions>
                 <v-btn color="primary" @click="confirmDesktopPreorder()">
@@ -268,60 +314,78 @@
     </div>
     <div class="mobile-mode">
       <div class="mobile-mode_header">
-        <v-icon class="mobile-mode_header-btn" @click="goBack()">arrow_back</v-icon>
-        <h1 class="info-top-title" v-show="showRestName">
-          {{restuarant.name}}
+        <v-icon class="mobile-mode_header-btn" @click="goBack()">
+          arrow_back
+        </v-icon>
+        <h1 v-show="showRestName" class="info-top-title">
+          {{ restuarant.name }}
         </h1>
       </div>
       <div class="mobile-rest-info">
         <div class="rest-info-content">
           <div class="rest-info-top">
             <h1 class="info-top-title large">
-              {{restuarant.name}}
+              {{ restuarant.name }}
             </h1>
-            <v-icon @click="showHideRestInfo()">info</v-icon>
-            <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showRestInfo" :eager=true>
+            <v-icon @click="showHideRestInfo()">
+              info
+            </v-icon>
+            <v-bottom-sheet v-model="showRestInfo" :light="true" overlay-opacity="0.5" :eager="true">
               <v-sheet class="mobile-rest-info-modal">
                 <div class="mobile-rest-info-modal__top">
-                  <p class="mobile-rest-info-modal__title">{{restuarant.name}}</p>
-                  <v-icon @click="showHideRestInfo()" color="#000">close</v-icon>
+                  <p class="mobile-rest-info-modal__title">
+                    {{ restuarant.name }}
+                  </p>
+                  <v-icon color="#000" @click="showHideRestInfo()">
+                    close
+                  </v-icon>
                 </div>
-                <leagalInfo :restuarant='this.restuarant' />
+                <leagalInfo :restuarant="this.restuarant" />
               </v-sheet>
             </v-bottom-sheet>
           </div>
           <div class="rest-info-center">
-            <v-chip @click="showRatingSheet = !showRatingSheet" :color="showRatingSheet ? 'primary': null" class="rest-info-center-block-tag" v-if="restuarant.rating !== 0">
-              <v-icon class="rest-info-center__rating-icon">star</v-icon>
-              {{restuarant.rating ? restuarant.rating: 'Мало оценок'}}
+            <v-chip v-if="restuarant.rating !== 0" :color="showRatingSheet ? 'primary': null" class="rest-info-center-block-tag" @click="showRatingSheet = !showRatingSheet">
+              <v-icon class="rest-info-center__rating-icon">
+                star
+              </v-icon>
+              {{ restuarant.rating ? restuarant.rating: 'Мало оценок' }}
             </v-chip>
             <!--<v-chip @click="showDeliveryOption = !showDeliveryOption" :color="showDeliveryOption ? 'primary': null" class="rest-info-center-block-tag">-->
             <!--Доставка {{delivery[1].delivery == 0 ? '' : `${delivery[1].delivery} -`}} {{delivery[0].delivery}} BYN-->
             <!--</v-chip>-->
-            <v-chip @click="showDeliveryOption = !showDeliveryOption" :color="showDeliveryOption ? 'primary': null" class="rest-info-center-block-tag">
-              Бесплатная доставка от {{delivery[delivery.length-1].min}} BYN
+            <v-chip :color="showDeliveryOption ? 'primary': null" class="rest-info-center-block-tag" @click="showDeliveryOption = !showDeliveryOption">
+              Бесплатная доставка от {{ delivery[delivery.length-1].min }} BYN
             </v-chip>
-            <v-chip  :color="showDeliveryOption ? 'primary': null" class="rest-info-center-block-tag">
-              {{this.restuarant.delivery.time.min}} - {{this.restuarant.delivery.time.max}} минут
+            <v-chip :color="showDeliveryOption ? 'primary': null" class="rest-info-center-block-tag">
+              {{ this.restuarant.delivery.time.min }} - {{ this.restuarant.delivery.time.max }} минут
             </v-chip>
-            <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showRatingSheet" :eager=true>
+            <v-bottom-sheet v-model="showRatingSheet" :light="true" overlay-opacity="0.5" :eager="true">
               <v-sheet>
                 <div class="rest-ship-modal">
                   <div class="rest-ship-modal__top">
-                    <p class="rest-ship-modal__title">Рейтинг</p>
-                    <v-icon @click="closeSheetRating()">close</v-icon>
+                    <p class="rest-ship-modal__title">
+                      Рейтинг
+                    </p>
+                    <v-icon @click="closeSheetRating()">
+                      close
+                    </v-icon>
                   </div>
                 </div>
-                <div class="rest-ship-modal__rating" v-if="restuarant.rating !== 0">
-                  {{restuarant.rating ? restuarant.rating : 'Мало оценок'}}
+                <div v-if="restuarant.rating !== 0" class="rest-ship-modal__rating">
+                  {{ restuarant.rating ? restuarant.rating : 'Мало оценок' }}
                 </div>
               </v-sheet>
             </v-bottom-sheet>
-            <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showDeliveryOption" :eager=true>
+            <v-bottom-sheet v-model="showDeliveryOption" :light="true" overlay-opacity="0.5" :eager="true">
               <v-sheet class="rest-ship-modal">
                 <div class="rest-ship-modal__top">
-                  <p class="rest-ship-modal__title">Условия доставки</p>
-                  <v-icon @click="closeSheetDeliveryOprion()" color="#000">close</v-icon>
+                  <p class="rest-ship-modal__title">
+                    Условия доставки
+                  </p>
+                  <v-icon color="#000" @click="closeSheetDeliveryOprion()">
+                    close
+                  </v-icon>
                 </div>
                 <div class="rest-ship-modal__wrapper">
                   <div v-for="fee in this.restuarant.delivery.fee" :key="`deliveryFee${fee.min}`" class="rest-ship-modal__item">
@@ -330,110 +394,121 @@
                         directions_run
                       </v-icon>
                       <span v-if="fee.delivery">
-                                            {{fee.delivery}} BYN
-                                            <span>на заказ от {{fee.min}} BYN</span>
-                                        </span>
+                        {{ fee.delivery }} BYN
+                        <span>на заказ от {{ fee.min }} BYN</span>
+                      </span>
                       <span v-else>
-                                            Бесплатная доставка при заказе от {{fee.min}} BYN
-                                        </span>
+                        Бесплатная доставка при заказе от {{ fee.min }} BYN
+                      </span>
                     </div>
                   </div>
                 </div>
-                <p class="rest-ship-modal__descr">Доставку выполнят партнёры Yest.by</p>
+                <p class="rest-ship-modal__descr">
+                  Доставку выполнят партнёры Yest.by
+                </p>
               </v-sheet>
             </v-bottom-sheet>
           </div>
-          <specOffer v-show="this.showSpecOffer" :salesText='restuarant.salesText' />
+          <specOffer v-show="this.showSpecOffer" :sales-text="restuarant.salesText" />
         </div>
         <div class="rest-info-bottom">
-          <v-tabs hide-slider z-index='1' v-model="tab" class="catalog-tabs catalog-tabs-mobile">
-            <v-tab active-class="catalog-tab-mobile-container--active" v-for="(category, index) in restuarant.menu" :key="category.id" @click="scroll(`mob_${index}`)" :color="tab == index ? 'primary': null" class="catalog-tab-mobile-container">
+          <v-tabs v-model="tab" hide-slider z-index="1" class="catalog-tabs catalog-tabs-mobile">
+            <v-tab
+              v-for="(category, index) in restuarant.menu"
+              :key="category.id"
+              active-class="catalog-tab-mobile-container--active"
+              :color="tab == index ? 'primary': null"
+              class="catalog-tab-mobile-container"
+              @click="scroll(`mob_${index}`)"
+            >
               <v-chip>
-                {{category.name}}
+                {{ category.name }}
               </v-chip>
             </v-tab>
           </v-tabs>
         </div>
         <div class="mobile-catalog">
           <div v-for="(category, index) in restuarant.menu" :key="category.id">
-            <h2 v-intersect="{handler:categoryNameIntersect, options: {threshold: [1.0]}}" :id="`mob_${index}`" class="category-title">
-              {{category.name}}
+            <h2 :id="`mob_${index}`" v-intersect="{handler:categoryNameIntersect, options: {threshold: [1.0]}}" class="category-title">
+              {{ category.name }}
             </h2>
             <div class="dishs-list-mobile">
               <div v-for="(item, index2) in category.dishes" v-show="item !== null ? item.status : false" :key="`dishCard${index2}`" class="dishs-list-mobile-item">
-<!--                <v-card v-if="item !== null" class="dish-card">-->
-<!--                  <div @click="showSelectedDish(item)">-->
-<!--                    <div class="card-dish-top">-->
-<!--                      <span class="dash-info-compare" v-if="item.sizes[0]" v-show="item.sizes[0].sale == 2">%</span>-->
-<!--                      <img v-lazy="'https://img.eatmealby.com/resize/dish/400/'+item.image" :alt="item.name" class="dish-img-mobile" />-->
-<!--                    </div>-->
-<!--                    <div class="card-dish-bottom">-->
-<!--                      <div class="dish-name-container">-->
-<!--                        <h3 class="dish-name">-->
-<!--                          {{item.name}}-->
-<!--                        </h3>-->
-<!--                      </div>-->
-<!--                      <div class="dish-info">-->
-<!--                        <div class="d-flex">-->
-<!--                          <span class="dish-info__price" v-show="!checkInbasket(item)">{{computedPrice(item.sizes)}} BYN</span>-->
-<!--                          <span class="info-weight">-->
-<!--                            {{item.sizes[0] ? item.sizes[0].weight : ''}}-->
-<!--                          </span>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
+                <!--                <v-card v-if="item !== null" class="dish-card">-->
+                <!--                  <div @click="showSelectedDish(item)">-->
+                <!--                    <div class="card-dish-top">-->
+                <!--                      <span class="dash-info-compare" v-if="item.sizes[0]" v-show="item.sizes[0].sale == 2">%</span>-->
+                <!--                      <img v-lazy="'https://img.eatmealby.com/resize/dish/400/'+item.image" :alt="item.name" class="dish-img-mobile" />-->
+                <!--                    </div>-->
+                <!--                    <div class="card-dish-bottom">-->
+                <!--                      <div class="dish-name-container">-->
+                <!--                        <h3 class="dish-name">-->
+                <!--                          {{item.name}}-->
+                <!--                        </h3>-->
+                <!--                      </div>-->
+                <!--                      <div class="dish-info">-->
+                <!--                        <div class="d-flex">-->
+                <!--                          <span class="dish-info__price" v-show="!checkInbasket(item)">{{computedPrice(item.sizes)}} BYN</span>-->
+                <!--                          <span class="info-weight">-->
+                <!--                            {{item.sizes[0] ? item.sizes[0].weight : ''}}-->
+                <!--                          </span>-->
+                <!--                        </div>-->
+                <!--                      </div>-->
+                <!--                    </div>-->
+                <!--                  </div>-->
 
-<!--                  <div>-->
-<!--                    <div class="info-price-box" v-show="checkInbasket(item)" @click='momentAdd(item)'>-->
-<!--                      <div class="info-price-box__wrapper">-->
-<!--                        <span class="info-price-box__title">-->
-<!--                          {{item.sizes[0] ? item.sizes[0].price.toFixed(1) : ''}} BYN-->
-<!--                        </span>-->
-<!--                        <span class="dish-info__price-old" v-show="item.sizes[0].sale == 2">-->
-<!--                          {{(item.sizes[0].price + item.sizes[0].discount).toFixed(1)}} BYN-->
-<!--                        </span>-->
-<!--                      </div>-->
-<!--                      <v-icon class="info-price-box__icon">-->
-<!--                        add-->
-<!--                      </v-icon>-->
-<!--                    </div>-->
+                <!--                  <div>-->
+                <!--                    <div class="info-price-box" v-show="checkInbasket(item)" @click='momentAdd(item)'>-->
+                <!--                      <div class="info-price-box__wrapper">-->
+                <!--                        <span class="info-price-box__title">-->
+                <!--                          {{item.sizes[0] ? item.sizes[0].price.toFixed(1) : ''}} BYN-->
+                <!--                        </span>-->
+                <!--                        <span class="dish-info__price-old" v-show="item.sizes[0].sale == 2">-->
+                <!--                          {{(item.sizes[0].price + item.sizes[0].discount).toFixed(1)}} BYN-->
+                <!--                        </span>-->
+                <!--                      </div>-->
+                <!--                      <v-icon class="info-price-box__icon">-->
+                <!--                        add-->
+                <!--                      </v-icon>-->
+                <!--                    </div>-->
 
-<!--                    <div v-show="!checkInbasket(item)" class="dish-conter-mobile">-->
-<!--                      <v-icon class="info-price px-3" @click="decrement(item)">-->
-<!--                        remove-->
-<!--                      </v-icon>-->
-<!--                      <div class="dish-counter-mob">-->
-<!--                        {{computedCount(item)}}-->
-<!--                      </div>-->
-<!--                      <v-icon class="info-price px-3" @click="increment(item)">-->
-<!--                        add-->
-<!--                      </v-icon>-->
-<!--                    </div>-->
-<!--                  </div>-->
+                <!--                    <div v-show="!checkInbasket(item)" class="dish-conter-mobile">-->
+                <!--                      <v-icon class="info-price px-3" @click="decrement(item)">-->
+                <!--                        remove-->
+                <!--                      </v-icon>-->
+                <!--                      <div class="dish-counter-mob">-->
+                <!--                        {{computedCount(item)}}-->
+                <!--                      </div>-->
+                <!--                      <v-icon class="info-price px-3" @click="increment(item)">-->
+                <!--                        add-->
+                <!--                      </v-icon>-->
+                <!--                    </div>-->
+                <!--                  </div>-->
 
-<!--                </v-card>-->
+                <!--                </v-card>-->
 
                 <v-card v-if="item !== null" class="dish-card">
                   <div class="main-product-card-m">
                     <div class="card-dish-bottom">
                       <div class="dish-name-container">
-                        <h3 class="dish-name">{{item.name}}</h3>
+                        <h3 class="dish-name">
+                          {{ item.name }}
+                        </h3>
                       </div>
                       <div class="dish-info">
                         <div class="d-flex">
-<!--                          <span class="dish-info__price" v-show="!checkInbasket(item)">{{computedPrice(item.sizes)}} BYN</span>-->
+                          <!--                          <span class="dish-info__price" v-show="!checkInbasket(item)">{{computedPrice(item.sizes)}} BYN</span>-->
 
                           <span class="info-description">
-                            <span class="info-weight">{{item.sizes[0] ? item.sizes[0].weight : ''}}</span>
-                              {{item.description}}
+                            <span class="info-weight">{{ item.sizes[0] ? item.sizes[0].weight : '' }}</span>
+                            {{ item.description }}
                           </span>
                         </div>
                       </div>
 
                       <div>
                         <div class="info-price-box">
-                          <v-icon class="info-price-box__icon" v-show="checkInbasket(item)" @click='momentAdd(item)'>
+                          <v-icon v-show="checkInbasket(item)" class="info-price-box__icon" @click="momentAdd(item)">
                             add
                           </v-icon>
                           <div v-show="!checkInbasket(item)" class="dish-conter-mobile">
@@ -441,85 +516,96 @@
                               remove
                             </v-icon>
                             <div class="dish-counter-mob">
-                              {{computedCount(item)}}
+                              {{ computedCount(item) }}
                             </div>
                             <v-icon class="info-price" @click="increment(item)">
                               add
                             </v-icon>
                           </div>
                           <div class="info-price-box__wrapper">
-                        <span class="info-price-box__title">
-                          {{item.sizes[0] ? item.sizes[0].price.toFixed(1) : ''}} BYN
-                        </span>
-                            <span class="dish-info__price-old" v-show="item.sizes[0].sale == 2">
-                          {{(item.sizes[0].price + item.sizes[0].discount).toFixed(1)}} BYN
-                        </span>
+                            <span class="info-price-box__title">
+                              {{ item.sizes[0] ? item.sizes[0].price.toFixed(1) : '' }} BYN
+                            </span>
+                            <span v-show="item.sizes[0].sale == 2" class="dish-info__price-old">
+                              {{ (item.sizes[0].price + item.sizes[0].discount).toFixed(1) }} BYN
+                            </span>
                           </div>
                         </div>
                       </div>
                     </div>
 
                     <div class="card-dish-top" @click="showSelectedDish(item)">
-                      <span class="dash-info-compare" v-if="item.sizes[0]" v-show="item.sizes[0].sale == 2">%</span>
-                      <img v-lazy="'https://img.eatmealby.com/resize/dish/400/'+item.image" :alt="item.name" class="dish-img-mobile" />
+                      <span v-if="item.sizes[0]" v-show="item.sizes[0].sale == 2" class="dash-info-compare">%</span>
+                      <img v-lazy="'https://img.eatmealby.com/resize/dish/400/'+item.image" :alt="item.name" class="dish-img-mobile">
                     </div>
                   </div>
                 </v-card>
               </div>
             </div>
           </div>
-          <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showDish" scrollable persistent no-click-animation z-index='999' :eager=true>
+          <v-bottom-sheet
+            v-model="showDish"
+            :light="true"
+            overlay-opacity="0.5"
+            scrollable
+            persistent
+            no-click-animation
+            z-index="999"
+            :eager="true"
+          >
             <v-card class="mobile-addition">
               <v-card-text class="pa-0 bgGray">
                 <div class="mobile-addition__top">
                   <div class="close-block">
                     <v-btn class="close-block-btn" icon color="white" @click="showDish = false">
-                      <v-icon color="black">close</v-icon>
+                      <v-icon color="black">
+                        close
+                      </v-icon>
                     </v-btn>
                   </div>
                   <div class="selected-dish-top">
-                    <img v-lazy="'https://img.eatmealby.com/resize/dish/400/'+selectedDish.image" :alt="selectedDish.name" class="dish-img-mobile-selected" />
+                    <img v-lazy="'https://img.eatmealby.com/resize/dish/400/'+selectedDish.image" :alt="selectedDish.name" class="dish-img-mobile-selected">
                   </div>
                   <div class="selected-dish-composition">
-                    {{selectedDish.description}}
+                    {{ selectedDish.description }}
                   </div>
                   <div class="bgGray">
-                    <div class="sizes px-3" v-show="selectedDish.sizes.length>1">
+                    <div v-show="selectedDish.sizes.length>1" class="sizes px-3">
                       <div class="multi-title">
                         Размер на выбор
                       </div>
                       <v-radio-group v-model="sizesRadioBtn" :mandatory="false" class="d-flex flex-row">
-                        <v-radio class="radio-button" v-for="size in selectedDish.sizes" :key="size.id" :value="size" color="primary">
+                        <v-radio v-for="size in selectedDish.sizes" :key="size.id" class="radio-button" :value="size" color="primary">
                           <template v-slot:label>
                             <p class="option-main">
-                                                        <span class="option-main-text">
-                                                            {{size.name}} <span v-if="size.weight">({{size.weight}})</span>
-                                                        </span>
+                              <span class="option-main-text">
+                                {{ size.name }} <span v-if="size.weight">({{ size.weight }})</span>
+                              </span>
                               <span class="option-main-price">
-                                                            {{size.price-selectedDish.sizes[0].price == 0 ? `` : `+${(size.price-selectedDish.sizes[0].price).toFixed(1)} BYN`}}
-                                                        </span>
+                                {{ size.price-selectedDish.sizes[0].price == 0 ? `` : `+${(size.price-selectedDish.sizes[0].price).toFixed(1)} BYN` }}
+                              </span>
                             </p>
                           </template>
                         </v-radio>
                       </v-radio-group>
                     </div>
-                    <div class="options px-3" v-show="selectedDish.options.length > 0">
+                    <div v-show="selectedDish.options.length > 0" class="options px-3">
                       <div class="multi-title">
                         Дополнительниые ингреденеты
                       </div>
                       <div v-for="(option, opindex) in selectedDish.options" :key="option.id" class="d-flex flex-column justify-start">
-                        {{option.title}}
+                        {{ option.title }}
                         <div v-if="option.multi_data !==1" class="d-flex flex-row justify-start">
                           <v-radio-group v-model="optionsCounter[opindex].selected" :mandatory="false" class="d-flex flex-row">
                             <v-radio v-for="optionV in option.variants" :key="optionV.id" :value="optionV" color="primary">
                               <template v-slot:label>
                                 <p class="option-main">
-                                                                <span class="option-main-text">
-                                                                    {{optionV.name}}
-                                                                </span>
-                                  <span class="option-main-price" v-show="!option.free">
-                                                                    {{optionV.price[0] != undefined ? (optionV.price[0].price == null ? `0` : optionV.price[0].price) : 0}} BYN
-                                                                </span>
+                                  <span class="option-main-text">
+                                    {{ optionV.name }}
+                                  </span>
+                                  <span v-show="!option.free" class="option-main-price">
+                                    {{ optionV.price[0] != undefined ? (optionV.price[0].price == null ? `0` : optionV.price[0].price) : 0 }} BYN
+                                  </span>
                                 </p>
                               </template>
                             </v-radio>
@@ -529,12 +615,12 @@
                           <v-checkbox v-for="optionV in option.variants" :key="optionV.id" v-model="optionsCounter[opindex].selected" :value="optionV">
                             <template v-slot:label>
                               <p class="option-main">
-                                                            <span class="option-main-text">
-                                                                {{optionV.name}}
-                                                            </span>
+                                <span class="option-main-text">
+                                  {{ optionV.name }}
+                                </span>
                                 <span class="option-main-price">
-                                                                {{optionV.price[0] != undefined ? (optionV.price[0].price == null ? `0` :( optionV.price[0].price > 0 ? `+ ${optionV.price[0].price}`:`${optionV.price[0].price}`)) : 0}} BYN
-                                                            </span>
+                                  {{ optionV.price[0] != undefined ? (optionV.price[0].price == null ? `0` :( optionV.price[0].price > 0 ? `+ ${optionV.price[0].price}`:`${optionV.price[0].price}`)) : 0 }} BYN
+                                </span>
                               </p>
                             </template>
                           </v-checkbox>
@@ -546,10 +632,10 @@
                 <div class="mobile-addition__bottom">
                   <div class="d-flex flex-row justify-space-between bottom-withTitle">
                     <div class="dish-bottom-name">
-                      {{selectedDish.name}}
+                      {{ selectedDish.name }}
                     </div>
                     <div class="dish-bottom-price d-flex align-center">
-                      {{sizesRadioBtn.price}} BYN
+                      {{ sizesRadioBtn.price }} BYN
                     </div>
                   </div>
                   <div class="d-flex flex-row justify-space-between align-center m-5">
@@ -557,24 +643,39 @@
                       <v-icon @click="dencrementSelectedDish()">
                         remove
                       </v-icon>
-                      <span class="counter-component__qty">{{selectedDishCounter}}</span>
+                      <span class="counter-component__qty">{{ selectedDishCounter }}</span>
                       <v-icon @click="incrementSelectedDish()">
                         add
                       </v-icon>
                     </div>
                     <div class="add-btn">
-                      <v-btn color="primary" @click="addToBasketMobile()">Добавить</v-btn>
+                      <v-btn color="primary" @click="addToBasketMobile()">
+                        Добавить
+                      </v-btn>
                     </div>
                   </div>
                 </div>
               </v-card-text>
             </v-card>
           </v-bottom-sheet>
-          <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showSetAddressMobile" scrollable persistent no-click-animation z-index='999' :eager=true>
+          <v-bottom-sheet
+            v-model="showSetAddressMobile"
+            :light="true"
+            overlay-opacity="0.5"
+            scrollable
+            persistent
+            no-click-animation
+            z-index="999"
+            :eager="true"
+          >
             <v-sheet class="rest-ship-modal">
               <div class="rest-ship-modal__top">
-                <p class="rest-ship-modal__title">Укажите ваш адрес</p>
-                <v-icon @click="setAddressMobile()" color="#000">close</v-icon>
+                <p class="rest-ship-modal__title">
+                  Укажите ваш адрес
+                </p>
+                <v-icon color="#000" @click="setAddressMobile()">
+                  close
+                </v-icon>
               </div>
               <div class="rest-ship-modal__wrapper">
                 <div class="rest-ship-modal__item">
@@ -582,19 +683,28 @@
                 </div>
               </div>
               <div class="rest-ship-modal__map-block" @click="setAddressMobile()">
-                <MapBtn :isHeader='true' />
+                <MapBtn :is-header="true" />
               </div>
             </v-sheet>
           </v-bottom-sheet>
-          <v-bottom-sheet :light='true' overlay-opacity='0.5' v-model="showPreorderMobileForm" scrollable persistent no-click-animation z-index='999' :eager=true>
+          <v-bottom-sheet
+            v-model="showPreorderMobileForm"
+            :light="true"
+            overlay-opacity="0.5"
+            scrollable
+            persistent
+            no-click-animation
+            z-index="999"
+            :eager="true"
+          >
             <v-card class="pa-3">
               <v-card-title class="d-flex flex-row justify-space-between align-start">
-                            <span>
-                                Доставка недоступна
-                            </span>
+                <span>
+                  Доставка недоступна
+                </span>
                 <span @click="showPreorderMobileForm = false">
-                                <v-icon>close</v-icon>
-                            </span>
+                  <v-icon>close</v-icon>
+                </span>
               </v-card-title>
               <v-card-text>
                 К сожалению, доставка к указанному времени недоступна. Ближайшее время - сегодня в 19:00
@@ -611,673 +721,663 @@
           </v-bottom-sheet>
         </div>
         <client-only>
-          <div class="basket-btn-block" v-show="this.getTotalPrice > 0">
+          <div v-show="this.getTotalPrice > 0" class="basket-btn-block">
             <div>
               <v-btn height="56px" block color="primary" class="basket-btn" @click="goToBasketPage()">
-                        <span class="btn-sub-text">
-                            {{this.restuarant.delivery.time.min}} - {{this.restuarant.delivery.time.max}} мин
-                        </span>
-                <span>
-                            Корзина
-                        </span>
                 <span class="btn-sub-text">
-                            {{this.getTotalPriceWithDelivery.toFixed(2)}} BYN
-                        </span>
+                  {{ this.restuarant.delivery.time.min }} - {{ this.restuarant.delivery.time.max }} мин
+                </span>
+                <span>
+                  Корзина
+                </span>
+                <span class="btn-sub-text">
+                  {{ this.getTotalPriceWithDelivery.toFixed(2) }} BYN
+                </span>
               </v-btn>
             </div>
           </div>
         </client-only>
       </div>
     </div>
-    <v-overlay class="modal-change-products" :dark='false' opacity="0.5" z-index="999" v-model="showWarning">
+    <v-overlay v-model="showWarning" class="modal-change-products" :dark="false" opacity="0.5" z-index="999">
       <v-card class="d-flex flex-column justify-space-between select-option-card">
-        <p class="modal-change-products__title">Оформить заказ из ресторана {{this.restuarant.name}}</p>
+        <p class="modal-change-products__title">
+          Оформить заказ из ресторана {{ this.restuarant.name }}
+        </p>
         <div class="warning-info" color="secondary">
-          Все ранее добавленные блюда из ресторана "{{this.getLatetestRestInfoWithOrder == null ? '404' : this.getLatetestRestInfoWithOrder.restName}}" будут удалены из корзины
+          Все ранее добавленные блюда из ресторана "{{ this.getLatetestRestInfoWithOrder == null ? '404' : this.getLatetestRestInfoWithOrder.restName }}" будут удалены из корзины
         </div>
         <v-card-actions class="modal-change-products__actions d-flex flex-row">
           <v-btn class="modal-change-products__continue" color="primary" @click="coontinue()">
             Продолжить
           </v-btn>
-          <v-btn @click="cancelDeleteBasket()" class="modal-change-products__cancel" outlined>
+          <v-btn class="modal-change-products__cancel" outlined @click="cancelDeleteBasket()">
             Отмена
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-overlay>
-    <v-overlay z-index="25" :dark='false' :value="showDesktopMap" :opacity=".5">
-      <MapDesktop @closeMap='visibleMap()'></MapDesktop>
+    <v-overlay z-index="25" :dark="false" :value="showDesktopMap" :opacity=".5">
+      <MapDesktop @closeMap="visibleMap()" />
     </v-overlay>
   </div>
 </template>
 
 <script>
-  import ApiService from "../common/api.service";
-  import MapBtn from '@/components/map/map-btn'
-  import orderForm from '@/components/order-form'
-  import cardDish from '@/components/restaurant/cardDish'
-  import basket from '@/components/basket'
-  import legalInfo from '@/components/restaurant/legalInfo'
-  import smsForm from '@/components/restaurant/sms-form'
-  import specOffer from '@/components/restaurant/spec-offer'
-  import MapDesktop from '@/components/map/desktop'
-  import { SECOND, MINUTE, HOUR, getHourTime, getZeroPad } from '@/functions/Filters';
+import axios from 'axios'
+import {
+  mapGetters
+} from 'vuex'
+import ApiService from '../common/api.service'
+import MapBtn from '@/components/map/map-btn'
+import orderForm from '@/components/order-form'
+import cardDish from '@/components/restaurant/cardDish'
+import basket from '@/components/basket'
+import legalInfo from '@/components/restaurant/legalInfo'
+import smsForm from '@/components/restaurant/sms-form'
+import specOffer from '@/components/restaurant/spec-offer'
+import MapDesktop from '@/components/map/desktop'
+import { SECOND, MINUTE, HOUR, getHourTime, getZeroPad } from '@/functions/Filters'
 
-  import axios from 'axios'
-  import {
-    mapGetters
-  } from "vuex";
-  export default {
-    name: 'restaurants',
-    components: {
-      MapBtn,
-      cardDish,
-      orderForm,
-      legalInfo,
-      basket,
-      smsForm,
-      specOffer,
-      MapDesktop,
-    },
-    async asyncData({
-                      app,
-                      context,
-                      store,
-                      params,
-                      redirect,
-                    }) {
+export default {
+  name: 'Restaurants',
+  components: {
+    MapBtn,
+    cardDish,
+    orderForm,
+    legalInfo,
+    basket,
+    smsForm,
+    specOffer,
+    MapDesktop
+  },
+  async asyncData ({
+    app,
+    context,
+    store,
+    params,
+    redirect
+  }) {
+    const restParams = params.resName
+    const id = restParams.split('-')
 
-      let restParams = params.resName
-      let id = restParams.split('-')
+    const lastRest = store.getters['basket/getLatetestRestInfoWithOrder']
+    const orderList = store.getters['basket/getSelectedDishs']
+    const totalPrice = store.getters['basket/getTotalPrice']
 
-      var lastRest = store.getters['basket/getLatetestRestInfoWithOrder']
-      var orderList = store.getters['basket/getSelectedDishs']
-      var totalPrice = store.getters['basket/getTotalPrice']
+    const zoneList = await axios.get('https://yestapi.xyz/get-zones')
+    const zoneListData = zoneList.data
+    store.dispatch('zone/setZone', zoneListData)
 
-      let zoneList = await axios.get('https://yestapi.xyz/get-zones');
-      const zoneListData = zoneList.data;
-      store.dispatch('zone/setZone', zoneListData)
-
-      let currentZone = zoneListData.find((zones) => {
-        return zones.alias == params.region
-      })
-      if (currentZone !== undefined) {
-        store.dispatch('zone/setSelectedZone', currentZone)
-      } else {
-        redirect('/')
+    const currentZone = zoneListData.find((zones) => {
+      return zones.alias == params.region
+    })
+    if (currentZone !== undefined) {
+      store.dispatch('zone/setSelectedZone', currentZone)
+    } else {
+      redirect('/')
+    }
+    const categoriesList = await axios.post('https://yestapi.xyz/categories', {
+      zone_id: currentZone.id
+    })
+    const categoriesListData = categoriesList.data
+    store.dispatch('user/allCategory', categoriesListData)
+    app.lastRest = lastRest
+    app.orderList = orderList
+    app.totalPrice = totalPrice
+    const restuarant = await axios.post(`https://yestapi.xyz/restaurant/${id[0]}`, {
+      zone_id: currentZone.id
+    })
+    const restuarantData = restuarant.data
+    //
+    if (restuarantData.status === 200) {
+      function translite (str) {
+        const text = to_latin(str)
+        return text.toLowerCase()
       }
-      let categoriesList = await axios.post('https://yestapi.xyz/categories', {
-        zone_id: currentZone.id
-      });
-      let categoriesListData = categoriesList.data
-      store.dispatch('user/allCategory', categoriesListData)
-      app.lastRest = lastRest
-      app.orderList = orderList
-      app.totalPrice = totalPrice
-      let restuarant = await axios.post(`https://yestapi.xyz/restaurant/${id[0]}`, {
-        zone_id: currentZone.id,
-      })
-      let restuarantData = restuarant.data;
-      //
-      if (restuarantData.status === 200){
+      function to_latin (str) {
+        str = str.replace(/\n/, '')
+        str = str.replace(/\r/, '')
+        str = str.replace(/\s+/, '-')
 
+        const ru = new Map([
+          ['а', 'a'], ['б', 'b'], ['в', 'v'], ['г', 'g'], ['д', 'd'], ['е', 'e'],
+          ['є', 'e'], ['ё', 'e'], ['ж', 'j'], ['з', 'z'], ['и', 'i'], ['ї', 'yi'], ['й', 'i'],
+          ['к', 'k'], ['л', 'l'], ['м', 'm'], ['н', 'n'], ['о', 'o'], ['п', 'p'], ['р', 'r'],
+          ['с', 's'], ['т', 't'], ['у', 'u'], ['ф', 'f'], ['х', 'h'], ['ц', 'c'], ['ч', 'ch'],
+          ['ш', 'sh'], ['щ', 'shch'], ['ы', 'y'], ['э', 'e'], ['ю', 'u'], ['я', 'ya']
+        ])
 
-        function translite(str){
-          let text = to_latin(str);
-          return text.toLowerCase();
-        }
-        function to_latin(str) {
-          str = str.replace(/\n/, "");
-          str = str.replace(/\r/, "");
-          str = str.replace(/\s+/, "-");
+        str = str.replace(/[ъь]+/g, '')
 
-          const ru = new Map([
-            ['а', 'a'], ['б', 'b'], ['в', 'v'], ['г', 'g'], ['д', 'd'], ['е', 'e'],
-            ['є', 'e'], ['ё', 'e'], ['ж', 'j'], ['з', 'z'], ['и', 'i'], ['ї', 'yi'], ['й', 'i'],
-            ['к', 'k'], ['л', 'l'], ['м', 'm'], ['н', 'n'], ['о', 'o'], ['п', 'p'], ['р', 'r'],
-            ['с', 's'], ['т', 't'], ['у', 'u'], ['ф', 'f'], ['х', 'h'], ['ц', 'c'], ['ч', 'ch'],
-            ['ш', 'sh'], ['щ', 'shch'], ['ы', 'y'], ['э', 'e'], ['ю', 'u'], ['я', 'ya'],
-          ]);
-
-          str = str.replace(/[ъь]+/g, '');
-
-          return Array.from(str)
-            .reduce((s, l) =>
-              s + (
-                ru.get(l)
-                || ru.get(l.toLowerCase()) === undefined && l
-                || ru.get(l.toLowerCase()).toUpperCase()
-              )
-              , '');
-
-        }
-        function rest_alias(info){
-          let name = translite(info.name);
-          let modifName = name.replace(' ', '-');
-          let url = `${info.id}-${modifName.toLowerCase()}`
-          return url;
-        };
-        let alias = rest_alias(restuarantData);
-
-        if(currentZone.id ===  restuarantData.city_id && alias === params.resName){
-          let showSpecOffer = restuarantData.menu.find(cat => {
-            return cat.dishes.find((dish, index, arr) => {
-              if (dish !== null) {
-                return dish.sizes[0].sale === 2
-              }
-            })
-          });
-
-          if (showSpecOffer !== undefined) {
-            showSpecOffer = true
-          } else {
-            showSpecOffer = false
-          }
-
-          // const op = restuarantData.operation_time;
-          let RestaurantOpenStatus = await store.dispatch('user/caclWorkTime_forRestaurant',restuarantData);
-
-
-          let deliveryMass = restuarantData.delivery.fee;
-          // console.log(deliveryMass);
-          deliveryMass.sort((a, b) => {
-            // console.log('a ->'+(a.delivery));
-            // console.log('b ->'+(b.delivery));
-            return a.min > b.min
-          });
-
-
-
-          return {
-            restuarant: restuarantData,
-            currentZone: currentZone,
-            showSpecOffer: showSpecOffer,
-            workTime: RestaurantOpenStatus,
-            delivery: deliveryMass
-          }
-        }else{
-          // Делаем редирект на станицу нужного города
-          let mustBeZone = zoneListData.find((zones) => {
-            return zones.id == restuarantData.city_id
-          });
-
-          redirect(301,'/'+mustBeZone.alias+'/restaurant/'+alias);
-        }
-      } else {
-        redirect('/'+currentZone.alias);
+        return Array.from(str)
+          .reduce((s, l) =>
+            s + (
+              ru.get(l) ||
+                ru.get(l.toLowerCase()) === undefined && l ||
+                ru.get(l.toLowerCase()).toUpperCase()
+            )
+          , '')
       }
-    },
-    data() {
-      return {
-        isMobile: true,
-        tab: 0,
-        showRatingSheet: false,
-        showDeliveryOption: false,
-        selectedDish: {
-          sizes: [],
-          options: [],
-        },
-        showDish: false,
-        dishCounter: 1,
-        showOptionsmenu: false,
-        sizesRadioBtn: '',
-        selectOption: [],
-        selectedDishCounter: 1,
-        countTotalPices: {},
-        selectedListDish: [],
-        showWarning: false,
-        lastRest: {},
-        totalPrice: 0,
-        orderList: [],
-        showSmsForm: false,
-        showRestInfo: false,
-        showRestName: false,
-        lastPath: null,
-        selectedOption: [],
-        optionsCounter: [],
-        showDesktopMap: false,
-        showSetAddressMobile: false,
-        showPreorderDesktopForm: false,
-        showPreorderMobileForm: false,
-        saveSelectPreorder: false,
-      }
-    },
-    methods: {
-      setAddressMobile() {
-        this.showSetAddressMobile = !this.showSetAddressMobile
-      },
-      confirmMobliePreorder() {
-        this.showPreorderMobileForm = false
-        this.showDish = true
-      },
-      confirmDesktopPreorder() {
-        this.showPreorderDesktopForm = false
-        if (this.selectedDish.sizes.length > 1 || this.selectedDish.options.length > 0) {
-          this.showOptionsmenu = true
-        } else {
-          if (this.getLatetestRestInfoWithOrder == null) {
-            this.saveBasket()
-          } else if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
-            this.showWarning = true
-          } else {
-            this.saveBasket()
-          }
-        }
-      },
-      visibleMap() {
-        this.showDesktopMap = !this.showDesktopMap
-      },
-      computedPrice(prices) {
-        if (prices.length == 0) {
-          return 'Нет цены'
-        } else if (prices.length > 1) {
-          let chekDiffrentPrice = prices.find((dish, index, arr) => {
-            return dish.price == arr[index - 1]
+      function rest_alias (info) {
+        const name = translite(info.name)
+        const modifName = name.replace(' ', '-')
+        const url = `${info.id}-${modifName.toLowerCase()}`
+        return url
+      };
+      const alias = rest_alias(restuarantData)
+
+      if (currentZone.id === restuarantData.city_id && alias === params.resName) {
+        let showSpecOffer = restuarantData.menu.find((cat) => {
+          return cat.dishes.find((dish, index, arr) => {
+            if (dish !== null) {
+              return dish.sizes[0].sale === 2
+            }
           })
-          if (chekDiffrentPrice !== undefined) {
-            return `От ${prices[0].price}`
-          } else {
-            return `${prices[0].price}`
-          }
+        })
+
+        if (showSpecOffer !== undefined) {
+          showSpecOffer = true
+        } else {
+          showSpecOffer = false
+        }
+
+        // const op = restuarantData.operation_time;
+        const RestaurantOpenStatus = await store.dispatch('user/caclWorkTime_forRestaurant', restuarantData)
+
+        const deliveryMass = restuarantData.delivery.fee
+        // console.log(deliveryMass);
+        deliveryMass.sort((a, b) => {
+          // console.log('a ->'+(a.delivery));
+          // console.log('b ->'+(b.delivery));
+          return a.min > b.min
+        })
+
+        return {
+          restuarant: restuarantData,
+          currentZone,
+          showSpecOffer,
+          workTime: RestaurantOpenStatus,
+          delivery: deliveryMass
+        }
+      } else {
+        // Делаем редирект на станицу нужного города
+        const mustBeZone = zoneListData.find((zones) => {
+          return zones.id == restuarantData.city_id
+        })
+
+        redirect(301, '/' + mustBeZone.alias + '/restaurant/' + alias)
+      }
+    } else {
+      redirect('/' + currentZone.alias)
+    }
+  },
+  data () {
+    return {
+      isMobile: true,
+      tab: 0,
+      showRatingSheet: false,
+      showDeliveryOption: false,
+      selectedDish: {
+        sizes: [],
+        options: []
+      },
+      showDish: false,
+      dishCounter: 1,
+      showOptionsmenu: false,
+      sizesRadioBtn: '',
+      selectOption: [],
+      selectedDishCounter: 1,
+      countTotalPices: {},
+      selectedListDish: [],
+      showWarning: false,
+      lastRest: {},
+      totalPrice: 0,
+      orderList: [],
+      showSmsForm: false,
+      showRestInfo: false,
+      showRestName: false,
+      lastPath: null,
+      selectedOption: [],
+      optionsCounter: [],
+      showDesktopMap: false,
+      showSetAddressMobile: false,
+      showPreorderDesktopForm: false,
+      showPreorderMobileForm: false,
+      saveSelectPreorder: false
+    }
+  },
+  methods: {
+    setAddressMobile () {
+      this.showSetAddressMobile = !this.showSetAddressMobile
+    },
+    confirmMobliePreorder () {
+      this.showPreorderMobileForm = false
+      this.showDish = true
+    },
+    confirmDesktopPreorder () {
+      this.showPreorderDesktopForm = false
+      if (this.selectedDish.sizes.length > 1 || this.selectedDish.options.length > 0) {
+        this.showOptionsmenu = true
+      } else if (this.getLatetestRestInfoWithOrder == null) {
+        this.saveBasket()
+      } else if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
+        this.showWarning = true
+      } else {
+        this.saveBasket()
+      }
+    },
+    visibleMap () {
+      this.showDesktopMap = !this.showDesktopMap
+    },
+    computedPrice (prices) {
+      if (prices.length == 0) {
+        return 'Нет цены'
+      } else if (prices.length > 1) {
+        const chekDiffrentPrice = prices.find((dish, index, arr) => {
+          return dish.price == arr[index - 1]
+        })
+        if (chekDiffrentPrice !== undefined) {
+          return `От ${prices[0].price}`
         } else {
           return `${prices[0].price}`
         }
-      },
-      closeFormShowOrderForm() {
-        this.showSmsForm = false;
-      },
-      closeSmsForm() {
-        this.showSmsForm = false
-      },
-      addCraftDish() {
-        if (this.getLatetestRestInfoWithOrder !== null) {
-          if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
-            this.showWarning = true
-          } else {
-            this.saveBasket()
-          }
+      } else {
+        return `${prices[0].price}`
+      }
+    },
+    closeFormShowOrderForm () {
+      this.showSmsForm = false
+    },
+    closeSmsForm () {
+      this.showSmsForm = false
+    },
+    addCraftDish () {
+      if (this.getLatetestRestInfoWithOrder !== null) {
+        if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
+          this.showWarning = true
         } else {
           this.saveBasket()
         }
-      },
-      saveBasket() {
-        let find = this.orderList.find((el) => {
-          return el.id == this.selectedDish.id
+      } else {
+        this.saveBasket()
+      }
+    },
+    saveBasket () {
+      const find = this.orderList.find((el) => {
+        return el.id == this.selectedDish.id
+      })
+      if (find == undefined) {
+        this.selectOption = this.selectedDish.options ? this.selectedDish.options[0] : []
+        // sizesRadioBtn
+        this.sizesRadioBtn.count = this.selectedDishCounter
+        // this.selectedDish.sizes[0] = this.sizesRadioBtn
+        // this.selectedDish.selectOption = this.selectOption
+        this.selectedDishCounter = 1
+        this.selectedDish.selectSize = []
+        this.selectedDish.selectSize = this.sizesRadioBtn
+        this.selectedDish.selectOption = this.optionsCounter
+        this.$store.dispatch('basket/addToBasket', this.selectedDish)
+        this.$store.dispatch('basket/saveRestuarantUrl', {
+          params: this.$router.currentRoute.params,
+          restName: this.restuarant.name,
+          delivery: this.restuarant.delivery
         })
-        if (find == undefined) {
-          this.selectOption = this.selectedDish.options ? this.selectedDish.options[0] : []
-          // sizesRadioBtn
-          this.sizesRadioBtn.count = this.selectedDishCounter
-          // this.selectedDish.sizes[0] = this.sizesRadioBtn
-          // this.selectedDish.selectOption = this.selectOption
-          this.selectedDishCounter = 1
-          this.selectedDish.selectSize = []
-          this.selectedDish.selectSize = this.sizesRadioBtn
-          this.selectedDish.selectOption = this.optionsCounter
-          this.$store.dispatch('basket/addToBasket', this.selectedDish);
-          this.$store.dispatch('basket/saveRestuarantUrl', {
-            params: this.$router.currentRoute.params,
-            restName: this.restuarant.name,
-            delivery: this.restuarant.delivery,
-          });
-          this.showOptionsmenu = false
-        } else {
-          this.increment(this.selectedDish)
-        }
-      },
-      addToBasket(dish) {
-        // if (this.getCurrentAddress.length > 0) {
-        if (dish.sizes.length > 1 || dish.options.length > 0) {
-          this.selectedDish = dish
-          this.selectedDishCounter = 1
-          this.optionsCounter = []
-          dish.options.forEach((opt, index) => {
-            this.optionsCounter.push({
-              name: `option${index}`,
-              selected: opt.multi_data == 0 ? opt.variants[0] : [],
-            })
-          })
-          this.sizesRadioBtn = dish.sizes[0]
-        } else {
-          this.selectedDish = dish
-          this.selectedDishCounter = 1
-          this.sizesRadioBtn = dish.sizes[0]
-          this.optionsCounter = []
-        }
-        // console.log('addToBasket -> this.workTime.is_open', this.workTime.is_open)
-        if (!this.workTime.is_open) {
-          if(this.isMobile === true){
-            this.showPreorderMobileForm = true;
-            this.showPreorderDesktopForm = false;
-          }else {
-            this.showPreorderMobileForm = false;
-            this.showPreorderDesktopForm = true;
-          }
-        } else {
-          this.selectedDish = dish
-          this.selectedDishCounter = 1
-          this.sizesRadioBtn = dish.sizes[0]
-          this.optionsCounter = []
-          this.confirmDesktopPreorder()
-        }
-        // } else {
-        //     this.showDesktopMap = true
-        // }
-      },
-      showSelectedDish(dish) {
-        // if (this.getCurrentAddress.length > 0) {
+        this.showOptionsmenu = false
+      } else {
+        this.increment(this.selectedDish)
+      }
+    },
+    addToBasket (dish) {
+      // if (this.getCurrentAddress.length > 0) {
+      if (dish.sizes.length > 1 || dish.options.length > 0) {
         this.selectedDish = dish
         this.selectedDishCounter = 1
-        this.sizesRadioBtn = dish.sizes[0]
+        this.optionsCounter = []
         dish.options.forEach((opt, index) => {
           this.optionsCounter.push({
             name: `option${index}`,
-            selected: opt.multi_data == 0 ? opt.variants[0] : [],
+            selected: opt.multi_data == 0 ? opt.variants[0] : []
           })
         })
-        if (!this.workTime.is_open) {
-          if(this.isMobile === true){
-            this.showPreorderMobileForm = true;
-            this.showPreorderDesktopForm = false;
-          }else {
-            this.showPreorderMobileForm = false;
-            this.showPreorderDesktopForm = true;
-          }
-
+        this.sizesRadioBtn = dish.sizes[0]
+      } else {
+        this.selectedDish = dish
+        this.selectedDishCounter = 1
+        this.sizesRadioBtn = dish.sizes[0]
+        this.optionsCounter = []
+      }
+      // console.log('addToBasket -> this.workTime.is_open', this.workTime.is_open)
+      if (!this.workTime.is_open) {
+        if (this.isMobile === true) {
+          this.showPreorderMobileForm = true
+          this.showPreorderDesktopForm = false
         } else {
+          this.showPreorderMobileForm = false
+          this.showPreorderDesktopForm = true
+        }
+      } else {
+        this.selectedDish = dish
+        this.selectedDishCounter = 1
+        this.sizesRadioBtn = dish.sizes[0]
+        this.optionsCounter = []
+        this.confirmDesktopPreorder()
+      }
+      // } else {
+      //     this.showDesktopMap = true
+      // }
+    },
+    showSelectedDish (dish) {
+      // if (this.getCurrentAddress.length > 0) {
+      this.selectedDish = dish
+      this.selectedDishCounter = 1
+      this.sizesRadioBtn = dish.sizes[0]
+      dish.options.forEach((opt, index) => {
+        this.optionsCounter.push({
+          name: `option${index}`,
+          selected: opt.multi_data == 0 ? opt.variants[0] : []
+        })
+      })
+      if (!this.workTime.is_open) {
+        if (this.isMobile === true) {
+          this.showPreorderMobileForm = true
+          this.showPreorderDesktopForm = false
+        } else {
+          this.showPreorderMobileForm = false
+          this.showPreorderDesktopForm = true
+        }
+      } else {
+        this.showDish = true
+      }
+      // else  {
+      //     this.showSetAddressMobile = true
+      // }
+    },
+    momentAdd (dish) {
+      // Добавление товара мгновенное //
+      // if (this.getCurrentAddress.length > 0) {
+      if (!this.workTime.is_open) {
+        if (this.isMobile === true) {
+          this.showPreorderMobileForm = true
+          this.showPreorderDesktopForm = false
+        } else {
+          this.showPreorderMobileForm = false
+          this.showPreorderDesktopForm = true
+        }
+      } else {
+        this.selectedDish = dish
+        this.selectedDishCounter = 1
+        this.sizesRadioBtn = dish.sizes[0]
+        if (this.getLatetestRestInfoWithOrder == null) {
+          if (dish.sizes.length > 1) {
+            this.showDish = true
+          } else {
+            this.saveBasket()
+          }
+        } else if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
+          this.showWarning = true
+        } else if (dish.sizes.length > 1) {
           this.showDish = true
-        }
-        // else  {
-        //     this.showSetAddressMobile = true
-        // }
-      },
-      momentAdd(dish) {
-        // Добавление товара мгновенное //
-        // if (this.getCurrentAddress.length > 0) {
-        if (!this.workTime.is_open) {
-          if(this.isMobile === true){
-            this.showPreorderMobileForm = true;
-            this.showPreorderDesktopForm = false;
-          }else {
-            this.showPreorderMobileForm = false;
-            this.showPreorderDesktopForm = true;
-          }
         } else {
-          this.selectedDish = dish
-          this.selectedDishCounter = 1
-          this.sizesRadioBtn = dish.sizes[0]
-          if (this.getLatetestRestInfoWithOrder == null) {
-            if (dish.sizes.length > 1) {
-              this.showDish = true
-            } else {
-              this.saveBasket()
-            }
-          } else {
-            if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
-              this.showWarning = true
-            } else {
-              if (dish.sizes.length > 1) {
-                this.showDish = true
-              } else {
-                this.saveBasket()
-              }
-            }
-          }
+          this.saveBasket()
         }
-        // } else {
-        //     this.showSetAddressMobile = true
-        // }
-      },
-      addToBasketMobile() {
-        if (this.getLatetestRestInfoWithOrder !== null) {
-          if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
-            this.showWarning = true
-          } else {
-            this.selectedDish.selectOption = this.optionsCounter
-            this.selectedDish.selectSize = this.sizesRadioBtn
-            this.selectedDish.selectSize.count = this.selectedDishCounter
-            this.$store.dispatch('basket/addToBasket', this.selectedDish);
-            this.$store.dispatch('basket/saveRestuarantUrl', {
-              params: this.$router.currentRoute.params,
-              restName: this.restuarant.name,
-              delivery: this.restuarant.delivery,
-            });
-            this.showDish = false
-          }
+      }
+      // } else {
+      //     this.showSetAddressMobile = true
+      // }
+    },
+    addToBasketMobile () {
+      if (this.getLatetestRestInfoWithOrder !== null) {
+        if (this.getLatetestRestInfoWithOrder.params.resName !== this.$router.currentRoute.params.resName) {
+          this.showWarning = true
         } else {
           this.selectedDish.selectOption = this.optionsCounter
           this.selectedDish.selectSize = this.sizesRadioBtn
           this.selectedDish.selectSize.count = this.selectedDishCounter
-          this.$store.dispatch('basket/addToBasket', this.selectedDish);
+          this.$store.dispatch('basket/addToBasket', this.selectedDish)
           this.$store.dispatch('basket/saveRestuarantUrl', {
             params: this.$router.currentRoute.params,
             restName: this.restuarant.name,
-            delivery: this.restuarant.delivery,
-          });
+            delivery: this.restuarant.delivery
+          })
           this.showDish = false
         }
-      },
-      checkInbasket(item) {
-        let findItem = this.getSelectedDishs.find((dish) => {
-          console.log('dish:',dish);
-          console.log('item:',item);
+      } else {
+        this.selectedDish.selectOption = this.optionsCounter
+        this.selectedDish.selectSize = this.sizesRadioBtn
+        this.selectedDish.selectSize.count = this.selectedDishCounter
+        this.$store.dispatch('basket/addToBasket', this.selectedDish)
+        this.$store.dispatch('basket/saveRestuarantUrl', {
+          params: this.$router.currentRoute.params,
+          restName: this.restuarant.name,
+          delivery: this.restuarant.delivery
+        })
+        this.showDish = false
+      }
+    },
+    checkInbasket (item) {
+      const findItem = this.getSelectedDishs.find((dish) => {
+        console.log('dish:', dish)
+        console.log('item:', item)
+        if (dish.id && item.id) {
           return item.id === dish.id
-        })
-        if (findItem !== undefined) {
-          return false
-        } else {
-          return true
         }
-      },
-      computedCount(item) {
-        let findItem = this.getSelectedDishs.find((dish) => {
-          return item.id == dish.id
-        })
-        if (findItem !== undefined) {
-          return findItem.selectSize.count
-        } else {
-          return 0
-        }
-      },
-      showHideRestInfo() {
-        this.showRestInfo = !this.showRestInfo
-      },
-      closeShowDish() {
-        this.selectedDish = {}
-        this.sizesRadioBtn = {}
-        this.selectOption = []
-        this.showDish = false
-      },
-      closeSheetRating() {
-        this.showRatingSheet = false
-      },
-      closeSheetDeliveryOprion() {
-        this.showDeliveryOption = false
-      },
-      checkout() {
-        ym(67033669,'reachGoal','clickChekoutButtonStart');
-        if (this.getUserPhoneNumber) {
-          this.$router.push('/checkout')
-        } else {
-          this.showSmsForm = !this.showSmsForm
-        }
-      },
-      goToBasketPage() {
-        this.$router.push(`/cart`)
-      },
-      cancelDeleteBasket() {
-        this.showWarning = false
-      },
-      coontinue() {
-        this.showDish = false
-        this.dropBasket()
-        this.saveBasket()
-        this.showWarning = false
-      },
-      dencrementSelectedDish() {
-        if (this.selectedDishCounter > 1) {
-          this.selectedDishCounter--
-        }
-      },
-      incrementSelectedDish() {
-        this.selectedDishCounter++
-      },
-      goBack() {
-        // console.log('goBack -> this.getSelectedCategory', this.getSelectedCategory)
-        if (this.getSelectedCategory.hasOwnProperty('alias')) {
-          this.$router.push(`/${this.currentZone.alias}/restaurants/category/${this.getSelectedCategory.alias}`)
-        } else {
-          this.$router.push(`/${this.currentZone.alias}`)
-        }
-      },
-      closeOptionMenu() {
-        this.showOptionsmenu = false
-      },
-      decrement(dish) {
-        this.showDish = false
-        dish.selectSize = dish.sizes[0]
-        this.$store.dispatch('basket/decrementDishCounter', dish);
-      },
-      increment(dish) {
-        dish.selectSize = dish.sizes[0]
-        this.showDish = false
-        this.$store.dispatch('basket/incrementDishCounter', dish);
-      },
-      dropBasket() {
-        this.$store.dispatch('basket/dropBasket');
-      },
-      scroll(id) {
-        const element = document.getElementById(id);
-        const yOffset = window.innerWidth < 992 ? 80 : 140;
-        const y = element.getBoundingClientRect().top + window.pageYOffset - yOffset;
-        window.scrollTo({
-          top: y,
-          behavior: 'smooth'
-        });
-        this.tab = id
-      },
-      categoryNameIntersect(entries, observer, isIntersecting) {
-        if (isIntersecting) {
-          let visibleCategory = entries[0].target.id.split('_')
-          this.tab = parseInt(visibleCategory[1])
-        }
-      },
-      async updateDateTime() {
-        this.workTime = await this.$store.dispatch('user/caclWorkTime_forRestaurant',this.restuarant);
-        this.$options.timer = window.setTimeout(await this.updateDateTime, SECOND);
-      },
-
-    },
-    computed: {
-      ...mapGetters({
-        getIsMobile: "device/isMobile",
-        getSelectedZone: "zone/getSelectedZone",
-        getSelectedCategory: "user/getSelectedCategory",
-        getCurrentCoords: "map/getCurrentCoords",
-        getCurrentAddress: "map/getCurrentAddress",
-        getSelectedDishs: "basket/getSelectedDishs",
-        getTotalPrice: "basket/getTotalPrice",
-        getTotalPriceWithDelivery: "basket/getTotalPriceWithDelivery",
-        getLatetestRestInfoWithOrder: "basket/getLatetestRestInfoWithOrder",
-        getUserPhoneNumber: "user/getUserPhoneNumber",
-      }),
-    },
-    watch: {
-      getIsMobile(newValue){
-        this.isMobile = newValue;
-      },
-      getSelectedZone(newValue) {
-        // this.dropBasket()
-      },
-      showRatingSheet(newValue) {
-        return newValue
-      },
-      showDeliveryOption(newValue) {
-        return newValue
-      },
-      showDeliveryOption(newValue) {
-        return newValue
-      },
-      getSelectedDishs(newValue) {
-        this.orderList = newValue
-        return newValue
-      },
-      getLatetestRestInfoWithOrder(newValue) {
-        this.lastRest = newValue
-        return newValue
-      },
-      getTotalPrice(newValue) {
-        this.totalPrice = newValue
-        return newValue
-      },
-      dishCounter(newValue) {
-        return newValue
-      },
-      tab(newValue) {
-        return newValue
-      },
-      selectedDishCounter(newValue) {
-        return newValue
-      },
-      '$route.params.region': function () {
-        this.$router.push(`/${this.getSelectedZone.alias}`)
+      })
+      if (findItem !== undefined) {
+        return false
+      } else {
+        return true
       }
     },
-    mounted() {
-      window.scrollTo(0, 0);
-
-      this.$options.timer = window.setTimeout(this.updateDateTime, SECOND);
-
-        console.log(this.isMobile);
-      if(this.workTime.is_open === false){
-        if(this.isMobile === true){
-          this.showPreorderMobileForm = true;
-          this.showPreorderDesktopForm = false;
-        }else {
-          this.showPreorderMobileForm = false;
-          this.showPreorderDesktopForm = true;
-        }
-      }
-
-      this.orderList = this.getSelectedDishs;
-      let lastScrollTop = 0;
-      window.addEventListener('scroll', () => {
-        const st = window.pageYOffset || document.documentElement.scrollTop
-        if (st > lastScrollTop) {
-          // downscroll code
-          if (st > 30) {
-            this.showRestName = true
-          } else {
-            this.showRestName = false
-          }
-        } else if (st < 30) {
-          this.showRestName = false
-        } else {
-          this.showRestName = true
-        }
-        lastScrollTop = st <= 0 ? 0 : st
-      });
-    },
-    head() {
-      return {
-        title: this.restuarant.seo.title,
-        meta: [{
-          hid: 'description',
-          name: 'description',
-          content: this.restuarant.seo.description
-        },
-          {
-            hid: 'keywords',
-            name: 'keywords',
-            content: this.restuarant.seo.keywords
-          },
-        ]
+    computedCount (item) {
+      const findItem = this.getSelectedDishs.find((dish) => {
+        return item.id == dish.id
+      })
+      if (findItem !== undefined) {
+        return findItem.selectSize.count
+      } else {
+        return 0
       }
     },
-    beforeDestroy() {
-      window.clearTimeout(this.$options.timer);
+    showHideRestInfo () {
+      this.showRestInfo = !this.showRestInfo
+    },
+    closeShowDish () {
+      this.selectedDish = {}
+      this.sizesRadioBtn = {}
+      this.selectOption = []
+      this.showDish = false
+    },
+    closeSheetRating () {
+      this.showRatingSheet = false
+    },
+    closeSheetDeliveryOprion () {
+      this.showDeliveryOption = false
+    },
+    checkout () {
+      ym(67033669, 'reachGoal', 'clickChekoutButtonStart')
+      if (this.getUserPhoneNumber) {
+        this.$router.push('/checkout')
+      } else {
+        this.showSmsForm = !this.showSmsForm
+      }
+    },
+    goToBasketPage () {
+      this.$router.push('/cart')
+    },
+    cancelDeleteBasket () {
+      this.showWarning = false
+    },
+    coontinue () {
+      this.showDish = false
+      this.dropBasket()
+      this.saveBasket()
+      this.showWarning = false
+    },
+    dencrementSelectedDish () {
+      if (this.selectedDishCounter > 1) {
+        this.selectedDishCounter--
+      }
+    },
+    incrementSelectedDish () {
+      this.selectedDishCounter++
+    },
+    goBack () {
+      // console.log('goBack -> this.getSelectedCategory', this.getSelectedCategory)
+      if (this.getSelectedCategory.hasOwnProperty('alias')) {
+        this.$router.push(`/${this.currentZone.alias}/restaurants/category/${this.getSelectedCategory.alias}`)
+      } else {
+        this.$router.push(`/${this.currentZone.alias}`)
+      }
+    },
+    closeOptionMenu () {
+      this.showOptionsmenu = false
+    },
+    decrement (dish) {
+      this.showDish = false
+      dish.selectSize = dish.sizes[0]
+      this.$store.dispatch('basket/decrementDishCounter', dish)
+    },
+    increment (dish) {
+      dish.selectSize = dish.sizes[0]
+      this.showDish = false
+      this.$store.dispatch('basket/incrementDishCounter', dish)
+    },
+    dropBasket () {
+      this.$store.dispatch('basket/dropBasket')
+    },
+    scroll (id) {
+      const element = document.getElementById(id)
+      const yOffset = window.innerWidth < 992 ? 80 : 140
+      const y = element.getBoundingClientRect().top + window.pageYOffset - yOffset
+      window.scrollTo({
+        top: y,
+        behavior: 'smooth'
+      })
+      this.tab = id
+    },
+    categoryNameIntersect (entries, observer, isIntersecting) {
+      if (isIntersecting) {
+        const visibleCategory = entries[0].target.id.split('_')
+        this.tab = parseInt(visibleCategory[1])
+      }
+    },
+    async updateDateTime () {
+      this.workTime = await this.$store.dispatch('user/caclWorkTime_forRestaurant', this.restuarant)
+      this.$options.timer = window.setTimeout(await this.updateDateTime, SECOND)
     }
+
+  },
+  computed: {
+    ...mapGetters({
+      getIsMobile: 'device/isMobile',
+      getSelectedZone: 'zone/getSelectedZone',
+      getSelectedCategory: 'user/getSelectedCategory',
+      getCurrentCoords: 'map/getCurrentCoords',
+      getCurrentAddress: 'map/getCurrentAddress',
+      getSelectedDishs: 'basket/getSelectedDishs',
+      getTotalPrice: 'basket/getTotalPrice',
+      getTotalPriceWithDelivery: 'basket/getTotalPriceWithDelivery',
+      getLatetestRestInfoWithOrder: 'basket/getLatetestRestInfoWithOrder',
+      getUserPhoneNumber: 'user/getUserPhoneNumber'
+    })
+  },
+  watch: {
+    getIsMobile (newValue) {
+      this.isMobile = newValue
+    },
+    getSelectedZone (newValue) {
+      // this.dropBasket()
+    },
+    showRatingSheet (newValue) {
+      return newValue
+    },
+    showDeliveryOption (newValue) {
+      return newValue
+    },
+    showDeliveryOption (newValue) {
+      return newValue
+    },
+    getSelectedDishs (newValue) {
+      this.orderList = newValue
+      return newValue
+    },
+    getLatetestRestInfoWithOrder (newValue) {
+      this.lastRest = newValue
+      return newValue
+    },
+    getTotalPrice (newValue) {
+      this.totalPrice = newValue
+      return newValue
+    },
+    dishCounter (newValue) {
+      return newValue
+    },
+    tab (newValue) {
+      return newValue
+    },
+    selectedDishCounter (newValue) {
+      return newValue
+    },
+    '$route.params.region' () {
+      this.$router.push(`/${this.getSelectedZone.alias}`)
+    }
+  },
+  mounted () {
+    window.scrollTo(0, 0)
+
+    this.$options.timer = window.setTimeout(this.updateDateTime, SECOND)
+
+    console.log(this.isMobile)
+    if (this.workTime.is_open === false) {
+      if (this.isMobile === true) {
+        this.showPreorderMobileForm = true
+        this.showPreorderDesktopForm = false
+      } else {
+        this.showPreorderMobileForm = false
+        this.showPreorderDesktopForm = true
+      }
+    }
+
+    this.orderList = this.getSelectedDishs
+    let lastScrollTop = 0
+    window.addEventListener('scroll', () => {
+      const st = window.pageYOffset || document.documentElement.scrollTop
+      if (st > lastScrollTop) {
+        // downscroll code
+        if (st > 30) {
+          this.showRestName = true
+        } else {
+          this.showRestName = false
+        }
+      } else if (st < 30) {
+        this.showRestName = false
+      } else {
+        this.showRestName = true
+      }
+      lastScrollTop = st <= 0 ? 0 : st
+    })
+  },
+  head () {
+    return {
+      title: this.restuarant.seo.title,
+      meta: [{
+        hid: 'description',
+        name: 'description',
+        content: this.restuarant.seo.description
+      },
+      {
+        hid: 'keywords',
+        name: 'keywords',
+        content: this.restuarant.seo.keywords
+      }
+      ]
+    }
+  },
+  beforeDestroy () {
+    window.clearTimeout(this.$options.timer)
   }
+}
 </script>
 
 <style>
