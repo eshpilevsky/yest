@@ -264,8 +264,8 @@ export const getters = {
   getTotalPrice(state) {
     const dl = state.data.dishs
     let totalPrice = 0
-    if (dl.length > 0){
-      dl.forEach(element => {
+    if (dl !== null && dl.length > 0) {
+      dl.forEach((element) => {
         console.log(element)
         totalPrice += element.selectSize.price * element.selectSize.count
         //   if (element.selectOption.length > 0) {
@@ -281,10 +281,8 @@ export const getters = {
         //     console.error(totalPrice);
         //   }
       })
-    } else {
-      totalPrice = 0
     }
-    return totalPrice.toFixed(1)
+    return totalPrice.toFixed(2)
   },
   getTotalPriceWithDelivery(state) {
     let dl = state.data.dishs
