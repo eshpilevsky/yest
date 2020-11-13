@@ -290,21 +290,21 @@ export const getters = {
   getTotalPriceWithDelivery(state) {
     let dl = state.data.dishs
     let totalPrice = 0
-    dl.forEach(element => {
-      totalPrice += element.selectSize.price * element.selectSize.count
-    //   if (element.selectOption.length > 0) {
-    //     element.selectOption.forEach(option => {
-    //       if (option.selected.length > 1) {
-    //         option.selected.forEach(opti => {
-    //           totalPrice += opti.price == null ? 0 : opti.price[0].price
-    //         })
-    //       } else {
-    //         totalPrice += option.selected.price == null ? 0 : option.selected.price[0].price
-    //       }
-    //     })
-    //     console.error(totalPrice);
-    //   }
-    });
+    // dl.forEach(element => {
+    //   totalPrice += element.selectSize.price * element.selectSize.count
+    // //   if (element.selectOption.length > 0) {
+    // //     element.selectOption.forEach(option => {
+    // //       if (option.selected.length > 1) {
+    // //         option.selected.forEach(opti => {
+    // //           totalPrice += opti.price == null ? 0 : opti.price[0].price
+    // //         })
+    // //       } else {
+    // //         totalPrice += option.selected.price == null ? 0 : option.selected.price[0].price
+    // //       }
+    // //     })
+    // //     console.error(totalPrice);
+    // //   }
+    // });
 
 
     let mass = state.data.restuarantUrl == null ? 0 : state.data.restuarantUrl.delivery.fee
@@ -325,7 +325,7 @@ export const getters = {
       addDeliveryPrice = 0
     }
     return parseFloat(totalPrice) + addDeliveryPrice
-  },
+  }
 };
 
 export const strict = false
