@@ -264,26 +264,28 @@ export const getters = {
   getTotalPrice(state) {
     const dl = state.data.dishs
     let totalPrice = 0
-    if (dl !== null && dl.length > 0) {
-      dl.forEach((element) => {
-        let info = (element).selectSize
-        console.log('info:', info)
-        totalPrice += info.price * info.count
-        //   if (element.selectOption.length > 0) {
-        //     element.selectOption.forEach(option => {
-        //       if (option.selected.length > 1) {
-        //         option.selected.forEach(opti => {
-        //           totalPrice += opti.price == null ? 0 : opti.price[0].price
-        //         })
-        //       } else {
-        //         totalPrice += option.selected.price == null ? 0 : option.selected.price[0].price
-        //       }
-        //     })
-        //     console.error(totalPrice);
-        //   }
-      })
-    }
-    return totalPrice.toFixed(2)
+
+    // if (dl !== null && dl.length > 0) {
+    //   dl.forEach((element) => {
+    //     let info = (element).selectSize
+    //     console.log('info:', info)
+    //     totalPrice += info.price * info.count
+    //     //   if (element.selectOption.length > 0) {
+    //     //     element.selectOption.forEach(option => {
+    //     //       if (option.selected.length > 1) {
+    //     //         option.selected.forEach(opti => {
+    //     //           totalPrice += opti.price == null ? 0 : opti.price[0].price
+    //     //         })
+    //     //       } else {
+    //     //         totalPrice += option.selected.price == null ? 0 : option.selected.price[0].price
+    //     //       }
+    //     //     })
+    //     //     console.error(totalPrice);
+    //     //   }
+    //   })
+    // }
+
+    return totalPrice
   },
   getTotalPriceWithDelivery(state) {
     let dl = state.data.dishs
