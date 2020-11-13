@@ -210,8 +210,8 @@ export default {
     // КОНЕЦ Определение широты и долготы пользователя
 
     // Получение списка всех ресторанов в зоне по категории
-    let sortByCoord = {};
-    if (latitude == undefined && longitude == undefined) {
+    let sortByCoord = {}
+    if (latitude === undefined && longitude === undefined) {
         sortByCoord = {
             zone_id: currentZone.id,
             limit: 1000,
@@ -227,6 +227,8 @@ export default {
         }
     }
 
+    console.log(sortByCoord);
+
     let restaurantsList;
     let checkCatId = currentCategory ? currentCategory.id : 0;
     let restaurantsListData;
@@ -239,15 +241,19 @@ export default {
         restaurantsListData = restaurantsList.data.restaurants
     }
 
+    console.log(restaurantsListData);
+
     // Конец получения всех ресторанов в городе по категории
 
     // Фильтрация ресторанов по режиму работы
     let filtByTime;
-    if (restaurantsList.data.status == 404) {
+    if (restaurantsList.data.status === 404) {
         restaurantsListData = [404]
     } else {
         filtByTime = await store.dispatch('user/caclWorkTime', restaurantsListData)
     }
+
+    console.log(restaurantsList);
     // Конец фильтрации ресторанов по режиму работы
 
 
@@ -283,6 +289,17 @@ export default {
         SpecialOfferRestaurants = await store.dispatch('user/calcWorkTime_onlyOpen', SpecialOfferRestaurants);
       }
 
+      console.log({
+        restaurantsList: filtByTime,
+        SpecialOfferRestaurants: SpecialOfferRestaurants,
+        categoriesList: categoryAll.concat(categoriesListData),
+        currentCategory: currentCategory,
+        categoryInfoData: categoryInfoData,
+        currentZone: currentZone,
+        specilaOffers: specialOfferData,
+        showSpecialOffer: showSpecialOffer,
+        breadcrumbs: breadcrumbs
+      });
 
       return {
           restaurantsList: filtByTime,
