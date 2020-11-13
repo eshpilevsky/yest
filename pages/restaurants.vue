@@ -726,7 +726,6 @@
           let text = to_latin(str);
           return text.toLowerCase();
         }
-
         function to_latin(str) {
           str = str.replace(/\n/, "");
           str = str.replace(/\r/, "");
@@ -752,22 +751,19 @@
               , '');
 
         }
-
         function rest_alias(info){
           let name = translite(info.name);
           let modifName = name.replace(' ', '-');
           let url = `${info.id}-${modifName.toLowerCase()}`
           return url;
         };
-
         let alias = rest_alias(restuarantData);
 
         if(currentZone.id ===  restuarantData.city_id && alias === params.resName){
-
           let showSpecOffer = restuarantData.menu.find(cat => {
             return cat.dishes.find((dish, index, arr) => {
               if (dish !== null) {
-                return dish.sizes[0].sale == 2
+                return dish.sizes[0].sale === 2
               }
             })
           });

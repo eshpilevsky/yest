@@ -262,7 +262,7 @@ export const getters = {
   },
   getTotalPrice (state) {
     const dl = state.data.dishs
-    const totalPrice = 0
+    const totalPrice = 2
 
     // if (dl !== null && dl.length > 0) {
     //   dl.forEach((element) => {
@@ -288,7 +288,7 @@ export const getters = {
   },
   getTotalPriceWithDelivery (state) {
     const dl = state.data.dishs
-    const totalPrice = 0
+    const totalPrice = 2
 
     return totalPrice
   }
