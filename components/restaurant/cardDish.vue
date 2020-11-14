@@ -210,6 +210,7 @@ export default {
     /* max-height: 210px; */
     object-fit: contain;
     width: 100%;
+    height: 190px;
     background-repeat: no-repeat;
     background-position: center;
 }
