@@ -38,11 +38,7 @@ module.exports = {
         rel: 'stylesheet',
         href: 'https://yastatic.net/s3/eda-front/prod-www/fonts/YSText-Regular.woff2'
       }
-    ],
-    noscript: [{
-      innerHTML: '<!-- Google Tag Manager (noscript) --><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WDRSHHG"height="0" width="0" style="display:none;visibility:hidden"></iframe><!-- End Google Tag Manager (noscript) -->',
-      body: true
-	}],
+    ]
   },
   /*
    ** Customize the progress-bar color
@@ -110,7 +106,8 @@ module.exports = {
     '@nuxtjs/axios',
     '@nuxtjs/sitemap',
     '@nuxtjs/pwa',
-    '@nuxtjs/robots'
+    '@nuxtjs/robots',
+    '@nuxtjs/gtm',
   ],
   robots: {
     UserAgent: '*',
@@ -125,6 +122,9 @@ module.exports = {
     path: '/sitemap.xml',
     gzip: true,
     generate: false,
+  },
+  gtm: {
+    id: 'GTM-WDRSHHG'
   },
   /*
    ** Axios module configuration
