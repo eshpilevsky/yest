@@ -10,24 +10,24 @@ export const state = () => ({
 
 export const actions = {
   async addToBasket(context, payload) {
-    let list = context.state.data.dishs
+    const list = context.state.data.dishs
     let dishSizes;
     let findDish = list.find((dish) => {
-      return dish.id == payload.id
+      return dish.id === payload.id
     })
 
-    if (findDish == undefined) {
+    if (findDish === undefined) {
       context.commit('SAVE_TO_BASKET', payload)
     } else {
       dishSizes = findDish.selectSize
       let findSize;
-      if (dishSizes.id == payload.selectSize.id) {
+      if (dishSizes.id === payload.selectSize.id) {
         findSize = true
       } else {
         findSize = undefined
       }
 
-      if (findSize == undefined) {
+      if (findSize === undefined) {
         context.commit('SAVE_TO_BASKET', payload)
       } else {
         context.commit('INCREMENT_DISH', payload);

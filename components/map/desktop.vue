@@ -265,7 +265,6 @@ export default {
         }
     },
     async mounted() {
-
         if (performance.navigation.type == 1) {
             this.hideMap()
         }

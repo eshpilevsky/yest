@@ -124,7 +124,7 @@ module.exports = {
     generate: false,
   },
   gtm: {
-    id: 'GTM-WDRSHHG'
+    id: 'GTM-5FKF749'
   },
   /*
    ** Axios module configuration
